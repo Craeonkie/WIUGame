@@ -16352,6 +16352,7 @@ MonoBehaviour:
   _crossFadeDuration: 0.5
   _returnToIdleDuration: 0.2
   _jumpFallLandDurations: 0.1
+  _maxSpeed: 5
 --- !u!136 &5866666021945872945
 CapsuleCollider:
   m_ObjectHideFlags: 0

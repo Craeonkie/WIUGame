@@ -20,6 +20,7 @@ public class PlayerController : Entity
     [SerializeField] private float _crossFadeDuration;
     [SerializeField] private float _returnToIdleDuration;
     [SerializeField] private float _jumpFallLandDurations;
+    [SerializeField] private float _maxSpeed;
 
     private float _currentSpeed;
     private Vector3 worldMoveDirection;
@@ -35,6 +36,7 @@ public class PlayerController : Entity
         _rollAction = playerInput.actions["Roll"];
         _isMoving = false;
         _isJumping = false;
+        _currentSpeed = 0;
     }
 
     // Update is called once per frame
@@ -42,16 +44,16 @@ public class PlayerController : Entity
     {
         base.Update();
         //// Obtain the direction the player intends to move forward towards
-        // Obtain the forward and the right of the camera on a 2d plane
+        // Obtain the forward and the right of the camera on a 2D plane
         Quaternion cameraYawOnly = Quaternion.Euler(0, cameraTarget.transform.eulerAngles.y, 0);
         Vector3 cameraForward = cameraYawOnly * Vector3.forward;
         Vector3 cameraRight = cameraYawOnly * Vector3.right;
 
         // Decipher which way the player should move based on the direction the camera is facing
         Vector2 playerMovementDirection = _moveAction.ReadValue<Vector2>();
-        print(myRigidbody.linearVelocity.y);
+
         // Grounded
-        if (groundChecker.IsGrounded() && myRigidbody.linearVelocity.y <= 0.0f)
+        if (groundChecker.IsGrounded() && !_isJumping)
         {
             // Set animation to land if player was jumping or falling
             if (_currentAnimation == "Jump" || _currentAnimation == "Falling")
@@ -99,10 +101,12 @@ public class PlayerController : Entity
             {
                 myRigidbody.AddForce(transform.up * _jumpPower, ForceMode.Impulse);
                 playerAnimator.CrossFade("Jump", _returnToIdleDuration);
+                _isJumping = true;
             }
         }
+        
         // In air
-        else if (!groundChecker.IsGrounded())
+        if (!groundChecker.IsGrounded())
         {
             // Animations
             if (myRigidbody.linearVelocity.y < 0.0f)
@@ -135,6 +139,12 @@ public class PlayerController : Entity
 
                 // Move in direction
             }
+        }
+        // Land player
+        else if (groundChecker.IsGrounded() && _isJumping && myRigidbody.linearVelocity.y <= 0.0f)
+        {
+            _isJumping = false;
+            playerAnimator.CrossFade("Landing", _jumpFallLandDurations);
         }
     }
 }
