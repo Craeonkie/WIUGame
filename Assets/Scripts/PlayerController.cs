@@ -1,26 +1,32 @@
-using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : Entity
 {
     [Header("Input System")]
-    [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private PlayerInput _playerInput;
     private InputAction _moveAction;
     private InputAction _jumpAction;
     private InputAction _rollAction;
+    private InputAction _primaryAction;
+    private InputAction _secondaryAction;
+    private InputAction _specialAction;
 
     [Header("Movement")]
     [SerializeField] private float _jumpPower;
+    [SerializeField] private float _maxSpeed;
     [SerializeField] private Rigidbody myRigidbody;
-    [SerializeField] private GroundChecker groundChecker;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private GameObject cameraTarget;
     [SerializeField] private float playerRotationSpeed;
     [SerializeField] private float _crossFadeDuration;
     [SerializeField] private float _returnToIdleDuration;
     [SerializeField] private float _jumpFallLandDurations;
-    [SerializeField] private float _maxSpeed;
+
+    [Header("Other scripts of note")]
+    [SerializeField] private GroundChecker groundChecker;
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private AttackHandler attackHandler;
 
     private float _currentSpeed;
     private Vector3 worldMoveDirection;
@@ -28,29 +34,54 @@ public class PlayerController : Entity
     private bool _isJumping;
     private string _currentAnimation;
 
+    // Attacking
+    private bool _isAttacking;
+    private bool _canAttack;
+
     protected override void Start()
     {
         base.Start();
-        _moveAction = playerInput.actions["Move"];
-        _jumpAction = playerInput.actions["Jump"];
-        _rollAction = playerInput.actions["Roll"];
+        _moveAction = _playerInput.actions["Move"];
+        _jumpAction = _playerInput.actions["Jump"];
+        _rollAction = _playerInput.actions["Roll"];
+        _primaryAction = _playerInput.actions["Primary"];
+        _secondaryAction = _playerInput.actions["Secondary"];
+        _specialAction = _playerInput.actions["Special"];
         _isMoving = false;
         _isJumping = false;
-        _currentSpeed = 0;
     }
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
+        // Get attackhandler
+        _isAttacking = attackHandler.IsAttacking();
+
         //// Obtain the direction the player intends to move forward towards
-        // Obtain the forward and the right of the camera on a 2D plane
+        // Obtain the forward and the right of the camera on a 2d plane
         Quaternion cameraYawOnly = Quaternion.Euler(0, cameraTarget.transform.eulerAngles.y, 0);
         Vector3 cameraForward = cameraYawOnly * Vector3.forward;
         Vector3 cameraRight = cameraYawOnly * Vector3.right;
 
         // Decipher which way the player should move based on the direction the camera is facing
         Vector2 playerMovementDirection = _moveAction.ReadValue<Vector2>();
+
+        // Turn player in direction while moving
+        Quaternion targetRotation;
+        if (playerMovementDirection != Vector2.zero && !_isAttacking)
+        {
+            targetRotation = Quaternion.LookRotation(cameraForward * playerMovementDirection.y + cameraRight * playerMovementDirection.x, Vector3.up);
+
+            _isMoving = true;
+
+            // Translate the y rotation according to the camera angle when moving
+            float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
+            float changeInY = newY - transform.eulerAngles.y;
+
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + changeInY, transform.eulerAngles.z);
+            cameraTarget.transform.eulerAngles = new Vector3(cameraTarget.transform.eulerAngles.x, cameraTarget.transform.eulerAngles.y - changeInY, cameraTarget.transform.eulerAngles.z);
+        }
 
         // Grounded
         if (groundChecker.IsGrounded() && !_isJumping)
@@ -63,7 +94,7 @@ public class PlayerController : Entity
             }
 
             // Stop moving if input is 0
-            if (playerMovementDirection == Vector2.zero)
+            if (playerMovementDirection == Vector2.zero || _isAttacking)
             {
                 if (_isMoving)
                 {
@@ -74,77 +105,65 @@ public class PlayerController : Entity
                         playerAnimator.CrossFade("Idle 1", _returnToIdleDuration);
                     }
                 }
+                _currentSpeed = Mathf.MoveTowards(_currentSpeed, 0, _maxSpeed * Time.deltaTime / _returnToIdleDuration);
             }
             // Move if input isn't 0
-            else
+            else if (!_isAttacking)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(cameraForward * playerMovementDirection.y + cameraRight * playerMovementDirection.x, Vector3.up);
-
-                _isMoving = true;
-
-                // Translate the y rotation according to the camera angle when moving
-                float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
-                float changeInY = newY - transform.eulerAngles.y;
-
-                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + changeInY, transform.eulerAngles.z);
-                cameraTarget.transform.eulerAngles = new Vector3(cameraTarget.transform.eulerAngles.x, cameraTarget.transform.eulerAngles.y - changeInY, cameraTarget.transform.eulerAngles.z);
-
                 // Set animator if not already set
                 if (_currentAnimation != "Run Forwards")
                 {
                     _currentAnimation = "Run Forwards";
                     playerAnimator.CrossFade(_currentAnimation, _crossFadeDuration);
                 }
+                _currentSpeed = Mathf.MoveTowards(_currentSpeed, _maxSpeed, _maxSpeed / _crossFadeDuration * Time.deltaTime);
             }
 
-            if (_jumpAction.WasPressedThisFrame())
+            if (_jumpAction.WasPressedThisFrame() && !_isAttacking)
             {
                 myRigidbody.AddForce(transform.up * _jumpPower, ForceMode.Impulse);
                 playerAnimator.CrossFade("Jump", _returnToIdleDuration);
                 _isJumping = true;
+                _canAttack = false;
+            }
+            else
+            {
+                _canAttack = true;
             }
         }
-        
         // In air
-        if (!groundChecker.IsGrounded())
+        else if (!groundChecker.IsGrounded())
         {
             // Animations
-            if (myRigidbody.linearVelocity.y < 0.0f)
+            if (myRigidbody.linearVelocity.y < 0.0f && !_isAttacking)
             {
                 _currentAnimation = "Falling";
                 playerAnimator.CrossFade("Falling", _jumpFallLandDurations);
+                _isJumping = false;
             }
 
             // Stop moving if input is 0
-            if (playerMovementDirection == Vector2.zero)
+            if (playerMovementDirection == Vector2.zero || _isAttacking)
             {
                 if (_isMoving)
                 {
                     _isMoving = false;
                 }
+                _currentSpeed = Mathf.MoveTowards(_currentSpeed, 0, _maxSpeed * Time.deltaTime / _returnToIdleDuration);
             }
             // Move if input isn't 0
             else
             {
-                Quaternion targetRotation = Quaternion.LookRotation(cameraForward * playerMovementDirection.y + cameraRight * playerMovementDirection.x, Vector3.up);
-
-                _isMoving = true;
-
-                // Translate the y rotation according to the camera angle when moving
-                float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRotation.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
-                float changeInY = newY - transform.eulerAngles.y;
-
-                transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + changeInY, transform.eulerAngles.z);
-                cameraTarget.transform.eulerAngles = new Vector3(cameraTarget.transform.eulerAngles.x, cameraTarget.transform.eulerAngles.y - changeInY, cameraTarget.transform.eulerAngles.z);
-
-                // Move in direction
+                _currentSpeed = Mathf.MoveTowards(_currentSpeed, _maxSpeed, _maxSpeed / _crossFadeDuration * Time.deltaTime);
             }
         }
-        // Land player
-        else if (groundChecker.IsGrounded() && _isJumping && myRigidbody.linearVelocity.y <= 0.0f)
-        {
-            _isJumping = false;
-            playerAnimator.CrossFade("Landing", _jumpFallLandDurations);
-        }
+
+        // Set velocity
+        myRigidbody.linearVelocity = new Vector3((_currentSpeed * transform.forward).x, myRigidbody.linearVelocity.y, (_currentSpeed * transform.forward).z);
+    }
+
+    public bool CanAttack()
+    {
+        return _canAttack;
     }
 }

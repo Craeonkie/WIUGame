@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Weapon : Item
+public abstract class Weapon : Interactable
 {
     [SerializeField] private WeaponData myWeaponData;
     [SerializeField] private List<GameObject> hitEntities;
     private bool isAttacking = false;
+    private float currentDurability;
     private float currentAttackDuration;
     private float currentAttackDamage;
 
@@ -38,15 +39,20 @@ public abstract class Weapon : Item
         gameObject.SetActive(false);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(UnityEngine.Collider other)
     {
-        if (isAttacking && !hitEntities.Contains(collision.gameObject))
+        if (isAttacking && !hitEntities.Contains(other.gameObject))
         {
-            if (collision.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
+            if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
             {
                 thisEntity.TakeDamage(currentAttackDamage);
             }
-            hitEntities.Add(collision.gameObject);
+            hitEntities.Add(other.gameObject);
         }
+    }
+
+    public WeaponData ReturnWeaponData()
+    {
+        return myWeaponData;
     }
 }
