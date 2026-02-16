@@ -4519,7 +4519,7 @@ MonoBehaviour:
   isInvincible: 0
   _animationHasReset: 0
   _playerInput: {fileID: 5866666021945872946}
-  _jumpPower: 4
+  _jumpPower: 5
   _maxSpeed: 3
   myRigidbody: {fileID: 1998639318}
   cameraTarget: {fileID: 222077092}
@@ -4635,9 +4635,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationHandler
   _crossFadeDuration: 0
-  _inventory: {fileID: 5866666021945872947}
   _animator: {fileID: 5866666021945872943}
   _audioSource: {fileID: 5866666021945872950}
+  _currentItem: {fileID: 0}
   _isActing: 0
   _canAct: 0
   _canMove: 0

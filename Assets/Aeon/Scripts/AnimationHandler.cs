@@ -15,9 +15,9 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private float _crossFadeDuration;
 
     [Header("Other scripts of note")]
-    [SerializeField] private Inventory _inventory;
     [SerializeField] private Animator _animator;
     [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private Item _currentItem;
 
     [SerializeField] private bool _isActing;
     [SerializeField] private bool _canAct;
@@ -51,17 +51,12 @@ public class AnimationHandler : MonoBehaviour
 
     void Update()
     {
-        GameObject itemGameobject = _inventory.ReturnCurrentPrimaryItem();
-
-        if (itemGameobject != null && _canAct)
+        if (_currentItem != null && _canAct)
         {
-            Item item = itemGameobject.GetComponent<Item>();
-            item.SetAnimationHandler(this);
-
             // Receive inputs
-            item.TryToAct(InputType.Primary, _holdingPrimary, _pressedPrimary);
-            item.TryToAct(InputType.Secondary, _holdingSecondary, _pressedSecondary);
-            item.TryToAct(InputType.Special, _holdingSpecial, _pressedSpecial);
+            _currentItem.TryToAct(InputType.Primary, _holdingPrimary, _pressedPrimary);
+            _currentItem.TryToAct(InputType.Secondary, _holdingSecondary, _pressedSecondary);
+            _currentItem.TryToAct(InputType.Special, _holdingSpecial, _pressedSpecial);
 
             _pressedPrimary = false;
             _pressedSecondary = false;
@@ -199,9 +194,12 @@ public class AnimationHandler : MonoBehaviour
         _pressedSpecial = input;
     }
 
-    public Animator ReturnAnimator()
+    // Update animation handler to use items from here
+    public void SetItem(Item item)
     {
-        return _animator;
+        _currentItem = item;
+        _currentItem.SetAnimationHandler(this);
+        GoBackToIdle();
     }
 }
 

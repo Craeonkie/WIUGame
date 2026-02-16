@@ -7,16 +7,10 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject _rightHandSlot;
     [SerializeField] private GameObject _leftHandSlot;
 
-    [Header("Item Pickup Properties")]
-    [SerializeField] private LayerMask interactablesLayer;
-    [SerializeField] private float _pickupConeRadius;
-    [SerializeField] private float _pickupRange;
-
+    [Header("The items")]
     [SerializeField] private GameObject _primaryItem;
     [SerializeField] private GameObject _secondaryItem;
-
-    private bool pickUpItem;
-    private bool dropItem;
+    [SerializeField] private GameObject _currentItem;
 
     void Start()
     {
@@ -24,60 +18,7 @@ public class Inventory : MonoBehaviour
         _secondaryItem = null;
     }
 
-    void Update()
-    {
-        // Cast a sphere around the player (or use a raycast forward if preferred)
-        Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
-
-        GameObject closest = null;
-        Interactable closestInteractable = null;
-        float closestDist = _pickupRange;
-
-        foreach (Collider col in hits)
-        {
-            bool alreadyHolding = false;
-
-            if (col.gameObject == _primaryItem || col.gameObject == _secondaryItem)
-            {
-                alreadyHolding = true;
-            }
-
-            if (alreadyHolding)
-            {
-                continue;
-            }
-
-            float dist = Vector3.Distance(transform.position, col.transform.position);
-            float angle = Vector3.Angle(transform.forward, col.transform.position - transform.position);
-            if (dist <= closestDist && angle <= _pickupConeRadius && col.gameObject.TryGetComponent<Interactable>(out closestInteractable))
-            {
-                closestDist = dist;
-                closest = col.gameObject;
-            }
-        }
-
-        if (closest != null)
-        {
-            HighlightObject(closestInteractable.gameObject);
-            if (pickUpItem)
-            {
-                InteractWith(closestInteractable);
-            }
-        }
-
-        if (dropItem)
-        {
-            if (_primaryItem != null)
-            {
-                DropItem(_primaryItem);
-            }
-        }
-
-        pickUpItem = false;
-        dropItem = false;
-    }
-
-    void InteractWith(Interactable interactableObject)
+    public void InteractWith(Interactable interactableObject, AnimationHandler animationHandler)
     {
         string tag = interactableObject.tag;
 
@@ -85,10 +26,12 @@ public class Inventory : MonoBehaviour
         if (tag == "Weapon")
         {
             PutItemInPrimary(interactableObject.gameObject);
+            animationHandler.SetItem((Item)interactableObject);
         }
         else if (tag == "Item")
         {
             PutItemInSecondary(interactableObject.gameObject);
+            animationHandler.SetItem((Item)interactableObject);
         }
         else if (tag == "Interactable")
         {
@@ -98,7 +41,7 @@ public class Inventory : MonoBehaviour
     }
 
     // Highlights an object in the world
-    void HighlightObject(GameObject go)
+    public void HighlightObject(GameObject go)
     {
 
     }
@@ -115,6 +58,12 @@ public class Inventory : MonoBehaviour
         return _secondaryItem;
     }
 
+    // Returns the item being held
+    public GameObject ReturnCurrentItem()
+    {
+        return _currentItem;
+    }
+
     // Removes item from left hand or inventory slot (if applicable), then puts it into the right hand
     public void PutItemInPrimary(GameObject item)
     {
@@ -122,6 +71,7 @@ public class Inventory : MonoBehaviour
         DropItem(_primaryItem);
 
         _primaryItem = item;
+        _currentItem = item;
         item.transform.SetParent(_rightHandSlot.transform);
         item.GetComponent<Item>().PickUp();
         item.SetActive(true);
@@ -168,15 +118,5 @@ public class Inventory : MonoBehaviour
             rb.linearVelocity = Vector3.zero;
             rb.AddForce(Vector3.up * 3.0f, ForceMode.Impulse);
         }
-    }
-
-    public void TryToInteract()
-    {
-        pickUpItem = true;
-    }
-
-    public void TryToDropItem()
-    {
-        dropItem = true;
     }
 }

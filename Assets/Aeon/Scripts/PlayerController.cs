@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.UI;
 
 public class PlayerController : Entity
 {
@@ -24,6 +22,11 @@ public class PlayerController : Entity
     [SerializeField] private float playerRotationSpeed;
     private float _currentSpeed;
 
+    [Header("Item Pickup Properties")]
+    [SerializeField] private LayerMask interactablesLayer;
+    [SerializeField] private float _pickupConeRadius;
+    [SerializeField] private float _pickupRange;
+
     [Header("Other scripts of note")]
     [SerializeField] private GroundChecker groundChecker;
     [SerializeField] private Inventory inventory;
@@ -31,7 +34,6 @@ public class PlayerController : Entity
 
     private Vector2 _inputMove;
     private bool _isJumping = false;
-    private Vector3 _velocity;
 
     // Animator weights for running
     private float _currentWeight;
@@ -95,29 +97,14 @@ public class PlayerController : Entity
         {
             if (_jumpAction.WasPressedThisDynamicUpdate() && canMove)
             {
-                _velocity.Set(_velocity.x, _jumpPower, _velocity.z);
                 _isJumping = true;
+                myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
                 animationHandler.ToggleAbilityToAct(false);
             }
             else
             {
                 animationHandler.ToggleAbilityToAct(true);
             }
-        }
-
-        // Reset jump state when grounded
-        if (_isJumping && _velocity.y < 0)
-        {
-            _isJumping = false;
-        }
-
-        if (!isGrounded || _isJumping)
-        {
-            _velocity.y += -9.8f * Time.deltaTime;
-        }
-        else
-        {
-            _velocity.y = 0;
         }
 
         // Handle max velocity
@@ -130,20 +117,56 @@ public class PlayerController : Entity
 
         _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
         Vector3 moveVelocity = transform.forward * _currentSpeed;
-        _velocity.Set(moveVelocity.x, _velocity.y, moveVelocity.z);
-        myRigidbody.linearVelocity = _velocity;
+        myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
 
         //// Handle other inputs
         // Interacting
         if (_interactAction.WasPressedThisDynamicUpdate())
         {
-            inventory.TryToInteract();
+            // Cast a sphere around the player (or use a raycast forward if preferred)
+            Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
+
+            GameObject closest = null;
+            Interactable closestInteractable = null;
+            float closestDist = _pickupRange;
+
+            foreach (Collider col in hits)
+            {
+                bool alreadyHolding = false;
+
+                if (col.gameObject == inventory.ReturnCurrentPrimaryItem() || col.gameObject == inventory.ReturnCurrentSecondaryItem())
+                {
+                    alreadyHolding = true;
+                }
+
+                if (alreadyHolding)
+                {
+                    continue;
+                }
+
+                float dist = Vector3.Distance(transform.position, col.transform.position);
+                float angle = Vector3.Angle(transform.forward, col.transform.position - transform.position);
+                if (dist <= closestDist && angle <= _pickupConeRadius && col.gameObject.TryGetComponent<Interactable>(out closestInteractable))
+                {
+                    closestDist = dist;
+                    closest = col.gameObject;
+                }
+            }
+
+            if (closest != null)
+            {
+                inventory.HighlightObject(closestInteractable.gameObject);
+                inventory.InteractWith(closestInteractable, animationHandler);
+            }
         }
 
         // Dropping
         if (_dropAction.WasPressedThisDynamicUpdate())
         {
-            inventory.TryToDropItem();
+            if (inventory.ReturnCurrentItem() != null)
+            {
+                inventory.DropItem(inventory.ReturnCurrentItem());
+            }
         }
 
         // Primary
@@ -182,8 +205,12 @@ public class PlayerController : Entity
         // Send parameters to animator
         _animator.SetBool("IsMoving", isMoving);
         _animator.SetBool("IsGrounded", isGrounded);
-        _animator.SetBool("IsJumping", _isJumping);
-        _animator.SetFloat("Y Velocity", _velocity.y);
+        if (_isJumping)
+        {
+            _animator.SetTrigger("IsJumping");
+            _isJumping = false;
+        }
+        _animator.SetFloat("Y Velocity", myRigidbody.linearVelocity.y);
 
         _currentWeight = Mathf.MoveTowards(_currentWeight, _targetWeight, Time.deltaTime * 10);
     }

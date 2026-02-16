@@ -22,7 +22,7 @@ public class GroundChecker : MonoBehaviour
         {
             _isCloseToGround = true;
             _groundNormal = hit.normal;
-            if (hit.distance <= _sphereCastHeight)
+            if (hit.distance <= _sphereCastHeight + 1)
             {
                 _isGrounded = true;
             }
