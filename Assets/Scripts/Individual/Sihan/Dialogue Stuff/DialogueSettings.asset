@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92a7d471627a4f44f9b0b920445e8342, type: 3}
+  m_Name: DialogueSettings
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueSettings
+  typingSpeed: 0.01
+  _autoNextLine: 0
+  _autoNextLineTime: 5
+  dialogueUIs:
+  - dialogueUIName: 0 (???)
+    dialogueBoxXOffset: 0
+    dialogueBoxYOffset: -360
+    dialogueBoxWidth: 1600
+    dialogueBoxHeight: 300
+    dialoguePortraitXOffset: -560
+    dialoguePortraitYOffset: -270
+    dialoguePortraitWidth: 400
+    dialoguePortraitHeight: 400
+    dialogueNameXOffset: 220
+    dialogueNameYOffset: -245
+    dialogueNameWidth: 1100
+    dialogueNameHeight: 50
+    dialogueNameFontSize: 36
+    dialogueTextXOffset: 220
+    dialogueTextYOffset: -370
+    dialogueTextWidth: 1100
+    dialogueTextHeight: 200
+    dialogueTextFontSize: 36
+  - dialogueUIName: 1 (???)
+    dialogueBoxXOffset: 0
+    dialogueBoxYOffset: 0
+    dialogueBoxWidth: 1.5
+    dialogueBoxHeight: 0.3
+    dialoguePortraitXOffset: -0.6
+    dialoguePortraitYOffset: 0
+    dialoguePortraitWidth: 0.25
+    dialoguePortraitHeight: 0.25
+    dialogueNameXOffset: 0.288
+    dialogueNameYOffset: -0.13
+    dialogueNameWidth: 1.5
+    dialogueNameHeight: 0.5
+    dialogueNameFontSize: 0.07
+    dialogueTextXOffset: 0.294
+    dialogueTextYOffset: -0.214
+    dialogueTextWidth: 1.5
+    dialogueTextHeight: 0.5
+    dialogueTextFontSize: 0.06
