@@ -4,8 +4,8 @@ using UnityEngine;
 public abstract class Entity : MonoBehaviour
 {
     [SerializeField] private EntityData _myEntityData;
-    private float _maxHP;
-    private float _currentHP;
+    protected float _maxHP;
+    protected float _currentHP;
     private float _invincibilityCooldown;
     private Vector3 spawnPoint;
 
