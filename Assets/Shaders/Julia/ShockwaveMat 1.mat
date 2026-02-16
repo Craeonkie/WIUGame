@@ -112,7 +112,7 @@ Material:
     - _Min: 0.3
     - _MinRadius: 30
     - _OcclusionStrength: 1
-    - _Offset: 193
+    - _Offset: 27.34
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
