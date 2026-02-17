@@ -3,7 +3,7 @@ using UnityEngine;
 // Class to be inherited by all entities, alive or not.
 public abstract class Entity : MonoBehaviour
 {
-    [SerializeField] private EntityData _myEntityData;
+    [SerializeField] protected EntityData _myEntityData;
     protected float _maxHP;
     protected float _currentHP;
     private float _invincibilityCooldown;
@@ -47,7 +47,7 @@ public abstract class Entity : MonoBehaviour
     }
 
     // Do damage without invincibility cooldown
-    public void TakeDamage(float damageTaken)
+    public virtual void TakeDamage(float damageTaken)
     {
         if (!isInvincible)
         {
