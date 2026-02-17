@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected Vector3 spawnPoint;
     [SerializeField] protected Animator _animator;
     [SerializeField] protected bool isInvincible = false;
+    [SerializeField] protected bool isDodging = false;
     [SerializeField] protected bool _animationHasReset = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -63,17 +64,20 @@ public class Entity : MonoBehaviour
     // Do damage without invincibility cooldown
     public virtual void TakeDamage(float damageTaken)
     {
-        _currentHP -= damageTaken;
-        if (_currentHP <= 0)
+        if (!isDodging)
         {
-            Die();
+            _currentHP -= damageTaken;
+            if (_currentHP <= 0)
+            {
+                Die();
+            }
         }
     }
 
     // Do damage with invincibility cooldown
     public virtual void TakeDamage(float damageTaken, float invincibilityLength)
     {
-        if (!isInvincible)
+        if (!isInvincible && !isDodging)
         {
             _currentHP -= damageTaken;
             _invincibilityCooldown += invincibilityLength;

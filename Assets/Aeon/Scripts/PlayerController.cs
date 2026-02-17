@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.LowLevelPhysics2D.PhysicsShape;
 
 public class PlayerController : Entity
 {
@@ -17,10 +18,14 @@ public class PlayerController : Entity
     [Header("Movement")]
     [SerializeField] private float _jumpPower;
     [SerializeField] private float _maxSpeed;
+    [SerializeField] private float _rollSpeed;
     [SerializeField] private Rigidbody myRigidbody;
     [SerializeField] private GameObject cameraTarget;
     [SerializeField] private float playerRotationSpeed;
+    [SerializeField] private float rollDuration;
+    private Vector3 _rollDirection;
     private float _currentSpeed;
+    private float _currentRollTimer;
 
     [Header("Item Pickup Properties")]
     [SerializeField] private LayerMask interactablesLayer;
@@ -34,10 +39,8 @@ public class PlayerController : Entity
 
     private Vector2 _inputMove;
     private bool _isJumping = false;
-
-    // Animator weights for running
-    private float _currentWeight;
-    private float _targetWeight;
+    private bool _isRolling = false;
+    private bool _canAct = true;
 
     protected override void Start()
     {
@@ -74,7 +77,7 @@ public class PlayerController : Entity
         _inputMove = _moveAction.ReadValue<Vector2>();
 
         // Rotation
-        if (_inputMove != Vector2.zero && canMove)
+        if (_inputMove != Vector2.zero && canMove && !_isRolling)
         {
             Quaternion cameraYawOnly = Quaternion.Euler(0, cameraTarget.transform.eulerAngles.y, 0);
             Vector3 cameraForward = cameraYawOnly * Vector3.forward;
@@ -85,39 +88,69 @@ public class PlayerController : Entity
 
             float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
             transform.eulerAngles = new Vector3(0, newY, 0);
-            _targetWeight = 1;
-        }
-        else
-        {
-            _targetWeight = 0;
+            _rollDirection = moveDir;
         }
 
         // Jumping
         if (isGrounded && !_isJumping)
         {
-            if (_jumpAction.WasPressedThisDynamicUpdate() && canMove)
+            if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canAct)
             {
                 _isJumping = true;
+                _isRolling = false;
                 myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
-                animationHandler.ToggleAbilityToAct(false);
+                _canAct = false;
             }
             else
             {
-                animationHandler.ToggleAbilityToAct(true);
+                _canAct = true;
+            }
+        }
+
+        // Rolling
+        if (isGrounded && !_isJumping && !_isRolling)
+        {
+            if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct)
+            {
+                _animator.SetTrigger("IsRolling");
+                _isRolling = true;
+                _isJumping = false;
+                _canAct = false;
+            }
+            else
+            {
+                _canAct = true;
             }
         }
 
         // Handle max velocity
         float targetSpeed = 0.0f;
         bool isMoving = _inputMove != Vector2.zero && canMove;
-        if (isMoving)
+
+        if (!_isRolling)
         {
-            targetSpeed = _maxSpeed;
+            if (isMoving)
+            {
+                targetSpeed = _maxSpeed;
+            }
+
+            _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
+            Vector3 moveVelocity = transform.forward * _currentSpeed;
+            myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
+        }
+        else
+        {
+            myRigidbody.linearVelocity = new Vector3(_rollSpeed * _rollDirection.x, myRigidbody.linearVelocity.y, _rollSpeed * _rollDirection.z);
         }
 
-        _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
-        Vector3 moveVelocity = transform.forward * _currentSpeed;
-        myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
+        if (_currentRollTimer > 0)
+        {
+            _currentRollTimer -= Time.deltaTime;
+            if (_currentRollTimer <= 0 )
+            {
+                _isRolling = false;
+            }
+        }
 
         //// Handle other inputs
         // Interacting
@@ -169,34 +202,38 @@ public class PlayerController : Entity
             }
         }
 
-        // Primary
-        if (_primaryAction.WasPressedThisDynamicUpdate())
+        // Only accept input when the player is able act
+        if (_canAct)
         {
-            animationHandler.TryingToUsePrimary(true);
-        }
-        if (_primaryAction.WasReleasedThisDynamicUpdate())
-        {
-            animationHandler.TryingToUsePrimary(false);
-        }
+            // Primary
+            if (_primaryAction.WasPressedThisDynamicUpdate())
+            {
+                animationHandler.TryingToUsePrimary(true);
+            }
+            if (_primaryAction.WasReleasedThisDynamicUpdate())
+            {
+                animationHandler.TryingToUsePrimary(false);
+            }
 
-        // Secondary
-        if (_secondaryAction.WasPressedThisDynamicUpdate())
-        {
-            animationHandler.TryingToUseSecondary(true);
-        }
-        if (_secondaryAction.WasReleasedThisDynamicUpdate())
-        {
-            animationHandler.TryingToUseSecondary(false);
-        }
+            // Secondary
+            if (_secondaryAction.WasPressedThisDynamicUpdate())
+            {
+                animationHandler.TryingToUseSecondary(true);
+            }
+            if (_secondaryAction.WasReleasedThisDynamicUpdate())
+            {
+                animationHandler.TryingToUseSecondary(false);
+            }
 
-        // Special
-        if (_specialAction.WasPressedThisDynamicUpdate())
-        {
-            animationHandler.TryingToUseSpecial(true);
-        }
-        if (_specialAction.WasReleasedThisDynamicUpdate())
-        {
-            animationHandler.TryingToUseSpecial(false);
+            // Special
+            if (_specialAction.WasPressedThisDynamicUpdate())
+            {
+                animationHandler.TryingToUseSpecial(true);
+            }
+            if (_specialAction.WasReleasedThisDynamicUpdate())
+            {
+                animationHandler.TryingToUseSpecial(false);
+            }
         }
 
         // Update interaction handler
@@ -211,8 +248,6 @@ public class PlayerController : Entity
             _isJumping = false;
         }
         _animator.SetFloat("Y Velocity", myRigidbody.linearVelocity.y);
-
-        _currentWeight = Mathf.MoveTowards(_currentWeight, _targetWeight, Time.deltaTime * 10);
     }
 
     //// Handle Inventory UI visibility

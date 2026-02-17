@@ -51,7 +51,7 @@ public class AnimationHandler : MonoBehaviour
 
     void Update()
     {
-        if (_currentItem != null && _canAct)
+        if (_currentItem != null)
         {
             // Receive inputs
             _currentItem.TryToAct(InputType.Primary, _holdingPrimary, _pressedPrimary);
@@ -166,28 +166,27 @@ public class AnimationHandler : MonoBehaviour
         return _canMove;
     }
 
+    // Call if an animation is playing
     public bool IsActing()
     {
         return _isActing;
     }
 
-    public void ToggleAbilityToAct(bool canAct)
-    {
-        _canAct = canAct;
-    }
-
+    // Called when the player presses and releases the primary button
     public void TryingToUsePrimary(bool input)
     {
         _holdingPrimary = input;
         _pressedPrimary = input;
     }
 
+    // Called when the player presses and releases the secondary button
     public void TryingToUseSecondary(bool input)
     {
         _holdingSecondary = input;
         _pressedSecondary = input;
     }
 
+    // Called when the player presses and releases the special button
     public void TryingToUseSpecial(bool input)
     {
         _holdingSpecial = input;

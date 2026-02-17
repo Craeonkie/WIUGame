@@ -4517,13 +4517,21 @@ MonoBehaviour:
   spawnPoint: {x: 0, y: 0, z: 0}
   _animator: {fileID: 5866666021945872943}
   isInvincible: 0
+  isDodging: 0
   _animationHasReset: 0
   _playerInput: {fileID: 5866666021945872946}
   _jumpPower: 5
-  _maxSpeed: 3
+  _maxSpeed: 4
+  _rollSpeed: 5
   myRigidbody: {fileID: 1998639318}
   cameraTarget: {fileID: 222077092}
   playerRotationSpeed: 480
+  rollDuration: 1
+  interactablesLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _pickupConeRadius: 0
+  _pickupRange: 0
   groundChecker: {fileID: 5866666021945872948}
   inventory: {fileID: 5866666021945872947}
   animationHandler: {fileID: 5866666021945872949}
@@ -4594,13 +4602,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rightHandSlot: {fileID: 1527020649}
   _leftHandSlot: {fileID: 1502526608}
-  interactablesLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  _pickupConeRadius: 90
-  _pickupRange: 3
   _primaryItem: {fileID: 0}
   _secondaryItem: {fileID: 0}
+  _currentItem: {fileID: 0}
 --- !u!114 &5866666021945872948
 MonoBehaviour:
   m_ObjectHideFlags: 0
