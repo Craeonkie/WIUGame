@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using static UnityEditor.ShaderData;
 
 public class J_BossBehaviour : Entity
 {
@@ -15,7 +14,6 @@ public class J_BossBehaviour : Entity
 
     public enum STATE { 
         IDLE,
-        OBSERVING,
         PREPARING,
         ATTACKING,
         EXHAUSTED
@@ -31,8 +29,7 @@ public class J_BossBehaviour : Entity
     [SerializeField] private Animator _animator;
 
     [Header("Additional Boss Data")]
-    [SerializeField] private float _attackSpeed;
-    [SerializeField] private float _attackCooldown;
+    [SerializeField] private float _attackSpeed; // Applied to the fist swinging down, use for adjusting animation speed
     private float _currentAttackDamage;
 
     [Header("Boss Phases")]
@@ -43,11 +40,18 @@ public class J_BossBehaviour : Entity
     [Header("Boss States")]
     private STATE _currentState;
     private HAND _attackingHand;
+    [SerializeField] int _timesBeforeExhausted;
+    [SerializeField] int _hitsBeforeExhausted; // Only for 2nd and 3rd phase
+    private bool _canChangeState;
+    private int _currentTimesAttacked;
     private int _leftHandFrequency;
     private int _rightHandFrequency;
 
+
     [SerializeField] private float _idleDuration;
+    [SerializeField] private float _attackCooldown;
     [SerializeField] private float _readyDuration;
+    [SerializeField] private float _exhaustedDuration;
     private float _currentStateTimer;
 
 
@@ -61,8 +65,12 @@ public class J_BossBehaviour : Entity
         base.Start();
 
         // Get the first phase and state
-        _currentState = STATE.OBSERVING;
+        _currentState = STATE.IDLE;
         _currentPhaseIndex = 0;
+        EnterState(_currentState);
+        EnterPhase(_currentPhaseIndex);
+
+        _canChangeState = true;
 
         _leftHandFrequency = 0;
         _rightHandFrequency = 0;
@@ -82,9 +90,6 @@ public class J_BossBehaviour : Entity
         {
             case STATE.IDLE:
                 Idle();
-                break;
-            case STATE.OBSERVING:
-                Observe();
                 break;
             case STATE.PREPARING:
                 Prepare();
@@ -143,7 +148,7 @@ public class J_BossBehaviour : Entity
         _phaseText.text = phase.ToString();
 
         // Apply phase modifiers
-        _attackCooldown /= phase.attackSpeedMultiplier;
+        _attackSpeed /= phase.attackSpeedMultiplier;
         _currentAttackDamage = phase.attackDamage;
 
         InvokePhaseEnterEvent(phaseIndex);
@@ -161,21 +166,16 @@ public class J_BossBehaviour : Entity
 
     private void CheckStateTransition()
     {
+        if (!_canChangeState)
+            return;
+
+        _currentStateTimer -= Time.deltaTime;
+
         switch (_currentState)
         {
             case STATE.IDLE:
 
                 // Enter observing state
-                if (_currentStateTimer <= 0f)
-                {
-                    EnterState(STATE.OBSERVING);
-                }
-
-
-                break;
-            case STATE.OBSERVING:
-                
-                // Enter preparing state
                 if (_currentStateTimer <= 0f)
                 {
                     EnterState(STATE.PREPARING);
@@ -194,9 +194,13 @@ public class J_BossBehaviour : Entity
             case STATE.ATTACKING:
 
                 // Enter exhausted state
-                if (_currentStateTimer <= 0f)
+                if (_currentTimesAttacked >= _hitsBeforeExhausted)
                 {
                     EnterState(STATE.EXHAUSTED);
+                }
+                else
+                {
+                    EnterState(STATE.IDLE);
                 }
 
                 break;
@@ -218,12 +222,21 @@ public class J_BossBehaviour : Entity
         {
             case STATE.IDLE:
 
+                // Set the duration
+                _currentStateTimer = _attackCooldown;
+                _animator.SetBool("Tired", false);
+                _animator.SetBool("Ready", true);
+
+                isInvincible = true;
 
                 break;
-            case STATE.OBSERVING:
-                break;
             case STATE.PREPARING:
-                // TODO: Randomise attack here based on frequency + weightage
+
+                // Set the duration
+                _currentStateTimer = _readyDuration;
+
+
+                // Decide an attack based on the frequency and chance
                 if (_leftHandFrequency == 2)
                 {
                     _attackingHand = HAND.RIGHT;
@@ -239,37 +252,62 @@ public class J_BossBehaviour : Entity
                 else
                 {
                     // Weigh
-                    int rand = Random.Range(0, 100);
+                    float leftWeight = 100f / (_leftHandFrequency + 1);
+                    float rightWeight = 100f / (_rightHandFrequency + 1);
 
-                    //if (rand <= 50 - )
+                    float rand = Random.Range(0f, leftWeight + rightWeight);
+
+                    _attackingHand = rand < leftWeight ? HAND.LEFT : HAND.RIGHT;
+
+                    if (_attackingHand == HAND.LEFT)
+                        _leftHandFrequency++;
+                    else
+                        _rightHandFrequency++;
+
                 }
 
                 // Set to preparing for animator
+                _animator.SetBool("Ready", false);
                 _animator.SetBool("Preparing", true);
-
-
+                _animator.SetInteger("Hand", (int)_attackingHand);
 
                 break;
             case STATE.ATTACKING:
+
+                Debug.Log("state attacking");
+
+                _currentStateTimer = 0f;
+                _currentTimesAttacked++;
+
+                // Trigger attack
+                _animator.SetBool("Preparing", false);
+                _animator.SetTrigger("Attack");
+
+                _canChangeState = false;
+
                 break;
             case STATE.EXHAUSTED:
+
+                // Set the duration
+                _currentStateTimer = _exhaustedDuration;
+                _currentTimesAttacked = 0;
+
+                _animator.SetBool("Tired", true);
+
+                isInvincible = false;
+
                 break;
         }
+
+        _currentState = nextState;
+        _stateText.text = _currentState.ToString();
     }
 
     private void Idle()
     {
-
+        _currentStateTimer -= Time.deltaTime;
     }
 
-    private void Observe()
-    {
-        _attackCooldown -= Time.deltaTime;
-
-        // TODO: Head-aim rig should look at player and consider options
-
-        
-    }
 
     private void Prepare()
     {
@@ -290,4 +328,6 @@ public class J_BossBehaviour : Entity
     {
         // TODO: SPAWN BUG PREFABS INSIDE AREA
     }
+
+    public void AllowStateTransition() => _canChangeState = true;
 }
