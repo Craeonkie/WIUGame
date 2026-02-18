@@ -488,8 +488,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149863361}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.016911702, y: -0.98135394, z: -0.10271147, w: 0.1615824}
-  m_LocalPosition: {x: 0.115424454, y: 1.2403618, z: -0.7024697}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.55, y: 2.106, z: -3.8600001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -523,7 +523,7 @@ Transform:
   m_GameObject: {fileID: 165292818}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -3, z: 0}
+  m_LocalPosition: {x: 0, y: -3.49, z: 0}
   m_LocalScale: {x: 35, y: 6, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1139,6 +1139,7 @@ Transform:
   m_Children:
   - {fileID: 165292819}
   - {fileID: 2145909313}
+  - {fileID: 1357363148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &768006024
@@ -1228,8 +1229,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 768006024}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.016911702, y: -0.98135394, z: -0.10271147, w: 0.1615824}
-  m_LocalPosition: {x: 0.115424454, y: 1.2403618, z: -0.7024697}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.55, y: 2.106, z: -3.8600001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1717,7 +1718,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a80cc5ee460d6af4c919883dc55fae02, type: 2}
+  - {fileID: 2100000, guid: 6bc542d13d086db45a12a07f55d2d369, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1966,6 +1967,119 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1352733333}
   m_CullTransparentMesh: 1
+--- !u!1 &1357363147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1357363148}
+  - component: {fileID: 1357363151}
+  - component: {fileID: 1357363150}
+  - component: {fileID: 1357363149}
+  m_Layer: 3
+  m_Name: ShockwavePlane
+  m_TagString: ShockwaveAffected
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1357363148
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357363147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 3.5, y: 1.194, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 743801339}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &1357363149
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357363147}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1357363150
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357363147}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 6bc542d13d086db45a12a07f55d2d369, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1357363151
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357363147}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1784026234
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,8 +2708,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132148995889591}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.9914449, z: -0.13052616, w: 0}
-  m_LocalPosition: {x: 0, y: -20, z: 27.7}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: -10.5, z: 25}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2604,7 +2718,7 @@ Transform:
   - {fileID: 425906325}
   - {fileID: 628085007}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 15, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &543450652744619421
 Transform:
   m_ObjectHideFlags: 0
@@ -2613,8 +2727,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132149078839079}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.016911702, y: -0.98135394, z: -0.10271147, w: 0.1615824}
-  m_LocalPosition: {x: 0.023666933, y: -0.00000007620392, z: -2.5330684}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.05, y: 0.41, z: -2.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2623,7 +2737,7 @@ Transform:
   - {fileID: 8670697777191543373}
   - {fileID: 1175625827}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -11.95, y: -161.3, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &608321762373206682
 Transform:
   m_ObjectHideFlags: 0
@@ -2731,7 +2845,7 @@ GameObject:
   - component: {fileID: 5866666020995275130}
   m_Layer: 0
   m_Name: testMonsterModel
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2751,7 +2865,7 @@ GameObject:
   - component: {fileID: 5866666020918382571}
   - component: {fileID: 5866666020918382572}
   - component: {fileID: 5866666020918382568}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: testPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3765,6 +3879,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1852576807328176942}
   - component: {fileID: 2715566404948560360}
+  - component: {fileID: 2715566404948560361}
   m_Layer: 0
   m_Name: mixamorig:RightHand
   m_TagString: Untagged
@@ -3793,6 +3908,59 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.3
   m_Center: {x: 0, y: 0.25, z: 0}
+--- !u!114 &2715566404948560361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2715566404948560359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 2
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.2
+    ImpulseType: 3
+    DissipationRate: 0.25
+    RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!1 &2715566405017100151
 GameObject:
   m_ObjectHideFlags: 0
@@ -5103,6 +5271,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6502182838922981669}
   - component: {fileID: 6502182838922981670}
+  - component: {fileID: 6502182838922981671}
   m_Layer: 0
   m_Name: mixamorig:LeftHand
   m_TagString: Untagged
@@ -5951,12 +6120,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 104138f1823445749805ef13f9e70c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::J_BossBehaviour
-  _maxHP: 0
-  _currentHP: 0
+  _maxHP: 500
+  _currentHP: 500
   _invincibilityCooldown: 0
   _invincibilityFlickerGap: 0
   _invincibilityFlickerCurrentTimer: 0
-  _model: {fileID: 0}
+  _model: {fileID: 919132149155446097, guid: 95c393f3372b23e49ab2cc1980f57d40, type: 3}
   renderers: []
   spawnPoint: {x: 0, y: 0, z: 0}
   _animator: {fileID: 5866666020995275127}
@@ -5964,21 +6133,24 @@ MonoBehaviour:
   isDodging: 0
   _animationHasReset: 0
   _playerTarget: {fileID: 0}
-  _animator: {fileID: 5866666020995275127}
   _fistColliders:
   - {fileID: 6502182838922981670}
   - {fileID: 2715566404948560360}
-  _sources: []
-  _shockwaveAffectedGameObjects: []
+  _sources:
+  - {fileID: 6502182838922981671}
+  - {fileID: 2715566404948560361}
+  _shockwaveAffectedGameObjects:
+  - {fileID: 8125573954733800492}
+  - {fileID: 1357363147}
   _leftArmRig: {fileID: 193460418}
   _leftArmTarget: {fileID: 415528827}
   _layersToCheck:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 520
   _attackSpeed: 5
-  _maxShockwaveDistance: 0
-  _shockwaveIntensity: 0
-  _shockwaveTravelSpeed: 0
+  _maxShockwaveDistance: 20
+  _shockwaveIntensity: 2
+  _shockwaveTravelSpeed: 3
   _phases:
   - name: Phase1
     healthThreshold: 1
@@ -5994,7 +6166,7 @@ MonoBehaviour:
     attackDamage: 0
   _timesBeforeExhausted: 5
   _hitsBeforeExhausted: 5
-  _idleDuration: 0
+  _idleDuration: 2
   _attackCooldown: 3
   _readyDuration: 5
   _exhaustedDuration: 3
@@ -6498,6 +6670,59 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.3
   m_Center: {x: 0, y: 0.25, z: 0}
+--- !u!114 &6502182838922981671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4494945602823335210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 2
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.2
+    ImpulseType: 3
+    DissipationRate: 0.25
+    RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!4 &6502182839001540533
 Transform:
   m_ObjectHideFlags: 0
