@@ -213,7 +213,7 @@ public class J_BossBehaviour : Entity
             return;
 
         _currentHP -= damageTaken;
-        float healthPercent = _currentHP / _myEntityData._maxHP;
+        float healthPercent = _currentHP / _maxHP;
 
         CheckPhaseTransition(healthPercent);
     }
