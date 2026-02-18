@@ -5951,8 +5951,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 104138f1823445749805ef13f9e70c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::J_BossBehaviour
-  _myEntityData: {fileID: 11400000, guid: 6f74e52f4b1fb4046b3f48c068a6b354, type: 2}
+  _maxHP: 0
+  _currentHP: 0
+  _invincibilityCooldown: 0
+  _invincibilityFlickerGap: 0
+  _invincibilityFlickerCurrentTimer: 0
+  _model: {fileID: 0}
+  renderers: []
+  spawnPoint: {x: 0, y: 0, z: 0}
+  _animator: {fileID: 5866666020995275127}
   isInvincible: 1
+  isDodging: 0
+  _animationHasReset: 0
   _playerTarget: {fileID: 0}
   _animator: {fileID: 5866666020995275127}
   _fistColliders:
