@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30330db8afb251a45814f8a93357733c, type: 3}
+  m_Name: Axe
+  m_EditorClassIdentifier: 
+  weaponName: Axe
+  weaponDescription: Big Axe
+  maxDurability: 9999
+  primaryAttack:
+  - damage: 10
+    animationClip: {fileID: 7400000, guid: c394e6bb248d00245a84d2fc261a6114, type: 2}
+    durabilityUsage: 1
+  - damage: 15
+    animationClip: {fileID: 7400000, guid: 0bfd8e046c29f12419ed9b8c2d86bd00, type: 2}
+    durabilityUsage: 1
+  - damage: 20
+    animationClip: {fileID: 7400000, guid: 659a412a871d08b43b8acd6638579667, type: 2}
+    durabilityUsage: 1
+  secondaryAttack: []
+  specialDamage: 0
+  specialDuration: 0

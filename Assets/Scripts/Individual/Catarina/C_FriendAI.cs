@@ -14,12 +14,15 @@ public class C_FriendAI : MonoBehaviour
 
     [Header("Patrol")]
     [SerializeField] private float _PatrolRad = 10f;
+    [SerializeField] private string _RunAnimBoolName;
     private Vector3 _CurrentPatrolPt;
     private bool _HasPt;
 
     [Header("Atk")]
     [SerializeField] private float _AtkCD = 1f;
     [SerializeField] private float _ATkRange = 10f;
+    [SerializeField] private string _AtkAnimTriggerName;
+
     private bool _IsOntAtkCD;
     private float _AtkCounter = 0f;
 
@@ -30,11 +33,13 @@ public class C_FriendAI : MonoBehaviour
 
     [Header("Idle")]
     [SerializeField] float _IdleTime = 5f;
+
     float _IdleTimer;
     bool _IsIdling = false;
 
     [Header("Dead")]
     [SerializeField] private string _DeadAnimatorName;
+    [SerializeField] private string _DeadAnimBool;
     bool _IsDead = false;
 
     private void Awake()
@@ -113,10 +118,17 @@ public class C_FriendAI : MonoBehaviour
         }
     }
 
+    //the dead trigger
+    public void IsDead()
+    {
+        _IsDead = true;
+        _Animator.SetBool(_DeadAnimBool, true);
+        _Agent.SetDestination(transform.position);
+    }
+
     //the attacking logic
     private void PerformAtk()
     {
-        _Agent.SetDestination(transform.position);
 
         if (_PlayerTransform != null)
         {
@@ -124,6 +136,9 @@ public class C_FriendAI : MonoBehaviour
         }
         if (!_IsOntAtkCD)
         {
+            _Agent.SetDestination(transform.position);
+            _Animator.SetTrigger(_AtkAnimTriggerName);
+            _Animator.SetBool(_RunAnimBoolName,false);
             //do the atk logic here
             //like play animation type shit
             _IsOntAtkCD = true;
@@ -164,12 +179,15 @@ public class C_FriendAI : MonoBehaviour
         if (_HasPt)
         {
             _Agent.SetDestination(_CurrentPatrolPt);
+            _Animator.SetBool(_RunAnimBoolName, true);
         }
-        if ( Vector3.Distance(transform.position,_CurrentPatrolPt)<1f)
+        if ( Vector3.Distance(transform.position,_CurrentPatrolPt)<2f)
         {
             _HasPt = false;
             _IsIdling = true;
             _IdleTimer = _IdleTime;
+            _Animator.SetBool(_RunAnimBoolName, false);
+
         }
     }
 
