@@ -126,6 +126,8 @@ public class DialogueMenu : MonoBehaviour
     {
         if (dialogueSettings != null/* && !garbageManager.isMenuOpen*/)
         {
+            Click();
+
             if (_type && !isPaused)
             {
                 // Check if im typing still
@@ -233,7 +235,7 @@ public class DialogueMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        //var click = InputSystem.actions.FindAction("TalkClick");
+        //var click = InputSystem.actions.FindAction("Primary");
         //if (click != null)
         //{
         //    click.started += Click;
@@ -248,7 +250,7 @@ public class DialogueMenu : MonoBehaviour
 
     private void OnDisable()
     {
-        //var click = InputSystem.actions.FindAction("TalkClick");
+        //var click = InputSystem.actions.FindAction("Primary");
         //if (click != null)
         //{
         //    click.started -= Click;
@@ -275,6 +277,63 @@ public class DialogueMenu : MonoBehaviour
     private void Click(InputAction.CallbackContext ctx)
     {
         if (dialogueSettings != null/* && garbageManager != null*/)
+        {
+            // Check if im in a dialogue
+            if (_type & !isPaused)
+            {
+                if (true/*!garbageManager.isMenuOpen*/)
+                {
+                    var currentLine = _currentStateDialogue.dialogueLines[_dialogueLineIndex];
+
+                    // Check if im still typing
+                    if (_isTyping)
+                    {
+                        if (currentLine.isSkippable)
+                        {
+                            // Set typing to false, skip the typing and show the full dialogue line
+                            _isTyping = false;
+                            _dialogueText.text = currentLine.dialogue;
+
+                            //if (AudioLibrary.Instance != null)
+                            //{
+                            //    AudioLibrary.Instance.StopSound("npcTyping");
+                            //    AudioLibrary.Instance.StopSound("playerTyping");
+                            //}
+                        }
+                    }
+                    else if (currentLine.ableToEnterNextLine)
+                    {
+                        // Go to the next dialogue line since typing alr finished
+                        _dialogueLineIndex++;
+
+                        _currentStateDialogue.dialogueLines[_dialogueLineIndex - 1].onExitDialogue?.InvokeEvent();
+
+                        // Check if dialogue line index passes max dialogue lines index, if it does, stop typing and stop dialogue
+                        if (_dialogueLineIndex >= _maxDialogueLinesIndex)
+                        {
+                            // garbageManager.isUIOpen = false;
+
+                            if (_currentStateDialogue.increaseMainDialogueIDWhenComplete)
+                            {
+                                _currentDialogue.dialogueID++;
+                            }
+
+                            ResetDialogue();
+
+                            return;
+                        }
+
+                        // Go to next dialogue line
+                        EnterNewDialogue();
+                    }
+                }
+            }
+        }
+    }
+
+    private void Click()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             // Check if im in a dialogue
             if (_type & !isPaused)
