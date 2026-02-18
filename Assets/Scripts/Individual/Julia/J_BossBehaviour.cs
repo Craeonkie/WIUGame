@@ -1,5 +1,7 @@
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class J_BossBehaviour : Entity
 {
@@ -27,8 +29,18 @@ public class J_BossBehaviour : Entity
     [Header("Components")]
     [SerializeField] private GameObject _playerTarget;
     [SerializeField] private Animator _animator;
+    [SerializeField] private SphereCollider[] _fistColliders; // Use this list to enable and disable respectively
+    [SerializeField] private CinemachineImpulseSource[] _sources;
+    [SerializeField] private GameObject[] _shockwaveAffectedGameObjects; // Use this list to trigger the shockwave
+    [SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
+    [SerializeField] private Transform _leftArmTarget;
+
+    private Vector3 _originalLeftTargetPosition;
+    private float _leftTargetRigWeight = 0f;
+
 
     [Header("Additional Boss Data")]
+    [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private float _attackSpeed; // Applied to the fist swinging down, use for adjusting animation speed
     private float _currentAttackDamage;
 
@@ -60,6 +72,16 @@ public class J_BossBehaviour : Entity
     [SerializeField] private TMP_Text _stateText;
     [SerializeField] private TMP_Text _phaseText;
 
+    private void OnEnable()
+    {
+        J_PlayerController.OnMove += UpdateRigTargetPosition;
+    }
+
+    private void OnDisable()
+    {
+        J_PlayerController.OnMove -= UpdateRigTargetPosition;
+    }
+
     protected override void Start()
     {
         base.Start();
@@ -79,6 +101,8 @@ public class J_BossBehaviour : Entity
     protected override void Update()
     {
         base.Update();
+
+        Debug.Log("Left arm rig: " + _leftArmRig.weight);
 
         CheckStateTransition();
     }
@@ -103,6 +127,70 @@ public class J_BossBehaviour : Entity
         }
     }
 
+    private void LateUpdate()
+    {
+        //_leftArmRig.weight = _leftTargetRigWeight;
+
+        //if (_leftTargetRigWeight > 0f)
+        //{
+        //    Vector3 animatedPosition = _leftArmTarget.position;
+        //    _leftArmTarget.position = new Vector3(
+        //        _playerTarget.transform.position.x,
+        //        animatedPosition.y,              // Y comes from animation
+        //        _playerTarget.transform.position.z
+        //    );
+        //}
+    }
+
+
+    private void CheckAttackColldiers()
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            if (!_fistColliders[i].enabled)
+                continue;
+
+            Vector3 worldCenter = _fistColliders[i].transform.TransformPoint(_fistColliders[i].center);
+            float scaleFactor = Mathf.Max(_fistColliders[i].transform.lossyScale.x, _fistColliders[i].transform.lossyScale.y, _fistColliders[i].transform.lossyScale.z);
+            float actualWorldRadius = _fistColliders[i].radius * scaleFactor;
+
+            Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _playerLayer);
+
+            for (int j = 0; j < hitColliders.Length; j++)
+            {
+                // Disable this collider
+                _fistColliders[i].enabled = false;
+
+                // Damage target if applicable
+                if (hitColliders[j].gameObject.TryGetComponent<Entity>(out Damageable damageable))
+                {
+                    damageable.TakeExternalDamage(new Vector2(transform.position.x, transform.position.z), _damage);
+
+                    // Check if this was an attack from the player
+                    if (transform.CompareTag("Player"))
+                        OnAttackSuccess?.Invoke(damageable.gameObject.transform, _damage);
+
+
+                    // TODO: Play audio here
+                    //if (SlashSound)
+                    //{
+                    //    AudioManager.Instance.PlayOneShot("slashHit1", damageable.transform.position);
+                    //}
+                    //else
+                    //{
+                    //    AudioManager.Instance.PlayOneShot("punchImpact", damageable.transform.position);
+                    //}
+                }
+
+                Debug.Log(hitColliders[j].gameObject.name);
+
+                // Generate impulse
+                _sources[i].GenerateImpulse(Camera.main.transform.forward);
+
+
+            }
+        }
+    }
 
 
     public override void TakeDamage(float damageTaken)
@@ -227,6 +315,8 @@ public class J_BossBehaviour : Entity
                 _animator.SetBool("Tired", false);
                 _animator.SetBool("Ready", true);
 
+                _leftTargetRigWeight = 0f;
+
                 isInvincible = true;
 
                 break;
@@ -294,6 +384,8 @@ public class J_BossBehaviour : Entity
 
                 _animator.SetBool("Tired", true);
 
+                _leftTargetRigWeight = 0f;
+
                 isInvincible = false;
 
                 break;
@@ -312,6 +404,7 @@ public class J_BossBehaviour : Entity
     private void Prepare()
     {
         // TODO: Keep aiming for the player
+        //_leftArmTarget =
     }
 
     private void Attack()
@@ -330,4 +423,45 @@ public class J_BossBehaviour : Entity
     }
 
     public void AllowStateTransition() => _canChangeState = true;
+
+
+
+    private void UpdateRigTargetPosition(Vector3 position)
+    {
+        // magic number speed for now
+        var nextPosition = position;
+        nextPosition.y = _originalLeftTargetPosition.y; 
+        _leftArmTarget.position = Vector3.Lerp(_leftArmTarget.position, position, 1f);
+    }
+
+    public void StartTracking()
+    {
+        //_originalLeftTargetPosition = _leftArmTarget.position;
+        //_leftTargetRigWeight = 1f;
+
+        //Debug.Log("Left arm rig: " + _leftArmRig.weight);
+    }
+
+
+
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            if (_fistColliders[i].enabled)
+            {
+                SphereCollider collider = _fistColliders[i];
+                Vector3 worldCenter = collider.transform.TransformPoint(collider.center);
+
+                float scaleFactor = Mathf.Max(collider.transform.lossyScale.x,
+                                            collider.transform.lossyScale.y,
+                                            collider.transform.lossyScale.z);
+
+                float actualWorldRadius = collider.radius * scaleFactor;
+
+                Gizmos.DrawWireSphere(worldCenter, actualWorldRadius);
+            }
+        }
+    }
+
 }

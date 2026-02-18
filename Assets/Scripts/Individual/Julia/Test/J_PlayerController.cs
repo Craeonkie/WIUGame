@@ -107,6 +107,8 @@ public class J_PlayerController : MonoBehaviour
     public static System.Action<bool> OnBlock;
     public static System.Action<float, float> OnStaminaChange;
 
+    public static System.Action<Vector3> OnMove;
+
     public enum MOVESTATE
     {
         NONE,
@@ -796,6 +798,11 @@ public class J_PlayerController : MonoBehaviour
 
         // Move the controller
         _controller.Move(displacement);
+
+
+
+        // Call OnMove here
+        OnMove?.Invoke(transform.position); 
     }
 
     private IEnumerator SetCollider(float duration, Vector3 newCenter, float newHeight)

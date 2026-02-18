@@ -2595,7 +2595,7 @@ Transform:
   m_GameObject: {fileID: 919132148995889591}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.9914449, z: -0.13052616, w: 0}
-  m_LocalPosition: {x: 0, y: -22.5, z: 27.7}
+  m_LocalPosition: {x: 0, y: -20, z: 27.7}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -3764,6 +3764,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1852576807328176942}
+  - component: {fileID: 2715566404948560360}
   m_Layer: 0
   m_Name: mixamorig:RightHand
   m_TagString: Untagged
@@ -3771,6 +3772,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!135 &2715566404948560360
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2715566404948560359}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!1 &2715566405017100151
 GameObject:
   m_ObjectHideFlags: 0
@@ -5080,6 +5102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6502182838922981669}
+  - component: {fileID: 6502182838922981670}
   m_Layer: 0
   m_Name: mixamorig:LeftHand
   m_TagString: Untagged
@@ -5932,6 +5955,13 @@ MonoBehaviour:
   isInvincible: 1
   _playerTarget: {fileID: 0}
   _animator: {fileID: 5866666020995275127}
+  _fistColliders:
+  - {fileID: 6502182838922981670}
+  - {fileID: 2715566404948560360}
+  _shockwaveAffectedGameObjects: []
+  _leftArmRig: {fileID: 193460418}
+  _leftArmTarget: {fileID: 415528827}
+  _leftFistBone: {fileID: 0}
   _attackSpeed: 5
   _phases:
   - name: Phase1
@@ -6431,6 +6461,27 @@ Transform:
   - {fileID: 5048025440775219376}
   m_Father: {fileID: 7410462538269563423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &6502182838922981670
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4494945602823335210}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.3
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!4 &6502182839001540533
 Transform:
   m_ObjectHideFlags: 0

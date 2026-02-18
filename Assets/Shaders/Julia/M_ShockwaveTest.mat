@@ -116,7 +116,7 @@ Material:
     - _Min: 0.3
     - _MinRadius: 30
     - _OcclusionStrength: 1
-    - _Offset: 42.8
+    - _Offset: 0
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -141,7 +141,7 @@ Material:
     - _Base_Colour: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RadiusCenter: {r: 0, g: 1, b: 42.36, a: 0}
+    - _RadiusCenter: {r: 0, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
