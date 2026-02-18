@@ -65,6 +65,8 @@ public class PlayerController : Entity
         _specialAction.Enable();
 
         Cursor.lockState = CursorLockMode.Locked;
+
+        _rollDirection = Vector3.forward;
     }
 
     protected override void Update()
@@ -91,9 +93,10 @@ public class PlayerController : Entity
             _rollDirection = moveDir;
         }
 
-        // Jumping
+        // Runs if is grounded and not jumping
         if (isGrounded && !_isJumping)
         {
+            // Jumping
             if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canAct)
             {
                 _isJumping = true;
@@ -101,32 +104,26 @@ public class PlayerController : Entity
                 myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
                 _canAct = false;
             }
-            else
-            {
-                _canAct = true;
-            }
-        }
-
-        // Rolling
-        if (isGrounded && !_isJumping && !_isRolling)
-        {
-            if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct)
+            // Rolling
+            else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_isRolling)
             {
                 _animator.SetTrigger("IsRolling");
+                _currentRollTimer = rollDuration;
                 _isRolling = true;
-                _isJumping = false;
+                isDodging = true;
                 _canAct = false;
             }
-            else
-            {
-                _canAct = true;
-            }
+        }
+        else if (isGrounded && !_isJumping && !_isRolling)
+        {
+            _canAct = true;
         }
 
         // Handle max velocity
         float targetSpeed = 0.0f;
         bool isMoving = _inputMove != Vector2.zero && canMove;
 
+        // Handle movement normally
         if (!_isRolling)
         {
             if (isMoving)
@@ -138,17 +135,17 @@ public class PlayerController : Entity
             Vector3 moveVelocity = transform.forward * _currentSpeed;
             myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
         }
-        else
+        // Rolling
+        else if (_isRolling)
         {
             myRigidbody.linearVelocity = new Vector3(_rollSpeed * _rollDirection.x, myRigidbody.linearVelocity.y, _rollSpeed * _rollDirection.z);
-        }
-
-        if (_currentRollTimer > 0)
-        {
             _currentRollTimer -= Time.deltaTime;
-            if (_currentRollTimer <= 0 )
+            if (_currentRollTimer <= 0)
             {
+                _currentSpeed = _maxSpeed;
                 _isRolling = false;
+                isDodging = false;
+                _canAct = true;
             }
         }
 

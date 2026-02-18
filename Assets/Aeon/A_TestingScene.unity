@@ -334,7 +334,7 @@ MonoBehaviour:
   Lens:
     FieldOfView: 30
     OrthographicSize: 5
-    NearClipPlane: 0.3
+    NearClipPlane: 0.01
     FarClipPlane: 1000
     Dutch: 0
     ModeOverride: 0
@@ -361,7 +361,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.25356132, y: 0.00015996584, z: -0.0000419315, w: 0.9673193}
   m_LocalPosition: {x: 0, y: 4.1140003, z: -4}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 12.16, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -455,7 +455,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 30
   orthographic: 0
@@ -961,7 +961,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 64ebc9874fb49574aa0afb806eef4e02, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1003,7 +1003,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 200, y: 200, z: 200}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -1710,7 +1710,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.614, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8102540195365612629}
   - {fileID: 662012037}
@@ -4517,12 +4517,12 @@ MonoBehaviour:
   spawnPoint: {x: 0, y: 0, z: 0}
   _animator: {fileID: 5866666021945872943}
   isInvincible: 0
-  isDodging: 0
+  isDodging: 1
   _animationHasReset: 0
   _playerInput: {fileID: 5866666021945872946}
   _jumpPower: 5
   _maxSpeed: 4
-  _rollSpeed: 5
+  _rollSpeed: 3
   myRigidbody: {fileID: 1998639318}
   cameraTarget: {fileID: 222077092}
   playerRotationSpeed: 480
