@@ -1,27 +1,25 @@
 using UnityEngine;
 
-// Class to be inherited by all entities, alive or not.
-public abstract class Entity : MonoBehaviour
+public class Entity : MonoBehaviour
 {
-    [SerializeField] protected EntityData _myEntityData;
-    protected float _maxHP;
-    protected float _currentHP;
-    private float _invincibilityCooldown;
-    private Vector3 spawnPoint;
-
-    // Can be made into getters and setters
-    public bool isInvincible = false;
+    [SerializeField] protected float _maxHP;
+    [SerializeField] protected float _currentHP;
+    [SerializeField] protected float _invincibilityCooldown;
+    [SerializeField] protected float _invincibilityFlickerGap;
+    [SerializeField] protected float _invincibilityFlickerCurrentTimer;
+    [SerializeField] protected GameObject _model;
+    [SerializeField] protected SkinnedMeshRenderer[] renderers;
+    [SerializeField] protected Vector3 spawnPoint;
+    [SerializeField] protected Animator _animator;
+    [SerializeField] protected bool isInvincible = false;
+    [SerializeField] protected bool isDodging = false;
+    [SerializeField] protected bool _animationHasReset = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
-        // Pull from EntityData
-        _maxHP = _myEntityData._maxHP;
-        spawnPoint = _myEntityData._spawnPoint;
-
-        // Initialise
-        // Do an if statement to check if should run PullFromData or default to these values
         _currentHP = _maxHP;
+        renderers = _model.GetComponentsInChildren<SkinnedMeshRenderer>();
     }
 
     // Update is called once per frame
@@ -29,6 +27,19 @@ public abstract class Entity : MonoBehaviour
     {
         if (_invincibilityCooldown > 0)
         {
+            // Handle invincibility flickering
+            _invincibilityFlickerCurrentTimer -= Time.deltaTime;
+
+            if (_invincibilityFlickerCurrentTimer <= 0)
+            {
+                _invincibilityFlickerCurrentTimer += _invincibilityFlickerGap;
+                foreach (var renderer in renderers)
+                {
+                    renderer.enabled = !renderer.enabled;
+                }
+            }
+
+            // Handle invincibility end
             isInvincible = true;
             _invincibilityCooldown -= Time.deltaTime;
 
@@ -36,11 +47,15 @@ public abstract class Entity : MonoBehaviour
             {
                 isInvincible = false;
                 _invincibilityCooldown = 0;
+                foreach(var renderer in renderers)
+                {
+                    renderer.enabled = true;
+                }
             }
         }
     }
 
-    public void Respawn()
+    public virtual void Respawn()
     {
         _currentHP = _maxHP;
         transform.position = spawnPoint;
@@ -49,7 +64,7 @@ public abstract class Entity : MonoBehaviour
     // Do damage without invincibility cooldown
     public virtual void TakeDamage(float damageTaken)
     {
-        if (!isInvincible)
+        if (!isDodging)
         {
             _currentHP -= damageTaken;
             if (_currentHP <= 0)
@@ -60,9 +75,9 @@ public abstract class Entity : MonoBehaviour
     }
 
     // Do damage with invincibility cooldown
-    public void TakeDamage(float damageTaken, float invincibilityLength)
+    public virtual void TakeDamage(float damageTaken, float invincibilityLength)
     {
-        if (!isInvincible)
+        if (!isInvincible && !isDodging)
         {
             _currentHP -= damageTaken;
             _invincibilityCooldown += invincibilityLength;
@@ -70,18 +85,32 @@ public abstract class Entity : MonoBehaviour
             {
                 Die();
             }
+            else
+            {
+                if (_invincibilityCooldown > 0)
+                {
+                    isInvincible = true;
+                }
+            }
         }
     }
-    
-    // Pulls information from an outside area if required
-    public void PullFromData()
-    {
 
+    // Set gameobject to be inactive
+    public virtual void Die()
+    {
+        gameObject.SetActive(false);
     }
 
-    // Set gameobject to be inactive or die, depends on what we want
-    public void Die()
+    // Check if current animation is over
+    public virtual bool CurrentAnimationOver(int state)
     {
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(state);
 
+        if (stateInfo.normalizedTime < 1.0f)
+        {
+            _animationHasReset = true;
+        }
+
+        return (stateInfo.normalizedTime >= 1.0f) && _animationHasReset;
     }
 }
