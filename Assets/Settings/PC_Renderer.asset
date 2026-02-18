@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6136615521895696081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97fd5fa8cbd32cd449cfe04560822a1e, type: 3}
+  m_Name: DepthOfFieldRendererFeature
+  m_EditorClassIdentifier: Assembly-CSharp::DepthOfFieldRendererFeature
+  m_Active: 1
+  _settings:
+    renderPassEvent: 600
+    shader: {fileID: 4800000, guid: d4988fce65269264abf31759fecabe93, type: 3}
+    onlyBaseCamera: 1
 --- !u!114 &-43649738529986294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,7 +31,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OutlineRendererFeature
   m_Active: 1
   _settings:
-    renderPassEvent: 600
+    renderPassEvent: 550
     shader: {fileID: 4800000, guid: 3efed7255c8075b4a8f6d2a539578e80, type: 3}
 --- !u!114 &11400000
 MonoBehaviour:
@@ -43,8 +60,8 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: 7833122117494664109}
   - {fileID: -43649738529986294}
-  - {fileID: 4477128652232217398}
-  m_RendererFeatureMap: ad6b866f10d7b46c0aa96148cbec64ff365306d2c9f4213e
+  - {fileID: -6136615521895696081}
+  m_RendererFeatureMap: ad6b866f10d7b46c0aa96148cbec64ff2f39422eb25cd6aa
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

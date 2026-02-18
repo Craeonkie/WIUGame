@@ -1,113 +1,127 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class Inventory : MonoBehaviour
 {
-    [Header("Input System")]
-    [SerializeField] private PlayerInput playerInput;
-    private InputAction _interactAction;
-
     [Header("GameObject that holds the items")]
-    [SerializeField] private GameObject _handSlot;
+    [SerializeField] private GameObject _rightHandSlot;
+    [SerializeField] private GameObject _leftHandSlot;
 
-    [Header("Item Pickup Properties")]
-    [SerializeField] private LayerMask interactablesLayer;
-    [SerializeField] private float _pickupConeRadius;
-    [SerializeField] private float _pickupRange;
-
-    private GameObject _weaponSlot;
-    private GameObject _itemSlot;
-    private GameObject _holding;
+    [Header("The items")]
+    [SerializeField] private GameObject _primaryItem;
+    [SerializeField] private GameObject _secondaryItem;
+    [SerializeField] private GameObject _currentItem;
 
     void Start()
     {
-        _interactAction = playerInput.actions["Interact"];
-        _weaponSlot = null;
-        _itemSlot = null;
+        _primaryItem = null;
+        _secondaryItem = null;
     }
 
-    void Update()
-    {
-        // Cast a sphere around the player (or use a raycast forward if preferred)
-        Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
-
-        GameObject closest = null;
-        Interactable closestInteractable = null;
-        float closestDist = _pickupRange;
-
-        foreach (Collider col in hits)
-        {
-            if (col.gameObject == _weaponSlot || col.gameObject == _itemSlot)
-            {
-                continue;
-            }
-
-            float dist = Vector3.Distance(transform.position, col.transform.position);
-            float angle = Vector3.Angle(transform.forward, col.transform.position - transform.position);
-            if (dist <= closestDist && angle <= _pickupConeRadius && col.gameObject.TryGetComponent<Interactable>(out closestInteractable))
-            {
-                closestDist = dist;
-                closest = col.gameObject;
-            }
-        }
-
-        if (closest != null)
-        {
-            HighlightObject(closestInteractable.gameObject);
-            if (_interactAction.WasPressedThisDynamicUpdate())
-            {
-                InteractWith(closestInteractable);
-            }
-        }
-    }
-
-    void InteractWith(Interactable interactableObject)
+    public void InteractWith(Interactable interactableObject, AnimationHandler animationHandler)
     {
         string tag = interactableObject.tag;
 
         // Act according to the item's tag
         if (tag == "Weapon")
         {
-            // Drop weapon if there is one
-            if (_weaponSlot != null)
-            {
-                _weaponSlot.GetComponent<Interactable>().Drop();
-            }
-
-            // Pick up weapon
-            _weaponSlot = interactableObject.gameObject;
-            interactableObject.PickUp(_handSlot);
+            PutItemInPrimary(interactableObject.gameObject);
+            animationHandler.SetItem((Item)interactableObject);
         }
         else if (tag == "Item")
         {
-            // Drop item is there is one
-            if (_itemSlot != null)
-            {
-                _itemSlot.GetComponent<Interactable>().Drop();
-            }
-
-            // Pick up item
-            _itemSlot = interactableObject.gameObject;
-            interactableObject.PickUp(_handSlot);
+            PutItemInSecondary(interactableObject.gameObject);
+            animationHandler.SetItem((Item)interactableObject);
         }
         else if (tag == "Interactable")
         {
-            interactableObject.InteractWith(gameObject);
+            interactableObject.InteractWith();
             return;
         }
     }
 
-    void HighlightObject(GameObject go)
+    // Highlights an object in the world
+    public void HighlightObject(GameObject go)
     {
 
     }
 
-    public WeaponData ReturnWeaponData()
+    // Returns the primary item being held
+    public GameObject ReturnCurrentPrimaryItem()
     {
-        if (_weaponSlot != null)
+        return _primaryItem;
+    }
+
+    // Returns the secondary item being held
+    public GameObject ReturnCurrentSecondaryItem()
+    {
+        return _secondaryItem;
+    }
+
+    // Returns the item being held
+    public GameObject ReturnCurrentItem()
+    {
+        return _currentItem;
+    }
+
+    // Removes item from left hand or inventory slot (if applicable), then puts it into the right hand
+    public void PutItemInPrimary(GameObject item)
+    {
+        // Remove from current location first
+        DropItem(_primaryItem);
+
+        _primaryItem = item;
+        _currentItem = item;
+        item.transform.SetParent(_rightHandSlot.transform);
+        item.GetComponent<Item>().PickUp();
+        item.SetActive(true);
+    }
+
+    // Removes item from right hand or inventory slot (if applicable), then puts it into the left hand
+    public void PutItemInSecondary(GameObject item)
+    {
+        // Remove from current location first
+        DropItem(_secondaryItem);
+
+        _secondaryItem = item;
+        item.transform.SetParent(_leftHandSlot.transform);
+        item.GetComponent<Item>().PickUp();
+        item.SetActive(true);
+    }
+
+    // Drops an item into the world
+    public void DropItem(GameObject item)
+    {
+        if (item == null)
         {
-            return _weaponSlot.GetComponent<Weapon>().ReturnWeaponData();
+            return;
         }
-        return null;
+
+        // Remove from primary hand
+        if (item == _primaryItem)
+        {
+            _primaryItem.GetComponent<Item>().Drop();
+            _primaryItem.transform.SetParent(null);
+            _primaryItem = null;
+        }
+        // Remove from secondary hand
+        else if (item == _secondaryItem)
+        {
+            _secondaryItem.GetComponent<Item>().Drop();
+            _secondaryItem.transform.SetParent(null);
+            _secondaryItem = null;
+        }
+
+        // Position slightly in front of player
+        Vector3 dropPos = transform.position + transform.forward * 1.0f + Vector3.up * 0.5f;
+        item.transform.SetParent(null);
+        item.transform.position = dropPos;
+        item.transform.rotation = Quaternion.identity;
+
+        if (item.TryGetComponent<Rigidbody>(out Rigidbody rb))
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce(Vector3.up * 3.0f, ForceMode.Impulse);
+        }
     }
 }

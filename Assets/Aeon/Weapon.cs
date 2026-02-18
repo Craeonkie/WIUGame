@@ -1,47 +1,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Weapon : Interactable
+public abstract class Weapon : Item
 {
-    [SerializeField] private WeaponData myWeaponData;
-    [SerializeField] private List<GameObject> hitEntities;
-    private bool isAttacking = false;
-    private float currentDurability;
-    private float currentAttackDuration;
-    private float currentAttackDamage;
+    [SerializeField] protected List<GameObject> hitEntities;
+    protected bool isAttacking = false;
+    protected bool isBlocking = false;
+    protected float currentAttackDamage;
 
     // Update is called once per frame
-    protected void Update()
+    protected new void Update()
     {
-        if (currentAttackDuration > 0.0f)
-        {
-            currentAttackDuration -= Time.deltaTime;
-            if (currentAttackDuration <= 0.0f)
-            {
-                isAttacking = false;
-                currentAttackDuration = 0.0f;
-                hitEntities.Clear();
-            }
-        }
+        base.Update();
     }
 
-    public void Attack(float attackDamage, float duration)
+    public void BeginAttack(float attackDamage)
     {
         isAttacking = true;
-        currentAttackDuration = duration;
         currentAttackDamage = attackDamage;
         hitEntities.Clear();
     }
 
-    // Probably drop and break this in some way
-    void Break()
+    public void EndAttack()
     {
-        gameObject.SetActive(false);
+        isAttacking = false;
     }
 
-    private void OnTriggerEnter(UnityEngine.Collider other)
+    public void BeginBlocking()
     {
-        if (isAttacking && !hitEntities.Contains(other.gameObject))
+        isBlocking = true;
+    }
+
+    public void EndBlocking()
+    {
+        isBlocking = false;
+    }
+
+    public bool IsBlocking()
+    {
+        return isBlocking;
+    }
+
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        if (isAttacking && !hitEntities.Contains(other.gameObject) && !IsPartOfHierarchy(other.transform, transform.root))
         {
             if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
             {
@@ -51,8 +53,18 @@ public abstract class Weapon : Interactable
         }
     }
 
-    public WeaponData ReturnWeaponData()
+    protected bool IsPartOfHierarchy(Transform target, Transform root)
     {
-        return myWeaponData;
+        Transform current = root;
+        while (current != null)
+        {
+            if (current == target)
+            {
+                return true;
+            }
+            current = current.parent;
+        }
+
+        return target.IsChildOf(root);
     }
 }
