@@ -2751,7 +2751,7 @@ GameObject:
   - component: {fileID: 5866666020918382571}
   - component: {fileID: 5866666020918382572}
   - component: {fileID: 5866666020918382568}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: testPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5958,11 +5958,17 @@ MonoBehaviour:
   _fistColliders:
   - {fileID: 6502182838922981670}
   - {fileID: 2715566404948560360}
+  _sources: []
   _shockwaveAffectedGameObjects: []
   _leftArmRig: {fileID: 193460418}
   _leftArmTarget: {fileID: 415528827}
-  _leftFistBone: {fileID: 0}
+  _layersToCheck:
+    serializedVersion: 2
+    m_Bits: 0
   _attackSpeed: 5
+  _maxShockwaveDistance: 0
+  _shockwaveIntensity: 0
+  _shockwaveTravelSpeed: 0
   _phases:
   - name: Phase1
     healthThreshold: 1

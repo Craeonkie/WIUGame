@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -40,8 +41,11 @@ public class J_BossBehaviour : Entity
 
 
     [Header("Additional Boss Data")]
-    [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private LayerMask _layersToCheck;
     [SerializeField] private float _attackSpeed; // Applied to the fist swinging down, use for adjusting animation speed
+    [SerializeField] private float _maxShockwaveDistance; // Applied to shockwave, maximum distance before shockwave dies down
+    [SerializeField] private float _shockwaveIntensity; // Applied to shockwave, how intense the shockwave is
+    [SerializeField] private float _shockwaveTravelSpeed; // Applied to shockwave, how fast the shockwave travels
     private float _currentAttackDamage;
 
     [Header("Boss Phases")]
@@ -156,14 +160,35 @@ public class J_BossBehaviour : Entity
 
 
             // I'm just setting it manually to player layer because a modular script of this doesn't exist yet
-            Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _playerLayer);
+            Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _layersToCheck);
 
             for (int j = 0; j < hitColliders.Length; j++)
             {
-                // Disable this collider
-                _fistColliders[i].enabled = false;
+                // Check for tag
+                if (hitColliders[j].gameObject.CompareTag("Player"))
+                {
+                    // Deal damage to the player
+                    hitColliders[j].gameObject.GetComponent<Entity>().TakeDamage(_currentAttackDamage);
+                    Debug.Log("Player instantly died!");
+                }
+                else if (hitColliders[j].gameObject.CompareTag("ShockwaveAffetcted"))
+                {
+                    // Disable this collider
+                    _fistColliders[i].enabled = false;
 
-                hitColliders[j].gameObject.GetComponent<Entity>().TakeDamage(_currentAttackDamage);
+                    // Call all materials with the shockwave material and invoke the shockwave
+                    // Manually set the start position of the shockwave
+                    for (int k = 0; k < _shockwaveAffectedGameObjects.Length; ++k)
+                    {
+                        // Get the material of this game object
+                        Material shockwaveMat = _shockwaveAffectedGameObjects[k].GetComponent<Renderer>().material;
+                        shockwaveMat.SetVector("_RadiusCenter", transform.position - _shockwaveAffectedGameObjects[k].transform.position);
+                    }
+
+                    // Start shockwave coroutine
+                    StartCoroutine(StartShockwave());
+                }
+
 
                 // TODO: Play audio here
                 //if (SlashSound)
@@ -306,6 +331,13 @@ public class J_BossBehaviour : Entity
 
                 _leftTargetRigWeight = 0f;
 
+                // Disable colldiers
+                for (int i = 0; i < _fistColliders.Length; ++i)
+                {
+                    _fistColliders[i].enabled = false;
+                    _fistColliders[i].isTrigger = true;
+                }
+
                 isInvincible = true;
 
                 break;
@@ -373,7 +405,14 @@ public class J_BossBehaviour : Entity
 
                 _animator.SetBool("Tired", true);
 
-                _leftTargetRigWeight = 0f;
+                //_leftTargetRigWeight = 0f;
+
+                // Enable colliders
+                for (int i = 0; i < 2; ++i)
+                {
+                    _fistColliders[i].enabled = true;
+                    _fistColliders[i].isTrigger = false;
+                }
 
                 isInvincible = false;
 
@@ -384,11 +423,17 @@ public class J_BossBehaviour : Entity
         _stateText.text = _currentState.ToString();
     }
 
+    //private void LeaveState(STATE prevState)
+    //{
+    //    switch ()
+    //}
+
+
+
     private void Idle()
     {
-        _currentStateTimer -= Time.deltaTime;
+        //_currentStateTimer -= Time.deltaTime;
     }
-
 
     private void Prepare()
     {
@@ -398,12 +443,13 @@ public class J_BossBehaviour : Entity
 
     private void Attack()
     {
-        // Trigger attack
+        // Check for player
+        CheckAttackColldiers();
     }
 
     private void Exhausted()
     {
-        // Rest
+        
     }
 
     private void SpawnBugs()
@@ -432,6 +478,60 @@ public class J_BossBehaviour : Entity
     }
 
 
+    
+    private IEnumerator StartShockwave()
+    {
+        float currentDistance = 0f;
+        float currentShockwaveIntensity = _shockwaveIntensity;
+
+        // Continue shockwave until it reaches maximum distance
+        while (currentDistance <= _maxShockwaveDistance)
+        {
+            for (int i = 0; i < _shockwaveAffectedGameObjects.Length; ++i)
+            {
+                Material mat = _shockwaveAffectedGameObjects[i].GetComponent<Renderer>().material;
+                mat.SetFloat("_Intensity", currentShockwaveIntensity);
+                mat.SetFloat("_Offset", currentDistance);
+            }
+
+            currentShockwaveIntensity = Mathf.Lerp(_shockwaveIntensity, 0f, (currentDistance / _maxShockwaveDistance));
+            currentDistance += _shockwaveTravelSpeed * Time.deltaTime;
+
+            // Draw debug ray to visualise where the shockwave is meant to be travelling
+            //DrawDebugCircle()
+            
+            yield return null;
+        }
+    }
+
+
+
+    // HELPER DEBUG FUNCTION, NOT MINE, WILL REMOVE LATER
+    public static void DrawDebugCircle(Vector3 center, float radius, Color color, int segments)
+    {
+        // Ensure minimum segments
+        if (segments == 0) segments = 50;
+
+        float angleStep = 360f / segments;
+        Vector3 lastPoint = Vector3.zero;
+
+        for (int i = 0; i <= segments; i++)
+        {
+            float angle = i * angleStep;
+            float x = center.x + radius * Mathf.Cos(Mathf.Deg2Rad * angle);
+            float y = center.y; // For a horizontal circle in the XZ plane, set this to center.y and use 'z' below
+            float z = center.z + radius * Mathf.Sin(Mathf.Deg2Rad * angle);
+
+            Vector3 currentPoint = new Vector3(x, y, z);
+
+            if (i > 0)
+            {
+                Debug.DrawLine(lastPoint, currentPoint, color);
+            }
+            lastPoint = currentPoint;
+        }
+    }
+
 
     private void OnDrawGizmos()
     {
@@ -452,5 +552,4 @@ public class J_BossBehaviour : Entity
             }
         }
     }
-
 }
