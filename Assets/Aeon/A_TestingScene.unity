@@ -1160,15 +1160,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 1222390469}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6a62343f52996841a72d9484eb3f1bb, type: 3}
+  m_Script: {fileID: 11500000, guid: d91806dacfc518e479e5bddd2da7cdad, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  myWeaponData: {fileID: 11400000, guid: fc4deaf595eda464196c08f4e4fa5edc, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::TestWeapon
+  itemName: 
+  image: {fileID: 0}
+  description: 
+  primary:
+  - damage: 0
+    hasRootMotion: 0
+    pressAndHold: 0
+    canMoveWhileAnimating: 0
+    movesLeftArmWhileRunning: 0
+    movesRightArmWhileRunning: 0
+    movesBodyWhileRunning: 0
+    animationClip: {fileID: -203655887218126122, guid: bed7ad9b2aa01d54a86c19668dd8cf0d, type: 3}
+    audioClip: {fileID: 0}
+  - damage: 0
+    hasRootMotion: 0
+    pressAndHold: 0
+    canMoveWhileAnimating: 0
+    movesLeftArmWhileRunning: 0
+    movesRightArmWhileRunning: 0
+    movesBodyWhileRunning: 0
+    animationClip: {fileID: -203655887218126122, guid: 4ca7c1ef034dd7749a6dcf8b1bf19848, type: 3}
+    audioClip: {fileID: 0}
+  secondary: []
+  special: []
+  _isActing: 0
+  _resetAnimationChain: 0
+  _chainingAnimation: 0
+  _currentAnimationChain: 0
   hitEntities: []
-  isAttacking: 0
-  currentDurability: 0
-  currentAttackDuration: 0
-  currentAttackDamage: 0
 --- !u!1 &1502526608
 GameObject:
   m_ObjectHideFlags: 0
@@ -4529,9 +4552,9 @@ MonoBehaviour:
   rollDuration: 1
   interactablesLayer:
     serializedVersion: 2
-    m_Bits: 0
-  _pickupConeRadius: 0
-  _pickupRange: 0
+    m_Bits: 64
+  _pickupConeRadius: 360
+  _pickupRange: 10
   groundChecker: {fileID: 5866666021945872948}
   inventory: {fileID: 5866666021945872947}
   animationHandler: {fileID: 5866666021945872949}

@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public enum InputType
 {
@@ -67,7 +65,7 @@ public class AnimationHandler : MonoBehaviour
             GoBackToIdle();
         }
 
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(1);
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         if (_animatorSkipOneFrame)
         {
@@ -84,7 +82,7 @@ public class AnimationHandler : MonoBehaviour
         _bodyCurrentWeight = Mathf.MoveTowards(_bodyCurrentWeight, _bodyTargetWeight, Time.deltaTime * 10);
 
         // Base model
-        _animator.SetLayerWeight(1, _currentWeight);
+        _animator.SetLayerWeight(0, _currentWeight);
         // Left Arm
         _animator.SetLayerWeight(3, _leftArmCurrentWeight);
         // Right Arm
@@ -155,7 +153,7 @@ public class AnimationHandler : MonoBehaviour
         _rightArmTargetWeight = 0;
         _bodyTargetWeight = 0;
         _animatorSkipOneFrame = true;
-        _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 1);
+        _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 0);
         _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 3);
         _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 4);
         _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 5);

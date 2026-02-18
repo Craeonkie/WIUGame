@@ -92,6 +92,11 @@ public class Inventory : MonoBehaviour
     // Drops an item into the world
     public void DropItem(GameObject item)
     {
+        if (item == null)
+        {
+            return;
+        }
+
         // Remove from primary hand
         if (item == _primaryItem)
         {
