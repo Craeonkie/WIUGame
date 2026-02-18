@@ -1,6 +1,5 @@
-using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public enum DogStates
 {
@@ -36,13 +35,24 @@ public class Dog : MonoBehaviour
     [SerializeField] private float walkRange;
     [SerializeField] private float stopRange;
     [SerializeField] private float rotateSpeed;
+    [SerializeField] private float baseRotateMultiplier;
     [SerializeField] private float rotateMultiplier;
     [SerializeField] private float speed;
+    [SerializeField] private float idleSpeedMultiplier;
     private float currentSpeed;
+    private float idleSpeed;
     private float currentRotate;
     [SerializeField] private float maxRotate;
     private CharacterController dogController;
     private int[] attackTimes = new int[4] { 0, 0, 0, 0 };
+    private float attackCooldown;
+    private float stateTimer;
+    [SerializeField] private float attackFrequency = 2.0f;
+    private bool phase2;
+    private bool attackFinished;
+    private bool attackReady;
+    [SerializeField] private float dogLookaheadDistance;
+    private bool dashing;
 
     void Start()
     {
@@ -82,16 +92,25 @@ public class Dog : MonoBehaviour
                     target = closestPlayer;
                     nextState = DogStates.EnterChase;
                     currentState = DogStates.ExitIdle;
-                    break;
+                    return;
                 }
 
                 if (currentSpeed > 0)
                 {
                     currentSpeed -= Time.deltaTime;
-                    currentSpeed = Mathf.Clamp(currentSpeed, 0, 1);
+                    currentSpeed = Mathf.Clamp01(currentSpeed);
                 }
 
-                animator.SetFloat("Move", currentSpeed);
+                if (Mathf.Abs(currentRotate) > 0.02f && currentSpeed < 0.25f)
+                {
+                    idleSpeed += Time.deltaTime * Mathf.Abs(currentRotate) * idleSpeedMultiplier;
+                    idleSpeed = Mathf.Clamp(idleSpeed, 0, 0.4f);
+                }
+
+                idleSpeed -= Time.deltaTime;
+                idleSpeed = Mathf.Clamp01(idleSpeed);
+
+                animator.SetFloat("Move", Mathf.Clamp01(currentSpeed + idleSpeed));
                 dogController.Move(transform.forward * currentSpeed * speed);
 
                 currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
@@ -99,14 +118,12 @@ public class Dog : MonoBehaviour
                 animator.SetBool("Right", false);
                 animator.SetBool("Left", false);
 
-                if (Mathf.Max(currentRotate) > 0.1 && currentSpeed < 0.25f)
-                {
-                    currentSpeed = 0.25f;
-                }
+                attackCooldown -= Time.deltaTime;
 
                 break;
             case DogStates.ExitIdle:
                 currentState = nextState;
+                stateTimer = 0;
                 break;
             case DogStates.EnterChase:
                 currentState = DogStates.Chase;
@@ -135,6 +152,61 @@ public class Dog : MonoBehaviour
                                 currentSpeed += Time.deltaTime;
                                 currentSpeed = Mathf.Clamp(currentSpeed, 0, 1);
                             }
+
+                            if (attackCooldown <= 0)
+                            {
+                                stateTimer += Time.deltaTime;
+                                if (stateTimer > attackFrequency)
+                                {
+                                    List<int> availableAttacks = new List<int>();
+
+                                    for (int i = 0; i < attackTimes.Length; i++)
+                                    {
+                                        if ((!phase2 && i == 3) || i == 0 || i == 1) continue;
+
+                                        bool attackAvailable = true;
+
+                                        for (int j = 0; j < attackTimes.Length; j++)
+                                        {
+                                            if ((!phase2 && j == 3) || i == j) continue;
+
+                                            if (attackTimes[i] > attackTimes[j] + 1)
+                                            {
+                                                attackAvailable = false;
+                                                break;
+                                            }
+                                        }
+
+                                        if (attackAvailable)
+                                            availableAttacks.Add(i);
+                                    }
+
+                                    if (availableAttacks.Count > 0)
+                                    {
+                                        int randomAttack = availableAttacks[Random.Range(0, availableAttacks.Count)];
+                                        switch (randomAttack)
+                                        {
+                                            case 0:
+                                                nextState = DogStates.EnterBite;
+                                                break;
+                                            case 1:
+                                                nextState = DogStates.EnterClaw;
+                                                break;
+                                            case 2:
+                                                nextState = DogStates.EnterDash;
+                                                break;
+                                            case 3:
+                                                nextState = DogStates.EnterPingPongShit;
+                                                break;
+                                        }
+
+                                        currentState = DogStates.ExitChase;
+                                        return;
+                                    }
+                                }
+                            }
+
+                            rotateMultiplier = 1.5f;
                         }
                         else if (distance > stopRange)
                         {
@@ -148,6 +220,58 @@ public class Dog : MonoBehaviour
                                 currentSpeed += Time.deltaTime;
                                 currentSpeed = Mathf.Clamp(currentSpeed, 0, 0.5f);
                             }
+
+                            if (attackCooldown <= 0)
+                            {
+                                stateTimer += Time.deltaTime;
+                                if (stateTimer > attackFrequency)
+                                {
+                                    List<int> availableAttacks = new List<int>();
+
+                                    for (int i = 0; i < attackTimes.Length; i++)
+                                    {
+                                        if (!phase2 && i == 3) continue;
+
+                                        bool attackAvailable = true;
+
+                                        for (int j = 0; j < attackTimes.Length; j++)
+                                        {
+                                            if ((!phase2 && j == 3) || i == j) continue;
+
+                                            if (attackTimes[i] > attackTimes[j] + 1)
+                                            {
+                                                attackAvailable = false;
+                                                break;
+                                            }
+                                        }
+
+                                        if (attackAvailable)
+                                            availableAttacks.Add(i);
+                                    }
+
+                                    int randomAttack = availableAttacks[Random.Range(0, availableAttacks.Count)];
+                                    switch (randomAttack)
+                                    {
+                                        case 0:
+                                            nextState = DogStates.EnterBite;
+                                            break;
+                                        case 1:
+                                            nextState = DogStates.EnterClaw;
+                                            break;
+                                        case 2:
+                                            nextState = DogStates.EnterDash;
+                                            break;
+                                        case 3:
+                                            nextState = DogStates.EnterPingPongShit;
+                                            break;
+                                    }
+
+                                    currentState = DogStates.ExitChase;
+                                    return;
+                                }
+                            }
+
+                            rotateMultiplier = 1;
                         }
                         else
                         {
@@ -157,13 +281,69 @@ public class Dog : MonoBehaviour
                                 currentSpeed = Mathf.Clamp(currentSpeed, 0, 0.5f);
                             }
 
-                            if (Mathf.Abs(currentRotate) > 0.1 && currentSpeed < 0.25f)
+                            if (Mathf.Abs(currentRotate) > 0.02f && currentSpeed < 0.25f)
                             {
-                                currentSpeed = 0.25f;
+                                idleSpeed += Time.deltaTime * Mathf.Abs(currentRotate) * idleSpeedMultiplier;
+                                idleSpeed = Mathf.Clamp(idleSpeed, 0, 0.4f);
                             }
+
+                            if (attackCooldown <= 0)
+                            {
+                                stateTimer += Time.deltaTime;
+                                if (stateTimer > attackFrequency)
+                                {
+                                    List<int> availableAttacks = new List<int>();
+
+                                    for (int i = 0; i < attackTimes.Length; i++)
+                                    {
+                                        if (!phase2 && i == 3) continue;
+
+                                        bool attackAvailable = true;
+
+                                        for (int j = 0; j < attackTimes.Length; j++)
+                                        {
+                                            if ((!phase2 && j == 3) || i == j) continue;
+
+                                            if (attackTimes[i] > attackTimes[j] + 1)
+                                            {
+                                                attackAvailable = false;
+                                                break;
+                                            }
+                                        }
+
+                                        if (attackAvailable)
+                                            availableAttacks.Add(i);
+                                    }
+
+                                    int randomAttack = availableAttacks[Random.Range(0, availableAttacks.Count)];
+                                    switch (randomAttack)
+                                    {
+                                        case 0:
+                                            nextState = DogStates.EnterBite;
+                                            break;
+                                        case 1:
+                                            nextState = DogStates.EnterClaw;
+                                            break;
+                                        case 2:
+                                            nextState = DogStates.EnterDash;
+                                            break;
+                                        case 3:
+                                            nextState = DogStates.EnterPingPongShit;
+                                            break;
+                                    }
+
+                                    currentState = DogStates.ExitChase;
+                                    return;
+                                }
+                            }
+
+                            rotateMultiplier = 1;
                         }
 
-                        animator.SetFloat("Move", currentSpeed);
+                        idleSpeed -= Time.deltaTime;
+                        idleSpeed = Mathf.Clamp01(idleSpeed);
+
+                        animator.SetFloat("Move", Mathf.Clamp01(currentSpeed + idleSpeed));
                         dogController.Move(transform.forward * currentSpeed * speed);
 
 
@@ -171,7 +351,7 @@ public class Dog : MonoBehaviour
                         float targetRotate = Mathf.Clamp(angle / 90f, -maxRotate / 90f, maxRotate / 90f);
                         currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
 
-                        transform.Rotate(0, currentRotate * rotateMultiplier * 90 * Time.deltaTime, 0);
+                        transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime, 0);
 
                         bool isTurningRight = angle > 1.0f;
                         bool isTurningLeft = angle < -1.0f;
@@ -179,20 +359,152 @@ public class Dog : MonoBehaviour
                         animator.SetFloat("Turn", Mathf.Abs(currentRotate));
                         animator.SetBool("Right", isTurningRight);
                         animator.SetBool("Left", isTurningLeft);
+
+                        attackCooldown -= Time.deltaTime;
                     }
                 }
                 else
                 {
                     nextState = DogStates.EnterIdle;
                     currentState = DogStates.ExitChase;
+                    return;
                 }
                 break;
             case DogStates.ExitChase:
                 currentState = nextState;
                 break;
+            case DogStates.EnterBite:
+                animator.SetTrigger("Bite");
+                attackFinished = false;
+                attackReady = false;
+                currentState = DogStates.Bite;
+                break;
+            case DogStates.Bite:
+                currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
+                animator.SetFloat("Turn", Mathf.Abs(currentRotate));
+
+                if (attackReady)
+                {
+                    animator.SetTrigger("Attack");
+                    attackReady = false;
+                }
+
+                if (attackFinished)
+                {
+                    nextState = DogStates.EnterChase;
+                    currentState = DogStates.ExitBite;
+                    return;
+                }
+                break;
+            case DogStates.ExitBite:
+                attackTimes[0]++;
+                attackCooldown = attackFrequency;
+                currentState = nextState;
+                break;
+            case DogStates.EnterClaw:
+                animator.SetTrigger("Claw");
+                attackFinished = false;
+                attackReady = false;
+                currentState = DogStates.Claw;
+                break;
+            case DogStates.Claw:
+                currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
+                animator.SetFloat("Turn", Mathf.Abs(currentRotate));
+
+                if (attackReady)
+                {
+                    animator.SetTrigger("Attack");
+                    attackReady = false;
+                }
+
+                if (attackFinished)
+                {
+                    nextState = DogStates.EnterChase;
+                    currentState = DogStates.ExitClaw;
+                    return;
+                }
+                break;
+            case DogStates.ExitClaw:
+                attackTimes[1]++;
+                attackCooldown = attackFrequency;
+                currentState = nextState;
+                break;
+            case DogStates.EnterDash:
+                animator.SetTrigger("Prep");
+                attackFinished = false;
+                attackReady = false;
+                currentState = DogStates.Dash;
+                currentSpeed = 0;
+                break;
+            case DogStates.Dash:
+                currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
+                animator.SetFloat("Turn", Mathf.Abs(currentRotate));
+
+                AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+                AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+                if (stateInfo.IsName("Prep"))
+                {
+                    if (attackReady)
+                    {
+                        Debug.Log("Attack ready");
+                        animator.SetTrigger("Attack");
+                        attackReady = false;
+                        dashing = true;
+                    }
+                }
+                else
+                {
+                    if (attackFinished)
+                    {
+                        nextState = DogStates.EnterChase;
+                        currentState = DogStates.ExitDash;
+                        return;
+                    }
+
+                    if (dashing)
+                    {
+                        currentSpeed += Time.deltaTime * 5;
+                        currentSpeed = Mathf.Clamp01(currentSpeed);
+                        animator.SetFloat("Move", Mathf.Clamp01(currentSpeed));
+
+                        dogController.Move(transform.forward * currentSpeed * 2 * speed);
+
+                        if (Physics.Raycast(transform.position + Vector3.up * 0.5f, transform.forward, out RaycastHit hit, dogLookaheadDistance, LayerMask.GetMask("Wall")))
+                        {
+                            animator.SetTrigger("Wince");
+                            dashing = false;
+                        }
+                    }
+                }
+
+                break;
+            case DogStates.ExitDash:
+                attackTimes[2]++;
+                attackCooldown = attackFrequency;
+                currentState = nextState;
+                break;
+            case DogStates.EnterPingPongShit:
+                animator.SetTrigger("Prep");
+                currentState = DogStates.PingPongShit;
+                break;
+            case DogStates.PingPongShit:
+                break;
+            case DogStates.ExitPingPongShit:
+                currentState = nextState;
+                break;
             default:
                 break;
         }
+    }
+
+    public void SetAttackFinished(int finished)
+    {
+        attackFinished = finished == 1;
+    }
+
+    public void SetAttackReady(int ready)
+    {
+        attackReady = ready == 1;
     }
 
     private void OnDrawGizmosSelected()
@@ -203,5 +515,7 @@ public class Dog : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, walkRange);
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, stopRange);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position + Vector3.up * 0.5f, transform.position + Vector3.up * 0.5f + transform.forward * dogLookaheadDistance);
     }
 }
