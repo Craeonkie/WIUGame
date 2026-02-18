@@ -154,6 +154,8 @@ public class J_BossBehaviour : Entity
             float scaleFactor = Mathf.Max(_fistColliders[i].transform.lossyScale.x, _fistColliders[i].transform.lossyScale.y, _fistColliders[i].transform.lossyScale.z);
             float actualWorldRadius = _fistColliders[i].radius * scaleFactor;
 
+
+            // I'm just setting it manually to player layer because a modular script of this doesn't exist yet
             Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _playerLayer);
 
             for (int j = 0; j < hitColliders.Length; j++)
@@ -161,33 +163,20 @@ public class J_BossBehaviour : Entity
                 // Disable this collider
                 _fistColliders[i].enabled = false;
 
-                // Damage target if applicable
-                if (hitColliders[j].gameObject.TryGetComponent<Entity>(out Damageable damageable))
-                {
-                    damageable.TakeExternalDamage(new Vector2(transform.position.x, transform.position.z), _damage);
+                hitColliders[j].gameObject.GetComponent<Entity>().TakeDamage(_currentAttackDamage);
 
-                    // Check if this was an attack from the player
-                    if (transform.CompareTag("Player"))
-                        OnAttackSuccess?.Invoke(damageable.gameObject.transform, _damage);
-
-
-                    // TODO: Play audio here
-                    //if (SlashSound)
-                    //{
-                    //    AudioManager.Instance.PlayOneShot("slashHit1", damageable.transform.position);
-                    //}
-                    //else
-                    //{
-                    //    AudioManager.Instance.PlayOneShot("punchImpact", damageable.transform.position);
-                    //}
-                }
-
-                Debug.Log(hitColliders[j].gameObject.name);
+                // TODO: Play audio here
+                //if (SlashSound)
+                //{
+                //    AudioManager.Instance.PlayOneShot("slashHit1", damageable.transform.position);
+                //}
+                //else
+                //{
+                //    AudioManager.Instance.PlayOneShot("punchImpact", damageable.transform.position);
+                //}
 
                 // Generate impulse
                 _sources[i].GenerateImpulse(Camera.main.transform.forward);
-
-
             }
         }
     }
