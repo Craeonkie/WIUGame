@@ -4,7 +4,7 @@ public class ObjectWith3DAudio : MonoBehaviour
 {
     public bool _playOnStart;
 
-    public Audio audio = new Audio();
+    public new Audio audio = new Audio();
 
     public void OnEnable()
     {
