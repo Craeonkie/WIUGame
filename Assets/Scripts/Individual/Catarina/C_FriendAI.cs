@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class C_FriendAI : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class C_FriendAI : MonoBehaviour
     [Header("Layers")]
     [SerializeField] private LayerMask _GroundLayer;
     [SerializeField] private LayerMask _PlayerLayer;
+    [SerializeField] private LayerMask _PickUpLayer;
 
     [Header("Patrol")]
     [SerializeField] private float _PatrolRad = 10f;
@@ -22,7 +24,6 @@ public class C_FriendAI : MonoBehaviour
     [SerializeField] private float _AtkCD = 1f;
     [SerializeField] private float _ATkRange = 10f;
     [SerializeField] private string _AtkAnimTriggerName;
-
     private bool _IsOntAtkCD;
     private float _AtkCounter = 0f;
 
@@ -33,9 +34,15 @@ public class C_FriendAI : MonoBehaviour
 
     [Header("Idle")]
     [SerializeField] float _IdleTime = 5f;
-
     float _IdleTimer;
     bool _IsIdling = false;
+
+    [Header("PickUp")]
+    [SerializeField] float _PickUpRange = 2f;
+    bool _HaveWeapon = false;
+    Inventory _AIInventory;
+    bool _FindingWeapon = false;
+    bool _WeaponIsWithinDist = false;
 
     [Header("Dead")]
     [SerializeField] private string _DeadAnimatorName;
@@ -63,6 +70,14 @@ public class C_FriendAI : MonoBehaviour
                 Debug.LogWarning("Missing Animator in the FRIEND????");
             }
         }
+        if (_AIInventory == null)
+        {
+            _AIInventory = GetComponent<Inventory>();
+            if (_AIInventory == null)
+            {
+                Debug.LogWarning("Missing Aeon inventory script in ai!");
+            }
+        }
         _HasPt = false; 
     }
 
@@ -73,6 +88,13 @@ public class C_FriendAI : MonoBehaviour
     }
 
 
+    // need to pick up obj
+    //use it n atk
+    //use aeon code
+    //defend
+    // for this just deetect if its getting hit if yes then start defending 
+
+    //make sure if there no weapon n player is within range find a weapon immediately by 
     //doing the switching of state logic
     private void FSM()
     {
@@ -81,7 +103,7 @@ public class C_FriendAI : MonoBehaviour
             BeDead();
             return;
         }
-        else if (!_IsPlayerVisable && !_IsPlayerInRange)
+        else if ((!_IsPlayerVisable && !_IsPlayerInRange )|| _FindingWeapon)
         {
             PerformaPatrol();
         }
@@ -91,7 +113,14 @@ public class C_FriendAI : MonoBehaviour
         }
         else if (_IsPlayerVisable && _IsPlayerInRange)
         {
-            PerformAtk();
+            if (_HaveWeapon)
+            {
+                PerformAtk();
+            }
+            else
+            {
+                FindWeapon();
+            }
         }
 
 
@@ -158,6 +187,12 @@ public class C_FriendAI : MonoBehaviour
     //the patrolling logic
     private void PerformaPatrol()
     {
+        if (!_HaveWeapon && DetectedWeapon())
+        {
+            PerformPickUp();
+            if (_HaveWeapon) return;
+        }
+
         if (_IsIdling)
         {
 
@@ -188,8 +223,44 @@ public class C_FriendAI : MonoBehaviour
             _IdleTimer = _IdleTime;
             _Animator.SetBool(_RunAnimBoolName, false);
 
-        }
+        }   
     }
+
+    //the picking up of weapon logic
+    private void PerformPickUp()
+    {
+        if (_AIInventory == null) return;
+        Collider[] hit = Physics.OverlapSphere(transform.position, _PickUpRange, _PickUpLayer);
+
+        if (hit.Length <= 0) return;
+        _Agent.SetDestination(transform.position);
+        GameObject pickUp = null;
+
+        if (hit.Length > 1) {
+            //find the closest one
+            var shortestDist = float.MaxValue;
+            
+            for (int i = 0; i < hit.Length; i++)
+            {
+                var dist = Vector3.Distance(transform.position, hit[i].gameObject.transform.position);
+
+                if (dist < shortestDist)
+                {
+                    shortestDist = dist;
+                    pickUp = hit[i].gameObject;
+                }
+            }
+            if (shortestDist == float.MaxValue) return;
+        }
+        else
+        {
+            pickUp = hit[0].gameObject;
+        }
+        _AIInventory.PutItemInPrimary(pickUp);
+        _HaveWeapon = true;
+        _FindingWeapon =false;
+    }
+
 
     //the finding of next point
     private void FindPatrolPt()
@@ -206,6 +277,30 @@ public class C_FriendAI : MonoBehaviour
         }
     }
 
+    //the finding of closest weapon
+    private void FindWeapon()
+    {
+        var objs = C_HelperFunc.FindSpecificObjectsWithNoParent(_PickUpLayer);
+        if (objs == null || objs.Count == 0) return;
+        //find the nearest one 
+        var shortestDist = float.MaxValue;
+        Transform tar = null;
+        foreach (var obj in objs)
+        {
+            var dist = Vector3.Distance(transform.position, obj.transform.position);
+            if (dist < shortestDist)
+            {
+                shortestDist = dist;
+                tar = obj.transform;
+            }
+        }
+        if (shortestDist == float.MaxValue) return;
+        _Agent.SetDestination(tar.position);
+        _HasPt = true;
+        _CurrentPatrolPt = tar.position;
+        _FindingWeapon = true;
+        _IsIdling = false;
+    }
 
     //the player detection logic
     private void DetectPlayer()
@@ -215,6 +310,16 @@ public class C_FriendAI : MonoBehaviour
         _IsPlayerInRange = Physics.CheckSphere(transform.position,_ATkRange, _PlayerLayer);
     }
 
+    private bool DetectedWeapon()
+    {
+        _WeaponIsWithinDist = Physics.CheckSphere(transform.position, _VisionRange, _PickUpLayer);
+        if (!_HaveWeapon &&_WeaponIsWithinDist)
+        {
+            FindWeapon();
+        }
+        var found = Physics.CheckSphere(transform.position, _PickUpRange, _PickUpLayer);
+        return found;
+    }
 
     //debuggingggggg
     private void OnDrawGizmos()
@@ -224,5 +329,8 @@ public class C_FriendAI : MonoBehaviour
         
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _VisionRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _PickUpRange);
     }
 }
