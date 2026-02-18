@@ -15,7 +15,7 @@ MonoBehaviour:
   _dialogueID: 0
   stateDialogues:
   - dialogueID: 0
-    increaseMainDialogueIDWhenComplete: 0
+    increaseMainDialogueIDWhenComplete: 1
     dialogueLines:
     - dialogue: Use <size=200%><font="Anton SDF" material="Anton SDF - Drop Shadow"><#ffffff>multiple
         fonts</color></font></size> and <i><b><#ffffaa>Sprites</color></b></i> <sprite=1>
@@ -23,8 +23,8 @@ MonoBehaviour:
       icon: {fileID: 21300000, guid: 0ca63bdbe95de3248b22a208fbb12026, type: 3}
       name: Oguri
       dialogueUIIndex: 0
-      isSkippable: 0
-      ableToEnterNextLine: 0
+      isSkippable: 1
+      ableToEnterNextLine: 1
       isAutoNextLine: 0
       isInstant: 0
       erasePreviousText: 1
@@ -38,8 +38,8 @@ MonoBehaviour:
       icon: {fileID: 21300000, guid: 0ca63bdbe95de3248b22a208fbb12026, type: 3}
       name: Oguri
       dialogueUIIndex: 0
-      isSkippable: 0
-      ableToEnterNextLine: 0
+      isSkippable: 1
+      ableToEnterNextLine: 1
       isAutoNextLine: 0
       isInstant: 0
       erasePreviousText: 1
