@@ -99,7 +99,7 @@ public class Dog : MonoBehaviour
                 animator.SetBool("Right", false);
                 animator.SetBool("Left", false);
 
-                if (Mathf.Max(currentRotate) > 5 && currentSpeed < 0.25f)
+                if (Mathf.Max(currentRotate) > 0.1 && currentSpeed < 0.25f)
                 {
                     currentSpeed = 0.25f;
                 }
@@ -157,7 +157,7 @@ public class Dog : MonoBehaviour
                                 currentSpeed = Mathf.Clamp(currentSpeed, 0, 0.5f);
                             }
 
-                            if (Mathf.Abs(currentRotate) > 5 && currentSpeed < 0.25f)
+                            if (Mathf.Abs(currentRotate) > 0.1 && currentSpeed < 0.25f)
                             {
                                 currentSpeed = 0.25f;
                             }
