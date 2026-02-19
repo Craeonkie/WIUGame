@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5611998388726721285}
   - component: {fileID: 315294617323804278}
   - component: {fileID: -4641736013809421318}
+  - component: {fileID: 7543042239358987290}
   m_Layer: 11
   m_Name: 'TEMP WEAPON [DELETE THIS] '
   m_TagString: Untagged
@@ -140,3 +141,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7543042239358987290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 447315234270486602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d91806dacfc518e479e5bddd2da7cdad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestWeapon
+  itemName: 
+  image: {fileID: 0}
+  description: 
+  primary: []
+  secondary: []
+  special: []
+  _isActing: 0
+  _resetAnimationChain: 0
+  _chainingAnimation: 0
+  _currentAnimationChain: 0
+  hitEntities: []

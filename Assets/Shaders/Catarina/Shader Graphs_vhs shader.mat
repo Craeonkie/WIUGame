@@ -42,7 +42,7 @@ Material:
     - _noiseAmount: 0.81
     - _noiseScale: 1000
     - _numberOfScanLine: 51
-    - _onVhs: 0
+    - _onVhs: 1
     - _scan_lines_speed: 0.00312
     m_Colors:
     - _Color: {r: 3.1777463, g: 3.0824137, b: 2.2244222, a: 1}
