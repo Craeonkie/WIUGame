@@ -62,15 +62,18 @@ public class AnimationHandler : MonoBehaviour
             _isHoldingItem = false;
             GoBackToIdle();
         }
+    }
 
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+    private void LateUpdate()
+    {
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         if (!_currentAnimation.pressAndHold && stateInfo.normalizedTime >= 1.0f && !_animator.IsInTransition(0) && _isActing)
         {
             _isActing = false;
         }
     }
-    
+
     public void PerformAction(Animation currentAnimation)
     {
         _currentAnimation = currentAnimation;
@@ -93,6 +96,7 @@ public class AnimationHandler : MonoBehaviour
     {
         _isActing = false;
         _canMove = true;
+        _animator.applyRootMotion = false;
         _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 0);
     }
 

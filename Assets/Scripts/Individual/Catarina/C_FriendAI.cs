@@ -24,6 +24,7 @@ public class C_FriendAI : MonoBehaviour
     [SerializeField] private float _AtkCD = 1f;
     [SerializeField] private float _ATkRange = 10f;
     [SerializeField] private string _AtkAnimTriggerName;
+    public UnityEvent atkEvent; 
     private bool _IsOntAtkCD;
     private float _AtkCounter = 0f;
 
@@ -194,7 +195,8 @@ public class C_FriendAI : MonoBehaviour
         if (!_IsOntAtkCD)
         {
             _Agent.SetDestination(transform.position);
-            _Animator.SetTrigger(_AtkAnimTriggerName);
+            //_Animator.SetTrigger(_AtkAnimTriggerName);
+            atkEvent.Invoke();
             _Animator.SetBool(_RunAnimBoolName,false);
             //do the atk logic here
             //like play animation type shit
