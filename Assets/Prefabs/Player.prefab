@@ -373,6 +373,7 @@ GameObject:
   - component: {fileID: 3259785618068131602}
   - component: {fileID: 1290997347254470159}
   - component: {fileID: 1460979920249857210}
+  - component: {fileID: 1553649365783582977}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -390,7 +391,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.614, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1805488269650315500}
@@ -534,15 +535,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHP: 1000
   _currentHP: 0
-  _invincibilityCooldown: 0
-  _invincibilityFlickerGap: 0.2
-  _invincibilityFlickerCurrentTimer: 0
+  _invincibilityCooldown: 5
+  _invincibilityMaxCooldown: 5
   _model: {fileID: 8614931687109046585}
   renderers: []
+  damageMaterial: {fileID: -876546973899608171, guid: dea1c5293756a1d41858709574d2528d, type: 3}
   spawnPoint: {x: 0, y: 0, z: 0}
-  _animator: {fileID: 1655364016630561569}
   isInvincible: 0
-  isDodging: 1
+  isDodging: 0
   _animationHasReset: 0
   _playerInput: {fileID: 1530283421745691673}
   _jumpPower: 5
@@ -552,6 +552,9 @@ MonoBehaviour:
   cameraTarget: {fileID: 0}
   playerRotationSpeed: 480
   rollDuration: 1
+  landDuration: 0.8
+  _currentStunDuration: 0
+  _isStunned: 0
   interactablesLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -560,6 +563,11 @@ MonoBehaviour:
   groundChecker: {fileID: 5025432630111020933}
   inventory: {fileID: 3259785618068131602}
   animationHandler: {fileID: 1290997347254470159}
+  _animator: {fileID: 1655364016630561569}
+  _isJumping: 0
+  _isRolling: 0
+  _canAct: 1
+  _wasGroundedPreviously: 0
 --- !u!114 &3259785618068131602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,13 +597,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ddb601c429f4a44e9cf2306b8d98619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationHandler
-  _crossFadeDuration: 0
+  _crossFadeDuration: 0.1
   _animator: {fileID: 1655364016630561569}
   _audioSource: {fileID: 1460979920249857210}
   _currentItem: {fileID: 0}
   _isActing: 0
-  _canAct: 0
   _canMove: 0
+  _isHoldingItem: 0
 --- !u!82 &1460979920249857210
 AudioSource:
   m_ObjectHideFlags: 0
@@ -693,6 +701,59 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1553649365783582977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726483694392687998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseSource
+  ImpulseDefinition:
+    ImpulseChannel: 1
+    ImpulseShape: 2
+    CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    ImpulseDuration: 0.2
+    ImpulseType: 0
+    DissipationRate: 0.25
+    RawSignal: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    RepeatMode: 0
+    Randomize: 1
+    TimeEnvelope:
+      AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      AttackTime: 0
+      SustainTime: 0.2
+      DecayTime: 0.7
+      ScaleWithImpact: 1
+      HoldForever: 0
+    ImpactRadius: 100
+    DirectionMode: 0
+    DissipationMode: 2
+    DissipationDistance: 100
+    PropagationSpeed: 343
+  DefaultVelocity: {x: 0, y: -1, z: 0}
 --- !u!1 &1786139035263192419
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,13 +999,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2050536229429137288}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.03, z: 0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 198430010899479488}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!1 &2075888399939469727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2787,13 +2848,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5322012954972354777}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.03, z: 0.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2495419532665658079}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &5393426948331245313
 GameObject:
   m_ObjectHideFlags: 0
