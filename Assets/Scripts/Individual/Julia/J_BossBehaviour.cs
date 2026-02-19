@@ -1,204 +1,206 @@
-//using System.Collections;
-//using TMPro;
-//using Unity.Cinemachine;
-//using UnityEngine;
-//using UnityEngine.Animations.Rigging;
+using System.Collections;
+using TMPro;
+using Unity.Cinemachine;
+using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
-//public class J_BossBehaviour : Entity
-//{
-//    [System.Serializable]
-//    struct Phase
-//    {
-//        public string name;
-//        [Range(0f, 1f)] public float healthThreshold;
-//        public float attackSpeedMultiplier;
-//        public float attackDamage;
-//    }
+public class J_BossBehaviour : Entity
+{
+    [System.Serializable]
+    struct Phase
+    {
+        public string name;
+        [Range(0f, 1f)] public float healthThreshold;
+        public float attackSpeedMultiplier;
+        public float attackDamage;
+    }
 
-//    public enum STATE {
-//        IDLE,
-//        PREPARING,
-//        ATTACKING,
-//        EXHAUSTED
-//    }
+    public enum STATE {
+        IDLE,
+        PREPARING,
+        ATTACKING,
+        EXHAUSTED
+    }
 
-//    public enum HAND {
-//        LEFT,
-//        RIGHT
-//    }
+    public enum HAND {
+        LEFT,
+        RIGHT
+    }
 
-//    [Header("Components")]
-//    [SerializeField] private GameObject _playerTarget;
-//    [SerializeField] private SphereCollider[] _fistColliders; // Use this list to enable and disable respectively
-//    [SerializeField] private CinemachineImpulseSource[] _sources; // Impulse sources, add to the fists
-//    [SerializeField] private GameObject[] _shockwaveAffectedGameObjects; // Use this list to trigger the shockwave
-//    [SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
-//    [SerializeField] private Transform _leftArmTarget;
+    [Header("Components")]
+    [SerializeField] private GameObject _playerTarget;
+    [SerializeField] private SphereCollider[] _fistColliders; // Use this list to enable and disable respectively
+    [SerializeField] private CinemachineImpulseSource[] _sources; // Impulse sources, add to the fists
+    [SerializeField] private GameObject[] _shockwaveAffectedGameObjects; // Use this list to trigger the shockwave
+    [SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
+    [SerializeField] private Transform _leftArmTarget;
+    [SerializeField] private Animator _animator;
 
-//    private Vector3 _originalLeftTargetPosition;
-//    private float _leftTargetRigWeight = 0f;
-
-
-//    [Header("Additional Boss Data")]
-//    [SerializeField] private LayerMask _layersToCheck;
-//    [SerializeField] private LayerMask _playerLayer;
-//    [SerializeField] private float _attackSpeed; // Applied to the fist swinging down, use for adjusting animation speed
-//    [SerializeField] private float _maxShockwaveDistance; // Applied to shockwave, maximum distance before shockwave dies down
-//    [SerializeField] private float _shockwaveIntensity; // Applied to shockwave, how intense the shockwave is
-//    [SerializeField] private float _shockwaveBandWidth;
-//    [SerializeField] private float _shockwaveTravelSpeed; // Applied to shockwave, how fast the shockwave travels
-//    private float _currentAttackDamage;
-
-//    [Header("Boss Phases")]
-//    [SerializeField] Phase[] _phases;
-//    private int _currentPhaseIndex;
-//    public System.Action<int> OnPhaseEnter;
-
-//    [Header("Boss States")]
-//    private STATE _currentState;
-//    private HAND _attackingHand;
-//    [SerializeField] int _timesBeforeExhausted;
-//    [SerializeField] int _hitsBeforeExhausted; // Only for 2nd and 3rd phase
-//    private bool _canChangeState;
-//    private int _currentTimesAttacked;
-//    private int _leftHandFrequency;
-//    private int _rightHandFrequency;
+    private Vector3 _originalLeftTargetPosition;
+    private float _leftTargetRigWeight = 0f;
 
 
-//    [SerializeField] private float _idleDuration;
-//    [SerializeField] private float _attackCooldown;
-//    [SerializeField] private float _readyDuration;
-//    [SerializeField] private float _exhaustedDuration;
-//    private float _currentStateTimer;
 
-//    private MaterialPropertyBlock _mpb;
+    [Header("Additional Boss Data")]
+    [SerializeField] private LayerMask _layersToCheck;
+    [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private float _attackSpeed; // Applied to the fist swinging down, use for adjusting animation speed
+    [SerializeField] private float _maxShockwaveDistance; // Applied to shockwave, maximum distance before shockwave dies down
+    [SerializeField] private float _shockwaveIntensity; // Applied to shockwave, how intense the shockwave is
+    [SerializeField] private float _shockwaveBandWidth;
+    [SerializeField] private float _shockwaveTravelSpeed; // Applied to shockwave, how fast the shockwave travels
+    private float _currentAttackDamage;
 
-//    [Header("Debug")]
-//    [SerializeField] private TMP_Text _stateText;
-//    [SerializeField] private TMP_Text _phaseText;
+    [Header("Boss Phases")]
+    [SerializeField] Phase[] _phases;
+    private int _currentPhaseIndex;
+    public System.Action<int> OnPhaseEnter;
 
-//    private void OnEnable()
-//    {
-//        J_PlayerController.OnMove += UpdateRigTargetPosition;
-//    }
-
-//    private void OnDisable()
-//    {
-//        J_PlayerController.OnMove -= UpdateRigTargetPosition;
-//    }
-//    private void Awake()
-//    {
-//        _mpb = new MaterialPropertyBlock();
-//    }
-
-
-//    protected override void Start()
-//    {
-//        base.Start();
-
-//        // Get the first phase and state
-//        _currentState = STATE.IDLE;
-//        _currentPhaseIndex = 0;
-//        EnterState(_currentState);
-//        EnterPhase(_currentPhaseIndex);
-
-//        _canChangeState = true;
-
-//        _leftHandFrequency = 0;
-//        _rightHandFrequency = 0;
-//    }
-
-//    protected override void Update()
-//    {
-//        base.Update();
-
-//        //Debug.Log("Left arm rig: " + _leftArmRig.weight);
-
-//        CheckStateTransition();
-//    }
-
-//    private void FixedUpdate()
-//    {
-//        // Perform FSM actions
-//        switch (_currentState)
-//        {
-//            case STATE.IDLE:
-//                Idle();
-//                break;
-//            case STATE.PREPARING:
-//                Prepare();
-//                break;
-//            case STATE.ATTACKING:
-//                Attack();
-//                break;
-//            case STATE.EXHAUSTED:
-//                Exhausted();
-//                break;
-//        }
-//    }
-
-//    private void LateUpdate()
-//    {
-//        //_leftArmRig.weight = _leftTargetRigWeight;
-
-//        //if (_leftTargetRigWeight > 0f)
-//        //{
-//        //    Vector3 animatedPosition = _leftArmTarget.position;
-//        //    _leftArmTarget.position = new Vector3(
-//        //        _playerTarget.transform.position.x,
-//        //        animatedPosition.y,              // Y comes from animation
-//        //        _playerTarget.transform.position.z
-//        //    );
-//        //}
-//    }
+    [Header("Boss States")]
+    private STATE _currentState;
+    private HAND _attackingHand;
+    [SerializeField] int _timesBeforeExhausted;
+    [SerializeField] int _hitsBeforeExhausted; // Only for 2nd and 3rd phase
+    private bool _canChangeState;
+    private int _currentTimesAttacked;
+    private int _leftHandFrequency;
+    private int _rightHandFrequency;
 
 
-//    private void CheckAttackColldiers()
-//    {
-//        for (int i = 0; i < 2; ++i)
-//        {
-//            if (!_fistColliders[i].enabled)
-//                continue;
+    [SerializeField] private float _idleDuration;
+    [SerializeField] private float _attackCooldown;
+    [SerializeField] private float _readyDuration;
+    [SerializeField] private float _exhaustedDuration;
+    private float _currentStateTimer;
 
-//            Vector3 worldCenter = _fistColliders[i].transform.TransformPoint(_fistColliders[i].center);
-//            float scaleFactor = Mathf.Max(_fistColliders[i].transform.lossyScale.x, _fistColliders[i].transform.lossyScale.y, _fistColliders[i].transform.lossyScale.z);
-//            float actualWorldRadius = _fistColliders[i].radius * scaleFactor;
+    private MaterialPropertyBlock _mpb;
+
+    [Header("Debug")]
+    [SerializeField] private TMP_Text _stateText;
+    [SerializeField] private TMP_Text _phaseText;
+
+    private void OnEnable()
+    {
+        J_PlayerController.OnMove += UpdateRigTargetPosition;
+    }
+
+    private void OnDisable()
+    {
+        J_PlayerController.OnMove -= UpdateRigTargetPosition;
+    }
+    private void Awake()
+    {
+        _mpb = new MaterialPropertyBlock();
+    }
 
 
-//            // I'm just setting it manually to player layer because a modular script of this doesn't exist yet
-//            Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _layersToCheck);
+    protected override void Start()
+    {
+        base.Start();
 
-//            for (int j = 0; j < hitColliders.Length; j++)
-//            {
-//                // Check for tag
-//                if (hitColliders[j].gameObject.CompareTag("Player"))
-//                {
-//                    // Deal damage to the player
-//                    hitColliders[j].gameObject.GetComponent<Entity>().TakeDamage(_currentAttackDamage);
-//                    Debug.Log("Player instantly died!");
-//                }
-//                else if (hitColliders[j].gameObject.CompareTag("ShockwaveAffected"))
-//                {
-//                    // Disable this collider
-//                    _fistColliders[i].enabled = false;
+        // Get the first phase and state
+        _currentState = STATE.IDLE;
+        _currentPhaseIndex = 0;
+        EnterState(_currentState);
+        EnterPhase(_currentPhaseIndex);
 
-//                    // Call all materials with the shockwave material and invoke the shockwave
-//                    // Manually set the start position of the shockwave
-//                    for (int k = 0; k < _shockwaveAffectedGameObjects.Length; ++k)
-//                    {
-//                        Renderer r = _shockwaveAffectedGameObjects[k].GetComponent<Renderer>();
-//                        //_mpb.SetVector("_RadiusCenter", worldCenter - _shockwaveAffectedGameObjects[k].transform.position);
-//                        //_mpb.SetVector("_RadiusCenter", worldCenter);
+        _canChangeState = true;
 
-//                        Vector3 localCenter = r.transform.InverseTransformPoint(worldCenter);
-//                        localCenter.y = 0f;
-//                        _mpb.SetVector("_RadiusCenter", localCenter);
+        _leftHandFrequency = 0;
+        _rightHandFrequency = 0;
+    }
 
-//                        //Debug.Log(worldCenter - _shockwaveAffectedGameObjects[k].transform.position);
-//                        //Debug.Log(worldCenter);
-//                        Debug.Log(localCenter);
+    protected override void Update()
+    {
+        base.Update();
 
-//                        StartCoroutine(DrawPoint(worldCenter));
+        //Debug.Log("Left arm rig: " + _leftArmRig.weight);
+
+        CheckStateTransition();
+    }
+
+    private void FixedUpdate()
+    {
+        // Perform FSM actions
+        switch (_currentState)
+        {
+            case STATE.IDLE:
+                Idle();
+                break;
+            case STATE.PREPARING:
+                Prepare();
+                break;
+            case STATE.ATTACKING:
+                Attack();
+                break;
+            case STATE.EXHAUSTED:
+                Exhausted();
+                break;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        //_leftArmRig.weight = _leftTargetRigWeight;
+
+        //if (_leftTargetRigWeight > 0f)
+        //{
+        //    Vector3 animatedPosition = _leftArmTarget.position;
+        //    _leftArmTarget.position = new Vector3(
+        //        _playerTarget.transform.position.x,
+        //        animatedPosition.y,              // Y comes from animation
+        //        _playerTarget.transform.position.z
+        //    );
+        //}
+    }
+
+
+    private void CheckAttackColldiers()
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            if (!_fistColliders[i].enabled)
+                continue;
+
+            Vector3 worldCenter = _fistColliders[i].transform.TransformPoint(_fistColliders[i].center);
+            float scaleFactor = Mathf.Max(_fistColliders[i].transform.lossyScale.x, _fistColliders[i].transform.lossyScale.y, _fistColliders[i].transform.lossyScale.z);
+            float actualWorldRadius = _fistColliders[i].radius * scaleFactor;
+
+
+            // I'm just setting it manually to player layer because a modular script of this doesn't exist yet
+            Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _layersToCheck);
+
+            for (int j = 0; j < hitColliders.Length; j++)
+            {
+                // Check for tag
+                if (hitColliders[j].gameObject.CompareTag("Player"))
+                {
+                    // Deal damage to the player
+                    hitColliders[j].gameObject.GetComponent<Entity>().TakeDamage(_currentAttackDamage);
+                    Debug.Log("Player instantly died!");
+                }
+                else if (hitColliders[j].gameObject.CompareTag("ShockwaveAffected"))
+                {
+                    // Disable this collider
+                    _fistColliders[i].enabled = false;
+
+                    // Call all materials with the shockwave material and invoke the shockwave
+                    // Manually set the start position of the shockwave
+                    for (int k = 0; k < _shockwaveAffectedGameObjects.Length; ++k)
+                    {
+                        Renderer r = _shockwaveAffectedGameObjects[k].GetComponent<Renderer>();
+                        //_mpb.SetVector("_RadiusCenter", worldCenter - _shockwaveAffectedGameObjects[k].transform.position);
+                        //_mpb.SetVector("_RadiusCenter", worldCenter);
+
+                        Vector3 localCenter = r.transform.InverseTransformPoint(worldCenter);
+                        localCenter.y = 0f;
+                        _mpb.SetVector("_RadiusCenter", localCenter);
+
+                        //Debug.Log(worldCenter - _shockwaveAffectedGameObjects[k].transform.position);
+                        //Debug.Log(worldCenter);
+                        Debug.Log(localCenter);
+
+                        StartCoroutine(DrawPoint(worldCenter));
                         
 //                        r.SetPropertyBlock(_mpb);
 //                    }
