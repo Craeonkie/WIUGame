@@ -72,7 +72,7 @@ public class PlayerController : Entity
     {
         base.Update();
 
-        bool canMove = true;
+        bool canMove = animationHandler.CanMove();
         bool isGrounded = groundChecker.IsGrounded();
 
         _inputMove = _moveAction.ReadValue<Vector2>();
