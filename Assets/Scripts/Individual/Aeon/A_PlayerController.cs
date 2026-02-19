@@ -22,9 +22,13 @@ public class PlayerController : Entity
     [SerializeField] private GameObject cameraTarget;
     [SerializeField] private float playerRotationSpeed;
     [SerializeField] private float rollDuration;
+    [SerializeField] private float landDuration;
     private Vector3 _rollDirection;
     private float _currentSpeed;
     private float _currentRollTimer;
+    private float _currentLandTimer;
+    [SerializeField] private float _currentStunDuration;
+    [SerializeField] private bool _isStunned;
 
     [Header("Item Pickup Properties")]
     [SerializeField] private LayerMask interactablesLayer;
@@ -38,9 +42,10 @@ public class PlayerController : Entity
     [SerializeField] protected Animator _animator;
 
     private Vector2 _inputMove;
-    private bool _isJumping = false;
-    private bool _isRolling = false;
-    private bool _canAct = true;
+    [SerializeField] private bool _isJumping = false;
+    [SerializeField] private bool _isRolling = false;
+    [SerializeField] private bool _canAct = true;
+    [SerializeField] private bool _wasGroundedPreviously = false;
 
     protected override void Start()
     {
@@ -73,125 +78,142 @@ public class PlayerController : Entity
     {
         base.Update();
 
+        if (_currentStunDuration > 0)
+        {
+            _currentStunDuration -= Time.deltaTime;
+            _isStunned = true;
+            if (_currentStunDuration <= 0)
+            {
+                _isStunned = false;
+            }
+        }
+
+        // Handle player landed duration
+        if (_currentLandTimer > 0)
+        {
+            _currentLandTimer -= Time.deltaTime;
+        }
+
         bool canMove = animationHandler.CanMove();
         bool isGrounded = groundChecker.IsGrounded();
-
         _inputMove = _moveAction.ReadValue<Vector2>();
-
-        // Rotation
-        if (_inputMove != Vector2.zero && canMove && !_isRolling)
-        {
-            Quaternion cameraYawOnly = Quaternion.Euler(0, cameraTarget.transform.eulerAngles.y, 0);
-            Vector3 cameraForward = cameraYawOnly * Vector3.forward;
-            Vector3 cameraRight = cameraYawOnly * Vector3.right;
-
-            Vector3 moveDir = cameraForward * _inputMove.y + cameraRight * _inputMove.x;
-            Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
-
-            float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
-            transform.eulerAngles = new Vector3(0, newY, 0);
-            _rollDirection = moveDir;
-        }
-
-        // Runs if is grounded and not jumping
-        if (isGrounded && !_isJumping)
-        {
-            // Jumping
-            if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canAct)
-            {
-                _isJumping = true;
-                _isRolling = false;
-                myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
-                _canAct = false;
-            }
-            // Rolling
-            else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_isRolling)
-            {
-                _animator.SetTrigger("IsRolling");
-                _currentRollTimer = rollDuration;
-                _isRolling = true;
-                isDodging = true;
-                _canAct = false;
-            }
-        }
-        else if (isGrounded && !_isJumping && !_isRolling)
-        {
-            _canAct = true;
-        }
-
-        // Handle max velocity
-        float targetSpeed = 0.0f;
         bool isMoving = _inputMove != Vector2.zero && canMove;
 
-        // Handle movement normally
-        if (!_isRolling)
+        // Only accept input and rotation if player isn't stunned
+        if (!_isStunned)
         {
-            if (isMoving)
+            // Rotation
+            if (isMoving && !_isRolling && _currentLandTimer <= 0)
             {
-                targetSpeed = _maxSpeed;
+                Quaternion cameraYawOnly = Quaternion.Euler(0, cameraTarget.transform.eulerAngles.y, 0);
+                Vector3 cameraForward = cameraYawOnly * Vector3.forward;
+                Vector3 cameraRight = cameraYawOnly * Vector3.right;
+
+                Vector3 moveDir = cameraForward * _inputMove.y + cameraRight * _inputMove.x;
+                Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
+
+                float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
+                transform.eulerAngles = new Vector3(0, newY, 0);
+                _rollDirection = moveDir;
             }
 
-            _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
-            Vector3 moveVelocity = transform.forward * _currentSpeed;
-            myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
-        }
-        // Rolling
-        else if (_isRolling)
-        {
-            myRigidbody.linearVelocity = new Vector3(_rollSpeed * _rollDirection.x, myRigidbody.linearVelocity.y, _rollSpeed * _rollDirection.z);
-            _currentRollTimer -= Time.deltaTime;
-            if (_currentRollTimer <= 0)
+            // Runs if is grounded and not jumping
+            if (isGrounded && !_isJumping)
             {
-                _currentSpeed = _maxSpeed;
-                _isRolling = false;
-                isDodging = false;
+                // Jumping
+                if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canAct)
+                {
+                    _isJumping = true;
+                    _isRolling = false;
+                    myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+                }
+                // Rolling
+                else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_isRolling)
+                {
+                    _animator.SetTrigger("IsRolling");
+                    _currentRollTimer = rollDuration;
+                    _isRolling = true;
+                    isDodging = true;
+                    _canAct = false;
+                }
+            }
+            
+            // Reenable ability to act if player is not midair and not rolling
+            if (isGrounded && !_isRolling)
+            {
                 _canAct = true;
+            }
+
+            // Handle max velocity
+            float targetSpeed = 0.0f;
+
+            // Handle movement normally
+            if (!_isRolling && _currentLandTimer <= 0)
+            {
+                if (isMoving && _currentLandTimer <= 0)
+                {
+                    targetSpeed = _maxSpeed;
+                }
+
+                _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
+                Vector3 moveVelocity = transform.forward * _currentSpeed;
+                myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
+            }
+            // Rolling
+            else if (_isRolling)
+            {
+                myRigidbody.linearVelocity = new Vector3(_rollSpeed * _rollDirection.x, myRigidbody.linearVelocity.y, _rollSpeed * _rollDirection.z);
+                _currentRollTimer -= Time.deltaTime;
+                if (_currentRollTimer <= 0)
+                {
+                    _currentSpeed = _maxSpeed;
+                    _isRolling = false;
+                    isDodging = false;
+                    _canAct = true;
+                }
             }
         }
 
         //// Handle other inputs
-        // Interacting
-        if (_interactAction.WasPressedThisDynamicUpdate())
+        // Cast a sphere around the player (or use a raycast forward if preferred)
+        Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
+
+        Interactable closestInteractable = null;
+        float closestDist = _pickupRange;
+
+        foreach (Collider col in hits)
         {
-            // Cast a sphere around the player (or use a raycast forward if preferred)
-            Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
+            bool alreadyHolding = false;
 
-            GameObject closest = null;
-            Interactable closestInteractable = null;
-            float closestDist = _pickupRange;
-
-            foreach (Collider col in hits)
+            if (col.gameObject == inventory.ReturnCurrentPrimaryItem() || col.gameObject == inventory.ReturnCurrentSecondaryItem())
             {
-                bool alreadyHolding = false;
-
-                if (col.gameObject == inventory.ReturnCurrentPrimaryItem() || col.gameObject == inventory.ReturnCurrentSecondaryItem())
-                {
-                    alreadyHolding = true;
-                }
-
-                if (alreadyHolding)
-                {
-                    continue;
-                }
-
-                float dist = Vector3.Distance(transform.position, col.transform.position);
-                float angle = Vector3.Angle(transform.forward, col.transform.position - transform.position);
-                if (dist <= closestDist && angle <= _pickupConeRadius && col.gameObject.TryGetComponent<Interactable>(out closestInteractable))
-                {
-                    closestDist = dist;
-                    closest = col.gameObject;
-                }
+                alreadyHolding = true;
             }
 
-            if (closest != null)
+            if (alreadyHolding)
             {
-                inventory.HighlightObject(closestInteractable.gameObject);
+                continue;
+            }
+
+            float dist = Vector3.Distance(transform.position, col.transform.position);
+            float angle = Vector3.Angle(transform.forward, col.transform.position - transform.position);
+            if (dist <= closestDist && angle <= _pickupConeRadius && col.gameObject.TryGetComponent<Interactable>(out closestInteractable))
+            {
+                closestDist = dist;
+            }
+        }
+
+        if (closestInteractable != null)
+        {
+            inventory.HighlightObject(closestInteractable.gameObject);
+            if (_interactAction.WasPressedThisDynamicUpdate() && !_isStunned)
+            {
                 inventory.InteractWith(closestInteractable, animationHandler);
             }
         }
 
         // Dropping
-        if (_dropAction.WasPressedThisDynamicUpdate())
+        if (_dropAction.WasPressedThisDynamicUpdate() && !_isStunned)
         {
             if (inventory.ReturnCurrentItem() != null)
             {
@@ -200,7 +222,7 @@ public class PlayerController : Entity
         }
 
         // Only accept input when the player is able act
-        if (_canAct)
+        if (_canAct && !_isStunned)
         {
             // Primary
             if (_primaryAction.WasPressedThisDynamicUpdate())
@@ -233,9 +255,6 @@ public class PlayerController : Entity
             }
         }
 
-        // Update interaction handler
-        //animationHandler.ToggleAbilityToAct(true);
-
         // Send parameters to animator
         _animator.SetBool("IsMoving", isMoving);
         _animator.SetBool("IsGrounded", isGrounded);
@@ -245,6 +264,19 @@ public class PlayerController : Entity
             _isJumping = false;
         }
         _animator.SetFloat("Y Velocity", myRigidbody.linearVelocity.y);
+
+        // Handle when the player lands
+        if (!_wasGroundedPreviously && isGrounded)
+        {
+            _currentLandTimer = landDuration;
+        }
+        else if (_isRolling || !isGrounded)
+        {
+            _currentLandTimer = 0;
+        }
+
+        // Update this for the next frame
+        _wasGroundedPreviously = isGrounded;
     }
 
     // Check if current animation is over
@@ -258,5 +290,13 @@ public class PlayerController : Entity
         }
 
         return (stateInfo.normalizedTime >= 1.0f) && _animationHasReset;
+    }
+
+    // Stun the player
+    public virtual void Stun(float stunDuration)
+    {
+        _currentStunDuration = stunDuration;
+        animationHandler.GoBackToIdle();
+        _canAct = false;
     }
 }

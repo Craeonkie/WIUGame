@@ -1095,6 +1095,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 222077092}
     - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: landDuration
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: damageMaterial
       value: 
       objectReference: {fileID: -876546973899608171, guid: dea1c5293756a1d41858709574d2528d, type: 3}

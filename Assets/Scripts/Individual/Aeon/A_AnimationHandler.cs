@@ -19,9 +19,7 @@ public class AnimationHandler : MonoBehaviour
 
     [SerializeField] private bool _isActing;
     [SerializeField] private bool _canMove;
-
-    private float _currentWeight;
-    private float _targetWeight;
+    [SerializeField] private bool _isHoldingItem;
 
     private bool _holdingPrimary;
     private bool _holdingSecondary;
@@ -31,7 +29,6 @@ public class AnimationHandler : MonoBehaviour
     private bool _pressedSecondary;
     private bool _pressedSpecial;
 
-    private bool _animatorSkipOneFrame;
     Animation _currentAnimation;
 
     private void Start()
@@ -42,6 +39,7 @@ public class AnimationHandler : MonoBehaviour
 
     void Update()
     {
+        // Receive inputs if the current item isn't null
         if (_currentItem != null)
         {
             // Receive inputs
@@ -52,27 +50,22 @@ public class AnimationHandler : MonoBehaviour
             _pressedPrimary = false;
             _pressedSecondary = false;
             _pressedSpecial = false;
+
+            _isHoldingItem = true;
         }
-        else
+        // If the player was holding an item the previous frame but there isn't one anymore, return to idle
+        else if (_isHoldingItem)
         {
+            _isHoldingItem = false;
             GoBackToIdle();
         }
 
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
-        if (_animatorSkipOneFrame)
-        {
-            _animatorSkipOneFrame = false;
-        }
-        else if (!_currentAnimation.pressAndHold && stateInfo.normalizedTime >= 1.0f && !_animator.IsInTransition(0) && _isActing)
+        if (!_currentAnimation.pressAndHold && stateInfo.normalizedTime >= 1.0f && !_animator.IsInTransition(0) && _isActing)
         {
             _isActing = false;
         }
-
-        _currentWeight = Mathf.MoveTowards(_currentWeight, _targetWeight, Time.deltaTime * 10);
-
-        // Base model
-        _animator.SetLayerWeight(0, _currentWeight);
     }
     
     public void PerformAction(Animation currentAnimation)
@@ -81,15 +74,10 @@ public class AnimationHandler : MonoBehaviour
         _isActing = true;
 
         string animationClipName = currentAnimation.animationClip.name;
-        //_canMove = currentAnimation.canMoveWhileAnimating;
         _canMove = false;
         _animator.applyRootMotion = currentAnimation.hasRootMotion;
 
-        _animatorSkipOneFrame = true;
         _animator.CrossFadeInFixedTime(animationClipName, _crossFadeDuration, 1);
-
-        _targetWeight = 1;
-        _currentWeight = 1;
 
         if (currentAnimation.audioClip != null)
         {
@@ -102,8 +90,6 @@ public class AnimationHandler : MonoBehaviour
     {
         _isActing = false;
         _canMove = true;
-        _targetWeight = 0;
-        _animatorSkipOneFrame = true;
         _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 0);
     }
 

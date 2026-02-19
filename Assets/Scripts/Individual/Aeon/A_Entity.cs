@@ -44,7 +44,6 @@ public class Entity : MonoBehaviour
             _invincibilityCooldown -= Time.deltaTime;
 
             float temp = Mathf.Max(_invincibilityCooldown / _invincibilityMaxCooldown, 0.0f);
-            print(temp);
 
             // Apply to all renderers
             foreach (Renderer renderer in renderers)
