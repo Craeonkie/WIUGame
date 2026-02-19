@@ -17,8 +17,11 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Item _currentItem;
 
+    // If the player is currently acting
     [SerializeField] private bool _isActing;
+    // If the player may walk and such
     [SerializeField] private bool _canMove;
+    // To handle returning to idle when the player is suddenly no longer holding an item
     [SerializeField] private bool _isHoldingItem;
 
     private bool _holdingPrimary;
@@ -77,7 +80,7 @@ public class AnimationHandler : MonoBehaviour
         _canMove = false;
         _animator.applyRootMotion = currentAnimation.hasRootMotion;
 
-        _animator.CrossFadeInFixedTime(animationClipName, _crossFadeDuration, 1);
+        _animator.CrossFadeInFixedTime(animationClipName, _crossFadeDuration, 0);
 
         if (currentAnimation.audioClip != null)
         {
@@ -125,7 +128,7 @@ public class AnimationHandler : MonoBehaviour
         _pressedSpecial = input;
     }
 
-    // Update animation handler to use items from here
+    // Update animation handler to use items from your current hand
     public void SetItem(Item item)
     {
         _currentItem = item;
