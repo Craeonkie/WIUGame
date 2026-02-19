@@ -3,6 +3,6 @@ using UnityEngine;
 
 public class C_AttackSO : ScriptableObject
 {
-    public AnimatorOverrideController animatorOController;
+    public AnimationClip clip;
     public float damage;
 }
