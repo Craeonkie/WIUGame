@@ -34,9 +34,11 @@ public class J_BossBehaviour : Entity
     [SerializeField] private GameObject[] _shockwaveAffectedGameObjects; // Use this list to trigger the shockwave
     [SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
     [SerializeField] private Transform _leftArmTarget;
+    [SerializeField] private Animator _animator;
 
     private Vector3 _originalLeftTargetPosition;
     private float _leftTargetRigWeight = 0f;
+
 
 
     [Header("Additional Boss Data")]

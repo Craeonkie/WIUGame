@@ -44,7 +44,7 @@ public class Dog : MonoBehaviour
     private float currentRotate;
     [SerializeField] private float maxRotate;
     private CharacterController dogController;
-    private int[] attackTimes = new int[4] { 0, 0, 0, 0 };
+    [SerializeField] private int[] attackTimes = new int[4] { 0, 0, 0, 0 };
     private float attackCooldown;
     private float stateTimer;
     [SerializeField] private float attackFrequency = 2.0f;
@@ -60,6 +60,7 @@ public class Dog : MonoBehaviour
     private Vector3 dashDirection;
     private int lastAttack = -1;
     private int lastlastAttack = -1;
+    [SerializeField] private ParticleSystem wind;
 
     void Start()
     {
@@ -175,7 +176,7 @@ public class Dog : MonoBehaviour
                                     for (int i = 0; i < attackTimes.Length; i++)
                                     {
                                         if (!phase2 && i == 3
-                                            || (i != lastAttack && i != lastlastAttack)
+                                            || (i == lastAttack && i == lastlastAttack)
                                             || i == 0 || i == 1) continue;
 
                                         bool attackAvailable = true;
@@ -183,7 +184,7 @@ public class Dog : MonoBehaviour
                                         for (int j = 0; j < attackTimes.Length; j++)
                                         {
                                             if ((!phase2 && j == 3) || i == j
-                                                && (j != lastAttack && j != lastlastAttack)) continue;
+                                                && (j == lastAttack && j == lastlastAttack)) continue;
 
                                             if (attackTimes[i] > attackTimes[j] + 1)
                                             {
@@ -219,6 +220,7 @@ public class Dog : MonoBehaviour
                                         lastAttack = randomAttack;
 
                                         currentState = DogStates.ExitChase;
+                                        attackTimes[randomAttack]++;
                                         return;
                                     }
                                 }
@@ -249,14 +251,14 @@ public class Dog : MonoBehaviour
                                     for (int i = 0; i < attackTimes.Length; i++)
                                     {
                                         if (!phase2 && i == 3
-                                            && (i != lastAttack && i != lastlastAttack)) continue;
+                                            && (i == lastAttack && i == lastlastAttack)) continue;
 
                                         bool attackAvailable = true;
 
                                         for (int j = 0; j < attackTimes.Length; j++)
                                         {
                                             if ((!phase2 && j == 3) || i == j
-                                                || (j != lastAttack && j != lastlastAttack)) continue;
+                                                || (j == lastAttack && j == lastlastAttack)) continue;
 
                                             if (attackTimes[i] > attackTimes[j] + 1)
                                             {
@@ -292,6 +294,7 @@ public class Dog : MonoBehaviour
                                         lastAttack = randomAttack;
 
                                         currentState = DogStates.ExitChase;
+                                        attackTimes[randomAttack]++;
                                         return;
                                     }
                                 }
@@ -323,14 +326,14 @@ public class Dog : MonoBehaviour
                                     for (int i = 0; i < attackTimes.Length; i++)
                                     {
                                         if (!phase2 && i == 3
-                                            || (i != lastAttack && i != lastlastAttack)) continue;
+                                            || (i == lastAttack && i == lastlastAttack)) continue;
 
                                         bool attackAvailable = true;
 
                                         for (int j = 0; j < attackTimes.Length; j++)
                                         {
                                             if ((!phase2 && j == 3) || i == j
-                                                && (j != lastAttack && j != lastlastAttack)) continue;
+                                                && (j == lastAttack && j == lastlastAttack)) continue;
 
                                             if (attackTimes[i] > attackTimes[j] + 1)
                                             {
@@ -366,6 +369,7 @@ public class Dog : MonoBehaviour
                                         lastAttack = randomAttack;
 
                                         currentState = DogStates.ExitChase;
+                                        attackTimes[randomAttack]++;
                                         return;
                                     }
                                 }
@@ -412,6 +416,7 @@ public class Dog : MonoBehaviour
                 attackFinished = false;
                 attackReady = false;
                 currentState = DogStates.Bite;
+                Debug.Log("Entering Bite State");
                 break;
             case DogStates.Bite:
                 currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
@@ -431,15 +436,16 @@ public class Dog : MonoBehaviour
                 }
                 break;
             case DogStates.ExitBite:
-                attackTimes[0]++;
                 attackCooldown = attackFrequency;
                 currentState = nextState;
+                Debug.Log("Exiting Bite State");
                 break;
             case DogStates.EnterClaw:
                 animator.SetTrigger("Claw");
                 attackFinished = false;
                 attackReady = false;
                 currentState = DogStates.Claw;
+                Debug.Log("Entering Claw State");
                 break;
             case DogStates.Claw:
                 currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
@@ -459,9 +465,9 @@ public class Dog : MonoBehaviour
                 }
                 break;
             case DogStates.ExitClaw:
-                attackTimes[1]++;
                 attackCooldown = attackFrequency;
                 currentState = nextState;
+                Debug.Log("Exiting Claw State");
                 break;
             case DogStates.EnterDash:
                 animator.SetTrigger("Prep");
@@ -470,9 +476,10 @@ public class Dog : MonoBehaviour
                 attackReady = false;
                 currentState = DogStates.Dash;
                 currentSpeed = 0;
+                Debug.Log("Entering Dash State");
                 break;
             case DogStates.Dash:
-                if (stateInfo.IsName("Prep") || animator.GetBool("Prep"))
+                if ((stateInfo.IsName("Prep") || animator.GetBool("Prep")) && !animator.GetBool("Attack"))
                 {
                     currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
                     animator.SetFloat("Turn", Mathf.Abs(currentRotate));
@@ -484,6 +491,7 @@ public class Dog : MonoBehaviour
                         dashing = true;
                         dashDirection = (target.transform.position - transform.position).normalized;
                         rotateMultiplier = 1.5f;
+                        wind.Play();
                     }
                 }
                 else
@@ -519,9 +527,10 @@ public class Dog : MonoBehaviour
 
                 break;
             case DogStates.ExitDash:
-                attackTimes[2]++;
                 attackCooldown = attackFrequency;
                 currentState = nextState;
+                wind.Stop();
+                Debug.Log("Exiting Dash State");
                 break;
             case DogStates.EnterPingPongShit:
                 animator.SetTrigger("Prep");
@@ -531,9 +540,10 @@ public class Dog : MonoBehaviour
                 currentState = DogStates.PingPongShit;
                 bounces = Random.Range((int)bounceAmount.x, (int)bounceAmount.y + 1);
                 bounced = 0;
+                Debug.Log("Entering Ping Pong State with " + bounces + " bounces");
                 break;
             case DogStates.PingPongShit:
-                if (stateInfo.IsName("Prep") || animator.GetBool("Prep"))
+                if ((stateInfo.IsName("Prep") || animator.GetBool("Prep")) && !animator.GetBool("Attack"))
                 {
                     currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
                     animator.SetFloat("Turn", Mathf.Abs(currentRotate));
@@ -545,6 +555,7 @@ public class Dog : MonoBehaviour
                         dashing = true;
                         dashDirection = (target.transform.position - transform.position).normalized;
                         rotateMultiplier = 2f;
+                        wind.Play();
                     }
                 }
                 else
@@ -552,7 +563,7 @@ public class Dog : MonoBehaviour
                     if (attackFinished)
                     {
                         nextState = DogStates.EnterChase;
-                        currentState = DogStates.ExitDash;
+                        currentState = DogStates.ExitPingPongShit;
                         return;
                     }
 
@@ -625,6 +636,9 @@ public class Dog : MonoBehaviour
                 break;
             case DogStates.ExitPingPongShit:
                 currentState = nextState;
+                attackCooldown = attackFrequency;
+                wind.Stop();
+                Debug.Log("Exiting Ping Pong");
                 break;
             default:
                 break;
