@@ -13,6 +13,8 @@ public class PlayerController : Entity
     private InputAction _primaryAction;
     private InputAction _secondaryAction;
     private InputAction _specialAction;
+    private InputAction _equipPrimary;
+    private InputAction _equipSecondary;
 
     [Header("Movement")]
     [SerializeField] private float _jumpPower;
@@ -58,6 +60,8 @@ public class PlayerController : Entity
         _primaryAction = _playerInput.actions["Primary"];
         _secondaryAction = _playerInput.actions["Secondary"];
         _specialAction = _playerInput.actions["Special"];
+        _equipPrimary = _playerInput.actions["Equip Primary"];
+        _equipSecondary = _playerInput.actions["Equip Secondary"];
 
         // Enable actions if not auto-enabled
         _moveAction.Enable();
