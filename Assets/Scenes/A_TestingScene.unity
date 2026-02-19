@@ -1095,9 +1095,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 222077092}
     - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: damageMaterial
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: dea1c5293756a1d41858709574d2528d, type: 3}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: _invincibilityCooldown
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: _invincibilityMaxCooldown
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3358711555256262664, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3358711555256262664, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 015199c9d91533640a4db18fda3b6de6, type: 2}
+    - target: {fileID: 3358711555256262664, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 015199c9d91533640a4db18fda3b6de6, type: 2}
     - target: {fileID: 4860061947810665363, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: m_Materials.Array.size
       value: 1

@@ -35,6 +35,7 @@ public class PlayerController : Entity
     [SerializeField] private GroundChecker groundChecker;
     [SerializeField] private Inventory inventory;
     [SerializeField] private AnimationHandler animationHandler;
+    [SerializeField] protected Animator _animator;
 
     private Vector2 _inputMove;
     private bool _isJumping = false;
@@ -246,78 +247,16 @@ public class PlayerController : Entity
         _animator.SetFloat("Y Velocity", myRigidbody.linearVelocity.y);
     }
 
-    //// Handle Inventory UI visibility
-    //if (_isCanvasActive)
-    //{
-    //    inventoryUICanvas.SetActive(true);
-    //    inventoryUICanvas.GetComponent<CanvasGroup>().alpha = Mathf.MoveTowards(inventoryUICanvas.GetComponent<CanvasGroup>().alpha, 1.0f, Time.deltaTime * 2.0f);
-    //}
-    //else if (inventoryUICanvas.activeSelf)
-    //{
-    //    inventoryUICanvas.GetComponent<CanvasGroup>().alpha = Mathf.MoveTowards(inventoryUICanvas.GetComponent<CanvasGroup>().alpha, 0.0f, Time.deltaTime * 2.0f);
-    //    if (inventoryUICanvas.GetComponent<CanvasGroup>().alpha == 0.0f)
-    //    {
-    //        inventoryUICanvas.SetActive(false);
-    //    }
-    //}
-    //// Do damage without invincibility cooldown
-    //public override void TakeDamage(float damageTaken)
-    //{
-    //    if (!isInvincible)
-    //    {
-    //        _currentHP -= damageTaken;
-    //        if (_currentHP <= 0)
-    //        {
-    //            isDead = true;
-    //            _animationHasReset = false;
-    //            _animator.SetTrigger("Die");
-    //            if (_deathSound != null)
-    //            {
-    //                _audioSource.PlayOneShot(_deathSound);
-    //            }
-    //            _damagedCurrentDuration = 20.0f;
-    //        }
-    //        else
-    //        {
-    //            _animator.SetTrigger("GetAttacked");
-    //            animationHandler.GoBackToIdle();
-    //            _damagedCurrentDuration = _damagedMaxDuration;
-    //        }
-    //        if (_hitSound != null)
-    //        {
-    //            _audioSource.PlayOneShot(_hitSound);
-    //        }
-    //    }
-    //}
+    // Check if current animation is over
+    public virtual bool CurrentAnimationOver(int state)
+    {
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(state);
 
-    //// Do damage with invincibility cooldown
-    //public override void TakeDamage(float damageTaken, float invincibilityLength)
-    //{
-    //    if (!isInvincible)
-    //    {
-    //        _currentHP -= damageTaken;
-    //        _invincibilityCooldown += invincibilityLength;
-    //        if (_currentHP <= 0)
-    //        {
-    //            isDead = true;
-    //            _animationHasReset = false;
-    //            _animator.SetTrigger("Die");
-    //            if (_deathSound != null)
-    //            {
-    //                _audioSource.PlayOneShot(_deathSound);
-    //            }
-    //            _damagedCurrentDuration = 20.0f;
-    //        }
-    //        else
-    //        {
-    //            _animator.SetTrigger("GetAttacked");
-    //            animationHandler.GoBackToIdle();
-    //            _damagedCurrentDuration = _damagedMaxDuration;
-    //        }
-    //        if (_hitSound != null)
-    //        {
-    //            _audioSource.PlayOneShot(_hitSound);
-    //        }
-    //    }
-    //}
+        if (stateInfo.normalizedTime < 1.0f)
+        {
+            _animationHasReset = true;
+        }
+
+        return (stateInfo.normalizedTime >= 1.0f) && _animationHasReset;
+    }
 }

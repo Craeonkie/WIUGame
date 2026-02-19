@@ -156,12 +156,6 @@ public struct Animation
     public bool hasRootMotion;
     public bool pressAndHold;
 
-    //[Header("Body movements while running")]
-    //public bool canMoveWhileAnimating;
-    //public bool movesLeftArmWhileRunning;
-    //public bool movesRightArmWhileRunning;
-    //public bool movesBodyWhileRunning;
-
     [Header("Animation")]
     public AnimationClip animationClip;
 
