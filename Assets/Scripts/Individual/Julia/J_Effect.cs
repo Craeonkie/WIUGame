@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class HitEffect : MonoBehaviour
+public class J_Effect : MonoBehaviour
 {
     private Renderer _objectRenderer;
     private Color _originalColor;
