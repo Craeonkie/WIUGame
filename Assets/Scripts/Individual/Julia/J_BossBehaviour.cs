@@ -10,6 +10,8 @@ public class J_BossBehaviour : Entity
     struct Phase
     {
         public string name;
+        public bool hasDuration;
+        public float phaseTimer;
         [Range(0f, 1f)] public float healthThreshold;
         public float attackSpeedMultiplier;
         public float attackDamage;
@@ -29,6 +31,7 @@ public class J_BossBehaviour : Entity
 
     [Header("Components")]
     [SerializeField] private GameObject _playerTarget;
+    [SerializeField] private Animator _animator;
     [SerializeField] private SphereCollider[] _fistColliders; // Use this list to enable and disable respectively
     [SerializeField] private CinemachineImpulseSource[] _sources; // Impulse sources, add to the fists
     [SerializeField] private GameObject[] _shockwaveAffectedGameObjects; // Use this list to trigger the shockwave
@@ -36,7 +39,7 @@ public class J_BossBehaviour : Entity
     [SerializeField] private Transform _leftArmTarget;
 
     private Vector3 _originalLeftTargetPosition;
-    private float _leftTargetRigWeight = 0f;
+    //private float _leftTargetRigWeight = 0f;
 
 
     [Header("Additional Boss Data")]
@@ -53,6 +56,7 @@ public class J_BossBehaviour : Entity
     [SerializeField] Phase[] _phases;
     private int _currentPhaseIndex;
     public System.Action<int> OnPhaseEnter;
+    private float _currentPhaseTimer;
 
     [Header("Boss States")]
     private STATE _currentState;
@@ -114,6 +118,18 @@ public class J_BossBehaviour : Entity
 
         //Debug.Log("Left arm rig: " + _leftArmRig.weight);
 
+        if (_phases[_currentPhaseIndex].hasDuration)
+        {
+            _currentPhaseTimer -= Time.deltaTime;
+            
+            // Transition to next state
+            if (_currentPhaseTimer <= 0f && _currentPhaseIndex < _phases.Length)
+            {
+                _currentPhaseIndex++;
+                EnterPhase(_currentPhaseIndex);
+            }
+        }
+
         CheckStateTransition();
     }
 
@@ -153,7 +169,7 @@ public class J_BossBehaviour : Entity
     }
 
 
-    private void CheckAttackColldiers()
+    private void CheckAttackColliders()
     {
         for (int i = 0; i < 2; ++i)
         {
@@ -271,7 +287,12 @@ public class J_BossBehaviour : Entity
         _attackSpeed /= phase.attackSpeedMultiplier;
         _currentAttackDamage = phase.attackDamage;
 
-        InvokePhaseEnterEvent(phaseIndex);
+        if (phase.hasDuration)
+            _currentPhaseTimer = phase.phaseTimer;
+        else
+            _currentPhaseTimer = 0f;
+
+            InvokePhaseEnterEvent(phaseIndex);
     }
 
     private void InvokePhaseEnterEvent(int index)
@@ -347,9 +368,9 @@ public class J_BossBehaviour : Entity
                 _animator.SetBool("Tired", false);
                 _animator.SetBool("Ready", true);
 
-                _leftTargetRigWeight = 0f;
+                //_leftTargetRigWeight = 0f;
 
-                // Disable colldiers
+                // Disable colliders
                 for (int i = 0; i < _fistColliders.Length; ++i)
                 {
                     _fistColliders[i].enabled = false;
@@ -462,7 +483,7 @@ public class J_BossBehaviour : Entity
     private void Attack()
     {
         // Check for player
-        CheckAttackColldiers();
+        CheckAttackColliders();
     }
 
     private void Exhausted()
