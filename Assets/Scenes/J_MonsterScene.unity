@@ -256,6 +256,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 62081142}
   m_CullTransparentMesh: 1
+--- !u!1001 &109947365
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 12.14483
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 7.803074
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
+      propertyPath: m_Name
+      value: KidModel
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4b7e196a234f8434b999df15734b1543, type: 3}
 --- !u!1 &123131652
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,6 +461,7 @@ GameObject:
   - component: {fileID: 149863364}
   - component: {fileID: 149863362}
   - component: {fileID: 149863363}
+  - component: {fileID: 149863365}
   m_Layer: 0
   m_Name: Third-Person Camera
   m_TagString: Untagged
@@ -495,6 +553,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &149863365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149863361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineImpulseListener
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  SignalCombinationMode: 0
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &165292818
 GameObject:
   m_ObjectHideFlags: 0
@@ -2080,6 +2162,54 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357363147}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1721980180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1721980181}
+  - component: {fileID: 1721980182}
+  m_Layer: 9
+  m_Name: Shockwave Check
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1721980181
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721980180}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.029, z: 0.003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 543450652744619421}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1721980182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721980180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 067fc6b00f770f94db7ec504a17c7940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::J_ShockwaveCheck
+  _groundCheckDist: 0.1
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &1784026234
 GameObject:
   m_ObjectHideFlags: 0
@@ -2736,6 +2866,7 @@ Transform:
   - {fileID: 2042953256011522648}
   - {fileID: 8670697777191543373}
   - {fileID: 1175625827}
+  - {fileID: 1721980181}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &608321762373206682
@@ -2867,7 +2998,7 @@ GameObject:
   - component: {fileID: 5866666020918382568}
   m_Layer: 9
   m_Name: testPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6147,9 +6278,13 @@ MonoBehaviour:
   _layersToCheck:
     serializedVersion: 2
     m_Bits: 520
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 512
   _attackSpeed: 5
   _maxShockwaveDistance: 20
   _shockwaveIntensity: 2
+  _shockwaveBandWidth: 0
   _shockwaveTravelSpeed: 3
   _phases:
   - name: Phase1
@@ -8279,3 +8414,4 @@ SceneRoots:
   - {fileID: 726412437}
   - {fileID: 269437769}
   - {fileID: 694157682}
+  - {fileID: 109947365}
