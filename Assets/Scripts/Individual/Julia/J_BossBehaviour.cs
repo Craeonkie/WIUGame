@@ -15,7 +15,7 @@ public class J_BossBehaviour : Entity
         public float attackDamage;
     }
 
-    public enum STATE { 
+    public enum STATE {
         IDLE,
         PREPARING,
         ATTACKING,
@@ -29,9 +29,8 @@ public class J_BossBehaviour : Entity
 
     [Header("Components")]
     [SerializeField] private GameObject _playerTarget;
-    [SerializeField] private Animator _animator;
     [SerializeField] private SphereCollider[] _fistColliders; // Use this list to enable and disable respectively
-    [SerializeField] private CinemachineImpulseSource[] _sources;
+    [SerializeField] private CinemachineImpulseSource[] _sources; // Impulse sources, add to the fists
     [SerializeField] private GameObject[] _shockwaveAffectedGameObjects; // Use this list to trigger the shockwave
     [SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
     [SerializeField] private Transform _leftArmTarget;
@@ -70,7 +69,7 @@ public class J_BossBehaviour : Entity
     [SerializeField] private float _exhaustedDuration;
     private float _currentStateTimer;
 
-
+    private MaterialPropertyBlock _mpb;
 
     [Header("Debug")]
     [SerializeField] private TMP_Text _stateText;
@@ -85,6 +84,11 @@ public class J_BossBehaviour : Entity
     {
         J_PlayerController.OnMove -= UpdateRigTargetPosition;
     }
+    private void Awake()
+    {
+        _mpb = new MaterialPropertyBlock();
+    }
+
 
     protected override void Start()
     {
@@ -106,7 +110,7 @@ public class J_BossBehaviour : Entity
     {
         base.Update();
 
-        Debug.Log("Left arm rig: " + _leftArmRig.weight);
+        //Debug.Log("Left arm rig: " + _leftArmRig.weight);
 
         CheckStateTransition();
     }
@@ -171,7 +175,7 @@ public class J_BossBehaviour : Entity
                     hitColliders[j].gameObject.GetComponent<Entity>().TakeDamage(_currentAttackDamage);
                     Debug.Log("Player instantly died!");
                 }
-                else if (hitColliders[j].gameObject.CompareTag("ShockwaveAffetcted"))
+                else if (hitColliders[j].gameObject.CompareTag("ShockwaveAffected"))
                 {
                     // Disable this collider
                     _fistColliders[i].enabled = false;
@@ -180,13 +184,25 @@ public class J_BossBehaviour : Entity
                     // Manually set the start position of the shockwave
                     for (int k = 0; k < _shockwaveAffectedGameObjects.Length; ++k)
                     {
-                        // Get the material of this game object
-                        Material shockwaveMat = _shockwaveAffectedGameObjects[k].GetComponent<Renderer>().material;
-                        shockwaveMat.SetVector("_RadiusCenter", transform.position - _shockwaveAffectedGameObjects[k].transform.position);
+                        Renderer r = _shockwaveAffectedGameObjects[k].GetComponent<Renderer>();
+                        //_mpb.SetVector("_RadiusCenter", worldCenter - _shockwaveAffectedGameObjects[k].transform.position);
+                        //_mpb.SetVector("_RadiusCenter", worldCenter);
+
+                        Vector3 localCenter = r.transform.InverseTransformPoint(worldCenter);
+                        localCenter.y = 0f;
+                        _mpb.SetVector("_RadiusCenter", localCenter);
+
+                        //Debug.Log(worldCenter - _shockwaveAffectedGameObjects[k].transform.position);
+                        //Debug.Log(worldCenter);
+                        Debug.Log(localCenter);
+
+                        StartCoroutine(DrawPoint(worldCenter));
+                        
+                        r.SetPropertyBlock(_mpb);
                     }
 
                     // Start shockwave coroutine
-                    StartCoroutine(StartShockwave());
+                    StartCoroutine(StartShockwave(worldCenter));
                 }
 
 
@@ -240,7 +256,7 @@ public class J_BossBehaviour : Entity
 
     private void EnterPhase(int phaseIndex)
     {
-        if (phaseIndex >= _phases.Length) 
+        if (phaseIndex >= _phases.Length)
             return;
 
         _currentPhaseIndex = phaseIndex;
@@ -385,7 +401,7 @@ public class J_BossBehaviour : Entity
                 break;
             case STATE.ATTACKING:
 
-                Debug.Log("state attacking");
+                //Debug.Log("state attacking");
 
                 _currentStateTimer = 0f;
                 _currentTimesAttacked++;
@@ -449,7 +465,7 @@ public class J_BossBehaviour : Entity
 
     private void Exhausted()
     {
-        
+
     }
 
     private void SpawnBugs()
@@ -465,7 +481,7 @@ public class J_BossBehaviour : Entity
     {
         // magic number speed for now
         var nextPosition = position;
-        nextPosition.y = _originalLeftTargetPosition.y; 
+        nextPosition.y = _originalLeftTargetPosition.y;
         _leftArmTarget.position = Vector3.Lerp(_leftArmTarget.position, position, 1f);
     }
 
@@ -478,8 +494,28 @@ public class J_BossBehaviour : Entity
     }
 
 
+
+    public void EnableColldier(int index)
+    {
+        if (index < 0 || index >= _fistColliders.Length)
+        {
+            Debug.Log("Invalid index was passed into EnableColldier!");
+            return;
+        }
+
+        _fistColliders[index].enabled = true;
+    }
     
-    private IEnumerator StartShockwave()
+    private void DisableAllColliders()
+    {
+        for (int i = 0; i < _fistColliders.Length; ++i)
+        {
+            _fistColliders[i].enabled = false;
+        }
+    }
+
+
+    private IEnumerator StartShockwave(Vector3 startPos)
     {
         float currentDistance = 0f;
         float currentShockwaveIntensity = _shockwaveIntensity;
@@ -489,21 +525,43 @@ public class J_BossBehaviour : Entity
         {
             for (int i = 0; i < _shockwaveAffectedGameObjects.Length; ++i)
             {
-                Material mat = _shockwaveAffectedGameObjects[i].GetComponent<Renderer>().material;
-                mat.SetFloat("_Intensity", currentShockwaveIntensity);
-                mat.SetFloat("_Offset", currentDistance);
+                Renderer r = _shockwaveAffectedGameObjects[i].GetComponent<Renderer>();
+
+                _mpb.SetFloat("_Intensity", currentShockwaveIntensity);
+
+                Debug.Log(currentDistance);
+                
+                _mpb.SetFloat("_Offset", currentDistance);
+                r.SetPropertyBlock(_mpb);
             }
 
             currentShockwaveIntensity = Mathf.Lerp(_shockwaveIntensity, 0f, (currentDistance / _maxShockwaveDistance));
             currentDistance += _shockwaveTravelSpeed * Time.deltaTime;
 
+            // magic number..., takes (total offset to reach end of plane divided by object space plane units, 5 is the max length of the plane basically)
             // Draw debug ray to visualise where the shockwave is meant to be travelling
-            //DrawDebugCircle()
+            DrawDebugCircle(startPos, currentDistance * 3f, Color.red, 36);
+            Collider[] hits = Physics.OverlapSphere(startPos, currentDistance * 3f);
+            //if ()
             
+            //Colliders[] hits = Physics2D.OverlapCircleAll(startPos, currentDistance * 3f);
+
+
             yield return null;
         }
     }
 
+    private IEnumerator DrawPoint(Vector3 pos)
+    {
+        float timer = 0f;
+
+        while (timer < 5f)
+        {
+            Debug.DrawLine(pos, pos + (Vector3.up * 500f), Color.purple);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+    }
 
 
     // HELPER DEBUG FUNCTION, NOT MINE, WILL REMOVE LATER

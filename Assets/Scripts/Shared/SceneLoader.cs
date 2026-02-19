@@ -1,13 +1,26 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Events;
 
 public class SceneLoader : MonoBehaviour
 {
+    public static SceneLoader Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     public GarbageManager garbageManager;
+    public static System.Action onSceneLoaded;
     //public bool readyToLoad = false;
     //private AsyncOperation asyncOperation;
-    public UnityEvent onSceneLoaded;
 
     public void Start()
     {
@@ -21,7 +34,7 @@ public class SceneLoader : MonoBehaviour
 
         // Set menu open to false immediately
         garbageManager.isMenuOpen = false;
-        onSceneLoaded.Invoke();
+        onSceneLoaded?.Invoke();
     }
 
     private void Update()
