@@ -261,6 +261,15 @@ public class C_FriendAI : MonoBehaviour
         _FindingWeapon =false;
     }
 
+    //the defending state
+    private void PerformDefend()
+    {
+        //stay into pos 
+        //then put in defending state
+
+    }
+
+
 
     //the finding of next point
     private void FindPatrolPt()
@@ -310,6 +319,7 @@ public class C_FriendAI : MonoBehaviour
         _IsPlayerInRange = Physics.CheckSphere(transform.position,_ATkRange, _PlayerLayer);
     }
 
+    //detecting of weapon
     private bool DetectedWeapon()
     {
         _WeaponIsWithinDist = Physics.CheckSphere(transform.position, _VisionRange, _PickUpLayer);
