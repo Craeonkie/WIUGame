@@ -18,6 +18,7 @@ public class Inventory : MonoBehaviour
         _secondaryItem = null;
     }
 
+    // Interact with nearest interactable including items
     public void InteractWith(Interactable interactableObject, AnimationHandler animationHandler)
     {
         string tag = interactableObject.tag;
@@ -26,17 +27,18 @@ public class Inventory : MonoBehaviour
         if (tag == "Weapon")
         {
             PutItemInPrimary(interactableObject.gameObject);
-            animationHandler.SetItem((Item)interactableObject);
+            _currentItem = interactableObject.gameObject;
+            animationHandler.EquipItem((Item)interactableObject);
         }
         else if (tag == "Item")
         {
             PutItemInSecondary(interactableObject.gameObject);
-            animationHandler.SetItem((Item)interactableObject);
+            _currentItem = interactableObject.gameObject;
+            animationHandler.EquipItem((Item)interactableObject);
         }
         else if (tag == "Interactable")
         {
             interactableObject.InteractWith();
-            return;
         }
     }
 
@@ -64,29 +66,46 @@ public class Inventory : MonoBehaviour
         return _currentItem;
     }
 
-    // Removes item from left hand or inventory slot (if applicable), then puts it into the right hand
+    // Removes item from left hand (if applicable), then puts it into the right hand
     public void PutItemInPrimary(GameObject item)
     {
-        // Remove from current location first
+        // Remove current item
         DropItem(_primaryItem);
 
         _primaryItem = item;
-        _currentItem = item;
         item.transform.SetParent(_rightHandSlot.transform);
         item.GetComponent<Item>().PickUp();
         item.SetActive(true);
     }
 
-    // Removes item from right hand or inventory slot (if applicable), then puts it into the left hand
+    // Removes item from right hand (if applicable), then puts it into the left hand
     public void PutItemInSecondary(GameObject item)
     {
-        // Remove from current location first
+        // Remove current item
         DropItem(_secondaryItem);
 
         _secondaryItem = item;
         item.transform.SetParent(_leftHandSlot.transform);
         item.GetComponent<Item>().PickUp();
         item.SetActive(true);
+    }
+
+    // Removes item from left hand (if applicable), then puts it into the right hand
+    public void EquipPrimary()
+    {
+        _currentItem = _primaryItem;
+        _primaryItem.transform.SetParent(_rightHandSlot.transform);
+        _primaryItem.GetComponent<Item>().PickUp();
+        _primaryItem.SetActive(true);
+    }
+
+    // Removes item from right hand (if applicable), then puts it into the left hand
+    public void EquipSecondary()
+    {
+        _currentItem = _secondaryItem;
+        _secondaryItem.transform.SetParent(_rightHandSlot.transform);
+        _secondaryItem.GetComponent<Item>().PickUp();
+        _secondaryItem.SetActive(true);
     }
 
     // Drops an item into the world
@@ -103,6 +122,7 @@ public class Inventory : MonoBehaviour
             _primaryItem.GetComponent<Item>().Drop();
             _primaryItem.transform.SetParent(null);
             _primaryItem = null;
+            _currentItem = null;
         }
         // Remove from secondary hand
         else if (item == _secondaryItem)
@@ -110,24 +130,25 @@ public class Inventory : MonoBehaviour
             _secondaryItem.GetComponent<Item>().Drop();
             _secondaryItem.transform.SetParent(null);
             _secondaryItem = null;
+            _currentItem = null;
         }
 
         // Position slightly in front of player
         Vector3 dropPos = transform.position + transform.forward * 1.0f + Vector3.up * 0.5f;
         item.transform.SetParent(null);
         item.transform.position = dropPos;
-        item.transform.rotation = Quaternion.identity;
 
         if (item.TryGetComponent<Rigidbody>(out Rigidbody rb))
         {
             rb.linearVelocity = Vector3.zero;
-            rb.AddForce(Vector3.up * 3.0f, ForceMode.Impulse);
+            rb.AddForce(Vector3.forward * 5.0f, ForceMode.Impulse);
         }
     }
 
     // Equip item into hand
-    public void EquipItem(GameObject item)
+    public void UnequipItem(GameObject item, AnimationHandler animationHandler)
     {
-        _currentItem = item;
+        _currentItem = null;
+        animationHandler.UnequipItem();
     }
 }

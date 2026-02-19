@@ -224,9 +224,17 @@ public class PlayerController : Entity
                 inventory.DropItem(inventory.ReturnCurrentItem());
             }
         }
+        if (_equipPrimary.WasPressedThisDynamicUpdate() && !_isStunned)
+        {
+            inventory.EquipPrimary();
+        }
+        if (_equipSecondary.WasPressedThisDynamicUpdate() && !_isStunned)
+        {
+            inventory.EquipSecondary();
+        }
 
         // Only accept input when the player is able act
-        if (_canAct && !_isStunned)
+        if (_canAct && !_isStunned && isGrounded)
         {
             // Primary
             if (_primaryAction.WasPressedThisDynamicUpdate())

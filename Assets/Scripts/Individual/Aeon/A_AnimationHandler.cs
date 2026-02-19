@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public enum InputType
@@ -60,6 +61,7 @@ public class AnimationHandler : MonoBehaviour
         else if (_isHoldingItem)
         {
             _isHoldingItem = false;
+            _currentItem = null;
             GoBackToIdle();
         }
     }
@@ -133,10 +135,23 @@ public class AnimationHandler : MonoBehaviour
     }
 
     // Update animation handler to use items from your current hand
-    public void SetItem(Item item)
+    public void EquipItem(Item item)
     {
         _currentItem = item;
         _currentItem.SetAnimationHandler(this);
+        GoBackToIdle();
+    }
+
+    public Animator ReturnAnimator()
+    {
+        return _animator;
+    }
+
+    // Update animation handler to sto- referencing item
+    public void UnequipItem()
+    {
+        _currentItem.SetAnimationHandler(null);
+        _currentItem = null;
         GoBackToIdle();
     }
 }
@@ -146,8 +161,10 @@ public struct Animation
 {
     [Header("Animation Information")]
     public float damage;
+    public int durabilityUsage;
     public bool hasRootMotion;
     public bool pressAndHold;
+    public bool isBlock;
 
     [Header("Animation")]
     public AnimationClip animationClip;
