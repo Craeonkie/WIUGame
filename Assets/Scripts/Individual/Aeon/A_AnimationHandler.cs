@@ -17,11 +17,12 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Item _currentItem;
 
+    // If the player is currently acting
     [SerializeField] private bool _isActing;
+    // If the player may walk and such
     [SerializeField] private bool _canMove;
-
-    private float _currentWeight;
-    private float _targetWeight;
+    // To handle returning to idle when the player is suddenly no longer holding an item
+    [SerializeField] private bool _isHoldingItem;
 
     private bool _holdingPrimary;
     private bool _holdingSecondary;
@@ -31,7 +32,6 @@ public class AnimationHandler : MonoBehaviour
     private bool _pressedSecondary;
     private bool _pressedSpecial;
 
-    private bool _animatorSkipOneFrame;
     Animation _currentAnimation;
 
     private void Start()
@@ -42,6 +42,7 @@ public class AnimationHandler : MonoBehaviour
 
     void Update()
     {
+        // Receive inputs if the current item isn't null
         if (_currentItem != null)
         {
             // Receive inputs
@@ -52,27 +53,22 @@ public class AnimationHandler : MonoBehaviour
             _pressedPrimary = false;
             _pressedSecondary = false;
             _pressedSpecial = false;
+
+            _isHoldingItem = true;
         }
-        else
+        // If the player was holding an item the previous frame but there isn't one anymore, return to idle
+        else if (_isHoldingItem)
         {
+            _isHoldingItem = false;
             GoBackToIdle();
         }
 
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
-        if (_animatorSkipOneFrame)
-        {
-            _animatorSkipOneFrame = false;
-        }
-        else if (!_currentAnimation.pressAndHold && stateInfo.normalizedTime >= 1.0f && !_animator.IsInTransition(0) && _isActing)
+        if (!_currentAnimation.pressAndHold && stateInfo.normalizedTime >= 1.0f && !_animator.IsInTransition(0) && _isActing)
         {
             _isActing = false;
         }
-
-        _currentWeight = Mathf.MoveTowards(_currentWeight, _targetWeight, Time.deltaTime * 10);
-
-        // Base model
-        _animator.SetLayerWeight(0, _currentWeight);
     }
     
     public void PerformAction(Animation currentAnimation)
@@ -81,15 +77,10 @@ public class AnimationHandler : MonoBehaviour
         _isActing = true;
 
         string animationClipName = currentAnimation.animationClip.name;
-        //_canMove = currentAnimation.canMoveWhileAnimating;
         _canMove = false;
         _animator.applyRootMotion = currentAnimation.hasRootMotion;
 
-        _animatorSkipOneFrame = true;
-        _animator.CrossFadeInFixedTime(animationClipName, _crossFadeDuration, 1);
-
-        _targetWeight = 1;
-        _currentWeight = 1;
+        _animator.CrossFadeInFixedTime(animationClipName, _crossFadeDuration, 0);
 
         if (currentAnimation.audioClip != null)
         {
@@ -102,8 +93,6 @@ public class AnimationHandler : MonoBehaviour
     {
         _isActing = false;
         _canMove = true;
-        _targetWeight = 0;
-        _animatorSkipOneFrame = true;
         _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 0);
     }
 
@@ -139,7 +128,7 @@ public class AnimationHandler : MonoBehaviour
         _pressedSpecial = input;
     }
 
-    // Update animation handler to use items from here
+    // Update animation handler to use items from your current hand
     public void SetItem(Item item)
     {
         _currentItem = item;
@@ -155,12 +144,6 @@ public struct Animation
     public float damage;
     public bool hasRootMotion;
     public bool pressAndHold;
-
-    //[Header("Body movements while running")]
-    //public bool canMoveWhileAnimating;
-    //public bool movesLeftArmWhileRunning;
-    //public bool movesRightArmWhileRunning;
-    //public bool movesBodyWhileRunning;
 
     [Header("Animation")]
     public AnimationClip animationClip;

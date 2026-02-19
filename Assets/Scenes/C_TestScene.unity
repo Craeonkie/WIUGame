@@ -3245,6 +3245,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0eb69547d1a3a044c8bbf5ba054bf70e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 389483832}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0eb69547d1a3a044c8bbf5ba054bf70e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 389483833}
   m_SourcePrefab: {fileID: 100100000, guid: 0eb69547d1a3a044c8bbf5ba054bf70e, type: 3}
 --- !u!1 &389483825 stripped
 GameObject:
@@ -3327,6 +3330,10 @@ MonoBehaviour:
   _VisionRange: 7
   _IdleTime: 1
   _PickUpRange: 2
+  _DefendAnimName: blocking
+  _DefendAnimBoolName: _isDefening
+  _DefendTime: 2
+  _SafeRad: 3
   _DeadAnimatorName: blockAction
   _DeadAnimBool: isDead
 --- !u!4 &389483829 stripped
@@ -3379,6 +3386,64 @@ MonoBehaviour:
   _primaryItem: {fileID: 0}
   _secondaryItem: {fileID: 0}
   _currentItem: {fileID: 0}
+--- !u!114 &389483833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389483825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e03b0843c3536b249a153f72393bad7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::C_FriendBoss
+  _maxHP: 100
+  _currentHP: 0
+  _invincibilityCooldown: 0.5
+  _invincibilityFlickerGap: 0.01
+  _invincibilityFlickerCurrentTimer: 0.001
+  _model: {fileID: 389483825}
+  renderers: []
+  spawnPoint: {x: 0, y: 0, z: 0}
+  _animator: {fileID: 0}
+  isInvincible: 0
+  isDodging: 0
+  _animationHasReset: 0
+  Phase1HealthTrigger: 0
+  _TransitionPhase1Event:
+    m_PersistentCalls:
+      m_Calls: []
+  deadEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 389483828}
+        m_TargetAssemblyTypeName: C_FriendAI, Assembly-CSharp
+        m_MethodName: IsDead
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  gettingAtkEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 389483828}
+        m_TargetAssemblyTypeName: C_FriendAI, Assembly-CSharp
+        m_MethodName: GettingAtk
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &409228566
 GameObject:
   m_ObjectHideFlags: 0

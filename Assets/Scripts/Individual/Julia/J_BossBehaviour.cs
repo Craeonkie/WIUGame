@@ -41,9 +41,11 @@ public class J_BossBehaviour : Entity
 
     [Header("Additional Boss Data")]
     [SerializeField] private LayerMask _layersToCheck;
+    [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private float _attackSpeed; // Applied to the fist swinging down, use for adjusting animation speed
     [SerializeField] private float _maxShockwaveDistance; // Applied to shockwave, maximum distance before shockwave dies down
     [SerializeField] private float _shockwaveIntensity; // Applied to shockwave, how intense the shockwave is
+    [SerializeField] private float _shockwaveBandWidth;
     [SerializeField] private float _shockwaveTravelSpeed; // Applied to shockwave, how fast the shockwave travels
     private float _currentAttackDamage;
 
@@ -520,6 +522,10 @@ public class J_BossBehaviour : Entity
         float currentDistance = 0f;
         float currentShockwaveIntensity = _shockwaveIntensity;
 
+        bool collidedWith = false;
+
+        J_ShockwaveCheck.CheckForShockwave = true;
+
         // Continue shockwave until it reaches maximum distance
         while (currentDistance <= _maxShockwaveDistance)
         {
@@ -529,7 +535,7 @@ public class J_BossBehaviour : Entity
 
                 _mpb.SetFloat("_Intensity", currentShockwaveIntensity);
 
-                Debug.Log(currentDistance);
+                //Debug.Log(currentDistance);
                 
                 _mpb.SetFloat("_Offset", currentDistance);
                 r.SetPropertyBlock(_mpb);
@@ -541,9 +547,31 @@ public class J_BossBehaviour : Entity
             // magic number..., takes (total offset to reach end of plane divided by object space plane units, 5 is the max length of the plane basically)
             // Draw debug ray to visualise where the shockwave is meant to be travelling
             DrawDebugCircle(startPos, currentDistance * 3f, Color.red, 36);
-            Collider[] hits = Physics.OverlapSphere(startPos, currentDistance * 3f);
-            //if ()
-            
+
+            if (!collidedWith)
+            {
+                Collider[] hits = Physics.OverlapSphere(startPos, currentDistance * 3f, _playerLayer);
+
+                //Debug.Log(hits.Length);
+
+                for (int i = 0; i < hits.Length; ++i)
+                {
+                    // Check distance from center of shockwave
+                    if ((startPos - hits[i].gameObject.transform.position).magnitude < currentDistance * 3f)
+                    {
+                        // Check if groundCheck is true
+                        if (J_ShockwaveCheck.TouchingShockwave)
+                        {
+                            Debug.Log("shockwave hit player");
+                            collidedWith = true;
+                            J_ShockwaveCheck.CheckForShockwave = false;
+                        }
+                    }
+                }
+            }
+
+            J_ShockwaveCheck.CheckForShockwave = false;
+
             //Colliders[] hits = Physics2D.OverlapCircleAll(startPos, currentDistance * 3f);
 
 

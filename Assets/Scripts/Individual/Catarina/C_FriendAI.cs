@@ -43,6 +43,17 @@ public class C_FriendAI : MonoBehaviour
     Inventory _AIInventory;
     bool _FindingWeapon = false;
     bool _WeaponIsWithinDist = false;
+    bool _wasfightingPlayer = false;
+
+    [Header("Defend")]
+    [SerializeField] string _DefendAnimName;
+    [SerializeField] string _DefendAnimBoolName;
+    [SerializeField] float _DefendTime = 3f;
+    [SerializeField] float _SafeRad = 3f;
+    private bool _playerInZone = false;
+    public bool _isDefending { get; set; }
+    float _DefendCounter = 0f;
+
 
     [Header("Dead")]
     [SerializeField] private string _DeadAnimatorName;
@@ -103,13 +114,29 @@ public class C_FriendAI : MonoBehaviour
             BeDead();
             return;
         }
-        else if ((!_IsPlayerVisable && !_IsPlayerInRange )|| _FindingWeapon)
+        else if (_isDefending)
         {
+            PerformDefend();
+        }
+        else if ((_wasfightingPlayer && !_HaveWeapon) || (((!_IsPlayerVisable && !_IsPlayerInRange )|| _FindingWeapon) && !_wasfightingPlayer) )
+        {
+            Debug.Log("Came into here instead?");
+
             PerformaPatrol();
         }
-        else if (_IsPlayerVisable && !_IsPlayerInRange)
+        else if ((_IsPlayerVisable && !_IsPlayerInRange )|| (_wasfightingPlayer))
         {
-            PerformChase();
+            Debug.Log("Came into here?");
+            if (_HaveWeapon)
+            {
+                Debug.Log("came into the chase");
+                PerformChase();
+            }
+            else
+            {
+                _wasfightingPlayer = true;
+                FindWeapon();
+            }
         }
         else if (_IsPlayerVisable && _IsPlayerInRange)
         {
@@ -119,6 +146,7 @@ public class C_FriendAI : MonoBehaviour
             }
             else
             {
+                _wasfightingPlayer = true;
                 FindWeapon();
             }
         }
@@ -190,7 +218,14 @@ public class C_FriendAI : MonoBehaviour
         if (!_HaveWeapon && DetectedWeapon())
         {
             PerformPickUp();
-            if (_HaveWeapon) return;
+            if (_HaveWeapon)
+            {
+                if (_wasfightingPlayer)
+                {
+                    _Agent.SetDestination(_PlayerTransform.position);
+                }
+                return;
+            }
         }
 
         if (_IsIdling)
@@ -222,7 +257,6 @@ public class C_FriendAI : MonoBehaviour
             _IsIdling = true;
             _IdleTimer = _IdleTime;
             _Animator.SetBool(_RunAnimBoolName, false);
-
         }   
     }
 
@@ -264,11 +298,20 @@ public class C_FriendAI : MonoBehaviour
     //the defending state
     private void PerformDefend()
     {
+        _Agent.SetDestination(transform.position);
         //stay into pos 
         //then put in defending state
+        var state = _Animator.GetCurrentAnimatorStateInfo(0);
+        if (!state.IsName(_DefendAnimName)) return;
 
+        _DefendCounter -=Time.deltaTime;
+        if (_DefendCounter <= 0 || !_playerInZone) // stop defending if player is not even in safe zone
+        {
+            _DefendCounter = 0;
+            _isDefending = false;
+            _Animator.SetBool(_DefendAnimBoolName, false);
+        }
     }
-
 
 
     //the finding of next point
@@ -309,6 +352,7 @@ public class C_FriendAI : MonoBehaviour
         _CurrentPatrolPt = tar.position;
         _FindingWeapon = true;
         _IsIdling = false;
+
     }
 
     //the player detection logic
@@ -317,6 +361,13 @@ public class C_FriendAI : MonoBehaviour
         _IsPlayerVisable = Physics.CheckSphere(transform.position, _VisionRange, _PlayerLayer);
 
         _IsPlayerInRange = Physics.CheckSphere(transform.position,_ATkRange, _PlayerLayer);
+
+        _playerInZone = Physics.CheckSphere(transform.position,_SafeRad, _PlayerLayer);
+
+        if (_IsPlayerVisable && _wasfightingPlayer && _HaveWeapon)
+        {
+            _wasfightingPlayer = false;
+        }
     }
 
     //detecting of weapon
@@ -342,5 +393,20 @@ public class C_FriendAI : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, _PickUpRange);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, _SafeRad);
+    }
+
+    //the public stuff
+
+    //call this when player is getting atk
+    public void GettingAtk()
+    {
+        _isDefending = true;
+        _DefendCounter = _DefendTime;
+        _Animator.SetBool(_DefendAnimBoolName, true);
+        _Animator.CrossFade(_DefendAnimName, 0.15f);
+
     }
 }

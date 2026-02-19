@@ -1,3 +1,5 @@
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
@@ -5,52 +7,56 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float _maxHP;
     [SerializeField] protected float _currentHP;
     [SerializeField] protected float _invincibilityCooldown;
-    [SerializeField] protected float _invincibilityFlickerGap;
-    [SerializeField] protected float _invincibilityFlickerCurrentTimer;
+    [SerializeField] protected float _invincibilityMaxCooldown;
     [SerializeField] protected GameObject _model;
     [SerializeField] protected SkinnedMeshRenderer[] renderers;
+    [SerializeField] protected Material damageMaterial;
     [SerializeField] protected Vector3 spawnPoint;
-    [SerializeField] protected Animator _animator;
     [SerializeField] protected bool isInvincible = false;
     [SerializeField] protected bool isDodging = false;
     [SerializeField] protected bool _animationHasReset = false;
+    private MaterialPropertyBlock _propertyBlock;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
         _currentHP = _maxHP;
+
+        // Add all materials to the entity
+        _propertyBlock = new MaterialPropertyBlock();
         renderers = _model.GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach (SkinnedMeshRenderer renderer in renderers)
+        {
+            Material[] temp = { damageMaterial };
+            Material[] newMaterialsList = renderer.materials.Concat(temp).ToArray();
+            renderer.materials = newMaterialsList;
+        }
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
+        // Handle invincibility fade from red
         if (_invincibilityCooldown > 0)
         {
-            // Handle invincibility flickering
-            _invincibilityFlickerCurrentTimer -= Time.deltaTime;
-
-            if (_invincibilityFlickerCurrentTimer <= 0)
-            {
-                _invincibilityFlickerCurrentTimer += _invincibilityFlickerGap;
-                foreach (var renderer in renderers)
-                {
-                    renderer.enabled = !renderer.enabled;
-                }
-            }
-
             // Handle invincibility end
             isInvincible = true;
             _invincibilityCooldown -= Time.deltaTime;
 
-            if (_invincibilityCooldown <= 0 )
+            float temp = Mathf.Max(_invincibilityCooldown / _invincibilityMaxCooldown, 0.0f);
+
+            // Apply to all renderers
+            foreach (Renderer renderer in renderers)
+            {
+                renderer.GetPropertyBlock(_propertyBlock);
+                _propertyBlock.SetFloat("_Visibility", temp);
+                renderer.SetPropertyBlock(_propertyBlock);
+            }
+
+            if (_invincibilityCooldown <= 0)
             {
                 isInvincible = false;
                 _invincibilityCooldown = 0;
-                foreach(var renderer in renderers)
-                {
-                    renderer.enabled = true;
-                }
             }
         }
     }
@@ -80,7 +86,8 @@ public class Entity : MonoBehaviour
         if (!isInvincible && !isDodging)
         {
             _currentHP -= damageTaken;
-            _invincibilityCooldown += invincibilityLength;
+            _invincibilityMaxCooldown = invincibilityLength;
+            _invincibilityCooldown = invincibilityLength;
             if (_currentHP <= 0)
             {
                 Die();
@@ -99,18 +106,5 @@ public class Entity : MonoBehaviour
     public virtual void Die()
     {
         gameObject.SetActive(false);
-    }
-
-    // Check if current animation is over
-    public virtual bool CurrentAnimationOver(int state)
-    {
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(state);
-
-        if (stateInfo.normalizedTime < 1.0f)
-        {
-            _animationHasReset = true;
-        }
-
-        return (stateInfo.normalizedTime >= 1.0f) && _animationHasReset;
     }
 }
