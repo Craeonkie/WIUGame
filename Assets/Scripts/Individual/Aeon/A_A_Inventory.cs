@@ -124,4 +124,10 @@ public class Inventory : MonoBehaviour
             rb.AddForce(Vector3.up * 3.0f, ForceMode.Impulse);
         }
     }
+
+    // Equip item into hand
+    public void EquipItem(GameObject item)
+    {
+        _currentItem = item;
+    }
 }

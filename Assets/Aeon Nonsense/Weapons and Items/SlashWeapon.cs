@@ -125,7 +125,6 @@ public class SlashWeapon : Weapon
     public override void EndAction()
     {
         EndAttack();
-        EndBlocking();
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -134,7 +133,7 @@ public class SlashWeapon : Weapon
         {
             if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
             {
-                thisEntity.TakeDamage(currentAttackDamage);
+                thisEntity.TakeDamage(currentAttackDamage, 0.1f);
             }
             hitEntities.Add(other.gameObject);
         }

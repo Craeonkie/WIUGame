@@ -78,6 +78,7 @@ public class J_BossBehaviour : Entity
     [Header("Debug")]
     [SerializeField] private TMP_Text _stateText;
     [SerializeField] private TMP_Text _phaseText;
+    [SerializeField] private Animator _animator;
 
     private void OnEnable()
     {
