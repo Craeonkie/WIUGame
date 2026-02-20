@@ -52,19 +52,4 @@ public abstract class Weapon : Item
             hitEntities.Add(other.gameObject);
         }
     }
-
-    protected bool IsPartOfHierarchy(Transform target, Transform root)
-    {
-        Transform current = root;
-        while (current != null)
-        {
-            if (current == target)
-            {
-                return true;
-            }
-            current = current.parent;
-        }
-
-        return target.IsChildOf(root);
-    }
 }
