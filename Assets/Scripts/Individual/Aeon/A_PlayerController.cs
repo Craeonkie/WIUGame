@@ -237,32 +237,6 @@ public class PlayerController : Entity
             }
         }
 
-        // Dropping
-        if (_dropAction.WasPressedThisDynamicUpdate() && !_isStunned)
-        {
-            if (inventory.ReturnCurrentItem() != null)
-            {
-                inventory.DropItem(inventory.ReturnCurrentItem());
-                animationHandler.UnequipItem();
-            }
-        }
-        if (_equipPrimary.WasPressedThisDynamicUpdate() && !_isStunned)
-        {
-            inventory.EquipPrimary();
-            if (inventory.ReturnCurrentItem() != null)
-            {
-                animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
-            }
-        }
-        if (_equipSecondary.WasPressedThisDynamicUpdate() && !_isStunned)
-        {
-            inventory.EquipSecondary();
-            if (inventory.ReturnCurrentItem() != null)
-            {
-                animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
-            }
-        }
-
         // Only accept input when the player is able act
         if (_canAct && !_isStunned && isGrounded)
         {
@@ -294,6 +268,36 @@ public class PlayerController : Entity
             if (_specialAction.WasReleasedThisDynamicUpdate())
             {
                 animationHandler.TryingToUseSpecial(false);
+            }
+
+            // Dropping
+            if (_dropAction.WasPressedThisDynamicUpdate() && !_isStunned)
+            {
+                if (inventory.ReturnCurrentItem() != null)
+                {
+                    inventory.DropItem(inventory.ReturnCurrentItem());
+                    animationHandler.UnequipItem();
+                }
+            }
+
+            // Equip Primary
+            if (_equipPrimary.WasPressedThisDynamicUpdate() && !_isStunned)
+            {
+                inventory.EquipPrimary();
+                if (inventory.ReturnCurrentItem() != null)
+                {
+                    animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                }
+            }
+
+            // Equip Secondary
+            if (_equipSecondary.WasPressedThisDynamicUpdate() && !_isStunned)
+            {
+                inventory.EquipSecondary();
+                if (inventory.ReturnCurrentItem() != null)
+                {
+                    animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                }
             }
         }
 
