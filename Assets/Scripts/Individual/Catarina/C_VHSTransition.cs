@@ -120,6 +120,7 @@ public class C_VHSTransition : MonoBehaviour
     private void Update()
     {
         _currentGameTime += Time.deltaTime;
+        if (!_VHSOn) return;
         if (_timeCoroutine==null)
         {
             _timeCoroutine = StartCoroutine(TimeCoroutine());
@@ -242,15 +243,15 @@ public class C_VHSTransition : MonoBehaviour
                 continue;
             }
 
-            Debug.Log("_current time"+_currentGameTime);
+            //Debug.Log("_current time"+_currentGameTime);
             int hr = Mathf.FloorToInt(_currentGameTime / 3600f);
             int min = Mathf.FloorToInt((_currentGameTime % 3600f) / 60f);
             int s = Mathf.FloorToInt(_currentGameTime % 60f);
             int ms = Mathf.FloorToInt((_currentGameTime * 1000f) % 1000f / 10f);
 
-            _timerText.text = string.Format("{0:00}:{1:00}", hr, min); //:00 == to make sure 2dp is shown at all time
-            _timerSText.text = string.Format(":{0:00}", s); //:00 == to make sure 2dp is shown at all time
-            _timerMSText.text = string.Format(":{0:00}", ms); //:00 == to make sure 2dp is shown at all time
+            _timerText.SetText("{0:00}:{1:00}", hr, min);
+            _timerSText.SetText(":{0:00}", s);
+            _timerMSText.SetText(":{0:00}", ms);
 
             // make the update rate irregular
             yield return new WaitForSeconds(Random.Range(0.03f, 0.12f));
@@ -261,7 +262,6 @@ public class C_VHSTransition : MonoBehaviour
     {
         while (true)
         {
-            Debug.Log("Cmae into here?");
             //get the currernt obj color then randomise the new color alpha
             Color color = _text.color;
             color.a = Random.Range(_minA, _maxA);
