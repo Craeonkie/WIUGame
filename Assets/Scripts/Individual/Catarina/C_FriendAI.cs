@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Events;
 
 public class C_FriendAI : MonoBehaviour
 {
@@ -24,7 +23,9 @@ public class C_FriendAI : MonoBehaviour
     [SerializeField] private float _AtkCD = 1f;
     [SerializeField] private float _ATkRange = 10f;
     [SerializeField] private string _AtkAnimTriggerName;
-    public UnityEvent atkEvent; 
+
+    public static event System.Action onAtkAction;
+
     private bool _IsOntAtkCD;
     private float _AtkCounter = 0f;
 
@@ -45,6 +46,8 @@ public class C_FriendAI : MonoBehaviour
     bool _FindingWeapon = false;
     bool _WeaponIsWithinDist = false;
     bool _wasfightingPlayer = false;
+    float _findWeaponCooldown;
+
 
     [Header("Defend")]
     [SerializeField] string _DefendAnimName;
@@ -60,6 +63,29 @@ public class C_FriendAI : MonoBehaviour
     [SerializeField] private string _DeadAnimatorName;
     [SerializeField] private string _DeadAnimBool;
     bool _IsDead = false;
+
+    private void OnEnable()
+    {
+        C_FriendBoss.deadAction += IsDead;
+
+        C_FriendBoss.gettingAtkAction += GettingAtk;
+
+        C_FriendBoss.TransitionPhase1Action += Disable;
+    }
+    private void OnDisable()
+    {
+        C_FriendBoss.deadAction -= IsDead;
+
+        C_FriendBoss.gettingAtkAction -= GettingAtk;
+
+        C_FriendBoss.TransitionPhase1Action -= Disable;
+
+    }
+
+    public void Disable()
+    {
+        this.enabled = false;
+    }
 
     private void Awake()
     {
@@ -121,16 +147,13 @@ public class C_FriendAI : MonoBehaviour
         }
         else if ((_wasfightingPlayer && !_HaveWeapon) || (((!_IsPlayerVisable && !_IsPlayerInRange )|| _FindingWeapon) && !_wasfightingPlayer) )
         {
-            Debug.Log("Came into here instead?");
 
             PerformaPatrol();
         }
         else if ((_IsPlayerVisable && !_IsPlayerInRange )|| (_wasfightingPlayer))
         {
-            Debug.Log("Came into here?");
             if (_HaveWeapon)
             {
-                Debug.Log("came into the chase");
                 PerformChase();
             }
             else
@@ -149,6 +172,7 @@ public class C_FriendAI : MonoBehaviour
             {
                 _wasfightingPlayer = true;
                 FindWeapon();
+
             }
         }
 
@@ -195,8 +219,12 @@ public class C_FriendAI : MonoBehaviour
         if (!_IsOntAtkCD)
         {
             _Agent.SetDestination(transform.position);
-            //_Animator.SetTrigger(_AtkAnimTriggerName);
-            atkEvent.Invoke();
+
+            if (onAtkAction != null)
+            {
+                onAtkAction.Invoke();
+            }
+
             _Animator.SetBool(_RunAnimBoolName,false);
             //do the atk logic here
             //like play animation type shit
@@ -360,28 +388,35 @@ public class C_FriendAI : MonoBehaviour
     //the player detection logic
     private void DetectPlayer()
     {
-        _IsPlayerVisable = Physics.CheckSphere(transform.position, _VisionRange, _PlayerLayer);
+        var cols = Physics.OverlapSphere(transform.position, _VisionRange, _PlayerLayer);
+        _IsPlayerVisable = cols.Length > 0;
 
-        _IsPlayerInRange = Physics.CheckSphere(transform.position,_ATkRange, _PlayerLayer);
-
-        _playerInZone = Physics.CheckSphere(transform.position,_SafeRad, _PlayerLayer);
-
-        if (_IsPlayerVisable && _wasfightingPlayer && _HaveWeapon)
+        if (_IsPlayerVisable)
         {
-            _wasfightingPlayer = false;
+            var dist = Vector3.Distance(transform.position, cols[0].transform.position);
+            _IsPlayerInRange = dist <= _ATkRange;
+            _playerInZone = dist <= _SafeRad;
+        }
+        else
+        {
+            _IsPlayerInRange = false;
+            _playerInZone = false;
         }
     }
 
     //detecting of weapon
     private bool DetectedWeapon()
     {
+        if (Time.time < _findWeaponCooldown) return Physics.CheckSphere(transform.position, _PickUpRange, _PickUpLayer);
+        _findWeaponCooldown = Time.time + 0.5f;
+
         _WeaponIsWithinDist = Physics.CheckSphere(transform.position, _VisionRange, _PickUpLayer);
-        if (!_HaveWeapon &&_WeaponIsWithinDist)
+        if (!_HaveWeapon && _WeaponIsWithinDist)
         {
             FindWeapon();
         }
-        var found = Physics.CheckSphere(transform.position, _PickUpRange, _PickUpLayer);
-        return found;
+
+        return Physics.CheckSphere(transform.position, _PickUpRange, _PickUpLayer);
     }
 
     //debuggingggggg

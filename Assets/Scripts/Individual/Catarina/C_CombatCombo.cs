@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 public class C_CombatCombo : MonoBehaviour
@@ -24,6 +23,25 @@ public class C_CombatCombo : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+    }
+
+    private void OnEnable()
+    {
+        C_FriendAI.onAtkAction += Attack;
+
+        C_FriendBoss.TransitionPhase1Action += Disable;
+    }
+
+    private void OnDisable()
+    {
+        C_FriendAI.onAtkAction -= Attack;
+
+        C_FriendBoss.TransitionPhase1Action -= Disable;
+    }
+
+    public void Disable()
+    {
+        this.enabled = false;
     }
 
     // Update is called once per frame

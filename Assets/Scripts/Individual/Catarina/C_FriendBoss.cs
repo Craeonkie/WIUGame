@@ -1,25 +1,33 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class C_FriendBoss : Entity
 {
+    [Header("Ref")]
+    [SerializeField] private Animator _Animator;
+    [SerializeField] private string _IdleName;
+    [SerializeField] private GameObject _RedCupParent;
+    [SerializeField] private Transform _PlayerRef;
+
     [Header("Phase 1")]
-    [Tooltip("like when the boss reach this per it will trigger it")]
+    [SerializeField] private float _RotateSpeed = 5f;
+    [SerializeField] private Transform _Phase1SpawnPos;
     [SerializeField] private float Phase1HealthTrigger;
-    public UnityEvent _TransitionPhase1Event;
+
+    public static event System.Action TransitionPhase1Action;
     int CurrentPhase = 0;
+    Rigidbody _Rigidbody;
 
     [Header("Dead")]
-    public UnityEvent deadEvent;
     private bool _DeadEventTriggered = false;
+    public static event System.Action deadAction;
 
-    [Header("Getting Atk")]
-    public UnityEvent gettingAtkEvent;
+    public static event System.Action gettingAtkAction;
+
+
     public override void Die()
     {
         if (_DeadEventTriggered) return;
-        deadEvent.Invoke();
+        deadAction.Invoke();
         _DeadEventTriggered = true;
     }
 
@@ -27,7 +35,7 @@ public class C_FriendBoss : Entity
     {
         if (!isInvincible && !isDodging)
         {
-            gettingAtkEvent.Invoke();
+            gettingAtkAction.Invoke();
             _currentHP -= damageTaken;
             _invincibilityCooldown += invincibilityLength;
 
@@ -49,8 +57,7 @@ public class C_FriendBoss : Entity
     {
         if (!isDodging)
         {
-            gettingAtkEvent.Invoke();
-
+            gettingAtkAction.Invoke();
             _currentHP -= damageTaken;
             if (_currentHP <= 0)
             {
@@ -67,7 +74,11 @@ public class C_FriendBoss : Entity
             if (currentPer < Phase1HealthTrigger)
             {
                 CurrentPhase = 1;
-                _TransitionPhase1Event.Invoke();
+                if (TransitionPhase1Action != null)
+                {
+                    TransitionPhase1Action.Invoke();
+                    Teleport();
+                }
             }
 
         }
@@ -77,17 +88,64 @@ public class C_FriendBoss : Entity
     {
         base.Update();
 
-        CheckPhase();
 
-        if (Input.GetMouseButtonDown(0))
+        //testing remove this
+        if (CurrentPhase <= 0)
         {
-            TakeDamage(0);
+            CheckPhase();
+            if (Input.GetMouseButtonDown(0))
+            {
+                TakeDamage(5);
+            }
+        }
+        else
+        {
+            RotateToPlayer();
         }
     }
+
+    void RotateToPlayer()
+    {
+        if (_PlayerRef == null) return;
+
+        Vector3 direction = _PlayerRef.position - transform.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude <= 0.01f) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, _RotateSpeed * Time.deltaTime);
+    }
+
 
     protected override void Start()
     {
         base.Start();
         spawnPoint = gameObject.transform.position;
+    }
+
+    public void Teleport()
+    {
+        transform.position = _Phase1SpawnPos.position;
+        _Rigidbody = GetComponent<Rigidbody>();
+
+        transform.Rotate(0f, 180f, 0f);
+
+
+        if (_Rigidbody == null)
+        {
+            gameObject.AddComponent<Rigidbody>();
+            _Rigidbody = GetComponent<Rigidbody>();
+            _Animator.CrossFade(_IdleName, 0.25f);
+            _Animator.SetBool("isRunning", false);
+            _Animator.SetBool("_isDefening", false);
+        }
+        for (int i = 0; i < _RedCupParent.transform.childCount; i++)
+        {
+            var cup= _RedCupParent.transform.GetChild(i);
+            var _rb = cup.GetComponent<Rigidbody>();
+            if (_rb == null) continue;
+            _rb.isKinematic = true;
+        }
     }
 }
