@@ -2,9 +2,8 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
-using Unity.Mathematics;
 
-public class OutlineRendererFeature : ScriptableRendererFeature
+public class J_OutlineRendererFeature : ScriptableRendererFeature
 {
     [System.Serializable]
     public class Settings
@@ -70,7 +69,7 @@ public class OutlineRendererFeature : ScriptableRendererFeature
             cameraData.requiresOpaqueTexture = true;
 
             // Volume lookup
-            var outlineVolume = VolumeManager.instance.stack.GetComponent<OutlineVolume>();
+            var outlineVolume = VolumeManager.instance.stack.GetComponent<J_OutlineVolume>();
             if (outlineVolume == null || !outlineVolume.IsActive())
                 return;
 

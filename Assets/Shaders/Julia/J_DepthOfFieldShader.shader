@@ -1,4 +1,4 @@
-Shader "Hidden/Custom/DepthOfFieldShader"
+Shader "Hidden/Custom/J_DepthOfFieldShader"
 {
     SubShader
     {

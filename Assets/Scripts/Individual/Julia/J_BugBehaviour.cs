@@ -1,6 +1,8 @@
 using System.Collections;
 using TMPro;
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class J_BugBehaviour : Entity
 {
@@ -12,7 +14,24 @@ public class J_BugBehaviour : Entity
         DEAD
     }
 
+    public struct FSMState
+    {
+        public STATE type;
+        public float stateTimer;
+    }
 
+
+    [Header("Components")]
+    [SerializeField] private NavMeshAgent _navMeshAgent;
+    [SerializeField] private BoxCollider _jumpableBoxCollider;
+    [SerializeField] private PlayerController _player;
+    private Material _dissolveMat;
+
+    [Header("State Times")]
+    [SerializeField] private float _idleDuration;
+
+    [Header("Settings")]
+    [SerializeField] private float _damage;
     [SerializeField] private float _lifetime = 0f;
     [SerializeField] private float _durationBeforeDestroy = 0f;
     [SerializeField] private float _minimumAttackDistance = 2f;
@@ -20,37 +39,43 @@ public class J_BugBehaviour : Entity
     private float _currentStateTimer;
     private float _currentLifeTimer;
 
-    private Vector3 _currentPlayerPosition;
-
     [Header("Debug")]
     [SerializeField] private TMP_Text _stateText;
-    [SerializeField] private TMP_Text _remainingLifetime;
+    [SerializeField] private TMP_Text _lifetimeText;
 
     private void OnEnable()
     {
-        J_PlayerController.OnMove += UpdatePlayerPos;
     }
 
     private void OnDisable()
     {
-        J_PlayerController.OnMove -= UpdatePlayerPos;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
+        _dissolveMat = GetComponentInChildren<Renderer>().material;
 
+        _currentLifeTimer = _lifetime;
+        EnterState(STATE.IDLE);
     }
 
     // Update is called once per frame
     protected override void Update()
     {
+        if (_state == STATE.DEAD)
+            return;
+
         _currentLifeTimer -= Time.deltaTime;
+        _lifetimeText.text = _currentLifeTimer.ToString();
 
         if (_currentLifeTimer <= 0f)
         {
-            Destroy(gameObject);
+            EnterState(STATE.DEAD);
+            return;
         }
+
+
         UpdateState();
     }
 
@@ -65,15 +90,56 @@ public class J_BugBehaviour : Entity
 
     private void EnterState(STATE nextState)
     {
+        Debug.Log("entering state");
+
         switch (nextState)
         {
             case STATE.IDLE:
+
+                _currentStateTimer = _idleDuration;
+                Debug.Log("idle set duration to: " + _currentStateTimer);
+
                 break;
             case STATE.CHASE:
+
+                // Allow chase
+                if (_navMeshAgent.isStopped)
+                {
+                    _navMeshAgent.isStopped = false;
+                }
+
                 break;
             case STATE.ATTACK:
+
+                Debug.Log("Bug attacked!");
+
+                // Stop chasing, call take damage on collider
+                _navMeshAgent.isStopped = true;
+
+                // Attack the player
+                Entity player = GameObject.FindWithTag("Player").GetComponent<Entity>();
+                player.TakeDamage(_damage);
+                Debug.Log(player.name + " took damage!");
+
+                // TODO: PLAY PINCING AUDIO
+
                 break;
             case STATE.DEAD:
+
+                _navMeshAgent.enabled = false;
+
+                CapsuleCollider cc = GetComponent<CapsuleCollider>();
+                cc.enabled = false;
+
+                // Switch off RB and colliders
+                Rigidbody rb = GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.useGravity = false;
+                    rb.linearVelocity = Vector3.zero;
+                }
+
+                
 
                 // Start coroutine before being destroyed
                 StartCoroutine(DelayBeforeDestroy());
@@ -81,8 +147,9 @@ public class J_BugBehaviour : Entity
                 break;
         }
 
-        _currentStateTimer = Time.deltaTime;
         _state = nextState;
+        _stateText.text = _state.ToString();
+        Debug.Log("State: " + _state.ToString());
     }
 
     private void UpdateState()
@@ -102,8 +169,12 @@ public class J_BugBehaviour : Entity
 
                 break;
             case STATE.CHASE:
+
+                // Chase the player
+                _navMeshAgent.SetDestination(_player.transform.position);
+
                 // Attack player when close enough
-                if ((_currentPlayerPosition - transform.position).magnitude <= _minimumAttackDistance)
+                if ((_player.transform.position - transform.position).magnitude <= _minimumAttackDistance)
                 {
                     ExitState();
                     EnterState(STATE.ATTACK);
@@ -112,13 +183,9 @@ public class J_BugBehaviour : Entity
                 break;
             case STATE.ATTACK:
 
-                // Check the timer
-                if (_currentStateTimer <= 0f)
-                {
-                    // Change state
-                    ExitState();
-                    EnterState(STATE.IDLE);
-                }
+                // Change state
+                ExitState();
+                EnterState(STATE.IDLE);
 
                 break;
             case STATE.DEAD:
@@ -140,9 +207,6 @@ public class J_BugBehaviour : Entity
                 break;
         }
     }
-
-    private void UpdatePlayerPos(Vector3 newPos) => _currentPlayerPosition = newPos;
-
     
     private IEnumerator DelayBeforeDestroy()
     {
@@ -151,10 +215,8 @@ public class J_BugBehaviour : Entity
         while (timer <= _durationBeforeDestroy)
         {
             // Shader value here
-            Material mat = GetComponent<Renderer>().material;
-
             float newAmount = Mathf.Lerp(0f, 4f, timer / _durationBeforeDestroy);
-            mat.SetFloat("_Amount", newAmount);
+            _dissolveMat.SetFloat("_Amount", newAmount);
 
             timer += Time.deltaTime;
 
@@ -162,5 +224,54 @@ public class J_BugBehaviour : Entity
         }
 
         Destroy(gameObject);
+    }
+
+    // Check for player jump
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Player")) 
+            return;
+
+        CapsuleCollider playerCapsule = _player.GetComponent<CapsuleCollider>();
+
+        if (playerCapsule == null)
+        {
+            Debug.Log("Player doesn't have a capsule collider");
+            return;
+        }
+
+        Vector3 worldCenter = _jumpableBoxCollider.transform.TransformPoint(_jumpableBoxCollider.center);
+        Vector3 playerCenter = playerCapsule.transform.TransformPoint(playerCapsule.center);
+
+        float topOfBug = worldCenter.y + (_jumpableBoxCollider.size.y / 2f);
+        float bottomOfCapsule = playerCenter.y - (playerCapsule.height / 2f);
+
+
+        // Check position
+        if (bottomOfCapsule >= topOfBug)
+        {
+            EnterState(STATE.DEAD);
+
+             // TODO: PLAY CRUNCHING AUDIO
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        float magnitude = (_jumpableBoxCollider.transform.position - _player.transform.position).magnitude;
+        float newMagnitude = (new Vector2(_jumpableBoxCollider.transform.position.x, _jumpableBoxCollider.transform.position.z) - new Vector2(_player.transform.position.x, _player.transform.position.z)).magnitude;
+
+        Vector3 worldCenter = _jumpableBoxCollider.transform.TransformPoint(_jumpableBoxCollider.center);
+
+        if (Mathf.Abs(worldCenter.x - _player.transform.position.x) <= (_jumpableBoxCollider.size.x / 2) && Mathf.Abs(worldCenter.z - _player.transform.position.z) <= (_jumpableBoxCollider.size.z / 2))
+        {
+            Gizmos.color = Color.aliceBlue;
+        }
+        else
+        {
+            Gizmos.color = Color.red;
+        }
+
+        Gizmos.DrawLine(_jumpableBoxCollider.transform.position, _player.transform.position);
     }
 }

@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 [System.Serializable]
-[VolumeComponentMenu("Custom/DepthOfField")]
-public class DepthOfFieldVolume : VolumeComponent, IPostProcessComponent
+[VolumeComponentMenu("Custom/J_DepthOfField")]
+public class J_DepthOfFieldVolume : VolumeComponent, IPostProcessComponent
 {
     public ClampedFloatParameter focusDistance = new ClampedFloatParameter(10f, 0f, 100f);
     public ClampedFloatParameter focusRange = new ClampedFloatParameter(3f, 0.1f, 10f);

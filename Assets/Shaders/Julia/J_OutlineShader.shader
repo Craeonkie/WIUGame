@@ -1,4 +1,4 @@
-Shader "Hidden/Custom/OutlineShader"
+Shader "Hidden/Custom/J_OutlineShader"
 {
     SubShader
     {

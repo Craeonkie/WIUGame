@@ -122,7 +122,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Intensity: 2
+    - _Intensity: 1
     - _Max: 1
     - _Metallic: 0
     - _Min: 0.3
@@ -142,7 +142,7 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _VertexCount: 1
-    - _Width: 2
+    - _Width: 1
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
