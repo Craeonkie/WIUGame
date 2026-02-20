@@ -121,7 +121,7 @@ public class PlayerController : Entity
 
                 float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
                 transform.eulerAngles = new Vector3(0, newY, 0);
-                _rollDirection = transform.eulerAngles;
+                _rollDirection = transform.forward;
             }
 
             // Runs if is grounded and not jumping

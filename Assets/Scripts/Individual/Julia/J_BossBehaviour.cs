@@ -28,7 +28,8 @@ public class J_BossBehaviour : Entity
     public enum HAND
     {
         LEFT,
-        RIGHT
+        RIGHT,
+        BOTH
     }
 
     [Header("Components")]
@@ -37,10 +38,11 @@ public class J_BossBehaviour : Entity
     [SerializeField] private SphereCollider[] _fistColliders; // Use this list to enable and disable respectively
     [SerializeField] private CinemachineImpulseSource[] _sources; // Impulse sources, add to the fists
     [SerializeField] private GameObject[] _shockwaveAffectedGameObjects; // Use this list to trigger the shockwave
-    [SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
-    [SerializeField] private Transform _leftArmTarget;
+    [SerializeField] private GameObject[] _shockwavePlanes;
+    //[SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
+    //[SerializeField] private Transform _leftArmTarget;
 
-    private Vector3 _originalLeftTargetPosition;
+    //private Vector3 _originalLeftTargetPosition;
     //private float _leftTargetRigWeight = 0f;
 
 
@@ -57,7 +59,7 @@ public class J_BossBehaviour : Entity
     [Header("Boss Phases")]
     [SerializeField] Phase[] _phases;
     private int _currentPhaseIndex;
-    public System.Action<int> OnPhaseEnter;
+    public static System.Action<int> OnPhaseEnter;
     private float _currentPhaseTimer;
 
     [Header("Boss States")]
@@ -85,12 +87,12 @@ public class J_BossBehaviour : Entity
 
     private void OnEnable()
     {
-        J_PlayerController.OnMove += UpdateRigTargetPosition;
+        //J_PlayerController.OnMove += UpdateRigTargetPosition;
     }
 
     private void OnDisable()
     {
-        J_PlayerController.OnMove -= UpdateRigTargetPosition;
+        //J_PlayerController.OnMove -= UpdateRigTargetPosition;
     }
     private void Awake()
     {
@@ -212,9 +214,28 @@ public class J_BossBehaviour : Entity
                         localCenter.y = 0f;
                         _mpb.SetVector("_RadiusCenter", localCenter);
 
+                        if (_attackingHand == HAND.LEFT)
+                        {
+                            Renderer leftR = _shockwavePlanes[(int)HAND.LEFT].GetComponent<Renderer>();
+                            leftR.SetPropertyBlock(_mpb);
+                        }
+                        else if (_attackingHand == HAND.RIGHT)
+                        {
+                            Renderer rightR = _shockwavePlanes[(int)HAND.RIGHT].GetComponent<Renderer>();
+                            rightR.SetPropertyBlock(_mpb);
+                        }
+                        else
+                        {
+                            Renderer leftR = _shockwavePlanes[(int)HAND.LEFT].GetComponent<Renderer>();
+                            leftR.SetPropertyBlock(_mpb);
+
+                            Renderer rightR = _shockwavePlanes[(int)HAND.RIGHT].GetComponent<Renderer>();
+                            rightR.SetPropertyBlock(_mpb);
+                        }
+
                         //Debug.Log(worldCenter - _shockwaveAffectedGameObjects[k].transform.position);
                         //Debug.Log(worldCenter);
-                        Debug.Log(localCenter);
+                        //Debug.Log(localCenter);
 
                         StartCoroutine(DrawPoint(worldCenter));
 
@@ -279,6 +300,21 @@ public class J_BossBehaviour : Entity
         if (phaseIndex >= _phases.Length)
             return;
 
+        // Go to idle animation and reset stuff
+        if (!IsInCurrentAnimationState("Idle") && _currentPhaseIndex > 0)
+        {
+            _animator.SetBool("Ready", false);
+            _animator.SetBool("Preparing", false);
+            _animator.SetBool("Tired", false);
+
+            _leftHandFrequency = 0;
+            _rightHandFrequency     = 0;
+
+            _animator.SetTrigger("Reset");
+
+            EnterState(STATE.IDLE);
+        }
+
         _currentPhaseIndex = phaseIndex;
         Phase phase = _phases[phaseIndex];
 
@@ -300,8 +336,19 @@ public class J_BossBehaviour : Entity
     private void InvokePhaseEnterEvent(int index)
     {
         // TODO: Event should differ based on which phase it is
-
         OnPhaseEnter?.Invoke(index);
+
+        // Phase 2
+        if (index == 1)
+        {
+            J_SpawnManager.Instance.UpdateItemLimit("Bug", 8);
+            J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
+        }
+        else if (index == 2)
+        {
+            J_SpawnManager.Instance.UpdateItemLimit("Bug", 15);
+            J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
+        }
     }
 
 
@@ -387,35 +434,42 @@ public class J_BossBehaviour : Entity
                 // Set the duration
                 _currentStateTimer = _readyDuration;
 
-
-                // Decide an attack based on the frequency and chance
-                if (_leftHandFrequency == 2)
+                // Check the phase
+                if (_currentPhaseIndex == 1)
                 {
-                    _attackingHand = HAND.RIGHT;
-                    _rightHandFrequency++;
-                    _leftHandFrequency = 0;
-                }
-                else if (_rightHandFrequency == 2)
-                {
-                    _attackingHand = HAND.LEFT;
-                    _leftHandFrequency++;
-                    _rightHandFrequency = 0;
+                    _attackingHand = HAND.BOTH;
                 }
                 else
                 {
-                    // Weigh
-                    float leftWeight = 100f / (_leftHandFrequency + 1);
-                    float rightWeight = 100f / (_rightHandFrequency + 1);
-
-                    float rand = Random.Range(0f, leftWeight + rightWeight);
-
-                    _attackingHand = rand < leftWeight ? HAND.LEFT : HAND.RIGHT;
-
-                    if (_attackingHand == HAND.LEFT)
-                        _leftHandFrequency++;
-                    else
+                    // Decide an attack based on the frequency and chance
+                    if (_leftHandFrequency == 2)
+                    {
+                        _attackingHand = HAND.RIGHT;
                         _rightHandFrequency++;
+                        _leftHandFrequency = 0;
+                    }
+                    else if (_rightHandFrequency == 2)
+                    {
+                        _attackingHand = HAND.LEFT;
+                        _leftHandFrequency++;
+                        _rightHandFrequency = 0;
+                    }
+                    else
+                    {
+                        // Weigh
+                        float leftWeight = 100f / (_leftHandFrequency + 1);
+                        float rightWeight = 100f / (_rightHandFrequency + 1);
 
+                        float rand = Random.Range(0f, leftWeight + rightWeight);
+
+                        _attackingHand = rand < leftWeight ? HAND.LEFT : HAND.RIGHT;
+
+                        if (_attackingHand == HAND.LEFT)
+                            _leftHandFrequency++;
+                        else
+                            _rightHandFrequency++;
+
+                    }
                 }
 
                 // Set to preparing for animator
@@ -502,13 +556,13 @@ public class J_BossBehaviour : Entity
 
 
 
-    private void UpdateRigTargetPosition(Vector3 position)
-    {
-        // magic number speed for now
-        var nextPosition = position;
-        nextPosition.y = _originalLeftTargetPosition.y;
-        _leftArmTarget.position = Vector3.Lerp(_leftArmTarget.position, position, 1f);
-    }
+    //private void UpdateRigTargetPosition(Vector3 position)
+    //{
+    //    // magic number speed for now
+    //    var nextPosition = position;
+    //    nextPosition.y = _originalLeftTargetPosition.y;
+    //    _leftArmTarget.position = Vector3.Lerp(_leftArmTarget.position, position, 1f);
+    //}
 
     public void StartTracking()
     {
@@ -564,30 +618,55 @@ public class J_BossBehaviour : Entity
                 r.SetPropertyBlock(_mpb);
             }
 
+            if (_attackingHand == HAND.LEFT)
+            {
+                Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
+                LFloorR.SetPropertyBlock(_mpb);
+            }
+            else if (_attackingHand == HAND.RIGHT)
+            {
+                Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
+                RFloorR.SetPropertyBlock(_mpb);
+            }
+            else
+            {
+                Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
+                LFloorR.SetPropertyBlock(_mpb);
+
+                Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
+                RFloorR.SetPropertyBlock(_mpb);
+            }
+
             currentShockwaveIntensity = Mathf.Lerp(_shockwaveIntensity, 0f, (currentDistance / _maxShockwaveDistance));
             currentDistance += _shockwaveTravelSpeed * Time.deltaTime;
 
             // magic number..., takes (total offset to reach end of plane divided by object space plane units, 5 is the max length of the plane basically)
             // Draw debug ray to visualise where the shockwave is meant to be travelling
-            DrawDebugCircle(startPos, currentDistance * 3f, Color.red, 36);
+            float outerRadius = 10f / 5f;
+            float innerRadius = (15f - 7.5f) / 5f;
+            DrawDebugCircle(startPos, currentDistance * outerRadius, Color.red, 36);
+            DrawDebugCircle(startPos, currentDistance * innerRadius, Color.blue, 36);
 
             if (!collidedWith)
             {
-                Collider[] hits = Physics.OverlapSphere(startPos, currentDistance * 3f, _playerLayer);
+                Collider[] hits = Physics.OverlapSphere(startPos, currentDistance * outerRadius, _playerLayer);
 
                 //Debug.Log(hits.Length);
 
                 for (int i = 0; i < hits.Length; ++i)
                 {
                     // Check distance from center of shockwave
-                    if ((startPos - hits[i].gameObject.transform.position).magnitude < currentDistance * 3f)
+                    if ((startPos - hits[i].gameObject.transform.position).magnitude > currentDistance * innerRadius)
                     {
+                        Debug.DrawRay(startPos, hits[i].gameObject.transform.position, Color.red);
+
                         // Check if groundCheck is true
                         if (J_ShockwaveCheck.TouchingShockwave)
                         {
                             Debug.Log("shockwave hit player");
                             collidedWith = true;
                             J_ShockwaveCheck.CheckForShockwave = false;
+                            break;
                         }
                     }
                 }
@@ -613,6 +692,42 @@ public class J_BossBehaviour : Entity
             yield return null;
         }
     }
+
+
+
+    private bool IsInCurrentAnimationState(string stateName)
+    {
+        return _animator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
+    }
+
+    private bool IsCurrentAnimationReadyForNextStep(string name)
+    {
+        // Check if the current animation has played enough to transition
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        return stateInfo.normalizedTime >= 0.7f && stateInfo.IsName(name); // Adjust based on when you want to allow transitions
+    }
+
+    private bool IsCurrentAnimationEnded(string name)
+    {
+        // Check if the current animation has played enough to transition
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        return stateInfo.normalizedTime >= 0.95f && stateInfo.IsName(name); // Adjust based on when you want to allow transitions
+    }
+
+
+
+    // DEBUG
+    [ContextMenu("Start Next Phase")]
+    public void StartNextPhase()
+    {
+        if (_currentPhaseIndex >= _phases.Length)
+            return;
+
+        _currentPhaseIndex++;
+        EnterPhase(_currentPhaseIndex);
+    } 
 
 
     // HELPER DEBUG FUNCTION, NOT MINE, WILL REMOVE LATER

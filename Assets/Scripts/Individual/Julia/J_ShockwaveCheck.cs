@@ -15,7 +15,7 @@ public class J_ShockwaveCheck : MonoBehaviour
 
         if (Physics.Raycast(transform.position, Vector3.down, _groundCheckDist, _groundLayer))
         {
-            Debug.Log("distance");
+            //Debug.Log("distance");
             TouchingShockwave = true;
         }
         else
