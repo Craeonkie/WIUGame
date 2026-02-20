@@ -261,14 +261,15 @@ public class Dog : MonoBehaviour
                                     for (int i = 0; i < attackTimes.Length; i++)
                                     {
                                         if (!phase2 && i == 3
-                                            && (i == lastAttack && i == lastlastAttack)) continue;
+                                            || (i == lastAttack && i == lastlastAttack)
+                                            || i == 0 || i == 1) continue;
 
                                         bool attackAvailable = true;
 
                                         for (int j = 0; j < attackTimes.Length; j++)
                                         {
                                             if ((!phase2 && j == 3) || i == j
-                                                || (j == lastAttack && j == lastlastAttack)) continue;
+                                                && (j == lastAttack && j == lastlastAttack)) continue;
 
                                             if (attackTimes[i] > attackTimes[j] + 1)
                                             {
@@ -557,7 +558,7 @@ public class Dog : MonoBehaviour
                         float rotationOffset = 45f * currentRotate;
                         Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
 
-                        dogController.Move(adjustedForward * currentSpeed * speed * 3);
+                        dogController.Move(adjustedForward * currentSpeed * speed * 2.5f);
 
                         if (Physics.Raycast(transform.position + Vector3.up * 0.5f, transform.forward, out RaycastHit hit, dogLookaheadDistance, LayerMask.GetMask("Wall")))
                         {
@@ -620,7 +621,7 @@ public class Dog : MonoBehaviour
                         {
                             dashDirection = (target.transform.position - transform.position).normalized;
 
-                            if ((target.transform.position - transform.position).magnitude > stopRange * 1.25f)
+                            if ((target.transform.position - transform.position).magnitude > stopRange)
                             {
                                 rotateMultiplier = 3f;
 
