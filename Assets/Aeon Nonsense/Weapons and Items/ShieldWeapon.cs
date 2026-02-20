@@ -1,14 +1,16 @@
 using UnityEngine;
 
-public class SlashWeapon : Weapon
+public class ShieldWeapon : Weapon
 {
+    private bool isBlockingBeingHeld;
+
     // Update is called once per frame
     new void Update()
     {
         base.Update();
 
         // Runs when animation handler is done acting but own isActing is still true, running only once
-        if (_animationHandler != null && !_animationHandler.IsActing() && _isActing)
+        if (!isBlockingBeingHeld && _animationHandler != null && !_animationHandler.IsActing() && _isActing)
         {
             HandleActionEnd();
         }
@@ -17,6 +19,32 @@ public class SlashWeapon : Weapon
     // Try to perform action
     public override void TryToAct(InputType inputType, bool isBeingHeld, bool wasPressedThisFrame)
     {
+        if (inputType == InputType.Secondary)
+        {
+            if (isBlockingBeingHeld && isBeingHeld == false)
+            {
+                _currentAnimationChain = 0;
+                _chainingAnimation = false;
+                _resetAnimationChain = false;
+                HandleActionEnd();
+            }
+            if (wasPressedThisFrame)
+            {
+                _inputType = inputType;
+                _currentAnimationChain = 0;
+                _chainingAnimation = false;
+                _resetAnimationChain = false;
+                PerformAction();
+            }
+            isBlockingBeingHeld = isBeingHeld;
+            return;
+        }
+
+        if (isBlockingBeingHeld)
+        {
+            return;
+        }
+
         if (wasPressedThisFrame)
         {
             if (!_animationHandler.IsActing())
@@ -139,13 +167,21 @@ public class SlashWeapon : Weapon
         _currentAnimationChain += 1;
 
         // Do own logic
-        BeginAttack(_currentAnimation.damage);
+        if (_currentAnimation.isBlock)
+        {
+            BeginBlocking();
+        }
+        else
+        {
+            BeginAttack(_currentAnimation.damage);
+        }
     }
 
     // Called whenever an animation ends
     public override void EndAction()
     {
         EndAttack();
+        EndBlocking();
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -154,7 +190,7 @@ public class SlashWeapon : Weapon
         {
             if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
             {
-                thisEntity.TakeDamage(currentAttackDamage, 0.1f);
+                thisEntity.TakeDamage(currentAttackDamage);
             }
             hitEntities.Add(other.gameObject);
         }

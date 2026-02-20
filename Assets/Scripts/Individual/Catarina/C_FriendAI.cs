@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class C_FriendAI : MonoBehaviour
+public class C_FriendAI : Entity
 {
     [Header("Ref")]
     [SerializeField] private NavMeshAgent _Agent;
@@ -320,7 +320,7 @@ public class C_FriendAI : MonoBehaviour
         {
             pickUp = hit[0].gameObject;
         }
-        _AIInventory.PutItemInPrimary(pickUp);
+        _AIInventory.PutItemInPrimary(pickUp, this);
         _HaveWeapon = true;
         _FindingWeapon =false;
     }
