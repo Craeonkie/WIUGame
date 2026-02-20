@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
-using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public struct SpawnItem
@@ -43,57 +42,75 @@ public class J_SpawnManager : MonoBehaviour
 
             }, prefab =>
             {
-                prefab.gameObject.SetActive(true);//call when need an obj and there one available in the pool
-                Rigidbody rb = prefab.GetComponent<Rigidbody>(); //reset rb
-                rb.linearVelocity = Vector3.zero;
-                rb.angularVelocity = Vector3.zero;
+                prefab.gameObject.SetActive(true); //call when need an obj and there one available in the pool
+                _spawnItems[i].spawnedAmount++;
 
             }, prefab =>
             {
-                prefab.gameObject.SetActive(false);//call when done and return to the pool
+                prefab.gameObject.SetActive(false); //call when done and return to the pool
+                _spawnItems[i].spawnedAmount--;
+                SpawnOnce(_spawnItems[i].itemName);
+                
             }, prefab =>
             {
-                Destroy(prefab.gameObject);//destroy obj
-            }, false //to prevent returning obj that is already in the pool
-            , 100, 800
+                Destroy(prefab.gameObject);// destroy obj
+            }, false // to prevent returning obj that is already in the pool
+            , 8, 15
             );
         }
     }
 
-    public void SpawnOne(string itemName)
+    public void SpawnOnce(string itemName)
     {
         SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
+
         if (spawnItem.spawnPrefab == null)
             return;
 
         if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
             return;
 
+        var newItem = spawnItem.spawnPool.Get();
+
         // Spawn a new instance randomly
         Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
-        Instantiate(spawnItem.spawnPrefab, randomPosition, Quaternion.identity);
-
-        spawnItem.spawnedAmount++;
+        newItem.transform.position = randomPosition;
     }
 
-    public void SpawnMultiple(string itemName, int spawnAmt)
-    {
-        SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
-        if (spawnItem.spawnPrefab == null)
-            return;
+    //public void SpawnOne(string itemName)
+    //{
+    //    SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
+    //    if (spawnItem.spawnPrefab == null)
+    //        return;
 
-        for (int i = 0; i < spawnAmt; ++i)
-        {
-            if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
-                break;
+    //    if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+    //        return;
 
-            // Spawn a new instance randomly
-            Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
-            Instantiate(spawnItem.spawnPrefab, randomPosition, Quaternion.identity);
+    //    // Spawn a new instance randomly
+    //    Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
+    //    Instantiate(spawnItem.spawnPrefab, randomPosition, Quaternion.identity);
 
-            spawnItem.spawnedAmount++;
-        }
-    }
+    //    spawnItem.spawnedAmount++;
+    //}
+
+    //public void SpawnMultiple(string itemName, int spawnAmt)
+    //{
+    //    SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
+    //    if (spawnItem.spawnPrefab == null)
+    //        return;
+
+    //    for (int i = 0; i < spawnAmt; ++i)
+    //    {
+    //        if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+    //            break;
+
+    //        // Spawn a new instance randomly
+    //        Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
+    //        Instantiate(spawnItem.spawnPrefab, randomPosition, Quaternion.identity);
+
+    //        spawnItem.spawnedAmount++;
+    //    }
+    //}
 
     public void SpawnContinuously(string itemName, float spawnInterval)
     {
@@ -113,13 +130,15 @@ public class J_SpawnManager : MonoBehaviour
     {
         while (true)
         {
-            if (item.spawnedAmount <= item.spawnLimit && item.hasSpawnLimit)
+            while (item.spawnedAmount <= item.spawnLimit && item.hasSpawnLimit)
             {
-                // Spawn a new instance randomly
-                Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
-                Instantiate(item.spawnPrefab, randomPosition, Quaternion.identity);
+                SpawnOnce(item.itemName);
 
-                item.spawnedAmount++;
+                // Spawn a new instance randomly
+                //Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
+                //Instantiate(item.spawnPrefab, randomPosition, Quaternion.identity);
+
+                //item.spawnedAmount++;
 
                 yield return new WaitForSeconds(delay);
             }
