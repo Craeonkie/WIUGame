@@ -20,7 +20,6 @@ public class J_ShockwaveCheck : MonoBehaviour
         }
         else
         {
-            Debug.Log('n');
             TouchingShockwave = false;
         }
     }

@@ -2,8 +2,8 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 [System.Serializable]
-[VolumeComponentMenu("Custom/Outlines")]
-public class OutlineVolume : VolumeComponent, IPostProcessComponent
+[VolumeComponentMenu("Custom/J_Outlines")]
+public class J_OutlineVolume : VolumeComponent, IPostProcessComponent
 {
     public ClampedFloatParameter outlineThickness = new ClampedFloatParameter(1f, 0f, 3f);
     public ColorParameter outlineColour = new ColorParameter(Color.black);

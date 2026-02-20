@@ -15,6 +15,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected bool isInvincible = false;
     [SerializeField] protected bool isDodging = false;
     [SerializeField] protected bool _animationHasReset = false;
+    [SerializeField] protected bool _hasDamageFlicker = false;
     private MaterialPropertyBlock _propertyBlock;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -23,13 +24,16 @@ public class Entity : MonoBehaviour
         _currentHP = _maxHP;
 
         // Add all materials to the entity
-        _propertyBlock = new MaterialPropertyBlock();
-        renderers = _model.GetComponentsInChildren<SkinnedMeshRenderer>();
-        foreach (SkinnedMeshRenderer renderer in renderers)
+        if (_hasDamageFlicker)
         {
-            Material[] temp = { damageMaterial };
-            Material[] newMaterialsList = renderer.materials.Concat(temp).ToArray();
-            renderer.materials = newMaterialsList;
+            _propertyBlock = new MaterialPropertyBlock();
+            renderers = _model.GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (SkinnedMeshRenderer renderer in renderers)
+            {
+                Material[] temp = { damageMaterial };
+                Material[] newMaterialsList = renderer.materials.Concat(temp).ToArray();
+                renderer.materials = newMaterialsList;
+            }
         }
     }
 
@@ -43,14 +47,17 @@ public class Entity : MonoBehaviour
             isInvincible = true;
             _invincibilityCooldown -= Time.deltaTime;
 
-            float temp = Mathf.Max(_invincibilityCooldown / _invincibilityMaxCooldown, 0.0f);
-
             // Apply to all renderers
-            foreach (Renderer renderer in renderers)
+            if (_hasDamageFlicker)
             {
-                renderer.GetPropertyBlock(_propertyBlock);
-                _propertyBlock.SetFloat("_Visibility", temp);
-                renderer.SetPropertyBlock(_propertyBlock);
+                float temp = Mathf.Max(_invincibilityCooldown / _invincibilityMaxCooldown, 0.0f);
+
+                foreach (Renderer renderer in renderers)
+                {
+                    renderer.GetPropertyBlock(_propertyBlock);
+                    _propertyBlock.SetFloat("_Visibility", temp);
+                    renderer.SetPropertyBlock(_propertyBlock);
+                }
             }
 
             if (_invincibilityCooldown <= 0)

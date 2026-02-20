@@ -1,4 +1,4 @@
-Shader "Custom/StencilShader"
+Shader "Custom/J_StencilShader"
 {
     Properties
     {

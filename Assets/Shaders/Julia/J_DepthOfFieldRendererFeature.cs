@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.RenderGraphModule;
 using UnityEngine.Rendering.Universal;
 
-public class DepthOfFieldRendererFeature : ScriptableRendererFeature
+public class J_DepthOfFieldRendererFeature : ScriptableRendererFeature
 {
     [System.Serializable]
     public class Settings
@@ -79,7 +79,7 @@ public class DepthOfFieldRendererFeature : ScriptableRendererFeature
             var cameraData = frameData.Get<UniversalCameraData>();
 
             // Volume lookup
-            var depthOfFieldVolume = VolumeManager.instance.stack.GetComponent<DepthOfFieldVolume>();
+            var depthOfFieldVolume = VolumeManager.instance.stack.GetComponent<J_DepthOfFieldVolume>();
             if (depthOfFieldVolume == null || !depthOfFieldVolume.IsActive())
                 return;
 
