@@ -63,6 +63,9 @@ public class Dog : MonoBehaviour
     private int lastlastAttack = -1;
     [SerializeField] private ParticleSystem wind;
     private NavMeshAgent agent;
+    [SerializeField] private bool canAttack;
+    [SerializeField] private bool _canMove;
+    public bool canMove { get => _canMove; set => _canMove = value; }
 
     void Start()
     {
@@ -76,6 +79,8 @@ public class Dog : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!_canMove) return;
+
         AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
@@ -171,7 +176,7 @@ public class Dog : MonoBehaviour
                                 currentSpeed = Mathf.Clamp(currentSpeed, 0, 1);
                             }
 
-                            if (attackCooldown <= 0)
+                            if (attackCooldown <= 0 && canAttack)
                             {
                                 stateTimer += Time.deltaTime;
                                 if (stateTimer > attackFrequency && angleToTarget < minimumAngleToAttack)
@@ -246,7 +251,7 @@ public class Dog : MonoBehaviour
                                 currentSpeed = Mathf.Clamp(currentSpeed, 0, 0.5f);
                             }
 
-                            if (attackCooldown <= 0)
+                            if (attackCooldown <= 0 && canAttack)
                             {
                                 stateTimer += Time.deltaTime;
                                 if (stateTimer > attackFrequency && angleToTarget < minimumAngleToAttack)
@@ -321,7 +326,7 @@ public class Dog : MonoBehaviour
                                 idleSpeed = Mathf.Clamp(idleSpeed, 0, 0.4f);
                             }
 
-                            if (attackCooldown <= 0)
+                            if (attackCooldown <= 0 && canAttack)
                             {
                                 stateTimer += Time.deltaTime;
                                 if (stateTimer > attackFrequency && angleToTarget < minimumAngleToAttack)
@@ -388,13 +393,9 @@ public class Dog : MonoBehaviour
 
                         agent.SetDestination(target.transform.position);
 
-                        animator.SetFloat("Move", Mathf.Clamp01(currentSpeed + idleSpeed));
-                        dogController.Move(transform.forward * currentSpeed * speed);
-                        agent.nextPosition = transform.position;
-
                         Vector3 steeringDir = Vector3.zero;
 
-                        if (idleSpeed != 0f)
+                        if (idleSpeed == 0f)
                         {
                             steeringDir = agent.desiredVelocity.normalized;
                         }
@@ -408,6 +409,13 @@ public class Dog : MonoBehaviour
 
                         currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
                         transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime, 0);
+
+                        float rotationOffset = 45f * currentRotate;
+                        Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
+
+                        animator.SetFloat("Move", Mathf.Clamp01(currentSpeed + idleSpeed));
+                        dogController.Move(adjustedForward * currentSpeed * speed);
+                        agent.nextPosition = transform.position;
 
                         animator.SetFloat("Turn", Mathf.Abs(currentRotate));
                         animator.SetBool("Right", currentRotate > 0);
@@ -540,13 +548,16 @@ public class Dog : MonoBehaviour
                         currentSpeed = Mathf.Clamp01(currentSpeed);
                         animator.SetFloat("Move", Mathf.Clamp01(currentSpeed));
 
-                        dogController.Move(transform.forward * currentSpeed * 3 * speed);
-
                         float angle = Vector3.SignedAngle(transform.forward, dashDirection, Vector3.up);
                         float targetRotate = Mathf.Clamp(angle / 90f, -maxRotate / 90f, maxRotate / 90f);
                         currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
 
                         transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime, 0);
+
+                        float rotationOffset = 45f * currentRotate;
+                        Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
+
+                        dogController.Move(adjustedForward * currentSpeed * speed * 3);
 
                         if (Physics.Raycast(transform.position + Vector3.up * 0.5f, transform.forward, out RaycastHit hit, dogLookaheadDistance, LayerMask.GetMask("Wall")))
                         {
@@ -620,15 +631,17 @@ public class Dog : MonoBehaviour
                                 agent.enabled = true;
                                 agent.SetDestination(target.transform.position);
 
-                                animator.SetFloat("Move", Mathf.Clamp01(currentSpeed + idleSpeed));
-                                dogController.Move(transform.forward * currentSpeed * speed * 3);
-                                agent.nextPosition = transform.position;
-
                                 float angle = Vector3.SignedAngle(transform.forward, agent.desiredVelocity.normalized, Vector3.up);
                                 float targetRotate = Mathf.Clamp(angle / 90f, -maxRotate / 90f, maxRotate / 90f);
 
                                 currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
                                 transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime * 2, 0);
+
+                                float rotationOffset = 45f * currentRotate;
+                                Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
+
+                                dogController.Move(adjustedForward * currentSpeed * speed * 3);
+                                agent.nextPosition = transform.position;
 
                                 animator.SetFloat("Turn", Mathf.Abs(currentRotate));
                                 animator.SetBool("Right", currentRotate > 0);
@@ -657,13 +670,17 @@ public class Dog : MonoBehaviour
                             currentSpeed = Mathf.Clamp01(currentSpeed);
                             animator.SetFloat("Move", Mathf.Clamp01(currentSpeed));
 
-                            dogController.Move(transform.forward * currentSpeed * 3 * speed);
-
                             float angle = Vector3.SignedAngle(transform.forward, dashDirection, Vector3.up);
                             float targetRotate = Mathf.Clamp(angle / 90f, -maxRotate / 90f, maxRotate / 90f);
                             currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
 
                             transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime, 0);
+
+                            float rotationOffset = 45f * currentRotate;
+                            Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
+
+                            dogController.Move(adjustedForward * currentSpeed * speed * 3);
+                            agent.nextPosition = transform.position;
 
                             animator.SetFloat("Turn", Mathf.Abs(currentRotate));
                             animator.SetBool("Right", currentRotate > 0);
