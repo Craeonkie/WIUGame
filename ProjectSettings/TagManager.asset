@@ -9,6 +9,7 @@ TagManager:
   - Interactable
   - ShockwaveAffected
   - PlayerTag
+  - Moveable
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Catapult
   - Weapon
   - Wall
-  - 
+  - Borders
   - 
   - 
   - 

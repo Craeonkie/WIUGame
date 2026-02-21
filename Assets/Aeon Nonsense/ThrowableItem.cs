@@ -10,11 +10,14 @@ public class ThrowableItem : Item
     [SerializeField] protected float lifeTime = 10.0f;
     protected float lifeTimeLeft;
 
-    [SerializeField] protected List<GameObject> hitEntities;
+    [SerializeField] protected List<Entity> hitEntities;
     [SerializeField] protected bool isAiming = false;
     [SerializeField] protected bool isThrowing = false;
     [SerializeField] protected bool isInFlight = false;
     AnimatorStateInfo animatorStateInfo;
+
+    [Header("Simulate Trajectory")]
+    [SerializeField] private C_TrajectorySimulation _projection;
 
     // Update is called once per frame
     protected new void Update()
@@ -38,6 +41,15 @@ public class ThrowableItem : Item
                     gameObject.SetActive(false);
                 }
             }
+        }
+    }
+
+    protected void FixedUpdate()
+    {
+        // Simulate trajectory
+        if (isAiming)
+        {
+            //_projection.SimulateTrajectory(_entityUsingItem.transform.forward * throwPowerForward + _entityUsingItem.transform.up * throwPowerUp);
         }
     }
 
@@ -106,8 +118,13 @@ public class ThrowableItem : Item
         // Position and add force to the item
         transform.position += _entityUsingItem.transform.forward * throwDistanceForward;
         rb.linearVelocity = Vector3.zero;
-        rb.AddForce(_entityUsingItem.transform.forward * throwPowerForward, ForceMode.Impulse);
-        rb.AddForce(_entityUsingItem.transform.up * throwPowerUp, ForceMode.Impulse);
+        rb.AddForce(_entityUsingItem.transform.forward * throwPowerForward + _entityUsingItem.transform.up * throwPowerUp, ForceMode.Impulse);
+
+        // Make the player's inventory stop referencing this item
+        if (_entityUsingItem.TryGetComponent<PlayerController>(out PlayerController player))
+        {
+            player.GetComponent<Inventory>().RemoveItemFromInventory(gameObject);
+        }
 
         // Make animation handler stop equipping it, then stop referencing it
         _animationHandler.UnequipItemButFinishAnimation();
@@ -117,13 +134,22 @@ public class ThrowableItem : Item
 
     protected void OnCollisionEnter(Collision other)
     {
-        if (isInFlight && !hitEntities.Contains(other.gameObject) && !IsPartOfHierarchy(other.transform, transform.root))
+        if (isInFlight && !hitEntities.Contains(other.gameObject.GetComponent<Entity>()) && !IsPartOfHierarchy(other.transform, transform.root))
         {
-            if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
+            Entity thisEntity;
+            if (other.gameObject.TryGetComponent<Entity>(out thisEntity))
             {
                 thisEntity.TakeDamage(primary[0].damage);
             }
-            hitEntities.Add(other.gameObject);
+            else
+            {
+                thisEntity = other.gameObject.GetComponentInParent<Entity>();
+                if (thisEntity != null)
+                {
+                    thisEntity.TakeDamage(primary[0].damage);
+                }
+            }
+            hitEntities.Add(other.gameObject.GetComponent<Entity>());
         }
         if (isInFlight && breakOnHit)
         {

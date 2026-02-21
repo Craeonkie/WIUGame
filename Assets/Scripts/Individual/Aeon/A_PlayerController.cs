@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,12 +22,15 @@ public class PlayerController : Entity
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _rollSpeed;
     [SerializeField] private Rigidbody myRigidbody;
-    [SerializeField] private GameObject followCameraTarget;
-    [SerializeField] private GameObject thirdPersonCameraTarget;
-    [SerializeField] private GameObject currentCameraTarget;
-    [SerializeField] private float playerRotationSpeed;
     [SerializeField] private float rollDuration;
     [SerializeField] private float landDuration;
+    [SerializeField] private float playerRotationSpeed;
+
+    [Header("Camera Movement")]
+    [SerializeField] private GameObject followCameraTarget;
+    [SerializeField] private GameObject thirdPersonCameraTarget;
+    [SerializeField] private MouseMovement[] mouseRotationScripts;
+
     private Vector3 _rollDirection;
     private float _currentSpeed;
     private float _currentRollTimer;
@@ -48,9 +52,12 @@ public class PlayerController : Entity
     private Vector2 _inputMove;
     [SerializeField] private bool _isJumping = false;
     [SerializeField] private bool _isRolling = false;
+    [SerializeField] private bool _isMovingObject = false;
+    [SerializeField] private bool _isHoldingItem = false;
     [SerializeField] private bool _canAct = true;
     [SerializeField] private bool _primingThrow = false;
     [SerializeField] private bool _wasGroundedPreviously = false;
+    [SerializeField] private GameObject _itemBeingMoved;
 
     protected override void Start()
     {
@@ -109,10 +116,10 @@ public class PlayerController : Entity
         // Only accept input and rotation if player isn't stunned
         if (!_isStunned)
         {
-            // Rotation
-            if ((isMoving || _primingThrow) && !_isRolling && _currentLandTimer <= 0)
+            // Handle rotation
+            if (isMoving && !_isMovingObject && !_primingThrow && !_isRolling && _currentLandTimer <= 0)
             {
-                Quaternion cameraYawOnly = Quaternion.Euler(0, currentCameraTarget.transform.eulerAngles.y, 0);
+                Quaternion cameraYawOnly = Quaternion.Euler(0, followCameraTarget.transform.eulerAngles.y, 0);
                 Vector3 cameraForward = cameraYawOnly * Vector3.forward;
                 Vector3 cameraRight = cameraYawOnly * Vector3.right;
 
@@ -121,21 +128,21 @@ public class PlayerController : Entity
 
                 float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
                 transform.eulerAngles = new Vector3(0, newY, 0);
-                _rollDirection = transform.eulerAngles;
+                _rollDirection = transform.forward;
             }
 
             // Runs if is grounded and not jumping
             if (isGrounded && !_isJumping)
             {
                 // Jumping
-                if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canAct)
+                if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_primingThrow && !_isMovingObject)
                 {
                     _isJumping = true;
                     _isRolling = false;
                     myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
                 }
                 // Rolling
-                else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_isRolling)
+                else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_isRolling && !_primingThrow && !_isMovingObject)
                 {
                     _animator.SetTrigger("IsRolling");
                     _currentRollTimer = rollDuration;
@@ -146,26 +153,44 @@ public class PlayerController : Entity
             }
             
             // Reenable ability to act if player is not midair and not rolling
-            if (isGrounded && !_isRolling)
+            if (isGrounded && !_isRolling && !_isMovingObject)
             {
                 _canAct = true;
             }
 
-            // Handle max velocity
-            float targetSpeed = 0.0f;
-
-            // Handle movement normally
-            if (!_isRolling && _currentLandTimer <= 0)
+            // Handle movement
+            if (!_isRolling && !myRigidbody.isKinematic)
             {
+                // Handle max velocity
+                float targetSpeed = 0.0f;
                 if (isMoving && _currentLandTimer <= 0)
                 {
                     targetSpeed = _maxSpeed;
                 }
 
-                _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
-                Vector3 moveVelocity = transform.forward * _currentSpeed;
-                myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
+                // Always move forward
+                if (!_primingThrow)
+                {
+                    _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
+                    Vector3 moveVelocity = transform.forward * _currentSpeed;
+                    myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
+                }
+                // Move according to camera forward
+                else
+                {
+                    _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
+
+                    Quaternion cameraYawOnly = Quaternion.Euler(0, thirdPersonCameraTarget.transform.eulerAngles.y, 0);
+                    Vector3 cameraForward = cameraYawOnly * Vector3.forward;
+                    Vector3 cameraRight = cameraYawOnly * Vector3.right;
+
+                    Vector3 moveDir = cameraForward * _inputMove.y + cameraRight * _inputMove.x;
+                    Vector3 moveVelocity = moveDir * _currentSpeed;
+
+                    myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
+                }
             }
+
             // Rolling
             else if (_isRolling)
             {
@@ -183,7 +208,8 @@ public class PlayerController : Entity
 
         //// Handle other inputs
         // Cast a sphere around the player (or use a raycast forward if preferred)
-        Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
+        if (!_isMovingObject)
+        {Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
 
         Interactable closestInteractable = null;
         float closestDist = _pickupRange;
@@ -210,30 +236,43 @@ public class PlayerController : Entity
             }
         }
 
-        if (closestInteractable != null)
-        {
-            inventory.HighlightObject(closestInteractable.gameObject);
-            if (_interactAction.WasPressedThisDynamicUpdate() && !_isStunned)
+            if (closestInteractable != null)
             {
-                string tag = closestInteractable.tag;
+                inventory.HighlightObject(closestInteractable.gameObject);
+                if (_interactAction.WasPressedThisDynamicUpdate() && !_isStunned)
+                {
+                    string tag = closestInteractable.tag;
 
-                // Act according to the item's tag
-                if (tag == "Weapon")
-                {
-                    inventory.PutItemInPrimary(closestInteractable.gameObject, this);
-                    inventory.EquipPrimary();
-                    animationHandler.EquipItem((Item)closestInteractable);
+                    // Act according to the item's tag
+                    if (tag == "Weapon")
+                    {
+                        inventory.PutItemInPrimary(closestInteractable.gameObject, this);
+                        inventory.EquipPrimary();
+                        animationHandler.EquipItem((Item)closestInteractable);
+                    }
+                    else if (tag == "Item")
+                    {
+                        inventory.PutItemInSecondary(closestInteractable.gameObject, this);
+                        inventory.EquipSecondary();
+                        animationHandler.EquipItem((Item)closestInteractable);
+                    }
+                    else if (tag == "Interactable")
+                    {
+                        closestInteractable.InteractWith();
+                    }
+                    else if (tag == "Moveable")
+                    {
+                        closestInteractable.InteractWith();
+                        StartMovingItem(closestInteractable.gameObject);
+                    }
                 }
-                else if (tag == "Item")
-                {
-                    inventory.PutItemInSecondary(closestInteractable.gameObject, this);
-                    inventory.EquipSecondary();
-                    animationHandler.EquipItem((Item)closestInteractable);
-                }
-                else if (tag == "Interactable")
-                {
-                    closestInteractable.InteractWith();
-                }
+            }
+        }
+        else
+        {
+            if (_jumpAction.WasPressedThisDynamicUpdate() || _interactAction.WasPressedThisDynamicUpdate())
+            {
+                StopMovingItem();
             }
         }
 
@@ -244,10 +283,18 @@ public class PlayerController : Entity
             if (_primaryAction.WasPressedThisDynamicUpdate())
             {
                 animationHandler.TryingToUsePrimary(true);
+                if (inventory.ReturnCurrentItem() != null && inventory.ReturnCurrentItem().TryGetComponent<ThrowableItem>(out _))
+                {
+                    StartAiming();
+                }
             }
             if (_primaryAction.WasReleasedThisDynamicUpdate())
             {
                 animationHandler.TryingToUsePrimary(false);
+                if (_primingThrow)
+                {
+                    StopAiming();
+                }
             }
 
             // Secondary
@@ -270,33 +317,36 @@ public class PlayerController : Entity
                 animationHandler.TryingToUseSpecial(false);
             }
 
-            // Dropping
-            if (_dropAction.WasPressedThisDynamicUpdate() && !_isStunned)
+            if (!animationHandler.IsActing())
             {
-                if (inventory.ReturnCurrentItem() != null)
+                // Dropping
+                if (_dropAction.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
-                    inventory.DropItem(inventory.ReturnCurrentItem());
-                    animationHandler.UnequipItem();
+                    if (inventory.ReturnCurrentItem() != null)
+                    {
+                        inventory.DropItem(inventory.ReturnCurrentItem());
+                        animationHandler.UnequipItem();
+                    }
                 }
-            }
 
-            // Equip Primary
-            if (_equipPrimary.WasPressedThisDynamicUpdate() && !_isStunned)
-            {
-                inventory.EquipPrimary();
-                if (inventory.ReturnCurrentItem() != null)
+                // Equip Primary
+                if (_equipPrimary.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
-                    animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                    inventory.EquipPrimary();
+                    if (inventory.ReturnCurrentItem() != null)
+                    {
+                        animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                    }
                 }
-            }
 
-            // Equip Secondary
-            if (_equipSecondary.WasPressedThisDynamicUpdate() && !_isStunned)
-            {
-                inventory.EquipSecondary();
-                if (inventory.ReturnCurrentItem() != null)
+                // Equip Secondary
+                if (_equipSecondary.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
-                    animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                    inventory.EquipSecondary();
+                    if (inventory.ReturnCurrentItem() != null)
+                    {
+                        animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                    }
                 }
             }
         }
@@ -309,15 +359,18 @@ public class PlayerController : Entity
             _animator.SetTrigger("IsJumping");
             _isJumping = false;
         }
-        _animator.SetFloat("Y Velocity", myRigidbody.linearVelocity.y);
-        if (inventory.ReturnCurrentItem() == inventory.ReturnSecondaryItem() && inventory.ReturnCurrentItem() != null)
+        // Only trigger if not already holding the item and the item isn't null
+        if (inventory.ReturnSecondaryItem() != null && inventory.ReturnSecondaryItem() == inventory.ReturnCurrentItem())
         {
-            _animator.SetBool("IsHoldingItem", true);
+            _isHoldingItem = true;
         }
         else
         {
-            _animator.SetBool("IsHoldingItem", false);
+            _isHoldingItem = false;
         }
+        _animator.SetBool("IsHoldingItem", _isHoldingItem);
+        _animator.SetBool("IsMovingItem", _isMovingObject);
+        _animator.SetFloat("Y Velocity", myRigidbody.linearVelocity.y);
 
         // Handle when the player lands
         if (!_wasGroundedPreviously && isGrounded)
@@ -333,18 +386,18 @@ public class PlayerController : Entity
         _wasGroundedPreviously = isGrounded;
     }
 
-    // Check if current animation is over
-    public virtual bool CurrentAnimationOver(int state)
-    {
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(state);
+    //// Check if current animation is over
+    //public virtual bool CurrentAnimationOver(int state)
+    //{
+    //    AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(state);
 
-        if (stateInfo.normalizedTime < 1.0f)
-        {
-            _animationHasReset = true;
-        }
+    //    if (stateInfo.normalizedTime < 1.0f)
+    //    {
+    //        _animationHasReset = true;
+    //    }
 
-        return (stateInfo.normalizedTime >= 1.0f) && _animationHasReset;
-    }
+    //    return (stateInfo.normalizedTime >= 1.0f) && _animationHasReset;
+    //}
 
     // Stun the player
     public virtual void Stun(float stunDuration)
@@ -358,17 +411,111 @@ public class PlayerController : Entity
     public virtual void StartAiming()
     {
         _primingThrow = true;
-        currentCameraTarget = thirdPersonCameraTarget;
         thirdPersonCameraTarget.SetActive(true);
         followCameraTarget.SetActive(false);
+        foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
+        {
+            mouseRotationScript.enabled = true;
+        }
     }
 
     // Stop aiming
     public virtual void StopAiming()
     {
         _primingThrow = false;
-        currentCameraTarget = followCameraTarget;
-        thirdPersonCameraTarget.SetActive(true);
-        followCameraTarget.SetActive(false);
+        ResetCamera();
+        thirdPersonCameraTarget.SetActive(false);
+        followCameraTarget.SetActive(true);
+        foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
+        {
+            mouseRotationScript.enabled = false;
+        }
+    }
+
+    // Start pushing an item
+    public virtual void StartMovingItem(GameObject itemBeingMoved)
+    {
+        _isMovingObject = true;
+        _itemBeingMoved = itemBeingMoved;
+    }
+
+    // Stop pushing an item
+    public virtual void StopMovingItem()
+    {
+        _isMovingObject = false;
+        ResetCamera();
+        thirdPersonCameraTarget.SetActive(false);
+        followCameraTarget.SetActive(true);
+        foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
+        {
+            mouseRotationScript.enabled = false;
+        }
+    }
+
+    // Set camera to face player forward
+    public void ResetCamera()
+    {
+        followCameraTarget.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value = transform.rotation.eulerAngles.y;
+        followCameraTarget.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value = 10.0f;
+    }
+
+
+
+    // Do damage without invincibility cooldown
+    public override void TakeDamage(float damageTaken)
+    {
+        if (!isDodging)
+        {
+            _currentHP -= damageTaken;
+            if (hitAudio.Length > 0 && audioSource != null)
+            {
+                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+            }
+            if (_currentHP <= 0)
+            {
+                audioSource.PlayOneShot(deathAudio);
+                Die();
+            }
+
+            InterruptAction();
+        }
+    }
+
+    // Do damage with invincibility cooldown
+    public override void TakeDamage(float damageTaken, float invincibilityLength)
+    {
+        if (!isInvincible && !isDodging)
+        {
+            _currentHP -= damageTaken;
+            _invincibilityMaxCooldown = invincibilityLength;
+            _invincibilityCooldown = invincibilityLength;
+            if (hitAudio.Length > 0 && audioSource != null)
+            {
+                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+            }
+            if (_currentHP <= 0)
+            {
+                audioSource.PlayOneShot(deathAudio);
+                Die();
+            }
+            else
+            {
+                if (_invincibilityCooldown > 0)
+                {
+                    isInvincible = true;
+                }
+            }
+
+            InterruptAction();
+        }
+    }
+
+    // Interrupt the player's action
+    public void InterruptAction()
+    {
+        if (_isMovingObject)
+        {
+            StopMovingItem();
+        }
     }
 }

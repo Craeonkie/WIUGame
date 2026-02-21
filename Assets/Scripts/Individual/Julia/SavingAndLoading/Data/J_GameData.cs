@@ -1,4 +1,4 @@
-using UnityEngine;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class J_GameData
@@ -15,8 +15,10 @@ public class J_GameData
     }
     public QUALITYMODE qualityMode;
 
-    public int playerStage; // leaving it here first, we'll definitely need some form of this eventually
-    // public Weapons[] playerWeapons // we need to save this somehow
+    public Dictionary<string, bool> completedStages = new Dictionary<string, bool>();
+    public string currentStage;
+    
+    // public Weapons[] currentPlayerWeapons // we need to save this somehow
 
     // Starting New Game Values
     public J_GameData()
@@ -28,12 +30,25 @@ public class J_GameData
         cameraSensitivity = 1f;
         qualityMode = QUALITYMODE.HIGH;
 
-        playerStage = 0; // Starting stage
+        completedStages.Add(J_GameManager.MENU_SCENE, true);
+        completedStages.Add(J_GameManager.DOG_SCENE, false);
+        completedStages.Add(J_GameManager.KID_SCENE, false);
+        completedStages.Add(J_GameManager.MONSTER_SCENE, false);
+        completedStages.Add(J_GameManager.REST_SCENE, false);
+
+        currentStage = J_GameManager.MENU_SCENE; // Starting stage
     }
 
     // Reset everything but the settings
     public void ResetData()
     {
-        playerStage = 0;
+
+        completedStages[J_GameManager.MENU_SCENE] = true;
+        completedStages[J_GameManager.DOG_SCENE] = false;
+        completedStages[J_GameManager.KID_SCENE] = false;
+        completedStages[J_GameManager.MONSTER_SCENE] = false;
+        completedStages[J_GameManager.REST_SCENE] = false;
+
+        currentStage = J_GameManager.MENU_SCENE;
     }
 }

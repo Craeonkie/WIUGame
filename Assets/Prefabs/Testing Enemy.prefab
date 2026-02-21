@@ -133,6 +133,7 @@ MonoBehaviour:
   isInvincible: 0
   isDodging: 0
   _animationHasReset: 0
+  _hasDamageFlicker: 1
 --- !u!82 &2953555405918826991
 AudioSource:
   m_ObjectHideFlags: 0

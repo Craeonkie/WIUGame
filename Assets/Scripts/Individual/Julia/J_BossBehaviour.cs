@@ -2,7 +2,6 @@ using System.Collections;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 public class J_BossBehaviour : Entity
 {
@@ -28,7 +27,8 @@ public class J_BossBehaviour : Entity
     public enum HAND
     {
         LEFT,
-        RIGHT
+        RIGHT,
+        BOTH
     }
 
     [Header("Components")]
@@ -37,17 +37,20 @@ public class J_BossBehaviour : Entity
     [SerializeField] private SphereCollider[] _fistColliders; // Use this list to enable and disable respectively
     [SerializeField] private CinemachineImpulseSource[] _sources; // Impulse sources, add to the fists
     [SerializeField] private GameObject[] _shockwaveAffectedGameObjects; // Use this list to trigger the shockwave
-    [SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
-    [SerializeField] private Transform _leftArmTarget;
+    [SerializeField] private GameObject[] _shockwavePlanes;
+    //[SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
+    //[SerializeField] private Transform _leftArmTarget;
 
-    private Vector3 _originalLeftTargetPosition;
+    //private Vector3 _originalLeftTargetPosition;
     //private float _leftTargetRigWeight = 0f;
 
 
     [Header("Additional Boss Data")]
     [SerializeField] private LayerMask _layersToCheck;
     [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private int _hitsRequired;
     [SerializeField] private float _attackSpeed; // Applied to the fist swinging down, use for adjusting animation speed
+    [SerializeField] private float _shockwaveDamage;
     [SerializeField] private float _maxShockwaveDistance; // Applied to shockwave, maximum distance before shockwave dies down
     [SerializeField] private float _shockwaveIntensity; // Applied to shockwave, how intense the shockwave is
     [SerializeField] private float _shockwaveBandWidth;
@@ -57,7 +60,7 @@ public class J_BossBehaviour : Entity
     [Header("Boss Phases")]
     [SerializeField] Phase[] _phases;
     private int _currentPhaseIndex;
-    public System.Action<int> OnPhaseEnter;
+    public static System.Action<int> OnPhaseEnter;
     private float _currentPhaseTimer;
 
     [Header("Boss States")]
@@ -83,15 +86,6 @@ public class J_BossBehaviour : Entity
     [SerializeField] private TMP_Text _stateText;
     [SerializeField] private TMP_Text _phaseText;
 
-    private void OnEnable()
-    {
-        J_PlayerController.OnMove += UpdateRigTargetPosition;
-    }
-
-    private void OnDisable()
-    {
-        J_PlayerController.OnMove -= UpdateRigTargetPosition;
-    }
     private void Awake()
     {
         _mpb = new MaterialPropertyBlock();
@@ -173,80 +167,203 @@ public class J_BossBehaviour : Entity
 
     private void CheckAttackColliders()
     {
+        // activate both i lz bum
+        //_fistColliders[0].enabled = true;
+        //_fistColliders[1].enabled = true;
+
+        _attackingHand = HAND.BOTH;
+
         for (int i = 0; i < 2; ++i)
         {
             if (!_fistColliders[i].enabled)
                 continue;
 
+
             Vector3 worldCenter = _fistColliders[i].transform.TransformPoint(_fistColliders[i].center);
             float scaleFactor = Mathf.Max(_fistColliders[i].transform.lossyScale.x, _fistColliders[i].transform.lossyScale.y, _fistColliders[i].transform.lossyScale.z);
             float actualWorldRadius = _fistColliders[i].radius * scaleFactor;
 
-
             // I'm just setting it manually to player layer because a modular script of this doesn't exist yet
-            Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _layersToCheck);
-
-            for (int j = 0; j < hitColliders.Length; j++)
+            Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _playerLayer);
+            for (int j = 0; j < hitColliders.Length; ++j)
             {
-                // Check for tag
-                if (hitColliders[j].gameObject.CompareTag("Player"))
-                {
-                    // Deal damage to the player
-                    hitColliders[j].gameObject.GetComponent<Entity>().TakeDamage(_currentAttackDamage);
-                    Debug.Log("Player instantly died!");
-                }
-                else if (hitColliders[j].gameObject.CompareTag("ShockwaveAffected"))
-                {
-                    // Disable this collider
-                    _fistColliders[i].enabled = false;
 
-                    // Call all materials with the shockwave material and invoke the shockwave
-                    // Manually set the start position of the shockwave
-                    for (int k = 0; k < _shockwaveAffectedGameObjects.Length; ++k)
-                    {
-                        Renderer r = _shockwaveAffectedGameObjects[k].GetComponent<Renderer>();
-                        //_mpb.SetVector("_RadiusCenter", worldCenter - _shockwaveAffectedGameObjects[k].transform.position);
-                        //_mpb.SetVector("_RadiusCenter", worldCenter);
-
-                        Vector3 localCenter = r.transform.InverseTransformPoint(worldCenter);
-                        localCenter.y = 0f;
-                        _mpb.SetVector("_RadiusCenter", localCenter);
-
-                        //Debug.Log(worldCenter - _shockwaveAffectedGameObjects[k].transform.position);
-                        //Debug.Log(worldCenter);
-                        Debug.Log(localCenter);
-
-                        StartCoroutine(DrawPoint(worldCenter));
-
-                        r.SetPropertyBlock(_mpb);
-                    }
-
-                    // Start shockwave coroutine
-                    StartCoroutine(StartShockwave(worldCenter));
-                }
-
-
-                // TODO: Play audio here
-                //if (SlashSound)
-                //{
-                //    AudioManager.Instance.PlayOneShot("slashHit1", damageable.transform.position);
-                //}
-                //else
-                //{
-                //    AudioManager.Instance.PlayOneShot("punchImpact", damageable.transform.position);
-                //}
-
-                // Generate impulse
-                _sources[i].GenerateImpulse(Camera.main.transform.forward);
             }
+           
+
+            MaterialPropertyBlock handMpb = new MaterialPropertyBlock();
+            Renderer planeR = _shockwavePlanes[i].GetComponent<Renderer>();
+            Vector3 localCenter = planeR.transform.InverseTransformPoint(worldCenter);
+            localCenter.y = 0f;
+
+            handMpb.SetVector("_RadiusCenter", localCenter);
+            planeR.SetPropertyBlock(handMpb);
+
+            // Disable this collider
+            _fistColliders[i].enabled = false;
+
+            StartCoroutine(StartShockwave(worldCenter, planeR, handMpb));
+
+            // TODO: Play audio here
+            //if (SlashSound)
+            //{
+            //    AudioManager.Instance.PlayOneShot("slashHit1", damageable.transform.position);
+            //}
+            //else
+            //{
+            //    AudioManager.Instance.PlayOneShot("punchImpact", damageable.transform.position);
+            //}
+
+            //    // Generate impulse
+            //    _sources[i].GenerateImpulse(Camera.main.transform.forward);
+            //}
         }
+    }
+
+    private IEnumerator StartShockwave(Vector3 startPos, Renderer planeR, MaterialPropertyBlock mpb)
+    {
+        float currentDistance = 0f;
+        float currentShockwaveIntensity = _shockwaveIntensity;
+        bool collidedWith = false;
+
+        //Renderer planeRenderer = _shockwavePlanes[handIndex].GetComponent<Renderer>();
+
+        while (currentDistance <= _maxShockwaveDistance)
+        {
+            // Update the new intensity and offset
+            mpb.SetFloat("_Intensity", currentShockwaveIntensity);
+            mpb.SetFloat("_Offset", currentDistance);
+            planeR.SetPropertyBlock(mpb);
+
+            // Check for actual collisions
+            // Outer radius --> distance multiplied by the scale of the plane
+            // Inner radius --> Outer radius minus the total width of the band
+            Vector3 planeWorldScale = _shockwavePlanes[0].transform.lossyScale;
+            float outerRadius = (currentDistance * planeWorldScale.x);
+            float innerRadius = Mathf.Max(0f, (currentDistance * planeWorldScale.x) - 1f);
+
+            DrawDebugCircle(startPos, outerRadius, Color.red, 36);
+            DrawDebugCircle(startPos, innerRadius, Color.blue, 36);
+
+            if (!collidedWith)
+            {
+                // There is only one player
+                Collider[] hits = Physics.OverlapSphere(startPos, outerRadius, _playerLayer);
+
+                for (int i = 0; i < hits.Length; ++i)
+                {
+                    if (!hits[i].TryGetComponent<GroundChecker>(out GroundChecker groundCheck))
+                        continue;
+
+                    // Check if grounded first
+                    if (!groundCheck.IsGrounded())
+                        break;
+
+                    // Check distance from center of shockwave and check if hit the shockwave
+                    if ((startPos - hits[i].gameObject.transform.position).magnitude > innerRadius)
+                    {
+                        hits[i].GetComponent<Entity>().TakeDamage(_shockwaveDamage);
+                        Debug.Log("Player was hit by the shockwave!");
+                        collidedWith = true;
+                        break;
+                    }
+                }
+            }
+
+            // Increase the shockwave intensity
+            currentShockwaveIntensity = Mathf.Lerp(_shockwaveIntensity, 0f, (currentDistance / _maxShockwaveDistance));
+            currentDistance += _shockwaveTravelSpeed * Time.deltaTime;
+
+            yield return null;
+        }
+
+       
+
+
+        //    float currentDistance = 0f;
+        //    float currentShockwaveIntensity = _shockwaveIntensity;
+        //    bool collidedWith = false;
+
+        //    // Continue shockwave until it reaches maximum distance
+        //    while (currentDistance <= _maxShockwaveDistance)
+        //    {
+        //        // Update the new intensity and offset
+        //        _mpb.SetFloat("_Intensity", currentShockwaveIntensity);
+        //        _mpb.SetFloat("_Offset", currentDistance);
+
+        //        // Check which hand was used to hit the ground
+        //        if (_attackingHand == HAND.LEFT)
+        //        {
+        //            Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
+        //            LFloorR.SetPropertyBlock(_mpb);
+        //        }
+        //        else if (_attackingHand == HAND.RIGHT)
+        //        {
+        //            Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
+        //            RFloorR.SetPropertyBlock(_mpb);
+        //        }
+        //        else
+        //        {
+        //            Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
+        //            LFloorR.SetPropertyBlock(_mpb);
+
+        //            Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
+        //            RFloorR.SetPropertyBlock(_mpb);
+        //        }
+
+
+        //        // Check for actual collisions
+        //        // Outer radius --> distance multiplied by the scale of the plane
+        //        // Inner radius --> Outer radius minus the total width of the band
+        //        Vector3 planeWorldScale = _shockwavePlanes[0].transform.lossyScale;
+        //        float outerRadius = (currentDistance * planeWorldScale.x);
+        //        float innerRadius = Mathf.Max(0f, (currentDistance * planeWorldScale.x) - 1f);
+
+        //        DrawDebugCircle(startPos, outerRadius, Color.red, 36);
+        //        DrawDebugCircle(startPos, innerRadius, Color.blue, 36);
+
+        //        if (!collidedWith)
+        //        {
+        //            // There is only one player
+        //            Collider[] hits = Physics.OverlapSphere(startPos, outerRadius, _playerLayer);
+
+        //            for (int i = 0; i < hits.Length; ++i)
+        //            {
+        //                if (!hits[i].TryGetComponent<GroundChecker>(out GroundChecker groundCheck))
+        //                    continue;
+
+        //                // Check if grounded first
+        //                if (!groundCheck.IsGrounded())
+        //                    break;
+
+        //                // Check distance from center of shockwave and check if hit the shockwave
+        //                if ((startPos - hits[i].gameObject.transform.position).magnitude > innerRadius)
+        //                {
+        //                    hits[i].GetComponent<Entity>().TakeDamage(_shockwaveDamage);
+        //                    Debug.Log("Player was hit by the shockwave!");
+        //                    collidedWith = true;
+        //                    break;
+        //                }
+        //            }
+        //        }
+
+        //        // Increase the shockwave intensity
+        //        currentShockwaveIntensity = Mathf.Lerp(_shockwaveIntensity, 0f, (currentDistance / _maxShockwaveDistance));
+        //        currentDistance += _shockwaveTravelSpeed * Time.deltaTime;
+
+        //        yield return null;
+        //    }
     }
 
 
     public override void TakeDamage(float damageTaken)
     {
+        Debug.Log("went here");
+
         if (isInvincible)
             return;
+
+        Debug.Log("took damage" + damageTaken);
 
         _currentHP -= damageTaken;
         float healthPercent = _currentHP / _maxHP;
@@ -279,6 +396,21 @@ public class J_BossBehaviour : Entity
         if (phaseIndex >= _phases.Length)
             return;
 
+        // Go to idle animation and reset stuff
+        if (!IsInCurrentAnimationState("Idle") && _currentPhaseIndex > 0)
+        {
+            _animator.SetBool("Ready", false);
+            _animator.SetBool("Preparing", false);
+            _animator.SetBool("Tired", false);
+
+            _leftHandFrequency = 0;
+            _rightHandFrequency = 0;
+
+            _animator.SetTrigger("Reset");
+
+            EnterState(STATE.IDLE);
+        }
+
         _currentPhaseIndex = phaseIndex;
         Phase phase = _phases[phaseIndex];
 
@@ -300,8 +432,21 @@ public class J_BossBehaviour : Entity
     private void InvokePhaseEnterEvent(int index)
     {
         // TODO: Event should differ based on which phase it is
-
         OnPhaseEnter?.Invoke(index);
+
+        // Phase 2
+        if (index == 1)
+        {
+            J_SpawnManager.Instance.UpdateItemLimit("Bug", 8);
+            J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", 8);
+            J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
+        }
+        else if (index == 2)
+        {
+            J_SpawnManager.Instance.UpdateItemLimit("Bug", 15);
+            J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", 15);
+            J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
+        }
     }
 
 
@@ -387,36 +532,56 @@ public class J_BossBehaviour : Entity
                 // Set the duration
                 _currentStateTimer = _readyDuration;
 
-
-                // Decide an attack based on the frequency and chance
-                if (_leftHandFrequency == 2)
+                // Activate both planes
+                for (int i = 0; i < _shockwavePlanes.Length; ++i)
                 {
-                    _attackingHand = HAND.RIGHT;
-                    _rightHandFrequency++;
-                    _leftHandFrequency = 0;
+                    _shockwavePlanes[i].SetActive(true);
                 }
-                else if (_rightHandFrequency == 2)
+
+                // Check the phase
+                if (_currentPhaseIndex == 1)
                 {
-                    _attackingHand = HAND.LEFT;
-                    _leftHandFrequency++;
-                    _rightHandFrequency = 0;
+                    _attackingHand = HAND.BOTH;
                 }
                 else
                 {
-                    // Weigh
-                    float leftWeight = 100f / (_leftHandFrequency + 1);
-                    float rightWeight = 100f / (_rightHandFrequency + 1);
-
-                    float rand = Random.Range(0f, leftWeight + rightWeight);
-
-                    _attackingHand = rand < leftWeight ? HAND.LEFT : HAND.RIGHT;
-
-                    if (_attackingHand == HAND.LEFT)
-                        _leftHandFrequency++;
-                    else
+                    // Decide an attack based on the frequency and chance
+                    if (_leftHandFrequency == 2)
+                    {
+                        _attackingHand = HAND.RIGHT;
                         _rightHandFrequency++;
+                        _leftHandFrequency = 0;
+                    }
+                    else if (_rightHandFrequency == 2)
+                    {
+                        _attackingHand = HAND.LEFT;
+                        _leftHandFrequency++;
+                        _rightHandFrequency = 0;
+                    }
+                    else
+                    {
+                        // Weigh
+                        float leftWeight = 100f / (_leftHandFrequency + 1);
+                        float rightWeight = 100f / (_rightHandFrequency + 1);
 
+                        float rand = Random.Range(0f, leftWeight + rightWeight);
+
+                        _attackingHand = rand < leftWeight ? HAND.LEFT : HAND.RIGHT;
+
+                        if (_attackingHand == HAND.LEFT)
+                            _leftHandFrequency++;
+                        else
+                            _rightHandFrequency++;
+
+                    }
                 }
+
+                // Disable whichever plane wasn't active
+                // Switch off the other plane
+                //if (_attackingHand == HAND.LEFT)
+                //    _shockwavePlanes[(int)HAND.RIGHT].SetActive(false);
+                //else if (_attackingHand == HAND.RIGHT)
+                //    _shockwavePlanes[(int)HAND.LEFT].SetActive(false);
 
                 // Set to preparing for animator
                 _animator.SetBool("Ready", false);
@@ -425,8 +590,6 @@ public class J_BossBehaviour : Entity
 
                 break;
             case STATE.ATTACKING:
-
-                //Debug.Log("state attacking");
 
                 _currentStateTimer = 0f;
                 _currentTimesAttacked++;
@@ -502,21 +665,21 @@ public class J_BossBehaviour : Entity
 
 
 
-    private void UpdateRigTargetPosition(Vector3 position)
-    {
-        // magic number speed for now
-        var nextPosition = position;
-        nextPosition.y = _originalLeftTargetPosition.y;
-        _leftArmTarget.position = Vector3.Lerp(_leftArmTarget.position, position, 1f);
-    }
+    //private void UpdateRigTargetPosition(Vector3 position)
+    //{
+    //    // magic number speed for now
+    //    var nextPosition = position;
+    //    nextPosition.y = _originalLeftTargetPosition.y;
+    //    _leftArmTarget.position = Vector3.Lerp(_leftArmTarget.position, position, 1f);
+    //}
 
-    public void StartTracking()
-    {
-        //_originalLeftTargetPosition = _leftArmTarget.position;
-        //_leftTargetRigWeight = 1f;
+    //public void StartTracking()
+    //{
+    //    //_originalLeftTargetPosition = _leftArmTarget.position;
+    //    //_leftTargetRigWeight = 1f;
 
-        //Debug.Log("Left arm rig: " + _leftArmRig.weight);
-    }
+    //    //Debug.Log("Left arm rig: " + _leftArmRig.weight);
+    //}
 
 
 
@@ -540,67 +703,105 @@ public class J_BossBehaviour : Entity
     }
 
 
-    private IEnumerator StartShockwave(Vector3 startPos)
+    //private IEnumerator StartShockwave(Vector3 startPos)
+    //{
+    //    float currentDistance = 0f;
+    //    float currentShockwaveIntensity = _shockwaveIntensity;
+    //    bool collidedWith = false;
+
+    //    // Continue shockwave until it reaches maximum distance
+    //    while (currentDistance <= _maxShockwaveDistance)
+    //    {
+    //        // Update the new intensity and offset
+    //        _mpb.SetFloat("_Intensity", currentShockwaveIntensity);
+    //        _mpb.SetFloat("_Offset", currentDistance);
+
+    //        // Check which hand was used to hit the ground
+    //        if (_attackingHand == HAND.LEFT)
+    //        {
+    //            Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
+    //            LFloorR.SetPropertyBlock(_mpb);
+    //        }
+    //        else if (_attackingHand == HAND.RIGHT)
+    //        {
+    //            Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
+    //            RFloorR.SetPropertyBlock(_mpb);
+    //        }
+    //        else
+    //        {
+    //            Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
+    //            LFloorR.SetPropertyBlock(_mpb);
+
+    //            Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
+    //            RFloorR.SetPropertyBlock(_mpb);
+    //        }
+
+           
+    //        // Check for actual collisions
+    //        // Outer radius --> distance multiplied by the scale of the plane
+    //        // Inner radius --> Outer radius minus the total width of the band
+    //        Vector3 planeWorldScale = _shockwavePlanes[0].transform.lossyScale;
+    //        float outerRadius = (currentDistance * planeWorldScale.x);
+    //        float innerRadius = Mathf.Max(0f, (currentDistance * planeWorldScale.x) - 1f);
+
+    //        DrawDebugCircle(startPos, outerRadius, Color.red, 36);
+    //        DrawDebugCircle(startPos, innerRadius, Color.blue, 36);
+
+    //        if (!collidedWith)
+    //        {
+    //            // There is only one player
+    //            Collider[] hits = Physics.OverlapSphere(startPos, outerRadius, _playerLayer);
+
+    //            for (int i = 0; i < hits.Length; ++i)
+    //            {
+    //                if (!hits[i].TryGetComponent<GroundChecker>(out GroundChecker groundCheck))
+    //                    continue;
+
+    //                // Check if grounded first
+    //                if (!groundCheck.IsGrounded())
+    //                    break;
+
+    //                // Check distance from center of shockwave and check if hit the shockwave
+    //                if ((startPos - hits[i].gameObject.transform.position).magnitude > innerRadius)
+    //                {
+    //                    hits[i].GetComponent<Entity>().TakeDamage(_shockwaveDamage);
+    //                    Debug.Log("Player was hit by the shockwave!");
+    //                    collidedWith = true;
+    //                    break;
+    //                }
+    //            }
+    //        }
+
+    //        // Increase the shockwave intensity
+    //        currentShockwaveIntensity = Mathf.Lerp(_shockwaveIntensity, 0f, (currentDistance / _maxShockwaveDistance));
+    //        currentDistance += _shockwaveTravelSpeed * Time.deltaTime;
+
+    //        yield return null;
+    //    }
+    //}
+
+    private IEnumerator StartShockwaveForExternal(Vector3 startPos)
     {
         float currentDistance = 0f;
         float currentShockwaveIntensity = _shockwaveIntensity;
 
-        bool collidedWith = false;
-
-        J_ShockwaveCheck.CheckForShockwave = true;
-
         // Continue shockwave until it reaches maximum distance
         while (currentDistance <= _maxShockwaveDistance)
         {
+            // Set the shockwave variables for all of the materials
             for (int i = 0; i < _shockwaveAffectedGameObjects.Length; ++i)
             {
                 Renderer r = _shockwaveAffectedGameObjects[i].GetComponent<Renderer>();
 
                 _mpb.SetFloat("_Intensity", currentShockwaveIntensity);
-
-                //Debug.Log(currentDistance);
-
                 _mpb.SetFloat("_Offset", currentDistance);
                 r.SetPropertyBlock(_mpb);
             }
 
-            currentShockwaveIntensity = Mathf.Lerp(_shockwaveIntensity, 0f, (currentDistance / _maxShockwaveDistance));
-            currentDistance += _shockwaveTravelSpeed * Time.deltaTime;
-
-            // magic number..., takes (total offset to reach end of plane divided by object space plane units, 5 is the max length of the plane basically)
-            // Draw debug ray to visualise where the shockwave is meant to be travelling
-            DrawDebugCircle(startPos, currentDistance * 3f, Color.red, 36);
-
-            if (!collidedWith)
-            {
-                Collider[] hits = Physics.OverlapSphere(startPos, currentDistance * 3f, _playerLayer);
-
-                //Debug.Log(hits.Length);
-
-                for (int i = 0; i < hits.Length; ++i)
-                {
-                    // Check distance from center of shockwave
-                    if ((startPos - hits[i].gameObject.transform.position).magnitude < currentDistance * 3f)
-                    {
-                        // Check if groundCheck is true
-                        if (J_ShockwaveCheck.TouchingShockwave)
-                        {
-                            Debug.Log("shockwave hit player");
-                            collidedWith = true;
-                            J_ShockwaveCheck.CheckForShockwave = false;
-                        }
-                    }
-                }
-            }
-
-            J_ShockwaveCheck.CheckForShockwave = false;
-
-            //Colliders[] hits = Physics2D.OverlapCircleAll(startPos, currentDistance * 3f);
-
-
             yield return null;
         }
     }
+
 
     private IEnumerator DrawPoint(Vector3 pos)
     {
@@ -613,6 +814,40 @@ public class J_BossBehaviour : Entity
             yield return null;
         }
     }
+
+    private bool IsInCurrentAnimationState(string stateName)
+    {
+        return _animator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
+    }
+
+    private bool IsCurrentAnimationReadyForNextStep(string name)
+    {
+        // Check if the current animation has played enough to transition
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        return stateInfo.normalizedTime >= 0.7f && stateInfo.IsName(name); // Adjust based on when you want to allow transitions
+    }
+
+    private bool IsCurrentAnimationEnded(string name)
+    {
+        // Check if the current animation has played enough to transition
+        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+
+        return stateInfo.normalizedTime >= 0.95f && stateInfo.IsName(name); // Adjust based on when you want to allow transitions
+    }
+
+
+
+    // DEBUG
+    [ContextMenu("Start Next Phase")]
+    public void StartNextPhase()
+    {
+        if (_currentPhaseIndex >= _phases.Length)
+            return;
+
+        _currentPhaseIndex++;
+        EnterPhase(_currentPhaseIndex);
+    } 
 
 
     // HELPER DEBUG FUNCTION, NOT MINE, WILL REMOVE LATER

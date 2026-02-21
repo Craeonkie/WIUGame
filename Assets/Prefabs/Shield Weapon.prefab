@@ -157,17 +157,21 @@ MonoBehaviour:
   image: {fileID: 0}
   description: 
   primary:
-  - damage: 0
-    hasRootMotion: 0
+  - damage: 50
+    durabilityUsage: 0
+    hasRootMotion: 1
     pressAndHold: 0
-    animationClip: {fileID: 0}
+    isBlock: 0
+    animationClip: {fileID: -203655887218126122, guid: 907b7ef252fda914c97d880d03d58452, type: 3}
     audioClip: {fileID: 0}
+  secondary:
   - damage: 0
+    durabilityUsage: 0
     hasRootMotion: 0
-    pressAndHold: 0
-    animationClip: {fileID: 0}
+    pressAndHold: 1
+    isBlock: 1
+    animationClip: {fileID: -203655887218126122, guid: 39763a1d73342bd449e8cff3448420ae, type: 3}
     audioClip: {fileID: 0}
-  secondary: []
   special: []
   _isActing: 0
   _resetAnimationChain: 0

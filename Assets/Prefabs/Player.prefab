@@ -374,6 +374,7 @@ GameObject:
   - component: {fileID: 1290997347254470159}
   - component: {fileID: 1460979920249857210}
   - component: {fileID: 1553649365783582977}
+  - component: {fileID: 7920285744145684585}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -454,7 +455,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726483694392687998}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1911a75d7b0fe854694677f4c81a76a2, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -466,7 +467,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.25
+  m_Radius: 0.3
   m_Height: 1.25
   m_Direction: 1
   m_Center: {x: 0, y: 0.625, z: 0}
@@ -516,7 +517,7 @@ MonoBehaviour:
   _extraSphereCastHeight: 0.01
   groundLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 4294967295
   _player: {fileID: 1726483694392687998}
   _radius: 0.25
   _isGrounded: 0
@@ -544,15 +545,20 @@ MonoBehaviour:
   isInvincible: 0
   isDodging: 0
   _animationHasReset: 0
+  _hasDamageFlicker: 1
   _playerInput: {fileID: 1530283421745691673}
   _jumpPower: 5
   _maxSpeed: 4
   _rollSpeed: 3
   myRigidbody: {fileID: 2774589472689015783}
-  cameraTarget: {fileID: 0}
-  playerRotationSpeed: 480
   rollDuration: 1
   landDuration: 0.8
+  playerRotationSpeed: 480
+  followCameraTarget: {fileID: 0}
+  thirdPersonCameraTarget: {fileID: 0}
+  mouseRotationScripts:
+  - {fileID: 7920285744145684585}
+  - {fileID: 7752284483529489912}
   _currentStunDuration: 0
   _isStunned: 0
   interactablesLayer:
@@ -566,8 +572,12 @@ MonoBehaviour:
   _animator: {fileID: 1655364016630561569}
   _isJumping: 0
   _isRolling: 0
+  _isMovingObject: 0
+  _isHoldingItem: 0
   _canAct: 1
+  _primingThrow: 0
   _wasGroundedPreviously: 0
+  _itemBeingMoved: {fileID: 0}
 --- !u!114 &3259785618068131602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -580,8 +590,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16688ed2a2b3e02468eac2f6dcdc52f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rightHandSlot: {fileID: 5322012954972354777}
-  _leftHandSlot: {fileID: 2050536229429137288}
+  _weaponSlot: {fileID: 5322012954972354777}
+  _secondaryItemSlot: {fileID: 4738615355534829651}
   _primaryItem: {fileID: 0}
   _secondaryItem: {fileID: 0}
   _currentItem: {fileID: 0}
@@ -598,12 +608,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimationHandler
   _crossFadeDuration: 0.1
+  _myRigidbody: {fileID: 2774589472689015783}
   _animator: {fileID: 1655364016630561569}
   _audioSource: {fileID: 1460979920249857210}
   _currentItem: {fileID: 0}
   _isActing: 0
   _canMove: 0
-  _isHoldingItem: 0
+  _wasHoldingItem: 0
+  _letAnimationFinish: 0
 --- !u!82 &1460979920249857210
 AudioSource:
   m_ObjectHideFlags: 0
@@ -754,6 +766,26 @@ MonoBehaviour:
     DissipationDistance: 100
     PropagationSpeed: 343
   DefaultVelocity: {x: 0, y: -1, z: 0}
+--- !u!114 &7920285744145684585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726483694392687998}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b99fa28e2736ae749a3d04f7b70ef18d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 1530283421745691673}
+  rotateUpDown: 0
+  rotateLeftRight: 1
+  clampLimitUp: 90
+  clampLimitDown: 90
+  upDownSensitivity: 0.1
+  leftRightSensitivity: 0.1
+  lockCursor: 1
 --- !u!1 &1786139035263192419
 GameObject:
   m_ObjectHideFlags: 0
@@ -975,37 +1007,6 @@ Transform:
   - {fileID: 7445379751367227682}
   m_Father: {fileID: 7167900418042307492}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2050536229429137288
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1047193305372302838}
-  m_Layer: 0
-  m_Name: Left Hand Slot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1047193305372302838
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2050536229429137288}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.03, z: 0.03}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 198430010899479488}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!1 &2075888399939469727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1564,7 +1565,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 260197018018734791}
-  - {fileID: 1047193305372302838}
   m_Father: {fileID: 8677769747551284949}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3273131695733712291
@@ -2326,6 +2326,37 @@ Transform:
   - {fileID: 3287670280875942317}
   m_Father: {fileID: 2062031690733264619}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4738615355534829651
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7591713661692347850}
+  m_Layer: 0
+  m_Name: Secondary Item Slot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7591713661692347850
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4738615355534829651}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: -0, z: 0.26}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2495419532665658079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &4802861318567262673
 GameObject:
   m_ObjectHideFlags: 0
@@ -2372,7 +2403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInput: {fileID: 1530283421745691673}
   rotateUpDown: 1
-  rotateLeftRight: 1
+  rotateLeftRight: 0
   clampLimitUp: 90
   clampLimitDown: 90
   upDownSensitivity: 0.1
@@ -4609,6 +4640,7 @@ Transform:
   m_Children:
   - {fileID: 4629628404945393979}
   - {fileID: 2766485387116112812}
+  - {fileID: 7591713661692347850}
   m_Father: {fileID: 3298943181224373794}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8365893709810592927

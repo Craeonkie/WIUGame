@@ -1,6 +1,6 @@
 using System.Collections;
 using TMPro;
-using Unity.Cinemachine;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -25,6 +25,7 @@ public class J_BugBehaviour : Entity
     [SerializeField] private NavMeshAgent _navMeshAgent;
     [SerializeField] private BoxCollider _jumpableBoxCollider;
     [SerializeField] private PlayerController _player;
+    private bool _onNavMeshLink = false;
     private Material _dissolveMat;
 
     [Header("State Times")]
@@ -32,6 +33,8 @@ public class J_BugBehaviour : Entity
 
     [Header("Settings")]
     [SerializeField] private float _damage;
+    [SerializeField] private float _jumpDuration = 0.8f;
+    public System.Action OnLand, OnStartJump;
     [SerializeField] private float _lifetime = 0f;
     [SerializeField] private float _durationBeforeDestroy = 0f;
     [SerializeField] private float _minimumAttackDistance = 2f;
@@ -45,16 +48,53 @@ public class J_BugBehaviour : Entity
 
     private void OnEnable()
     {
-    }
+        if (_player == null)
+            _player = FindAnyObjectByType<PlayerController>();
 
-    private void OnDisable()
-    {
+        // timers + state
+        _currentLifeTimer = _lifetime;
+        _currentStateTimer = 0f;
+        _state = STATE.IDLE;
+
+        // reset nav / physics / colliders
+        if (_navMeshAgent != null)
+        {
+            _navMeshAgent.enabled = true;
+            _navMeshAgent.isStopped = false;
+            _navMeshAgent.autoTraverseOffMeshLink = false;
+            _navMeshAgent.ResetPath();
+        }
+
+        var cc = GetComponent<CapsuleCollider>();
+        if (cc) cc.enabled = true;
+
+        var rb = GetComponent<Rigidbody>();
+        if (rb)
+        {
+            rb.useGravity = true;
+            rb.linearVelocity = Vector3.zero;
+        }
+
+        _onNavMeshLink = false;
+
+        // reset dissolve so it’s visible again
+        if (_dissolveMat != null)
+            _dissolveMat.SetFloat("_Amount", 0f);
+
+        // start fresh
+        EnterState(STATE.IDLE);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
+        _navMeshAgent.autoTraverseOffMeshLink = false;
         _dissolveMat = GetComponentInChildren<Renderer>().material;
+
+        if (_player == null)
+        {
+            _player = FindAnyObjectByType<PlayerController>();
+        }
 
         _currentLifeTimer = _lifetime;
         EnterState(STATE.IDLE);
@@ -77,6 +117,14 @@ public class J_BugBehaviour : Entity
 
 
         UpdateState();
+    }
+
+    public void SetDestination(Vector3 destination)
+    {
+        if (_onNavMeshLink)
+            return;
+
+        _navMeshAgent.destination = destination;
     }
 
     public override void TakeDamage(float damageTaken)
@@ -125,12 +173,6 @@ public class J_BugBehaviour : Entity
 
                 break;
             case STATE.DEAD:
-
-                _navMeshAgent.enabled = false;
-
-                CapsuleCollider cc = GetComponent<CapsuleCollider>();
-                cc.enabled = false;
-
                 // Switch off RB and colliders
                 Rigidbody rb = GetComponent<Rigidbody>();
                 if (rb != null)
@@ -139,7 +181,10 @@ public class J_BugBehaviour : Entity
                     rb.linearVelocity = Vector3.zero;
                 }
 
-                
+                _navMeshAgent.enabled = false;
+
+                CapsuleCollider cc = GetComponent<CapsuleCollider>();
+                cc.enabled = false;
 
                 // Start coroutine before being destroyed
                 StartCoroutine(DelayBeforeDestroy());
@@ -172,6 +217,15 @@ public class J_BugBehaviour : Entity
 
                 // Chase the player
                 _navMeshAgent.SetDestination(_player.transform.position);
+
+                if (_navMeshAgent.isOnOffMeshLink && _onNavMeshLink == false)
+                {
+                    Debug.Log("starting nav mesh link movement");
+                    StartNavMeshLinkMovement();
+                }
+
+                if (_onNavMeshLink)
+                    FaceTarget(_navMeshAgent.currentOffMeshLinkData.endPos);
 
                 // Attack player when close enough
                 if ((_player.transform.position - transform.position).magnitude <= _minimumAttackDistance)
@@ -223,7 +277,9 @@ public class J_BugBehaviour : Entity
             yield return null;
         }
 
-        Destroy(gameObject);
+        // Release
+        J_SpawnManager.Instance.Release("Bug", gameObject);
+        J_SpawnManager.Instance.SpawnAtPosition("ThrowableBug", transform.position);
     }
 
     // Check for player jump
@@ -255,6 +311,75 @@ public class J_BugBehaviour : Entity
              // TODO: PLAY CRUNCHING AUDIO
         }
     }
+
+    private void FaceTarget(Vector3 target)
+    {
+        Vector3 direction = (target - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+    }
+
+    private void StartNavMeshLinkMovement()
+    {
+        Debug.Log("starting nav mesh link");
+
+        _onNavMeshLink = true;
+        NavMeshLink link = (NavMeshLink)_navMeshAgent.navMeshOwner;
+        J_Spline spline = link.GetComponentInChildren<J_Spline>();
+
+        PerformJump(link, spline);
+    }
+
+    private void PerformJump(NavMeshLink link, J_Spline spline)
+    {
+        Debug.Log("jump!");
+
+        bool reverseDirection = CheckIfJumpingFromEndToStart(link);
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        StartCoroutine(MoveOnOffMeshLink(spline, reverseDirection));
+
+        OnStartJump?.Invoke();
+    }
+
+    private bool CheckIfJumpingFromEndToStart(NavMeshLink link)
+    {
+        Vector3 startWorldPos = link.gameObject.transform.TransformPoint(link.startPoint);
+        Vector3 endPosWorld = link.gameObject.transform.TransformPoint(link.endPoint);
+
+        float distancePlayerToStart = Vector3.Distance(_navMeshAgent.transform.position, startWorldPos);
+        float distancePlayerToEnd = Vector3.Distance(_navMeshAgent.transform.position, endPosWorld);
+
+        return distancePlayerToStart > distancePlayerToEnd;
+    }
+
+    private IEnumerator MoveOnOffMeshLink(J_Spline spline, bool reverseDirection)
+    {
+        float currentTime = 0f;
+        Vector3 agentStartPosition = _navMeshAgent.transform.position;
+
+        while (currentTime < _jumpDuration)
+        {
+            currentTime += Time.deltaTime;
+
+            float amount = Mathf.Clamp01(currentTime / _jumpDuration);
+            amount = reverseDirection ? 1 - amount : amount;
+
+            _navMeshAgent.transform.position = reverseDirection ? spline.CalculatePositionCustomEnd(amount, agentStartPosition) : spline.CalculatePositionCustomStart(amount, agentStartPosition);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        _navMeshAgent.CompleteOffMeshLink();
+        OnLand?.Invoke();
+        yield return new WaitForSeconds(0.1f);
+        _onNavMeshLink = false;
+
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.useGravity = true;
+    }
+
 
     private void OnDrawGizmos()
     {
