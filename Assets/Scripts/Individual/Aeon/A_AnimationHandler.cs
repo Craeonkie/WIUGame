@@ -14,6 +14,7 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private float _crossFadeDuration;
 
     [Header("Other scripts of note")]
+    [SerializeField] private Rigidbody _myRigidbody;
     [SerializeField] private Animator _animator;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Item _currentItem;
@@ -23,7 +24,7 @@ public class AnimationHandler : MonoBehaviour
     // If the player may walk and such
     [SerializeField] private bool _canMove;
     // To handle returning to idle when the player is suddenly no longer holding an item
-    [SerializeField] private bool _isHoldingItem;
+    [SerializeField] private bool _wasHoldingItem;
     [SerializeField] private bool _letAnimationFinish;
 
     private bool _holdingPrimary;
@@ -56,12 +57,12 @@ public class AnimationHandler : MonoBehaviour
             _pressedSecondary = false;
             _pressedSpecial = false;
 
-            _isHoldingItem = true;
+            _wasHoldingItem = true;
         }
         // If the player was holding an item the previous frame but there isn't one anymore, return to idle
-        else if (_isHoldingItem && !_letAnimationFinish)
+        else if (_wasHoldingItem && !_letAnimationFinish)
         {
-            _isHoldingItem = false;
+            _wasHoldingItem = false;
             _currentItem = null;
             GoBackToIdle();
         }
@@ -73,9 +74,16 @@ public class AnimationHandler : MonoBehaviour
 
         if (!_currentAnimation.pressAndHold && stateInfo.normalizedTime >= 1.0f && !_animator.IsInTransition(0) && _isActing)
         {
-            _isActing = false;
+            if (_letAnimationFinish)
+            {
+                _letAnimationFinish = false;
+                _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 0);
+            }
+            if (_isActing)
+            {
+                GoBackToIdle();
+            }
             _canMove = true;
-            _letAnimationFinish = false;
         }
     }
 
@@ -87,6 +95,7 @@ public class AnimationHandler : MonoBehaviour
         string animationClipName = currentAnimation.animationClip.name;
         _canMove = false;
         _animator.applyRootMotion = currentAnimation.hasRootMotion;
+        _myRigidbody.isKinematic = true;
 
         _animator.CrossFadeInFixedTime(animationClipName, _crossFadeDuration, 0);
 
@@ -99,13 +108,14 @@ public class AnimationHandler : MonoBehaviour
     // Returns the animator state to idle
     public void GoBackToIdle()
     {
-        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") && !_animator.GetNextAnimatorStateInfo(0).IsName("Idle"))
+        if (_isActing)
         {
             _animator.CrossFadeInFixedTime("Idle", _crossFadeDuration, 0);
         }
         _isActing = false;
         _canMove = true;
         _animator.applyRootMotion = false;
+        _myRigidbody.isKinematic = false;
     }
 
     public bool CanMove()
