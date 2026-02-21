@@ -54,9 +54,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1032
   _oriCD: 1
-  _warningDecalPrefab: {fileID: 6396832995030542768, guid: 4149e6cd4fff05548b1e688dd84dfce2, type: 3}
-  _maxWarningDistance: 17.5
-  _decalRenderer: {fileID: 0}
+  _maxWarningDistance: 25
 --- !u!54 &4681065777030318300
 Rigidbody:
   m_ObjectHideFlags: 0

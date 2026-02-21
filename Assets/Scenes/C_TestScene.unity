@@ -3749,6 +3749,9 @@ MonoBehaviour:
   isDodging: 0
   _animationHasReset: 0
   _hasDamageFlicker: 0
+  hitAudio: []
+  deathAudio: {fileID: 0}
+  audioSource: {fileID: 0}
   _Agent: {fileID: 389483826}
   _PlayerTransform: {fileID: 240002232}
   _Animator: {fileID: 389483827}
@@ -3797,7 +3800,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16688ed2a2b3e02468eac2f6dcdc52f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Inventory
-  _rightHandSlot: {fileID: 517282567}
+  _weaponSlot: {fileID: 0}
+  _secondaryItemSlot: {fileID: 0}
   _primaryItem: {fileID: 0}
   _secondaryItem: {fileID: 0}
   _currentItem: {fileID: 0}
@@ -3825,6 +3829,9 @@ MonoBehaviour:
   isDodging: 0
   _animationHasReset: 0
   _hasDamageFlicker: 0
+  hitAudio: []
+  deathAudio: {fileID: 0}
+  audioSource: {fileID: 0}
   _Animator: {fileID: 389483827}
   _IdleName: idle
   _RedCupParent: {fileID: 160971566}
@@ -3923,9 +3930,10 @@ MonoBehaviour:
   _FallObjPrefab: {fileID: 539846681659341996, guid: 7bffc558a8c73b345a0b88467da65314, type: 3}
   _MinSpawn: 10
   _MaxSpawn: 17
+  _warningDecalPrefab: {fileID: 6396832995030542768, guid: 4149e6cd4fff05548b1e688dd84dfce2, type: 3}
   _MinNumberOfRound: 3
   _MaxNumberOfRound: 6
-  _MixTimeCDBetweenRound: 10
+  _MinTimeCDBetweenRound: 10
   _MaxTimeCDBetweenRound: 15
   _AddTimeOffSet: 5
 --- !u!1 &409228566
