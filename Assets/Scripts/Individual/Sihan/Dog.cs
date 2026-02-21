@@ -65,6 +65,7 @@ public class Dog : MonoBehaviour
     private NavMeshAgent agent;
     [SerializeField] private bool canAttack;
     [SerializeField] private bool _canMove;
+    [SerializeField] private float _rotationDamping;
     public bool canMove { get => _canMove; set => _canMove = value; }
 
     void Start()
@@ -427,7 +428,8 @@ public class Dog : MonoBehaviour
                         float targetRotate = Mathf.Clamp(angle / 90f, -maxRotate / 90f, maxRotate / 90f);
 
                         currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
-                        transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime, 0);
+                        float damping = Mathf.Clamp01(Mathf.Abs(angle) / _rotationDamping);
+                        transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime * damping, 0);
 
                         float rotationOffset = 90f * currentRotate;
                         Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
@@ -571,9 +573,10 @@ public class Dog : MonoBehaviour
 
                         float angle = Vector3.SignedAngle(transform.forward, dashDirection, Vector3.up);
                         float targetRotate = Mathf.Clamp(angle / 90f, -maxRotate / 90f, maxRotate / 90f);
-                        currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
 
-                        transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime, 0);
+                        currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
+                        float damping = Mathf.Clamp01(Mathf.Abs(angle) / _rotationDamping);
+                        transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime * damping, 0);
 
                         float rotationOffset = 90f * currentRotate;
                         Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
@@ -661,12 +664,13 @@ public class Dog : MonoBehaviour
                                 float targetRotate = Mathf.Clamp(angle / 90f, -maxRotate / 90f, maxRotate / 90f);
 
                                 currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
-                                transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime * 2, 0);
+                                float damping = Mathf.Clamp01(Mathf.Abs(angle) / _rotationDamping);
+                                transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime * 3 * damping, 0);
 
                                 float rotationOffset = 90f * currentRotate;
                                 Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
 
-                                dogController.Move(adjustedForward * currentSpeed * speed * 3 * Time.deltaTime);
+                                dogController.Move(adjustedForward * currentSpeed * speed * 2 * Time.deltaTime);
                                 agent.nextPosition = transform.position;
 
                                 animator.SetFloat("Turn", Mathf.Abs(currentRotate));
@@ -698,14 +702,15 @@ public class Dog : MonoBehaviour
 
                             float angle = Vector3.SignedAngle(transform.forward, dashDirection, Vector3.up);
                             float targetRotate = Mathf.Clamp(angle / 90f, -maxRotate / 90f, maxRotate / 90f);
-                            currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
 
-                            transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime * 1.5f, 0);
+                            currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
+                            float damping = Mathf.Clamp01(Mathf.Abs(angle) / _rotationDamping);
+                            transform.Rotate(0, currentRotate * baseRotateMultiplier * rotateMultiplier * 90 * Time.deltaTime * 1.5f * damping, 0);
 
                             float rotationOffset = 90f * currentRotate;
                             Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
 
-                            dogController.Move(adjustedForward * currentSpeed * speed * 3 * Time.deltaTime);
+                            dogController.Move(adjustedForward * currentSpeed * speed * 2 * Time.deltaTime);
                             agent.nextPosition = transform.position;
 
                             animator.SetFloat("Turn", Mathf.Abs(currentRotate));
