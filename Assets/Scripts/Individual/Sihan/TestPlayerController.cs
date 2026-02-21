@@ -112,7 +112,13 @@ public class TestPlayerController : MonoBehaviour
 
     public void SetPlayerToTransform(Transform anchor)
     {
+        characterController.enabled = false;
+
+        characterController.transform.position = anchor.position;
+        characterController.transform.rotation = anchor.rotation;
         transform.position = anchor.position;
         transform.rotation = anchor.rotation;
+
+        characterController.enabled = true;
     }
 }

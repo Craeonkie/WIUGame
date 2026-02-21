@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4aa407d4f23ddd94899aab17b250117b
+guid: 862a04a5ca8e1044b905b2fd4048afc8
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Prep Attack
+      name: Hit
       takeName: Take 001
       internalID: 1827226128182048838
       firstFrame: 1
-      lastFrame: 144
+      lastFrame: 18
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -54,14 +54,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.41824296
-        functionName: SetAttackReady
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
