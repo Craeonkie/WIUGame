@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/J_MonsterScene.unity
     guid: 64c0281ded116fd4c9fd3d87ee6ddc46
   - enabled: 1
-    path: Assets/Scenes/J_RestScene.unity
+    path: Assets/Scenes/A_RestScene.unity
     guid: 038b4076a866b6142aa713a097291c15
   - enabled: 1
     path: Assets/Scenes/S_DogScene.unity

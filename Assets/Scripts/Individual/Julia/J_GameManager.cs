@@ -34,7 +34,8 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     
     private string _currentScene;
 
-    private Dictionary<Level, bool> _visitedScenes = new Dictionary<Level, bool>();
+    //private Dictionary<Level, bool> _visitedScenes = new Dictionary<Level, bool>();
+    private Dictionary<string, bool> _completedStages = new Dictionary<string, bool>();
 
     private void Awake()
     {
@@ -51,30 +52,59 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     private void Start()
     {
         // Initialise dictionary
-        _visitedScenes.Add(new Level(MENU_SCENE, 0), false);
-        _visitedScenes.Add(new Level(DOG_SCENE, 2), false);
-        _visitedScenes.Add(new Level(KID_SCENE, 2), false);
-        _visitedScenes.Add(new Level(MONSTER_SCENE, 3), false);
-        _visitedScenes.Add(new Level(REST_SCENE, 0), false);
+        //_visitedScenes.Add(new Level(MENU_SCENE, 0), false);
+        //_visitedScenes.Add(new Level(DOG_SCENE, 2), false);
+        //_visitedScenes.Add(new Level(KID_SCENE, 2), false);
+        //_visitedScenes.Add(new Level(MONSTER_SCENE, 3), false);
+        //_visitedScenes.Add(new Level(REST_SCENE, 0), false);
+
+        _completedStages.Add(MENU_SCENE, false);
+        _completedStages.Add(DOG_SCENE, false);
+        _completedStages.Add(KID_SCENE, false);
+        _completedStages.Add(MONSTER_SCENE, false);
+        _completedStages.Add(REST_SCENE, false);
     }
 
     public void SetCurrentScene(string scene)
     {
         // Find the key
+        if (!_completedStages.ContainsKey(scene))
+            return;
+
+        // Visit current scene
+        _completedStages[scene] = true;
     }
 
-    public void UpdateScenePhase(string sceneName, int phaseNumber)
+    public bool IsSceneVisited(string scene)
     {
+        if (!_completedStages.ContainsKey(scene))
+            return false;
 
+        return _completedStages[scene];
     }
+
+    //public void UpdateScenePhase(string sceneName, int phaseNumber)
+    //{
+
+    //}
 
     public void LoadData(J_GameData data)
     {
-        throw new System.NotImplementedException();
+        _currentScene = data.currentStage;
+        _completedStages[MENU_SCENE] = data.completedStages[MENU_SCENE];
+        _completedStages[DOG_SCENE] = data.completedStages[DOG_SCENE];
+        _completedStages[KID_SCENE] = data.completedStages[KID_SCENE];
+        _completedStages[MONSTER_SCENE] = data.completedStages[MONSTER_SCENE];
+        _completedStages[REST_SCENE] = data.completedStages[REST_SCENE];
     }
 
     public void SaveData(ref J_GameData data)
     {
-        throw new System.NotImplementedException();
+        data.currentStage = _currentScene;
+        data.completedStages[MENU_SCENE] = _completedStages[MENU_SCENE];
+        data.completedStages[DOG_SCENE] = _completedStages[DOG_SCENE];
+        data.completedStages[KID_SCENE] = _completedStages[KID_SCENE];
+        data.completedStages[MONSTER_SCENE] = _completedStages[MONSTER_SCENE];
+        data.completedStages[REST_SCENE] = _completedStages[REST_SCENE];
     }
 }

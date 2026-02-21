@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4dd6ef41007f9a489c6d4918ec18a70, type: 3}
-  m_Name: MonsterData
-  m_EditorClassIdentifier: Assembly-CSharp::EntityData
-  _maxHP: 100
-  _spawnPoint: {x: 0, y: 0, z: 0}
+  m_Script: {fileID: 11500000, guid: 47b5d2c4660425c4496ba88445c713fa, type: 3}
+  m_Name: GarbageManager
+  m_EditorClassIdentifier: Assembly-CSharp::GarbageManager
+  _isUIOpen: 0
+  _isMenuOpen: 0

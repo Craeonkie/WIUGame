@@ -22,6 +22,8 @@ public class J_DataPersistenceManager : MonoBehaviour
             Debug.LogError("Found more than one Data Persistence Manager in the scene");
         }
         instance = this;
+
+        DontDestroyOnLoad(instance);
     }
 
     private void Start()

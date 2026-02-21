@@ -85,10 +85,6 @@ public class J_BugBehaviour : Entity
         EnterState(STATE.IDLE);
     }
 
-    private void OnDisable()
-    {
-    }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
@@ -177,12 +173,6 @@ public class J_BugBehaviour : Entity
 
                 break;
             case STATE.DEAD:
-
-                _navMeshAgent.enabled = false;
-
-                CapsuleCollider cc = GetComponent<CapsuleCollider>();
-                cc.enabled = false;
-
                 // Switch off RB and colliders
                 Rigidbody rb = GetComponent<Rigidbody>();
                 if (rb != null)
@@ -191,7 +181,10 @@ public class J_BugBehaviour : Entity
                     rb.linearVelocity = Vector3.zero;
                 }
 
-                
+                _navMeshAgent.enabled = false;
+
+                CapsuleCollider cc = GetComponent<CapsuleCollider>();
+                cc.enabled = false;
 
                 // Start coroutine before being destroyed
                 StartCoroutine(DelayBeforeDestroy());
@@ -284,7 +277,9 @@ public class J_BugBehaviour : Entity
             yield return null;
         }
 
+        // Release
         J_SpawnManager.Instance.Release("Bug", gameObject);
+        J_SpawnManager.Instance.SpawnAtPosition("ThrowableBug", transform.position);
     }
 
     // Check for player jump
