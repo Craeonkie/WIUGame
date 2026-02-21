@@ -52,9 +52,11 @@ public class PlayerController : Entity
     private Vector2 _inputMove;
     [SerializeField] private bool _isJumping = false;
     [SerializeField] private bool _isRolling = false;
+    [SerializeField] private bool _isMovingItem = false;
     [SerializeField] private bool _canAct = true;
     [SerializeField] private bool _primingThrow = false;
     [SerializeField] private bool _wasGroundedPreviously = false;
+    [SerializeField] private GameObject _itemBeingMoved;
 
     protected override void Start()
     {
@@ -114,7 +116,7 @@ public class PlayerController : Entity
         if (!_isStunned)
         {
             // Handle rotation
-            if (isMoving && !_primingThrow && !_isRolling && _currentLandTimer <= 0)
+            if (isMoving && !_isMovingItem && !_primingThrow && !_isRolling && _currentLandTimer <= 0)
             {
                 Quaternion cameraYawOnly = Quaternion.Euler(0, followCameraTarget.transform.eulerAngles.y, 0);
                 Vector3 cameraForward = cameraYawOnly * Vector3.forward;
@@ -132,14 +134,14 @@ public class PlayerController : Entity
             if (isGrounded && !_isJumping)
             {
                 // Jumping
-                if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_primingThrow)
+                if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_primingThrow && !_isMovingItem)
                 {
                     _isJumping = true;
                     _isRolling = false;
                     myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
                 }
                 // Rolling
-                else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_isRolling && !_primingThrow)
+                else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_isRolling && !_primingThrow && !_isMovingItem)
                 {
                     _animator.SetTrigger("IsRolling");
                     _currentRollTimer = rollDuration;
@@ -150,7 +152,7 @@ public class PlayerController : Entity
             }
             
             // Reenable ability to act if player is not midair and not rolling
-            if (isGrounded && !_isRolling)
+            if (isGrounded && !_isRolling && !_isMovingItem)
             {
                 _canAct = true;
             }
@@ -167,14 +169,14 @@ public class PlayerController : Entity
                 }
 
                 // Always move forward
-                if (!_primingThrow)
+                if (!_primingThrow && !myRigidbody.isKinematic)
                 {
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
                     Vector3 moveVelocity = transform.forward * _currentSpeed;
                     myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
                 }
                 // Move according to camera forward
-                else
+                else if (!myRigidbody.isKinematic)
                 {
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
 
@@ -343,6 +345,7 @@ public class PlayerController : Entity
             _animator.SetTrigger("IsJumping");
             _isJumping = false;
         }
+        _animator.SetBool("IsMovingItem", _isMovingItem);
         _animator.SetFloat("Y Velocity", myRigidbody.linearVelocity.y);
         if (inventory.ReturnCurrentItem() == inventory.ReturnSecondaryItem() && inventory.ReturnCurrentItem() != null)
         {
@@ -404,6 +407,26 @@ public class PlayerController : Entity
     public virtual void StopAiming()
     {
         _primingThrow = false;
+        ResetCamera();
+        thirdPersonCameraTarget.SetActive(false);
+        followCameraTarget.SetActive(true);
+        foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
+        {
+            mouseRotationScript.enabled = false;
+        }
+    }
+
+    // Start pushing an item
+    public virtual void StartMovingItem(GameObject itemBeingMoved)
+    {
+        _isMovingItem = true;
+        _itemBeingMoved = itemBeingMoved;
+    }
+
+    // Stop pushing an item
+    public virtual void StopMovingItem()
+    {
+        _isMovingItem = false;
         ResetCamera();
         thirdPersonCameraTarget.SetActive(false);
         followCameraTarget.SetActive(true);

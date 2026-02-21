@@ -16,6 +16,9 @@ public class ThrowableItem : Item
     [SerializeField] protected bool isInFlight = false;
     AnimatorStateInfo animatorStateInfo;
 
+    [Header("Simulate Trajectory")]
+    [SerializeField] private C_TrajectorySimulation _projection;
+
     // Update is called once per frame
     protected new void Update()
     {
@@ -38,6 +41,15 @@ public class ThrowableItem : Item
                     gameObject.SetActive(false);
                 }
             }
+        }
+    }
+
+    protected void FixedUpdate()
+    {
+        // Simulate trajectory
+        if (isAiming)
+        {
+            //_projection.SimulateTrajectory(_entityUsingItem.transform.forward * throwPowerForward + _entityUsingItem.transform.up * throwPowerUp);
         }
     }
 
@@ -106,8 +118,7 @@ public class ThrowableItem : Item
         // Position and add force to the item
         transform.position += _entityUsingItem.transform.forward * throwDistanceForward;
         rb.linearVelocity = Vector3.zero;
-        rb.AddForce(_entityUsingItem.transform.forward * throwPowerForward, ForceMode.Impulse);
-        rb.AddForce(_entityUsingItem.transform.up * throwPowerUp, ForceMode.Impulse);
+        rb.AddForce(_entityUsingItem.transform.forward * throwPowerForward + _entityUsingItem.transform.up * throwPowerUp, ForceMode.Impulse);
 
         // Make animation handler stop equipping it, then stop referencing it
         _animationHandler.UnequipItemButFinishAnimation();

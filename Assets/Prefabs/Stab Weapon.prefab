@@ -338,7 +338,21 @@ MonoBehaviour:
   itemName: 
   image: {fileID: 0}
   description: 
-  primary: []
+  primary:
+  - damage: 20
+    durabilityUsage: 0
+    hasRootMotion: 0
+    pressAndHold: 0
+    isBlock: 0
+    animationClip: {fileID: -203655887218126122, guid: 2a7e0d2a53e5b00488ee940dfdd11261, type: 3}
+    audioClip: {fileID: 0}
+  - damage: 30
+    durabilityUsage: 0
+    hasRootMotion: 0
+    pressAndHold: 0
+    isBlock: 0
+    animationClip: {fileID: -203655887218126122, guid: 72835350d39734f4fbe0ef140a2e060c, type: 3}
+    audioClip: {fileID: 0}
   secondary: []
   special: []
   _isActing: 0

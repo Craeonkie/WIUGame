@@ -14,6 +14,7 @@ public class AnimationHandler : MonoBehaviour
     [SerializeField] private float _crossFadeDuration;
 
     [Header("Other scripts of note")]
+    [SerializeField] private Rigidbody _myRigidbody;
     [SerializeField] private Animator _animator;
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private Item _currentItem;
@@ -94,6 +95,7 @@ public class AnimationHandler : MonoBehaviour
         string animationClipName = currentAnimation.animationClip.name;
         _canMove = false;
         _animator.applyRootMotion = currentAnimation.hasRootMotion;
+        _myRigidbody.isKinematic = true;
 
         _animator.CrossFadeInFixedTime(animationClipName, _crossFadeDuration, 0);
 
@@ -113,6 +115,7 @@ public class AnimationHandler : MonoBehaviour
         _isActing = false;
         _canMove = true;
         _animator.applyRootMotion = false;
+        _myRigidbody.isKinematic = false;
     }
 
     public bool CanMove()

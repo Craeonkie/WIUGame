@@ -160,20 +160,26 @@ MonoBehaviour:
   description: 
   primary:
   - damage: 30
+    durabilityUsage: 0
     hasRootMotion: 0
     pressAndHold: 0
+    isBlock: 0
     animationClip: {fileID: -203655887218126122, guid: bed7ad9b2aa01d54a86c19668dd8cf0d, type: 3}
     audioClip: {fileID: 0}
   - damage: 30
+    durabilityUsage: 0
     hasRootMotion: 0
     pressAndHold: 0
+    isBlock: 0
     animationClip: {fileID: -203655887218126122, guid: 4ca7c1ef034dd7749a6dcf8b1bf19848, type: 3}
     audioClip: {fileID: 0}
   secondary: []
   special:
   - damage: 80
+    durabilityUsage: 0
     hasRootMotion: 1
     pressAndHold: 0
+    isBlock: 0
     animationClip: {fileID: -203655887218126122, guid: 1d3991183700336418182f607f65c2ff, type: 3}
     audioClip: {fileID: 0}
   _isActing: 0
