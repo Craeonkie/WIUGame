@@ -253,7 +253,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: QuickRigCharacter_L_Hand
+    - boneName: QuickRigCharacter_L_Fingers
       humanName: Left Index Proximal
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -309,14 +309,6 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: QuickRigCharacter_L_Fingers
-      humanName: Left Index Intermediate
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
     - boneName: QuickRigCharacter_R_Fingers1
       humanName: Right Thumb Proximal
       limit:
@@ -342,14 +334,19 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: EvilKidModelNeutralRig_NoMask(Clone)
+    - name: EvilKidModel_WithRig(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: EvilKid_Mesh
-      parentName: EvilKidModelNeutralRig_NoMask(Clone)
+      parentName: EvilKidModel_WithRig(Clone)
       position: {x: 0.009106434, y: 0.64923465, z: 0.04280074}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: polySurface1
+      parentName: EvilKid_Mesh
+      position: {x: -0.009106434, y: -0.64923465, z: -0.04280074}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: polySurface2
@@ -362,7 +359,17 @@ ModelImporter:
       position: {x: -0.009106434, y: -0.64923465, z: -0.04280074}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: polySurface1
+    - name: polySurface4
+      parentName: EvilKid_Mesh
+      position: {x: -0.009106434, y: -0.64923465, z: -0.04280074}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: polySurface5
+      parentName: EvilKid_Mesh
+      position: {x: -0.009106434, y: -0.64923465, z: -0.04280074}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: polySurface6
       parentName: EvilKid_Mesh
       position: {x: -0.009106434, y: -0.64923465, z: -0.04280074}
       rotation: {x: 0, y: -0, z: -0, w: 1}
@@ -393,7 +400,7 @@ ModelImporter:
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: QuickRigCharacter_Hips
-      parentName: EvilKidModelNeutralRig_NoMask(Clone)
+      parentName: EvilKidModel_WithRig(Clone)
       position: {x: 0.00000007174843, y: 0.329737, z: -0.011444327}
       rotation: {x: -3.2088446e-16, y: 0.000000009600879, z: -0.00000033461595, w: 1}
       scale: {x: 1, y: 1, z: 1}
@@ -452,16 +459,6 @@ ModelImporter:
       position: {x: 0.0031773585, y: 0.14157309, z: 2.2204495e-16}
       rotation: {x: 0.017569322, y: -0.00019706866, z: -0.0112141995, w: 0.99978274}
       scale: {x: 1, y: 1, z: 1}
-    - name: QuickRigCharacter_Neck
-      parentName: QuickRigCharacter_Spine2
-      position: {x: -1.0525119e-15, y: 0.090980224, z: 0.0036340167}
-      rotation: {x: 0.042851146, y: -0.00026309583, z: 0.006134007, w: 0.9990626}
-      scale: {x: 1, y: 1, z: 1}
-    - name: QuickRigCharacter_Head
-      parentName: QuickRigCharacter_Neck
-      position: {x: -2.300677e-17, y: 0.39997032, z: 1.6431301e-16}
-      rotation: {x: -0.52210873, y: 0.47686732, z: 0.5279249, w: -0.4704204}
-      scale: {x: 1, y: 1, z: 1}
     - name: QuickRigCharacter_L_Shoulder
       parentName: QuickRigCharacter_Spine2
       position: {x: -0.058254994, y: 0.026969757, z: -0.020022618}
@@ -506,6 +503,16 @@ ModelImporter:
       parentName: QuickRigCharacter_L_Fingers1
       position: {x: 4.196296e-17, y: 0.048509113, z: -2.9022828e-15}
       rotation: {x: -0.47400045, y: 0.4900014, z: -0.5086548, w: 0.52582556}
+      scale: {x: 1, y: 1, z: 1}
+    - name: QuickRigCharacter_Neck
+      parentName: QuickRigCharacter_Spine2
+      position: {x: -1.0525119e-15, y: 0.090980224, z: 0.0036340167}
+      rotation: {x: 0.042851146, y: -0.00026309583, z: 0.006134007, w: 0.9990626}
+      scale: {x: 1, y: 1, z: 1}
+    - name: QuickRigCharacter_Head
+      parentName: QuickRigCharacter_Neck
+      position: {x: -2.300677e-17, y: 0.39997032, z: 1.6431301e-16}
+      rotation: {x: -0.52210873, y: 0.47686732, z: 0.5279249, w: -0.4704204}
       scale: {x: 1, y: 1, z: 1}
     - name: QuickRigCharacter_R_Shoulder
       parentName: QuickRigCharacter_Spine2
@@ -564,11 +571,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 0eb69547d1a3a044c8bbf5ba054bf70e, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

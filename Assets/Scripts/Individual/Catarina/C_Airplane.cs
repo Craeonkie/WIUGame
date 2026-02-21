@@ -5,12 +5,14 @@ public class C_Airplane : C_BossAbility
 {
     public static event System.Action <Transform> FindTarget;
     public static event System.Action<float> FollowThrough;
+    public static event System.Action finishAbility;
+
 
     [Header("Ref")]
     [SerializeField] private Transform[] _SpawnTransform;
     [SerializeField] private GameObject _AirplanePrefab;
     [SerializeField] private float _SearchTime = 10f;
-
+    
     private PlayerController _player;
 
     [Header("FollowThrough")]
@@ -23,10 +25,17 @@ public class C_Airplane : C_BossAbility
     private void Start()
     {
         _player = FindFirstObjectByType<PlayerController>();
+
         if (_player == null)
         {
             Debug.Log("Player not in scene or more specifc PLAYER CONTROLLER SCRIPT");
         }
+    }
+
+    private void Awake()
+    {
+        C_FriendBossPhase2.StartAirplaneAbility += StartAbility;
+
         _AirplanePool = new ObjectPool<C_Boid>(() =>
         {
             // when there is no obj in the pool
@@ -48,17 +57,23 @@ public class C_Airplane : C_BossAbility
             // destroy obj
             Destroy(_airplane.gameObject);
         }, false, 1, 1);
+    }
 
+    private void OnDestroy()
+    {
+        C_FriendBossPhase2.StartAirplaneAbility -= StartAbility;
     }
 
     private void OnEnable()
     {
         C_Boid.hitSmtAction += ReturnToPool;
+        GameSetUp();
     }
 
     private void OnDisable()
     {
         C_Boid.hitSmtAction -= ReturnToPool;
+        GameTearDown();
     }
     protected override void GameLogic()
     {
@@ -97,6 +112,7 @@ public class C_Airplane : C_BossAbility
             FindTarget?.Invoke(_player.transform);
         }
         _followThroughTriggered = false;
+        this.startAbility = true;
     }
 
     protected override void GameTearDown()
@@ -104,7 +120,9 @@ public class C_Airplane : C_BossAbility
         if (currentAirplane == null) return;
         abilityFinished = true;
         _AirplanePool.Release(currentAirplane);
+        finishAbility.Invoke();
         //do an explosion here NOT HERE DO IT IN THE BOID CODE
+        this.enabled = false;
     }
 
     private void ReturnToPool(bool _isTrue)
@@ -112,5 +130,8 @@ public class C_Airplane : C_BossAbility
         if (currentAirplane == null) return;
         _AirplanePool.Release(currentAirplane);
         abilityFinished = true;
+        finishAbility.Invoke();
+        //do an explosion here NOT HERE DO IT IN THE BOID CODE
+        this.enabled = false;
     }
 }
