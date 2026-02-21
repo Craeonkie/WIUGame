@@ -21,6 +21,8 @@ public class J_BossBehaviour : Entity
         IDLE,
         PREPARING,
         ATTACKING,
+        THROWINGPILLOWS,
+        HIT,
         EXHAUSTED
     }
 
@@ -114,6 +116,8 @@ public class J_BossBehaviour : Entity
 
         //Debug.Log("Left arm rig: " + _leftArmRig.weight);
 
+
+        // Decrease phase timer for phases that have duration
         if (_phases[_currentPhaseIndex].hasDuration)
         {
             _currentPhaseTimer -= Time.deltaTime;
@@ -146,6 +150,8 @@ public class J_BossBehaviour : Entity
             case STATE.EXHAUSTED:
                 Exhausted();
                 break;
+            case STATE.HIT:
+                break;
         }
     }
 
@@ -167,12 +173,6 @@ public class J_BossBehaviour : Entity
 
     private void CheckAttackColliders()
     {
-        // activate both i lz bum
-        //_fistColliders[0].enabled = true;
-        //_fistColliders[1].enabled = true;
-
-        _attackingHand = HAND.BOTH;
-
         for (int i = 0; i < 2; ++i)
         {
             if (!_fistColliders[i].enabled)
@@ -187,7 +187,7 @@ public class J_BossBehaviour : Entity
             Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _playerLayer);
             for (int j = 0; j < hitColliders.Length; ++j)
             {
-
+                hitColliders[j].GetComponent<Entity>().TakeDamage(float.MaxValue);
             }
            
 
@@ -226,8 +226,6 @@ public class J_BossBehaviour : Entity
         float currentShockwaveIntensity = _shockwaveIntensity;
         bool collidedWith = false;
 
-        //Renderer planeRenderer = _shockwavePlanes[handIndex].GetComponent<Renderer>();
-
         while (currentDistance <= _maxShockwaveDistance)
         {
             // Update the new intensity and offset
@@ -252,7 +250,7 @@ public class J_BossBehaviour : Entity
 
                 for (int i = 0; i < hits.Length; ++i)
                 {
-                    if (!hits[i].TryGetComponent<GroundChecker>(out GroundChecker groundCheck))
+                    if (!hits[i].TryGetComponent(out GroundChecker groundCheck))
                         continue;
 
                     // Check if grounded first
@@ -277,82 +275,10 @@ public class J_BossBehaviour : Entity
             yield return null;
         }
 
-       
-
-
-        //    float currentDistance = 0f;
-        //    float currentShockwaveIntensity = _shockwaveIntensity;
-        //    bool collidedWith = false;
-
-        //    // Continue shockwave until it reaches maximum distance
-        //    while (currentDistance <= _maxShockwaveDistance)
-        //    {
-        //        // Update the new intensity and offset
-        //        _mpb.SetFloat("_Intensity", currentShockwaveIntensity);
-        //        _mpb.SetFloat("_Offset", currentDistance);
-
-        //        // Check which hand was used to hit the ground
-        //        if (_attackingHand == HAND.LEFT)
-        //        {
-        //            Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
-        //            LFloorR.SetPropertyBlock(_mpb);
-        //        }
-        //        else if (_attackingHand == HAND.RIGHT)
-        //        {
-        //            Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
-        //            RFloorR.SetPropertyBlock(_mpb);
-        //        }
-        //        else
-        //        {
-        //            Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
-        //            LFloorR.SetPropertyBlock(_mpb);
-
-        //            Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
-        //            RFloorR.SetPropertyBlock(_mpb);
-        //        }
-
-
-        //        // Check for actual collisions
-        //        // Outer radius --> distance multiplied by the scale of the plane
-        //        // Inner radius --> Outer radius minus the total width of the band
-        //        Vector3 planeWorldScale = _shockwavePlanes[0].transform.lossyScale;
-        //        float outerRadius = (currentDistance * planeWorldScale.x);
-        //        float innerRadius = Mathf.Max(0f, (currentDistance * planeWorldScale.x) - 1f);
-
-        //        DrawDebugCircle(startPos, outerRadius, Color.red, 36);
-        //        DrawDebugCircle(startPos, innerRadius, Color.blue, 36);
-
-        //        if (!collidedWith)
-        //        {
-        //            // There is only one player
-        //            Collider[] hits = Physics.OverlapSphere(startPos, outerRadius, _playerLayer);
-
-        //            for (int i = 0; i < hits.Length; ++i)
-        //            {
-        //                if (!hits[i].TryGetComponent<GroundChecker>(out GroundChecker groundCheck))
-        //                    continue;
-
-        //                // Check if grounded first
-        //                if (!groundCheck.IsGrounded())
-        //                    break;
-
-        //                // Check distance from center of shockwave and check if hit the shockwave
-        //                if ((startPos - hits[i].gameObject.transform.position).magnitude > innerRadius)
-        //                {
-        //                    hits[i].GetComponent<Entity>().TakeDamage(_shockwaveDamage);
-        //                    Debug.Log("Player was hit by the shockwave!");
-        //                    collidedWith = true;
-        //                    break;
-        //                }
-        //            }
-        //        }
-
-        //        // Increase the shockwave intensity
-        //        currentShockwaveIntensity = Mathf.Lerp(_shockwaveIntensity, 0f, (currentDistance / _maxShockwaveDistance));
-        //        currentDistance += _shockwaveTravelSpeed * Time.deltaTime;
-
-        //        yield return null;
-        //    }
+        // Reset back to 0
+        mpb.SetVector("_RadiusCenter", Vector3.zero);
+        mpb.SetFloat("_Intensity", 0f);
+        mpb.SetFloat("_Offset", 0f);
     }
 
 
@@ -621,18 +547,16 @@ public class J_BossBehaviour : Entity
                 isInvincible = false;
 
                 break;
+            case STATE.HIT:
+
+
+
+                break;
         }
 
         _currentState = nextState;
         _stateText.text = _currentState.ToString();
     }
-
-    //private void LeaveState(STATE prevState)
-    //{
-    //    switch ()
-    //}
-
-
 
     private void Idle()
     {
@@ -654,11 +578,6 @@ public class J_BossBehaviour : Entity
     private void Exhausted()
     {
 
-    }
-
-    private void SpawnBugs()
-    {
-        // TODO: SPAWN BUG PREFABS INSIDE AREA
     }
 
     public void AllowStateTransition() => _canChangeState = true;
@@ -699,106 +618,6 @@ public class J_BossBehaviour : Entity
         for (int i = 0; i < _fistColliders.Length; ++i)
         {
             _fistColliders[i].enabled = false;
-        }
-    }
-
-
-    //private IEnumerator StartShockwave(Vector3 startPos)
-    //{
-    //    float currentDistance = 0f;
-    //    float currentShockwaveIntensity = _shockwaveIntensity;
-    //    bool collidedWith = false;
-
-    //    // Continue shockwave until it reaches maximum distance
-    //    while (currentDistance <= _maxShockwaveDistance)
-    //    {
-    //        // Update the new intensity and offset
-    //        _mpb.SetFloat("_Intensity", currentShockwaveIntensity);
-    //        _mpb.SetFloat("_Offset", currentDistance);
-
-    //        // Check which hand was used to hit the ground
-    //        if (_attackingHand == HAND.LEFT)
-    //        {
-    //            Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
-    //            LFloorR.SetPropertyBlock(_mpb);
-    //        }
-    //        else if (_attackingHand == HAND.RIGHT)
-    //        {
-    //            Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
-    //            RFloorR.SetPropertyBlock(_mpb);
-    //        }
-    //        else
-    //        {
-    //            Renderer LFloorR = _shockwavePlanes[0].GetComponent<Renderer>();
-    //            LFloorR.SetPropertyBlock(_mpb);
-
-    //            Renderer RFloorR = _shockwavePlanes[1].GetComponent<Renderer>();
-    //            RFloorR.SetPropertyBlock(_mpb);
-    //        }
-
-           
-    //        // Check for actual collisions
-    //        // Outer radius --> distance multiplied by the scale of the plane
-    //        // Inner radius --> Outer radius minus the total width of the band
-    //        Vector3 planeWorldScale = _shockwavePlanes[0].transform.lossyScale;
-    //        float outerRadius = (currentDistance * planeWorldScale.x);
-    //        float innerRadius = Mathf.Max(0f, (currentDistance * planeWorldScale.x) - 1f);
-
-    //        DrawDebugCircle(startPos, outerRadius, Color.red, 36);
-    //        DrawDebugCircle(startPos, innerRadius, Color.blue, 36);
-
-    //        if (!collidedWith)
-    //        {
-    //            // There is only one player
-    //            Collider[] hits = Physics.OverlapSphere(startPos, outerRadius, _playerLayer);
-
-    //            for (int i = 0; i < hits.Length; ++i)
-    //            {
-    //                if (!hits[i].TryGetComponent<GroundChecker>(out GroundChecker groundCheck))
-    //                    continue;
-
-    //                // Check if grounded first
-    //                if (!groundCheck.IsGrounded())
-    //                    break;
-
-    //                // Check distance from center of shockwave and check if hit the shockwave
-    //                if ((startPos - hits[i].gameObject.transform.position).magnitude > innerRadius)
-    //                {
-    //                    hits[i].GetComponent<Entity>().TakeDamage(_shockwaveDamage);
-    //                    Debug.Log("Player was hit by the shockwave!");
-    //                    collidedWith = true;
-    //                    break;
-    //                }
-    //            }
-    //        }
-
-    //        // Increase the shockwave intensity
-    //        currentShockwaveIntensity = Mathf.Lerp(_shockwaveIntensity, 0f, (currentDistance / _maxShockwaveDistance));
-    //        currentDistance += _shockwaveTravelSpeed * Time.deltaTime;
-
-    //        yield return null;
-    //    }
-    //}
-
-    private IEnumerator StartShockwaveForExternal(Vector3 startPos)
-    {
-        float currentDistance = 0f;
-        float currentShockwaveIntensity = _shockwaveIntensity;
-
-        // Continue shockwave until it reaches maximum distance
-        while (currentDistance <= _maxShockwaveDistance)
-        {
-            // Set the shockwave variables for all of the materials
-            for (int i = 0; i < _shockwaveAffectedGameObjects.Length; ++i)
-            {
-                Renderer r = _shockwaveAffectedGameObjects[i].GetComponent<Renderer>();
-
-                _mpb.SetFloat("_Intensity", currentShockwaveIntensity);
-                _mpb.SetFloat("_Offset", currentDistance);
-                r.SetPropertyBlock(_mpb);
-            }
-
-            yield return null;
         }
     }
 
