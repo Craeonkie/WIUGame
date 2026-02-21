@@ -549,7 +549,7 @@ public class J_BossBehaviour : Entity
                 break;
             case STATE.HIT:
 
-
+                // Set
 
                 break;
         }
