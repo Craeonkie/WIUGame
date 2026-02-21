@@ -9,8 +9,8 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float _invincibilityCooldown;
     [SerializeField] protected float _invincibilityMaxCooldown;
     [SerializeField] protected GameObject _model;
-    [SerializeField] protected SkinnedMeshRenderer[] renderers;
-    [SerializeField] protected Material damageMaterial;
+    //[SerializeField] protected SkinnedMeshRenderer[] renderers;
+    //[SerializeField] protected Material damageMaterial;
     [SerializeField] protected Vector3 spawnPoint;
     [SerializeField] protected bool isInvincible = false;
     [SerializeField] protected bool isDodging = false;
@@ -26,18 +26,18 @@ public class Entity : MonoBehaviour
     {
         _currentHP = _maxHP;
 
-        // Add all materials to the entity
-        if (_hasDamageFlicker)
-        {
-            _propertyBlock = new MaterialPropertyBlock();
-            renderers = _model.GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach (SkinnedMeshRenderer renderer in renderers)
-            {
-                Material[] temp = { damageMaterial };
-                Material[] newMaterialsList = renderer.materials.Concat(temp).ToArray();
-                renderer.materials = newMaterialsList;
-            }
-        }
+        //// Add all materials to the entity
+        //if (_hasDamageFlicker)
+        //{
+        //    _propertyBlock = new MaterialPropertyBlock();
+        //    renderers = _model.GetComponentsInChildren<SkinnedMeshRenderer>();
+        //    foreach (SkinnedMeshRenderer renderer in renderers)
+        //    {
+        //        Material[] temp = { damageMaterial };
+        //        Material[] newMaterialsList = renderer.materials.Concat(temp).ToArray();
+        //        renderer.materials = newMaterialsList;
+        //    }
+        //}
     }
 
     // Update is called once per frame
@@ -50,18 +50,18 @@ public class Entity : MonoBehaviour
             isInvincible = true;
             _invincibilityCooldown -= Time.deltaTime;
 
-            // Apply to all renderers
-            if (_hasDamageFlicker)
-            {
-                float temp = Mathf.Max(_invincibilityCooldown / _invincibilityMaxCooldown, 0.0f);
+            //// Apply to all renderers
+            //if (_hasDamageFlicker)
+            //{
+            //    float temp = Mathf.Max(_invincibilityCooldown / _invincibilityMaxCooldown, 0.0f);
 
-                foreach (Renderer renderer in renderers)
-                {
-                    renderer.GetPropertyBlock(_propertyBlock);
-                    _propertyBlock.SetFloat("_Visibility", temp);
-                    renderer.SetPropertyBlock(_propertyBlock);
-                }
-            }
+            //    foreach (Renderer renderer in renderers)
+            //    {
+            //        renderer.GetPropertyBlock(_propertyBlock);
+            //        _propertyBlock.SetFloat("_Visibility", temp);
+            //        renderer.SetPropertyBlock(_propertyBlock);
+            //    }
+            //}
 
             if (_invincibilityCooldown <= 0)
             {
@@ -89,7 +89,10 @@ public class Entity : MonoBehaviour
             }
             if (_currentHP <= 0)
             {
-                audioSource.PlayOneShot(deathAudio);
+                if (audioSource != null && deathAudio != null)
+                {
+                    audioSource.PlayOneShot(deathAudio);
+                }
                 Die();
             }
         }
@@ -109,7 +112,10 @@ public class Entity : MonoBehaviour
             }
             if (_currentHP <= 0)
             {
-                audioSource.PlayOneShot(deathAudio);
+                if (audioSource != null && deathAudio != null)
+                {
+                    audioSource.PlayOneShot(deathAudio);
+                }
                 Die();
             }
             else

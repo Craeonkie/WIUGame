@@ -333,6 +333,7 @@ public class PlayerController : Entity
                 if (_equipPrimary.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
                     inventory.EquipPrimary();
+                    animationHandler.UnequipItem();
                     if (inventory.ReturnCurrentItem() != null)
                     {
                         animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
@@ -343,6 +344,7 @@ public class PlayerController : Entity
                 if (_equipSecondary.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
                     inventory.EquipSecondary();
+                    animationHandler.UnequipItem();
                     if (inventory.ReturnCurrentItem() != null)
                     {
                         animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
