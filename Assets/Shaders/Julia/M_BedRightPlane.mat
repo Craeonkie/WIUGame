@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Bed
+  m_Name: M_BedRightPlane
   m_Shader: {fileID: -6465566751694194690, guid: 51af9a438a6ce7348b5fc46a30da8a3c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -122,7 +122,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Intensity: 1
+    - _Intensity: 2.5
     - _Max: 1
     - _Metallic: 0
     - _Min: 0.3
@@ -142,7 +142,7 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _VertexCount: 1
-    - _Width: 1
+    - _Width: 0.5
     - _WorkflowMode: 1
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
@@ -152,7 +152,7 @@ Material:
     - _Base_Colour: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RadiusCenter: {r: 0, g: 0, b: 0, a: 0}
+    - _RadiusCenter: {r: -3.57, g: 0, b: 3.71, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

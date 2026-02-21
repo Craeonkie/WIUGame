@@ -62,6 +62,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadScene(string nextSceneName)
     {
         SceneManager.LoadScene(nextSceneName);
+        J_GameManager.Instance.SetCurrentScene(nextSceneName);
     }
 
     public void SetTimeScale(float scale)

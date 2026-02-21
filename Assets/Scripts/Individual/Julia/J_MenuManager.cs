@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class J_MenuManager : MonoBehaviour, J_IDataPersistence
@@ -58,7 +59,8 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
         Debug.Log("Enter Game was called!"); // comment when done
         
         // Load the game
-        //DataPersistenceManager.instance.LoadGame();
+        J_DataPersistenceManager.instance.LoadGame();
+        SceneLoader.Instance.LoadScene(J_GameManager.REST_SCENE);
     }
 
     public void NewGame()
@@ -72,7 +74,10 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
         Debug.Log("New Game was called!"); // comment when done
 
         // Reset the game
-        //DataPersistenceManager.instance.ResetGame();
+        J_DataPersistenceManager.instance.ResetGame();
+        SceneLoader.Instance.LoadScene(J_GameManager.REST_SCENE);
+
+        // TODO: might want to go to a different start scene to play beginning cutscenes?
     }
 
     public void Settings()

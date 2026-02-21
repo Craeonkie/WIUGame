@@ -3,14 +3,15 @@ using UnityEngine;
 using UnityEngine.Pool;
 
 [System.Serializable]
-public struct SpawnItem
+public class SpawnItem
 {
     public string itemName;
     public GameObject spawnPrefab;
     public int spawnedAmount;
+    public float spawnDelay;
     public bool hasSpawnLimit;
     public int spawnLimit;
-    public ObjectPool<GameObject> spawnPool;
+    [System.NonSerialized] public ObjectPool<GameObject> spawnPool; 
 }
 
 public class J_SpawnManager : MonoBehaviour
@@ -19,6 +20,7 @@ public class J_SpawnManager : MonoBehaviour
     [SerializeField] private Collider _spawnerBoundingBox;
     [SerializeField] private SpawnItem[] _spawnItems;
     private IEnumerator _spawnCoroutine;
+    private IEnumerator _spawnOnceCoroutine;
 
     private void Awake()
     {
@@ -35,32 +37,75 @@ public class J_SpawnManager : MonoBehaviour
     {
         for (int i = 0; i < _spawnItems.Length; i++)
         {
-            _spawnItems[i].spawnPool = new ObjectPool<GameObject>(() =>
+            var item = _spawnItems[i];
+
+            item.spawnPool = new ObjectPool<GameObject>(() =>
             {
-                var prefab = Instantiate(_spawnItems[i].spawnPrefab, Vector3.zero, Quaternion.identity);//when no obj in the pool / create
+                
+
+                var prefab = Instantiate(item.spawnPrefab, Vector3.zero, Quaternion.identity);//when no obj in the pool / create
                 return prefab;
 
             }, prefab =>
             {
                 prefab.gameObject.SetActive(true); //call when need an obj and there one available in the pool
-                _spawnItems[i].spawnedAmount++;
+                item.spawnedAmount++;
 
             }, prefab =>
             {
                 prefab.gameObject.SetActive(false); //call when done and return to the pool
-                _spawnItems[i].spawnedAmount--;
-                SpawnOnce(_spawnItems[i].itemName);
-                
+                item.spawnedAmount--;
+
+                Spawn(item.itemName, item.spawnDelay);
+
             }, prefab =>
             {
-                Destroy(prefab.gameObject);// destroy obj
+                if (prefab == null) return;
+
+                if (Application.isPlaying)
+                    Destroy(prefab);
+                else
+                    DestroyImmediate(prefab);
+
             }, false // to prevent returning obj that is already in the pool
             , 8, 15
             );
+
+            _spawnItems[i] = item;
         }
     }
 
-    public void SpawnOnce(string itemName)
+    public void Spawn(string itemName, float delay)
+    {
+        SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
+
+        if (spawnItem.spawnPrefab == null)
+            return;
+
+        if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+            return;
+
+        _spawnOnceCoroutine = SpawnAfterDelay(spawnItem, delay);
+        StartCoroutine(_spawnOnceCoroutine);
+    }
+
+    public void SpawnAtPosition(string itemName, Vector3 position)
+    {
+        Debug.Log("here");
+
+        SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
+
+        if (spawnItem.spawnPrefab == null)
+            return;
+
+        if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+            return;
+
+        var newItem = spawnItem.spawnPool.Get();
+        newItem.transform.position = position;
+    }
+
+    private void SpawnOnce(string itemName)
     {
         SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
 
@@ -77,41 +122,6 @@ public class J_SpawnManager : MonoBehaviour
         newItem.transform.position = randomPosition;
     }
 
-    //public void SpawnOne(string itemName)
-    //{
-    //    SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
-    //    if (spawnItem.spawnPrefab == null)
-    //        return;
-
-    //    if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
-    //        return;
-
-    //    // Spawn a new instance randomly
-    //    Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
-    //    Instantiate(spawnItem.spawnPrefab, randomPosition, Quaternion.identity);
-
-    //    spawnItem.spawnedAmount++;
-    //}
-
-    //public void SpawnMultiple(string itemName, int spawnAmt)
-    //{
-    //    SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
-    //    if (spawnItem.spawnPrefab == null)
-    //        return;
-
-    //    for (int i = 0; i < spawnAmt; ++i)
-    //    {
-    //        if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
-    //            break;
-
-    //        // Spawn a new instance randomly
-    //        Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
-    //        Instantiate(spawnItem.spawnPrefab, randomPosition, Quaternion.identity);
-
-    //        spawnItem.spawnedAmount++;
-    //    }
-    //}
-
     public void SpawnContinuously(string itemName, float spawnInterval)
     {
         SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
@@ -122,26 +132,57 @@ public class J_SpawnManager : MonoBehaviour
             StopCoroutine(_spawnCoroutine);
 
 
+        Debug.Log("entered here");
+
         _spawnCoroutine = SpawnCoroutine(spawnItem, spawnInterval);
         StartCoroutine(_spawnCoroutine);
     }
 
+    public void Release(string itemName, GameObject obj)
+    {
+        Debug.Log($"Release called for {itemName} on {obj.name}");
+
+        for (int i = 0; i < _spawnItems.Length; i++)
+        {
+            if (_spawnItems[i].itemName == itemName)
+            {
+                Debug.Log($"Found pool for {itemName}, releasing.");
+                _spawnItems[i].spawnPool.Release(obj);
+                return;
+            }
+        }
+
+        Debug.LogWarning($"No pool found for itemName={itemName}. Disabling object.");
+        obj.SetActive(false);
+    }
+
+    public void UpdateItemLimit(string itemName, int newLimit)
+    {
+        SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
+        if (spawnItem.spawnPrefab == null)
+            return;
+
+        spawnItem.spawnLimit = newLimit;
+    }
+
+    public IEnumerator SpawnAfterDelay(SpawnItem item, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (item.spawnedAmount <= item.spawnLimit && item.hasSpawnLimit)
+        {
+            SpawnOnce(item.itemName);
+        }
+    }
+
     public IEnumerator SpawnCoroutine(SpawnItem item, float delay)
     {
-        while (true)
+        while (item.spawnedAmount <= item.spawnLimit && item.hasSpawnLimit)
         {
-            while (item.spawnedAmount <= item.spawnLimit && item.hasSpawnLimit)
-            {
-                SpawnOnce(item.itemName);
+            Debug.Log("entered here2");
 
-                // Spawn a new instance randomly
-                //Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
-                //Instantiate(item.spawnPrefab, randomPosition, Quaternion.identity);
-
-                //item.spawnedAmount++;
-
-                yield return new WaitForSeconds(delay);
-            }
+            SpawnOnce(item.itemName);
+            yield return new WaitForSeconds(delay);
         }
     }
 
@@ -162,7 +203,7 @@ public class J_SpawnManager : MonoBehaviour
             }
         }
 
-        return new SpawnItem();
+        return null;
     }
 
     Vector3 GetRandomPointInBounds(Bounds bounds)
