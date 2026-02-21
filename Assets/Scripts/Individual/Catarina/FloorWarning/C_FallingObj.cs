@@ -5,7 +5,7 @@ public class C_FallingObj : MonoBehaviour
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private float _waitTimer = 0;
     [SerializeField] private float _fallingSpeed;
-    private C_Spawner _spawner;
+    private C_PencilAbility _spawner;
 
     [Header("Collider")]
     [SerializeField] private LayerMask _groundLayer;
@@ -21,12 +21,12 @@ public class C_FallingObj : MonoBehaviour
     [SerializeField] private float _maxWarningDistance = 10f; // distance over which alpha changes
     [SerializeField] private Renderer _decalRenderer;
     Material _mat;
-    public void Init(C_Spawner spawner)
+    public void Init(C_PencilAbility spawner)
     {
-        _rb.isKinematic = true;
         _spawner = spawner;
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
+        _rb.isKinematic = true;
         _waitTimer = Random.Range(2.5f, 10f);
         _CollideCD = _oriCD;
         _startCountdown = false;

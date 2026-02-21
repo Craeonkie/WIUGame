@@ -77,7 +77,7 @@ public class C_Spawner : MonoBehaviour
             var _fallObj = _fallingObjPool.Get();
             _fallObj.transform.position = randomPos;
             _fallObj.transform.rotation = Quaternion.identity;
-            _fallObj.Init(this);
+            //_fallObj.Init(this);
         }
     }
 
