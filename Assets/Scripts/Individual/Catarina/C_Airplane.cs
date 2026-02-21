@@ -5,13 +5,15 @@ public class C_Airplane : C_BossAbility
 {
     public static event System.Action <Transform> FindTarget;
     public static event System.Action<float> FollowThrough;
+    public static event System.Action finishAbility;
+
 
     [Header("Ref")]
     [SerializeField] private Transform[] _SpawnTransform;
     [SerializeField] private GameObject _AirplanePrefab;
     [SerializeField] private float _SearchTime = 10f;
-
-    private PlayerController _player;
+    [SerializeField] private Transform tempone;
+    //private PlayerController _player;
 
     [Header("FollowThrough")]
     [SerializeField] private float _FollowThroughSpeedMultiplier = 2f; // prob call this via System.action? 
@@ -22,11 +24,17 @@ public class C_Airplane : C_BossAbility
     private bool abilityFinished = false;
     private void Start()
     {
-        _player = FindFirstObjectByType<PlayerController>();
-        if (_player == null)
-        {
-            Debug.Log("Player not in scene or more specifc PLAYER CONTROLLER SCRIPT");
-        }
+        //_player = FindFirstObjectByType<PlayerController>();
+        //if (_player == null)
+        //{
+        //    Debug.Log("Player not in scene or more specifc PLAYER CONTROLLER SCRIPT");
+        //}
+    }
+
+    private void Awake()
+    {
+        C_FriendBossPhase2.StartAirplaneAbility += StartAbility;
+
         _AirplanePool = new ObjectPool<C_Boid>(() =>
         {
             // when there is no obj in the pool
@@ -48,17 +56,28 @@ public class C_Airplane : C_BossAbility
             // destroy obj
             Destroy(_airplane.gameObject);
         }, false, 1, 1);
+    }
 
+    private void OnDestroy()
+    {
+        C_FriendBossPhase2.StartAirplaneAbility -= StartAbility;
+    }
+
+    private void StartAbility()
+    {
+        this.enabled = true;
     }
 
     private void OnEnable()
     {
         C_Boid.hitSmtAction += ReturnToPool;
+        GameSetUp();
     }
 
     private void OnDisable()
     {
         C_Boid.hitSmtAction -= ReturnToPool;
+        GameTearDown();
     }
     protected override void GameLogic()
     {
@@ -79,7 +98,7 @@ public class C_Airplane : C_BossAbility
     protected override void GameSetUp()
     {
         if (_SpawnTransform.Length <= 0) return;
-        if (_player == null) return;
+        //if (_player == null) return;
         _CurrentSearchTimeCounter = 0f;
 
         var spawnPos = _SpawnTransform[Random.Range(0, _SpawnTransform.Length)].position;
@@ -94,9 +113,11 @@ public class C_Airplane : C_BossAbility
         abilityFinished = false;
         if (FindTarget != null)
         {
-            FindTarget?.Invoke(_player.transform);
+           // FindTarget?.Invoke(_player.transform);
+            FindTarget?.Invoke(tempone);
         }
         _followThroughTriggered = false;
+        this.startAbility = true;
     }
 
     protected override void GameTearDown()
@@ -104,7 +125,9 @@ public class C_Airplane : C_BossAbility
         if (currentAirplane == null) return;
         abilityFinished = true;
         _AirplanePool.Release(currentAirplane);
+        finishAbility.Invoke();
         //do an explosion here NOT HERE DO IT IN THE BOID CODE
+        this.enabled = false;
     }
 
     private void ReturnToPool(bool _isTrue)
@@ -112,5 +135,8 @@ public class C_Airplane : C_BossAbility
         if (currentAirplane == null) return;
         _AirplanePool.Release(currentAirplane);
         abilityFinished = true;
+        finishAbility.Invoke();
+        //do an explosion here NOT HERE DO IT IN THE BOID CODE
+        this.enabled = false;
     }
 }

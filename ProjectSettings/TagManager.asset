@@ -8,6 +8,7 @@ TagManager:
   - Weapon
   - Interactable
   - ShockwaveAffected
+  - PlayerTag
   layers:
   - Default
   - TransparentFX

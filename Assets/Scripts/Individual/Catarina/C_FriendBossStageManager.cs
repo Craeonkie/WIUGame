@@ -4,6 +4,7 @@ using UnityEngine.AI;
 
 public class C_FriendBossStageManager : MonoBehaviour
 {
+
     private void EnteringPhase2()
     {
         var navmesh = FindFirstObjectByType<NavMeshSurface>();

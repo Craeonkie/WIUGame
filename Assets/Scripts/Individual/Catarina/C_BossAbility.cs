@@ -8,9 +8,14 @@ public abstract class C_BossAbility : MonoBehaviour
     protected abstract void GameTearDown();
     protected abstract void GameLogic();
 
+    protected bool startAbility = false;
+
     protected void Update()
     {
-        GameLogic();
+        if (this.startAbility)
+        {
+            GameLogic();
+        }
     }
 
     protected virtual void OnFinish()
