@@ -321,8 +321,6 @@ public class J_BugBehaviour : Entity
 
     private void StartNavMeshLinkMovement()
     {
-        Debug.Log("starting nav mesh link");
-
         _onNavMeshLink = true;
         NavMeshLink link = (NavMeshLink)_navMeshAgent.navMeshOwner;
         J_Spline spline = link.GetComponentInChildren<J_Spline>();
@@ -332,8 +330,6 @@ public class J_BugBehaviour : Entity
 
     private void PerformJump(NavMeshLink link, J_Spline spline)
     {
-        Debug.Log("jump!");
-
         bool reverseDirection = CheckIfJumpingFromEndToStart(link);
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.useGravity = false;

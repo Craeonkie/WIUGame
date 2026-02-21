@@ -41,8 +41,6 @@ public class J_SpawnManager : MonoBehaviour
 
             item.spawnPool = new ObjectPool<GameObject>(() =>
             {
-                
-
                 var prefab = Instantiate(item.spawnPrefab, Vector3.zero, Quaternion.identity);//when no obj in the pool / create
                 return prefab;
 
@@ -91,15 +89,22 @@ public class J_SpawnManager : MonoBehaviour
 
     public void SpawnAtPosition(string itemName, Vector3 position)
     {
-        Debug.Log("here");
-
+        
         SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
 
         if (spawnItem.spawnPrefab == null)
+        {
+            Debug.Log("Spawn item prefab is null!");
             return;
+        }
 
         if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+        {
+            Debug.Log("Spawn item limit was hit!");
             return;
+        }
+
+        Debug.Log("Spawn At Position was successful!");
 
         var newItem = spawnItem.spawnPool.Get();
         newItem.transform.position = position;
@@ -130,9 +135,6 @@ public class J_SpawnManager : MonoBehaviour
 
         if (_spawnCoroutine != null)
             StopCoroutine(_spawnCoroutine);
-
-
-        Debug.Log("entered here");
 
         _spawnCoroutine = SpawnCoroutine(spawnItem, spawnInterval);
         StartCoroutine(_spawnCoroutine);
@@ -179,8 +181,6 @@ public class J_SpawnManager : MonoBehaviour
     {
         while (item.spawnedAmount <= item.spawnLimit && item.hasSpawnLimit)
         {
-            Debug.Log("entered here2");
-
             SpawnOnce(item.itemName);
             yield return new WaitForSeconds(delay);
         }

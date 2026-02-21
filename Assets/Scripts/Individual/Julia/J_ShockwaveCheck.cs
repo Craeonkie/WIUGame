@@ -10,9 +10,6 @@ public class J_ShockwaveCheck : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if (!CheckForShockwave)
-            //return;
-
         if (Physics.Raycast(transform.position, Vector3.down, _groundCheckDist, _groundLayer))
         {
             //Debug.Log("distance");
