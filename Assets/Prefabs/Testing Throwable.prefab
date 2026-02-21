@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 584111306506271740}
   - component: {fileID: 6235353697141745578}
   - component: {fileID: 7401152922874543599}
-  - component: {fileID: 7074800733296263226}
   m_Layer: 6
   m_Name: Testing Throwable
   m_TagString: Item
@@ -171,9 +170,11 @@ MonoBehaviour:
   _resetAnimationChain: 0
   _chainingAnimation: 0
   _currentAnimationChain: 0
+  _destroyUponDrop: 0
+  _timeBeforeDestroyed: 5
   throwPowerForward: 10
   throwPowerUp: 3
-  throwDistanceForward: 1
+  throwOffsetForward: 1
   breakOnHit: 0
   lifeTime: 100
   hitEntities: []
@@ -181,20 +182,3 @@ MonoBehaviour:
   isThrowing: 0
   isInFlight: 0
   _projection: {fileID: 0}
---- !u!114 &7074800733296263226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5385562126734816885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0609cbed16eed9499feac0bfe1710fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::C_TrajectorySimulation
-  _objParent: {fileID: 583902426479550582}
-  _line: {fileID: 0}
-  _maxPhysicsFrameIteration: 0
-  _ballPrefab: {fileID: 0}
-  _ballSpawn: {fileID: 0}

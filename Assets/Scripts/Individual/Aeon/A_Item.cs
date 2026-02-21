@@ -31,11 +31,21 @@ public abstract class Item : Interactable
     [SerializeField] protected bool _resetAnimationChain;
     [SerializeField] protected bool _chainingAnimation;
     [SerializeField] protected int _currentAnimationChain;
+    [SerializeField] protected bool _destroyUponDrop;
+    [SerializeField] protected float _timeBeforeDestroyed;
+    protected bool _hasBeenDropped;
 
     // Update is called once per frame
     protected virtual void Update()
     {
-
+        if (_hasBeenDropped)
+        {
+            _timeBeforeDestroyed -= Time.deltaTime;
+            if (_timeBeforeDestroyed <= 0)
+            {
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     // Called by animation handler
@@ -108,6 +118,13 @@ public abstract class Item : Interactable
         transform.position = dropPos;
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(force, ForceMode.Impulse);
+
+        if (_destroyUponDrop)
+        {
+            // Change tag accordingly
+            tag = "Untagged";
+            _hasBeenDropped = true;
+        }
     }
 
     // Set current animation handler (Upon pickup, drop, equip or unequip)

@@ -5,7 +5,7 @@ public class ThrowableItem : Item
 {
     [SerializeField] protected float throwPowerForward = 10.0f;
     [SerializeField] protected float throwPowerUp = 10.0f;
-    [SerializeField] protected float throwDistanceForward = 1.0f;
+    [SerializeField] protected float throwOffsetForward = 1.0f;
     [SerializeField] protected bool breakOnHit = false;
     [SerializeField] protected float lifeTime = 10.0f;
     protected float lifeTimeLeft;
@@ -116,7 +116,7 @@ public class ThrowableItem : Item
         }
 
         // Position and add force to the item
-        transform.position += _entityUsingItem.transform.forward * throwDistanceForward;
+        transform.position += _entityUsingItem.transform.forward * throwOffsetForward;
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(_entityUsingItem.transform.forward * throwPowerForward + _entityUsingItem.transform.up * throwPowerUp, ForceMode.Impulse);
 
@@ -130,6 +130,9 @@ public class ThrowableItem : Item
         _animationHandler.UnequipItemButFinishAnimation();
         _animationHandler = null;
         _entityUsingItem = null;
+
+        // Change tag accordingly
+        tag = "Untagged";
     }
 
     protected void OnCollisionEnter(Collision other)
