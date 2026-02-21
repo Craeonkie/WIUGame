@@ -120,6 +120,12 @@ public class ThrowableItem : Item
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(_entityUsingItem.transform.forward * throwPowerForward + _entityUsingItem.transform.up * throwPowerUp, ForceMode.Impulse);
 
+        // Make the player's inventory stop referencing this item
+        if (_entityUsingItem.TryGetComponent<PlayerController>(out PlayerController player))
+        {
+            player.GetComponent<Inventory>().RemoveItemFromInventory(gameObject);
+        }
+
         // Make animation handler stop equipping it, then stop referencing it
         _animationHandler.UnequipItemButFinishAnimation();
         _animationHandler = null;

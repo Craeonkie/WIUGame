@@ -4,8 +4,8 @@ using UnityEngine.Rendering;
 public class Inventory : MonoBehaviour
 {
     [Header("GameObject that holds the items")]
-    [SerializeField] private GameObject _rightHandSlot;
-    //[SerializeField] private GameObject _leftHandSlot;
+    [SerializeField] private GameObject _weaponSlot;
+    [SerializeField] private GameObject _secondaryItemSlot;
 
     [Header("The items")]
     [SerializeField] private GameObject _primaryItem;
@@ -49,7 +49,7 @@ public class Inventory : MonoBehaviour
         DropItem(_primaryItem);
 
         _primaryItem = item;
-        item.transform.SetParent(_rightHandSlot.transform);
+        item.transform.SetParent(_weaponSlot.transform);
         item.GetComponent<Item>().PickUp(entityUsingItem);
         item.SetActive(false);
         EquipPrimary();
@@ -62,7 +62,14 @@ public class Inventory : MonoBehaviour
         DropItem(_secondaryItem);
 
         _secondaryItem = item;
-        item.transform.SetParent(_rightHandSlot.transform);
+        if (item.TryGetComponent<ThrowableItem>(out _))
+        {
+            item.transform.SetParent(_secondaryItemSlot.transform);
+        }
+        else
+        {
+            item.transform.SetParent(_primaryItem.transform);
+        }
         item.GetComponent<Item>().PickUp(entityUsingItem);
         item.SetActive(false);
         EquipSecondary();
@@ -96,34 +103,41 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    // Drops an item into the world
+    // Position the item in front of the entity with this inventory after dropping it
     public void DropItem(GameObject item)
     {
-        if (item == null)
+        if (item != null)
         {
-            return;
-        }
+            RemoveItemFromInventory(item);
 
-        // Remove item from current hand
-        if (_currentItem == item)
-        {
-            _currentItem = null;
+            // Position slightly in front of entity
+            Vector3 dropPos = transform.position + transform.forward * 1.0f + Vector3.up * 0.5f;
+            item.GetComponent<Item>().Drop(dropPos, Vector3.forward * 5.0f);
+            item.transform.SetParent(null);
         }
+    }
 
-        // Remove from primary hand
-        if (item == _primaryItem)
+    // Remove the item from the inventory
+    public void RemoveItemFromInventory(GameObject item)
+    {
+        if (item != null)
         {
-            _primaryItem = null;
-        }
-        // Remove from secondary hand
-        else if (item == _secondaryItem)
-        {
-            _secondaryItem = null;
-        }
+            // Remove item from current hand
+            if (_currentItem == item)
+            {
+                _currentItem = null;
+            }
 
-        // Position slightly in front of player
-        Vector3 dropPos = transform.position + transform.forward * 1.0f + Vector3.up * 0.5f;
-        item.GetComponent<Item>().Drop(dropPos, Vector3.forward * 5.0f);
-        item.transform.SetParent(null);
+            // Remove from primary hand
+            if (item == _primaryItem)
+            {
+                _primaryItem = null;
+            }
+            // Remove from secondary hand
+            else if (item == _secondaryItem)
+            {
+                _secondaryItem = null;
+            }
+        }
     }
 }

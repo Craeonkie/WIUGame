@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveableItem : Interactable
+public class MoveableObject : Interactable
 {
-    // Make item moveable
+    // Make object moveable
     public override void InteractWith()
     {
 
