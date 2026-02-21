@@ -467,16 +467,17 @@ public class PlayerController : Entity
         if (!isDodging)
         {
             _currentHP -= damageTaken;
+            if (hitAudio.Length > 0 && audioSource != null)
+            {
+                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+            }
             if (_currentHP <= 0)
             {
+                audioSource.PlayOneShot(deathAudio);
                 Die();
             }
 
-            // Interrupt player if they were moving an item
-            if (_isMovingObject)
-            {
-                StopMovingItem();
-            }
+            InterruptAction();
         }
     }
 
@@ -488,8 +489,13 @@ public class PlayerController : Entity
             _currentHP -= damageTaken;
             _invincibilityMaxCooldown = invincibilityLength;
             _invincibilityCooldown = invincibilityLength;
+            if (hitAudio.Length > 0 && audioSource != null)
+            {
+                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+            }
             if (_currentHP <= 0)
             {
+                audioSource.PlayOneShot(deathAudio);
                 Die();
             }
             else
@@ -500,11 +506,16 @@ public class PlayerController : Entity
                 }
             }
 
-            // Interrupt player if they were moving an item
-            if (_isMovingObject)
-            {
-                StopMovingItem();
-            }
+            InterruptAction();
+        }
+    }
+
+    // Interrupt the player's action
+    public void InterruptAction()
+    {
+        if (_isMovingObject)
+        {
+            StopMovingItem();
         }
     }
 }

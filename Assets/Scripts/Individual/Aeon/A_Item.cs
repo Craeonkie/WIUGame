@@ -33,7 +33,7 @@ public abstract class Item : Interactable
     [SerializeField] protected int _currentAnimationChain;
 
     // Update is called once per frame
-    protected void Update()
+    protected virtual void Update()
     {
 
     }
@@ -63,7 +63,7 @@ public abstract class Item : Interactable
     }
 
     // Picks up an item rigidbody wise and appends it to the player's hand slot
-    public void PickUp(Entity entityUsingItem)
+    public virtual void PickUp(Entity entityUsingItem)
     {
         transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         _entityUsingItem = entityUsingItem;
@@ -81,7 +81,7 @@ public abstract class Item : Interactable
     }
 
     // Drops an item rigidbody wise
-    public void Drop(Vector3 dropPos, Vector3 force)
+    public virtual void Drop(Vector3 dropPos, Vector3 force)
     {
         // Unparent
         transform.SetParent(null);
@@ -111,7 +111,7 @@ public abstract class Item : Interactable
     }
 
     // Set current animation handler (Upon pickup, drop, equip or unequip)
-    public void SetAnimationHandler(AnimationHandler handler)
+    public virtual void SetAnimationHandler(AnimationHandler handler)
     {
         _animationHandler = handler;
         _currentAnimationChain = 0;
@@ -120,12 +120,12 @@ public abstract class Item : Interactable
     }
 
     // Set current entity wielding this (Upon pickup or drop)
-    public void SetEntity(Entity entity)
+    public virtual void SetEntity(Entity entity)
     {
         _entityUsingItem = entity;
     }
 
-    protected bool IsPartOfHierarchy(Transform target, Transform root)
+    protected virtual bool IsPartOfHierarchy(Transform target, Transform root)
     {
         Transform current = root;
         while (current != null)

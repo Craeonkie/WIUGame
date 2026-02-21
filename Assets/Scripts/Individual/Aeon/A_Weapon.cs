@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class Weapon : Item
 {
-    [SerializeField] protected List<GameObject> hitEntities;
+    [SerializeField] protected List<Entity> hitEntities;
     protected bool isAttacking = false;
     protected bool isBlocking = false;
     protected float currentAttackDamage;
@@ -43,13 +44,22 @@ public abstract class Weapon : Item
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if (isAttacking && !hitEntities.Contains(other.gameObject) && !IsPartOfHierarchy(other.transform, transform.root))
+        if (isAttacking && !hitEntities.Contains(other.gameObject.GetComponent<Entity>()) && !IsPartOfHierarchy(other.transform, transform.root))
         {
-            if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
+            Entity thisEntity;
+            if (other.gameObject.TryGetComponent<Entity>(out thisEntity))
             {
                 thisEntity.TakeDamage(currentAttackDamage);
             }
-            hitEntities.Add(other.gameObject);
+            else
+            {
+                thisEntity = other.gameObject.GetComponentInParent<Entity>();
+                if (thisEntity != null)
+                {
+                    thisEntity.TakeDamage(currentAttackDamage);
+                }
+            }
+            hitEntities.Add(other.gameObject.GetComponent<Entity>());
         }
     }
 }

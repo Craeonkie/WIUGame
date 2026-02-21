@@ -16,6 +16,9 @@ public class Entity : MonoBehaviour
     [SerializeField] protected bool isDodging = false;
     [SerializeField] protected bool _animationHasReset = false;
     [SerializeField] protected bool _hasDamageFlicker = false;
+    [SerializeField] protected AudioClip[] hitAudio;
+    [SerializeField] protected AudioClip deathAudio;
+    [SerializeField] protected AudioSource audioSource;
     private MaterialPropertyBlock _propertyBlock;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -80,8 +83,13 @@ public class Entity : MonoBehaviour
         if (!isDodging)
         {
             _currentHP -= damageTaken;
+            if (hitAudio.Length > 0 && audioSource != null)
+            {
+                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+            }
             if (_currentHP <= 0)
             {
+                audioSource.PlayOneShot(deathAudio);
                 Die();
             }
         }
@@ -95,8 +103,13 @@ public class Entity : MonoBehaviour
             _currentHP -= damageTaken;
             _invincibilityMaxCooldown = invincibilityLength;
             _invincibilityCooldown = invincibilityLength;
+            if (hitAudio.Length > 0 && audioSource != null)
+            {
+                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+            }
             if (_currentHP <= 0)
             {
+                audioSource.PlayOneShot(deathAudio);
                 Die();
             }
             else
