@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e91f01d915af2e946b50a86f9b3316e8
+guid: 0f1ed0181db739f4e840441e39723adc
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -97,7 +97,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: jnt_Pelvis
+    rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

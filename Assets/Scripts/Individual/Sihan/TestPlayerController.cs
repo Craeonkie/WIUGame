@@ -109,4 +109,10 @@ public class TestPlayerController : MonoBehaviour
             doubleJump = false;
         }
     }
+
+    public void SetPlayerToTransform(Transform anchor)
+    {
+        transform.position = anchor.position;
+        transform.rotation = anchor.rotation;
+    }
 }
