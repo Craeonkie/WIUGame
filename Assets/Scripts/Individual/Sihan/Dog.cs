@@ -1,6 +1,9 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Playables;
+using UnityEngine.Rendering;
 
 public enum DogStates
 {
@@ -29,7 +32,7 @@ public enum DogStates
     Dead
 }
 
-public class Dog : MonoBehaviour
+public class Dog : Entity
 {
     [Header("Dog Stats")]
     [SerializeField] private float detectionRange;
@@ -38,10 +41,12 @@ public class Dog : MonoBehaviour
     [SerializeField] private float rotateSpeed;
     [SerializeField] private float baseRotateMultiplier;
     [SerializeField] private float rotateMultiplier;
-    [SerializeField] private float speed;
+    [SerializeField] private float baseSpeed;
+    [SerializeField] private float walkSpeedMultiplier;
+    [SerializeField] private float runSpeedMultiplier;
+    [SerializeField] private float dashSpeedMultiplier;
     [SerializeField] private float idleSpeedMultiplier;
     [SerializeField] private float maxRotate;
-    [SerializeField] private float idleSpeed;
 
     [Header("Attack Settings")]
     [SerializeField] private bool phase2;
@@ -67,6 +72,9 @@ public class Dog : MonoBehaviour
     private Animator animator;
     private GameObject target;
     private CharacterController dogController;
+    [SerializeField] private PlayableDirector phase2Cutscene;
+    [SerializeField] private Volume _globalVolume;
+    private ShockwaveDistortionVolume _distortionVolume;
 
     [Header("Debugging")]
     [SerializeField] private DogStates currentState = DogStates.EnterIdle;
@@ -76,9 +84,99 @@ public class Dog : MonoBehaviour
     [SerializeField] private int[] attackTimes = new int[4] { 0, 0, 0, 0 };
     [SerializeField] private int bounces;
     [SerializeField] private int bounced;
+    [SerializeField] private float idleSpeed;
+    [SerializeField] private float currentSpeedMultiplier;
 
-    void Start()
+
+    public void StartDistortion(float loopDuration)
     {
+        StartCoroutine(DistortionEffectUpdate(0.5f, loopDuration));
+    }
+
+    public IEnumerator DistortionEffectUpdate(float startEndDuration, float loopDuration)
+    {
+        yield return StartCoroutine(DistortionEffectStart(startEndDuration));
+
+        float timer = 0;
+        float speed = /*Random.Range(1f, 3f)*/ 1;
+        float upTimer = 0;
+        float target = Random.Range(0.25f, 1);
+        float baseIntensity = 1;
+
+        while (timer < loopDuration)
+        {
+            timer += Time.unscaledDeltaTime;
+            upTimer += Time.unscaledDeltaTime * speed;
+
+            if (upTimer >= 1)
+            {
+                upTimer = 0;
+                speed = Random.Range(5f, 10f);
+                target = Random.Range(0.25f, 1);
+                baseIntensity = _distortionVolume.intensity.value;
+            }
+
+            _distortionVolume.intensity.value = Mathf.Lerp(baseIntensity, target, upTimer);
+
+            yield return null;
+        }
+
+        yield return StartCoroutine(DistortionEffectEnd(startEndDuration, _distortionVolume.intensity.value));
+    }
+
+    public IEnumerator DistortionEffectStart(float startEndDuration)
+    {
+        float timer = 0;
+
+        while (timer < startEndDuration)
+        {
+            timer += Time.unscaledDeltaTime;
+
+            if (timer > startEndDuration) timer = startEndDuration;
+
+            _distortionVolume.intensity.value = Mathf.Lerp(0, 1, timer);
+
+            yield return null;
+        }
+    }
+
+    public IEnumerator DistortionEffectEnd(float startEndDuration, float startIntensity)
+    {
+        float timer = startEndDuration;
+
+        while (timer > 0)
+        {
+            timer -= Time.unscaledDeltaTime;
+
+            if (timer < 0) timer = 0;
+
+            _distortionVolume.intensity.value = Mathf.Lerp(0, startIntensity, timer);
+
+            yield return null;
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (_globalVolume.sharedProfile.TryGet<ShockwaveDistortionVolume>(out _distortionVolume))
+        {
+            _distortionVolume.intensity.value = 0f;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_globalVolume.sharedProfile.TryGet<ShockwaveDistortionVolume>(out _distortionVolume))
+        {
+            _distortionVolume.intensity.value = 0f;
+        }
+    }
+
+
+    new void Start()
+    {
+        base.Start();
+
         animator = GetComponent<Animator>();
         dogController = GetComponent<CharacterController>();
         agent = GetComponent<NavMeshAgent>();
@@ -87,8 +185,10 @@ public class Dog : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
+        base.Update();
+
         if (!_canMove)
         {
             if (currentSpeed > 0)
@@ -123,7 +223,7 @@ public class Dog : MonoBehaviour
 
                 foreach (Collider collider in colliders)
                 {
-                    if (collider.CompareTag("Player"))
+                    if (collider.CompareTag("PlayerTag"))
                     {
                         float distance = (transform.position - collider.transform.position).magnitude;
 
@@ -159,7 +259,7 @@ public class Dog : MonoBehaviour
                 idleSpeed = Mathf.Clamp01(idleSpeed);
 
                 animator.SetFloat("Move", Mathf.Clamp01(currentSpeed + idleSpeed));
-                dogController.Move(transform.forward * currentSpeed * speed * Time.deltaTime);
+                dogController.Move(transform.forward * currentSpeed * baseSpeed  * Time.deltaTime);
 
                 currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
                 animator.SetFloat("Turn", Mathf.Abs(currentRotate));
@@ -265,6 +365,7 @@ public class Dog : MonoBehaviour
                             }
 
                             rotateMultiplier = 1.5f;
+                            currentSpeedMultiplier = runSpeedMultiplier;
                         }
                         else if (distance > stopRange)
                         {
@@ -340,6 +441,7 @@ public class Dog : MonoBehaviour
                             }
 
                             rotateMultiplier = 1;
+                            currentSpeedMultiplier = walkSpeedMultiplier;
                         }
                         else
                         {
@@ -415,6 +517,7 @@ public class Dog : MonoBehaviour
                             }
 
                             rotateMultiplier = 1;
+                            currentSpeedMultiplier = 1;
                         }
 
                         idleSpeed -= Time.deltaTime;
@@ -454,7 +557,7 @@ public class Dog : MonoBehaviour
                         Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
 
                         animator.SetFloat("Move", Mathf.Clamp01(currentSpeed + idleSpeed));
-                        dogController.Move(adjustedForward * currentSpeed * speed * Time.deltaTime);
+                        dogController.Move(adjustedForward * currentSpeed * baseSpeed * currentSpeedMultiplier * Time.deltaTime);
                         agent.nextPosition = transform.position;
 
                         animator.SetFloat("Turn", Mathf.Abs(currentRotate));
@@ -572,6 +675,7 @@ public class Dog : MonoBehaviour
                         dashDirection.y = 0;
                         dashDirection.Normalize();
                         rotateMultiplier = 1.5f;
+                        currentSpeedMultiplier = dashSpeedMultiplier;
                         wind.Play();
                     }
                 }
@@ -611,12 +715,13 @@ public class Dog : MonoBehaviour
                         float rotationOffset = 90f * currentRotate;
                         Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
 
-                        dogController.Move(adjustedForward * currentSpeed * speed * 2.5f * Time.deltaTime);
+                        dogController.Move(adjustedForward * currentSpeed * baseSpeed * currentSpeedMultiplier * Time.deltaTime);
 
                         if (Physics.Raycast(transform.position + Vector3.up * 0.5f, transform.forward, out RaycastHit hit, dogLookaheadDistance, LayerMask.GetMask("Wall")))
                         {
                             animator.SetTrigger("Wince");
                             dashing = false;
+                            wind.Stop();
                         }
                     }
                 }
@@ -657,6 +762,7 @@ public class Dog : MonoBehaviour
                         dashDirection = target.transform.position - transform.position;
                         dashDirection.y = 0;
                         dashDirection.Normalize(); rotateMultiplier = 2f;
+                        currentSpeedMultiplier = dashSpeedMultiplier;
                         wind.Play();
                     }
                 }
@@ -711,7 +817,7 @@ public class Dog : MonoBehaviour
                                 float rotationOffset = 90f * currentRotate;
                                 Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
 
-                                dogController.Move(adjustedForward * currentSpeed * speed * 2 * Time.deltaTime);
+                                dogController.Move(adjustedForward * currentSpeed * baseSpeed * currentSpeedMultiplier * Time.deltaTime);
                                 agent.nextPosition = transform.position;
 
                                 animator.SetFloat("Turn", Mathf.Abs(currentRotate));
@@ -751,7 +857,7 @@ public class Dog : MonoBehaviour
                             float rotationOffset = 90f * currentRotate;
                             Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
 
-                            dogController.Move(adjustedForward * currentSpeed * speed * 2 * Time.deltaTime);
+                            dogController.Move(adjustedForward * currentSpeed * baseSpeed * currentSpeedMultiplier * Time.deltaTime);
                             agent.nextPosition = transform.position;
 
                             animator.SetFloat("Turn", Mathf.Abs(currentRotate));
@@ -847,6 +953,7 @@ public class Dog : MonoBehaviour
     {
         agent.enabled = false;
         dogController.enabled = false;
+        wind.Stop();
     }
 
     public void ResetDog()
@@ -872,5 +979,81 @@ public class Dog : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, stopRange);
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position + Vector3.up * 0.5f, transform.position + Vector3.up * 0.5f + transform.forward * dogLookaheadDistance);
+    }
+
+    // Do damage without invincibility cooldown
+    public override void TakeDamage(float damageTaken)
+    {
+        if (phase2Cutscene.state == PlayState.Playing) return;
+
+        if (!isDodging)
+        {
+            _currentHP -= damageTaken;
+            if (hitAudio.Length > 0 && audioSource != null)
+            {
+                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+            }
+            if (_currentHP <= _maxHP / 2 && !phase2)
+            {
+                Debug.Log("Entering Phase 2");
+                phase2Cutscene.Play();
+                phase2 = true;
+            }
+            if (_currentHP <= 0)
+            {
+                if (audioSource != null && deathAudio != null)
+                {
+                    audioSource.PlayOneShot(deathAudio);
+                }
+                Die();
+            }
+        }
+    }
+
+    // Do damage with invincibility cooldown
+    public override void TakeDamage(float damageTaken, float invincibilityLength)
+    {
+        if (phase2Cutscene.state == PlayState.Playing) return;
+
+        if (!isInvincible && !isDodging)
+        {
+            _currentHP -= damageTaken;
+            _invincibilityMaxCooldown = invincibilityLength;
+            _invincibilityCooldown = invincibilityLength;
+            if (hitAudio.Length > 0 && audioSource != null)
+            {
+                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+            }
+            if (_currentHP <= _maxHP / 2 && !phase2)
+            {
+                Debug.Log("Entering Phase 2");
+                phase2Cutscene.Play();
+                phase2 = true;
+            }
+            if (_currentHP <= 0)
+            {
+                if (audioSource != null && deathAudio != null)
+                {
+                    audioSource.PlayOneShot(deathAudio);
+                }
+                Die();
+            }
+            else
+            {
+                if (_invincibilityCooldown > 0)
+                {
+                    isInvincible = true;
+                }
+            }
+        }
+    }
+
+    // Set gameobject to be inactive
+    public override void Die()
+    {
+        onDieEvent?.Invoke();
+        J_GameManager.Instance.SetCurrentScene("C_TestScene");
+
+        //gameObject.SetActive(false);
     }
 }
