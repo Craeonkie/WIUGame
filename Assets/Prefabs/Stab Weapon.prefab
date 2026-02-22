@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 619424105351829913}
   - component: {fileID: 4464731177710794384}
   - component: {fileID: 6984875207885767680}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 7926641218427785695}
   - component: {fileID: 4527752829255561202}
   - component: {fileID: 1758605705667704259}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,14 +340,14 @@ MonoBehaviour:
   description: 
   primary:
   - damage: 20
-    durabilityUsage: 0
+    durabilityUsed: 0
     hasRootMotion: 0
     pressAndHold: 0
     isBlock: 0
     animationClip: {fileID: -203655887218126122, guid: 2a7e0d2a53e5b00488ee940dfdd11261, type: 3}
     audioClip: {fileID: 0}
   - damage: 30
-    durabilityUsage: 0
+    durabilityUsed: 0
     hasRootMotion: 0
     pressAndHold: 0
     isBlock: 0
@@ -355,8 +355,16 @@ MonoBehaviour:
     audioClip: {fileID: 0}
   secondary: []
   special: []
+  hasDurability: 0
+  maxDurability: 0
+  currentDurability: 0
+  audioSource: {fileID: 0}
+  weaponBreakingSound: {fileID: 0}
+  _entityUsingItem: {fileID: 0}
   _isActing: 0
   _resetAnimationChain: 0
   _chainingAnimation: 0
   _currentAnimationChain: 0
+  _destroyUponDrop: 0
+  _maxTimeBeforeDestroyed: 0
   hitEntities: []
