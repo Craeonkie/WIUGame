@@ -165,7 +165,7 @@ public class J_BugBehaviour : Entity
                 _navMeshAgent.isStopped = true;
 
                 // Attack the player
-                Entity player = GameObject.FindWithTag("Player").GetComponent<Entity>();
+                Entity player = GameObject.FindWithTag("PlayerTag").GetComponent<Entity>();
                 player.TakeDamage(_damage);
                 Debug.Log(player.name + " took damage!");
 

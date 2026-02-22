@@ -1,5 +1,6 @@
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
@@ -21,6 +22,8 @@ public class Entity : MonoBehaviour
     [SerializeField] protected AudioSource audioSource;
     public static System.Action OnDie;
     private MaterialPropertyBlock _propertyBlock;
+
+    public static System.Action OnDie;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
