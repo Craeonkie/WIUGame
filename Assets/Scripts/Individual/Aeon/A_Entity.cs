@@ -20,7 +20,6 @@ public class Entity : MonoBehaviour
     [SerializeField] protected AudioClip[] hitAudio;
     [SerializeField] protected AudioClip deathAudio;
     [SerializeField] protected AudioSource audioSource;
-    public static System.Action OnDie;
     private MaterialPropertyBlock _propertyBlock;
 
     public static System.Action OnDie;
