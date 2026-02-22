@@ -21,8 +21,16 @@ public abstract class Item : Interactable
     [Header("Special")]
     public Animation[] special;
 
+    [Header("Durability")]
+    public bool hasDurability;
+    public int maxDurability;
+    public int currentDurability;
+    public AudioSource audioSource;
+    public AudioClip weaponBreakingSound;
+
+    [Header("Exposed for debugging")]
     protected AnimationHandler _animationHandler;
-    protected Entity _entityUsingItem;
+    public Entity _entityUsingItem;
 
     protected InputType _inputType;
     protected Animation _currentAnimation;
@@ -31,9 +39,21 @@ public abstract class Item : Interactable
     [SerializeField] protected bool _resetAnimationChain;
     [SerializeField] protected bool _chainingAnimation;
     [SerializeField] protected int _currentAnimationChain;
+
+    [Header("Destroy on drop parameters")]
     [SerializeField] protected bool _destroyUponDrop;
-    [SerializeField] protected float _timeBeforeDestroyed;
+    [SerializeField] protected float _maxTimeBeforeDestroyed;
+    protected float _timeBeforeDestroyed;
     protected bool _hasBeenDropped;
+
+    // Update is called once per frame
+    protected virtual void Start()
+    {
+        if (hasDurability)
+        {
+            currentDurability = maxDurability;
+        }
+    }
 
     // Update is called once per frame
     protected virtual void Update()
@@ -124,6 +144,7 @@ public abstract class Item : Interactable
             // Change tag accordingly
             tag = "Untagged";
             _hasBeenDropped = true;
+            _timeBeforeDestroyed = _maxTimeBeforeDestroyed;
         }
     }
 
@@ -155,5 +176,33 @@ public abstract class Item : Interactable
         }
 
         return target.IsChildOf(root);
+    }
+
+    // For the item manager to call
+    public virtual void ResetItem()
+    {
+        currentDurability = maxDurability;
+        tag = "Item";
+        _hasBeenDropped = false;
+    }
+
+    // Set item to false
+    public virtual void Break()
+    {
+        if (audioSource != null && weaponBreakingSound != null)
+        {
+            audioSource.PlayOneShot(weaponBreakingSound);
+        }
+        gameObject.SetActive(false);
+    }
+
+    // Ensure player calls this, then calls drop and break on the item
+    public virtual bool CheckIfBroken()
+    {
+        if (currentDurability <= 0 && hasDurability)
+        {
+            return true;
+        }
+        return false;
     }
 }

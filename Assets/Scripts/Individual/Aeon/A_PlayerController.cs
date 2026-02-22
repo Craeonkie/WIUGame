@@ -209,6 +209,17 @@ public class PlayerController : Entity
             }
         }
 
+        // Handle breaking items (A bit scuffed)
+        if (inventory.ReturnCurrentItem() != null && !animationHandler.IsActing())
+        {
+            Item temp = inventory.ReturnCurrentItem().GetComponent<Item>();
+            if (temp.CheckIfBroken())
+            {
+                inventory.DropItem(temp.gameObject);
+                temp.Break();
+            }
+        }
+
         //// Handle other inputs
         // Cast a sphere around the player (or use a raycast forward if preferred)
         if (!_isMovingObject)
@@ -331,7 +342,6 @@ public class PlayerController : Entity
                     if (inventory.ReturnCurrentItem() != null)
                     {
                         inventory.DropItem(inventory.ReturnCurrentItem());
-                        animationHandler.UnequipItem();
                     }
                 }
 
@@ -467,14 +477,13 @@ public class PlayerController : Entity
         followCameraTarget.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value = 10.0f;
     }
 
-
-
     // Do damage without invincibility cooldown
     public override void TakeDamage(float damageTaken)
     {
         if (!isDodging)
         {
             _currentHP -= damageTaken;
+            _animator.SetTrigger("GetHit");
             if (hitAudio.Length > 0 && audioSource != null)
             {
                 audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
@@ -495,6 +504,7 @@ public class PlayerController : Entity
         if (!isInvincible && !isDodging)
         {
             _currentHP -= damageTaken;
+            _animator.SetTrigger("GetHit");
             _invincibilityMaxCooldown = invincibilityLength;
             _invincibilityCooldown = invincibilityLength;
             if (hitAudio.Length > 0 && audioSource != null)

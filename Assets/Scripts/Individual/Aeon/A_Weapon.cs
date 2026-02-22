@@ -62,4 +62,11 @@ public abstract class Weapon : Item
             hitEntities.Add(other.gameObject.GetComponent<Entity>());
         }
     }
+
+    public override void ResetItem()
+    {
+        currentDurability = maxDurability;
+        tag = "Weapon";
+        _hasBeenDropped = false;
+    }
 }

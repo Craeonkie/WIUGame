@@ -7,6 +7,7 @@ public class C_FriendBoss : Entity
     [SerializeField] private string _IdleName;
     [SerializeField] private GameObject _RedCupParent;
     [SerializeField] private Transform _PlayerRef;
+    Inventory _AIInventory;
 
     [Header("Phase 1")]
     [SerializeField] private float _RotateSpeed = 5f;
@@ -23,7 +24,18 @@ public class C_FriendBoss : Entity
 
     public static event System.Action gettingAtkAction;
 
-
+    public void OnEnable()
+    {
+        C_FriendAI.onPickUPAction += pickupWeapon;
+    }
+    public void OnDisable()
+    {
+        C_FriendAI.onPickUPAction -= pickupWeapon;
+    }
+    private void pickupWeapon(GameObject pickup)
+    {
+        _AIInventory.PutItemInPrimary(pickup, this);
+    }
     public override void Die()
     {
         if (_DeadEventTriggered) return;
@@ -122,6 +134,14 @@ public class C_FriendBoss : Entity
     {
         base.Start();
         spawnPoint = gameObject.transform.position;
+        if (_AIInventory == null)
+        {
+            _AIInventory = GetComponent<Inventory>();
+            if (_AIInventory == null)
+            {
+                Debug.LogWarning("Missing Aeon inventory script in ai!");
+            }
+        }
     }
 
     public void Teleport()
