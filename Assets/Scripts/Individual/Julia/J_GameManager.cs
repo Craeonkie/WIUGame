@@ -24,7 +24,7 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
 {
     public static J_GameManager Instance { get; private set; }
     public const string MENU_SCENE = "J_MenuScene";
-    public const string REST_SCENE = "J_RestScene";
+    public const string REST_SCENE = "A_RestScene";
     public const string DOG_SCENE = "S_DogScene";
     public const string KID_SCENE = "C_TestScene";
     public const string MONSTER_SCENE = "J_MonsterScene";

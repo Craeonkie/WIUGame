@@ -19,6 +19,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected AudioClip[] hitAudio;
     [SerializeField] protected AudioClip deathAudio;
     [SerializeField] protected AudioSource audioSource;
+    public static System.Action OnDie;
     private MaterialPropertyBlock _propertyBlock;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -131,6 +132,7 @@ public class Entity : MonoBehaviour
     // Set gameobject to be inactive
     public virtual void Die()
     {
+        OnDie?.Invoke();
         gameObject.SetActive(false);
     }
 }
