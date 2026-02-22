@@ -29,6 +29,7 @@ public class PlayerController : Entity
     [Header("Camera Movement")]
     [SerializeField] private GameObject followCameraTarget;
     [SerializeField] private GameObject thirdPersonCameraTarget;
+    [SerializeField] private GameObject topDownViewCameraTarget;
     [SerializeField] private MouseMovement[] mouseRotationScripts;
 
     private Vector3 _rollDirection;
