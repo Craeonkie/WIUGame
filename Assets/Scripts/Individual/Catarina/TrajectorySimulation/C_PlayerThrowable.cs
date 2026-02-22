@@ -73,7 +73,6 @@ public class C_PlayerThrowable : MonoBehaviour
         // Aiming rotation
         if (_aiming)
         {
-            bool cal = false;
             Vector2 lookDelta = _lookAction.ReadValue<Vector2>();
             lookDelta *= _aimSensitivityMultiplier;
             // Horizontal look only; deadzone to remove tiny noise
@@ -100,7 +99,6 @@ public class C_PlayerThrowable : MonoBehaviour
                     );
 
                 }
-                cal = true;
             }
             HandleAimingMovement(input);
             if (_lastForce != currentForce || _lastForward != _ballSpawn.forward)

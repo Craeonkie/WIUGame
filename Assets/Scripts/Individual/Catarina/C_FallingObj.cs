@@ -22,11 +22,11 @@ public class C_FallingObj : MonoBehaviour
     private MaterialPropertyBlock _mpb;
     // cached shader property id, faster than passing string every frame
     private static readonly int ColorID = Shader.PropertyToID("_color");
-
+    private bool _isBeingReleased = false;
     public void Init(C_PencilAbility spawner)
     {
         _spawner = spawner;
-
+        _isBeingReleased = false;
         // reset physics
         _rb.linearVelocity = Vector3.zero;
         _rb.angularVelocity = Vector3.zero;
@@ -114,13 +114,14 @@ public class C_FallingObj : MonoBehaviour
     // safety net if unity disables this obj directly
     private void OnDisable()
     {
+        if (_spawner == null) return;
         PuttingBackInPool();
     }
 
     public void PuttingBackInPool()
     {
-        if (_warningDecalInstance == null) return;
-
+        if (_warningDecalInstance == null || _isBeingReleased) return;
+        _isBeingReleased = true;
         _spawner.ReleaseDecal(_warningDecalInstance);
         _warningDecalInstance = null;
         _decalRenderer = null;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -46,6 +47,7 @@ public class C_PencilAbility : C_BossAbility
             if (_CurrentRoundCount >= _NumOfRound)
             {
                 finishAbility?.Invoke();
+                this.enabled = false;
                 return;
             }
             CreateNewSpawn();
@@ -57,6 +59,7 @@ public class C_PencilAbility : C_BossAbility
         _NumOfRound = Random.Range(_MinNumberOfRound, _MaxNumberOfRound);
         _CurrentRoundCount = 0;
         CreateNewSpawn();
+        this.startAbility = true;
     }
 
     private void CreateNewSpawn()
@@ -79,18 +82,23 @@ public class C_PencilAbility : C_BossAbility
 
     protected override void GameTearDown()
     {
-        // copy since releasing modifies the hashset
-        var activeCopy = new List<C_FallingObj>(_activeObjects);
-        foreach (var obj in activeCopy)
+        foreach (var obj in _activeObjects.ToList())
         {
-            obj.PuttingBackInPool();
+            if (obj == null) continue;
             _fallingObjPool.Release(obj);
         }
-        _CurrentRoundCount = 0;
+        _activeObjects.Clear();
     }
 
-    private void OnEnable() => GameSetUp();
-    private void OnDisable() => GameTearDown();
+    private void OnEnable()
+    {
+        GameSetUp();
+    }
+    private void OnDisable()
+    {
+        GameTearDown();
+        _CurrentRoundCount = 0;
+    }
 
     void Awake()
     {
@@ -139,11 +147,23 @@ public class C_PencilAbility : C_BossAbility
         }, false, 25, 30);
     }
 
-    public void Release(C_FallingObj obj) => _fallingObjPool.Release(obj);
-    public GameObject GetDecal() => _decalPool.Get();
-    public void ReleaseDecal(GameObject decal) => _decalPool.Release(decal);
+    public void Release(C_FallingObj obj)
+    {
+        _fallingObjPool.Release(obj);
+    }
+    public GameObject GetDecal()
+    {
+        return _decalPool.Get();
+    }
+    public void ReleaseDecal(GameObject decal)
+    {
+        _decalPool.Release(decal);
+    }
     // lets C_FallingObj grab the cached renderer without calling GetComponent
-    public Renderer GetDecalRenderer(GameObject decal) => _decalRenderers[decal];
+    public Renderer GetDecalRenderer(GameObject decal)
+    {
+        return _decalRenderers[decal];
+    }
 
     private void OnDestroy()
     {

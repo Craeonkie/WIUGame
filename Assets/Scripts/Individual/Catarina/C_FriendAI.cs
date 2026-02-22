@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class C_FriendAI : Entity
+public class C_FriendAI : MonoBehaviour
 {
     [Header("Ref")]
     [SerializeField] private NavMeshAgent _Agent;
@@ -10,7 +10,7 @@ public class C_FriendAI : Entity
 
     [Header("Layers")]
     [SerializeField] private LayerMask _GroundLayer;
-    [SerializeField] private LayerMask _PlayerLayer;
+    [SerializeField] private string _PlayerTagName;
     [SerializeField] private LayerMask _PickUpLayer;
 
     [Header("Patrol")]
@@ -42,12 +42,11 @@ public class C_FriendAI : Entity
     [Header("PickUp")]
     [SerializeField] float _PickUpRange = 2f;
     bool _HaveWeapon = false;
-    Inventory _AIInventory;
     bool _FindingWeapon = false;
     bool _WeaponIsWithinDist = false;
     bool _wasfightingPlayer = false;
     float _findWeaponCooldown;
-
+    public static event System.Action<GameObject> onPickUPAction;
 
     [Header("Defend")]
     [SerializeField] string _DefendAnimName;
@@ -106,14 +105,6 @@ public class C_FriendAI : Entity
             if (_Animator == null)
             {
                 Debug.LogWarning("Missing Animator in the FRIEND????");
-            }
-        }
-        if (_AIInventory == null)
-        {
-            _AIInventory = GetComponent<Inventory>();
-            if (_AIInventory == null)
-            {
-                Debug.LogWarning("Missing Aeon inventory script in ai!");
             }
         }
         _HasPt = false; 
@@ -293,7 +284,6 @@ public class C_FriendAI : Entity
     //the picking up of weapon logic
     private void PerformPickUp()
     {
-        if (_AIInventory == null) return;
         Collider[] hit = Physics.OverlapSphere(transform.position, _PickUpRange, _PickUpLayer);
 
         if (hit.Length <= 0) return;
@@ -320,7 +310,10 @@ public class C_FriendAI : Entity
         {
             pickUp = hit[0].gameObject;
         }
-        _AIInventory.PutItemInPrimary(pickUp, this);
+        if (onPickUPAction != null)
+        {
+            onPickUPAction.Invoke(pickUp);
+        }
         _HaveWeapon = true;
         _FindingWeapon =false;
     }
@@ -386,21 +379,46 @@ public class C_FriendAI : Entity
     }
 
     //the player detection logic
+    //private void DetectPlayer()
+    //{
+    //    var cols = Physics.OverlapSphere(transform.position, _VisionRange, _PlayerLayer);
+    //    _IsPlayerVisable = cols.Length > 0;
+
+    //    if (_IsPlayerVisable)
+    //    {
+    //        var dist = Vector3.Distance(transform.position, cols[0].transform.position);
+    //        _IsPlayerInRange = dist <= _ATkRange;
+    //        _playerInZone = dist <= _SafeRad;
+    //    }
+    //    else
+    //    {
+    //        _IsPlayerInRange = false;
+    //        _playerInZone = false;
+    //    }
+    //}
     private void DetectPlayer()
     {
-        var cols = Physics.OverlapSphere(transform.position, _VisionRange, _PlayerLayer);
-        _IsPlayerVisable = cols.Length > 0;
+        _IsPlayerVisable = false;
+        _IsPlayerInRange = false;
+        _playerInZone = false;
 
-        if (_IsPlayerVisable)
+        Collider[] cols = Physics.OverlapSphere(transform.position, _VisionRange);
+
+        for (int i = 0; i < cols.Length; i++)
         {
-            var dist = Vector3.Distance(transform.position, cols[0].transform.position);
-            _IsPlayerInRange = dist <= _ATkRange;
-            _playerInZone = dist <= _SafeRad;
-        }
-        else
-        {
-            _IsPlayerInRange = false;
-            _playerInZone = false;
+            if (cols[i].CompareTag(_PlayerTagName))
+            {
+                _IsPlayerVisable = true;
+
+                float dist = Vector3.Distance(transform.position, cols[i].transform.position);
+
+                _IsPlayerInRange = dist <= _ATkRange;
+                _playerInZone = dist <= _SafeRad;
+
+                _PlayerTransform = cols[i].transform;
+
+                break; 
+            }
         }
     }
 

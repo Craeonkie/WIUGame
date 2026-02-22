@@ -9,13 +9,23 @@ public class C_CombineMesh : MonoBehaviour
     public void Optimize()
     {
         MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
-        CombineInstance[] combines = new CombineInstance[meshFilters.Length];
-        int i = 0;
-        while (i < meshFilters.Length)
+
+        var combineList = new System.Collections.Generic.List<CombineInstance>();
+
+        for (int i = 0; i < meshFilters.Length; i++)
         {
-            // Create a readable copy of mesh if needed
+            // Skip self MeshFilter (important)
+            if (meshFilters[i].transform == transform)
+                continue;
+
             Mesh sourceMesh = meshFilters[i].sharedMesh;
-            if (sourceMesh != null && !sourceMesh.isReadable)
+
+            // Skip if null
+            if (sourceMesh == null)
+                continue;
+
+            // Create readable copy if needed
+            if (!sourceMesh.isReadable)
             {
                 Mesh readableMesh = new Mesh();
                 readableMesh.vertices = sourceMesh.vertices;
@@ -27,22 +37,27 @@ public class C_CombineMesh : MonoBehaviour
                 sourceMesh = readableMesh;
             }
 
-            combines[i].mesh = sourceMesh;
-            combines[i].transform = transform.worldToLocalMatrix * meshFilters[i].transform.localToWorldMatrix;
-            meshFilters[i].gameObject.SetActive(false);
-            i++;
-        }
-        Mesh mesh = new Mesh();
-        mesh.CombineMeshes(combines);
-        transform.GetComponent<MeshFilter>().sharedMesh = mesh;
-        transform.gameObject.SetActive(true);
+            CombineInstance ci = new CombineInstance();
+            ci.mesh = sourceMesh;
+            ci.transform = transform.worldToLocalMatrix *
+                           meshFilters[i].transform.localToWorldMatrix;
 
-        var meshCollider = transform.GetComponent<MeshCollider>();
-        meshCollider.sharedMesh = mesh;
-        if (_CreateRB)
-        {
-            gameObject.AddComponent<Rigidbody>();
+            combineList.Add(ci);
+
+            meshFilters[i].gameObject.SetActive(false);
         }
+
+        if (combineList.Count == 0)
+            return;
+
+        Mesh mesh = new Mesh();
+        mesh.CombineMeshes(combineList.ToArray(), true, true);
+
+        GetComponent<MeshFilter>().sharedMesh = mesh;
+        GetComponent<MeshCollider>().sharedMesh = mesh;
+
+        if (_CreateRB)
+            gameObject.AddComponent<Rigidbody>();
     }
     private void Start()
     {

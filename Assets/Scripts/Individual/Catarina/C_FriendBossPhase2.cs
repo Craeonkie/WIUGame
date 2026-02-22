@@ -2,15 +2,25 @@ using UnityEngine;
 
 public class C_FriendBossPhase2 : MonoBehaviour
 {
-    [Header("Airplane ability")]
-    [SerializeField] private float _AirplaneTriggerTiming = 10f;
+    public enum ability
+    {
+        NONE=-1,
+        AIRPLANE=0,
+        PENCIL=1
+    }
+    [Header("Settings")]
+    [SerializeField] float _MinTiming = 8;
+    [SerializeField] float _MaxTiming =12;
+    [SerializeField] private int _MaxConsecutive = 2;
+
+    private ability _LastAbility = ability.NONE;
+    private int _ConsecutiveCount = 0;
     private float _counter = 0f;
-    private bool canTriggerAirplane = false;
+
+
     public static event System.Action StartAirplaneAbility;
 
-    [Header("Falling Obj ability")]
-    [SerializeField] private float _FallingObjTriggerTiming = 10f;
-    private bool canTriggerFallingObj = true;
+
     public static event System.Action StartFallingObjAbility;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,40 +45,58 @@ public class C_FriendBossPhase2 : MonoBehaviour
 
     private void ResetAirplane()
     {
-        _counter = _AirplaneTriggerTiming;
-        canTriggerAirplane = false;
+        _AbilityActive = false;
+        _counter = Random.Range(_MinTiming, _MaxTiming);
     }
 
     private void ResetPencil()
     {
-        _counter = _FallingObjTriggerTiming;
-        canTriggerFallingObj = false;
+        _AbilityActive = false;
+        _counter = Random.Range(_MinTiming, _MaxTiming);
     }
 
-    // Update is called once per frame
+    private bool _AbilityActive = false;
+
     void Update()
     {
-        if (!canTriggerFallingObj)
+        if (_AbilityActive) return;
+
+        _counter -= Time.deltaTime;
+        if (_counter <= 0f)
         {
-            _counter -= Time.deltaTime;
-            if (_counter <= 0f)
-            {
-                canTriggerFallingObj = true;
-            }
+            TriggerNextAbility();
         }
-        if (canTriggerFallingObj)
+    }
+
+    private void TriggerNextAbility()
+    {
+        _AbilityActive = true;
+
+        ability next = PickNextAbility();
+        _ConsecutiveCount = (next == _LastAbility) ? _ConsecutiveCount + 1 : 1;
+        _LastAbility = next;
+
+        if (next == ability.AIRPLANE)
         {
-            if (StartFallingObjAbility != null)
-            {
-                StartFallingObjAbility.Invoke();
-            }
+            Debug.Log("Airplane ability is invoke");
+            StartAirplaneAbility?.Invoke();
         }
-        else if (canTriggerAirplane)
+        else
         {
-            if (StartAirplaneAbility != null)
-            {
-                StartAirplaneAbility.Invoke();
-            }
+            Debug.Log("falling obj ability is invoke");
+            StartFallingObjAbility?.Invoke();
         }
+    }
+
+    private ability PickNextAbility()
+    {
+        // if same ability has played max consecutive times, force the other one
+        if (_ConsecutiveCount >= _MaxConsecutive)
+        {
+            return _LastAbility == ability.AIRPLANE ? ability.PENCIL : ability.AIRPLANE;
+        }
+
+        // otherwise pick randomly
+        return (ability)Random.Range(0, 2);
     }
 }

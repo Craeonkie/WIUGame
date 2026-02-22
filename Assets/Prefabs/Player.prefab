@@ -564,7 +564,7 @@ MonoBehaviour:
   _isStunned: 0
   interactablesLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1088
   _pickupConeRadius: 360
   _pickupRange: 10
   groundChecker: {fileID: 5025432630111020933}
