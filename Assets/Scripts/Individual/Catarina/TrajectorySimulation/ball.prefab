@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3327274668161963214}
   - component: {fileID: 2396079328007674195}
   - component: {fileID: 7475007428529529595}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,6 +91,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &3327274668161963214
 SphereCollider:
@@ -126,6 +127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C_Ball
   _rb: {fileID: 7475007428529529595}
+  _isGhost: 0
+  _DestroyLag: 1
 --- !u!54 &7475007428529529595
 Rigidbody:
   m_ObjectHideFlags: 0

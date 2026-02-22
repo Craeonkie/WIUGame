@@ -4,6 +4,7 @@ public class C_Ball : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private bool _isGhost;
+    [SerializeField] private float _DestroyLag = 0f;
     public void Init(Vector3 velocity, bool isGhost)
     {
         _isGhost = isGhost;
@@ -16,6 +17,6 @@ public class C_Ball : MonoBehaviour
     {
         if (_isGhost) return;
         //can spawn particle effect audio here
-
+        Destroy(this.gameObject, _DestroyLag);
     }
 }

@@ -21,20 +21,16 @@ public class C_Airplane : C_BossAbility
     C_Boid currentAirplane = null;
     private bool _followThroughTriggered = false;
     private ObjectPool<C_Boid> _AirplanePool;
-    private bool abilityFinished = false;
-    private void Start()
+    private void Awake()
     {
+        C_FriendBossPhase2.StartAirplaneAbility += StartAbility;
+
         _player = FindFirstObjectByType<PlayerController>();
 
         if (_player == null)
         {
             Debug.Log("Player not in scene or more specifc PLAYER CONTROLLER SCRIPT");
         }
-    }
-
-    private void Awake()
-    {
-        C_FriendBossPhase2.StartAirplaneAbility += StartAbility;
 
         _AirplanePool = new ObjectPool<C_Boid>(() =>
         {
@@ -74,6 +70,7 @@ public class C_Airplane : C_BossAbility
     {
         C_Boid.hitSmtAction -= ReturnToPool;
         GameTearDown();
+        this.startAbility = false;
     }
     protected override void GameLogic()
     {
@@ -94,7 +91,11 @@ public class C_Airplane : C_BossAbility
     protected override void GameSetUp()
     {
         if (_SpawnTransform.Length <= 0) return;
-        if (_player == null) return;
+        if (_player == null)
+        {
+            Debug.LogWarning("Missing player");
+            return;
+        }
         _CurrentSearchTimeCounter = 0f;
 
         var spawnPos = _SpawnTransform[Random.Range(0, _SpawnTransform.Length)].position;
@@ -106,7 +107,6 @@ public class C_Airplane : C_BossAbility
             Debug.LogWarning("missing the c_boid script");
             return;
         }
-        abilityFinished = false;
         if (FindTarget != null)
         {
             FindTarget?.Invoke(_player.transform);
@@ -118,7 +118,6 @@ public class C_Airplane : C_BossAbility
     protected override void GameTearDown()
     {
         if (currentAirplane == null) return;
-        abilityFinished = true;
         _AirplanePool.Release(currentAirplane);
         finishAbility.Invoke();
         //do an explosion here NOT HERE DO IT IN THE BOID CODE
@@ -129,7 +128,6 @@ public class C_Airplane : C_BossAbility
     {
         if (currentAirplane == null) return;
         _AirplanePool.Release(currentAirplane);
-        abilityFinished = true;
         finishAbility.Invoke();
         //do an explosion here NOT HERE DO IT IN THE BOID CODE
         this.enabled = false;
