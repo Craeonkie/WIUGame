@@ -1,7 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class J_BossBehaviour : Entity
 {
@@ -12,8 +15,8 @@ public class J_BossBehaviour : Entity
         public bool hasDuration;
         public float phaseTimer;
         [Range(0f, 1f)] public float healthThreshold;
-        public float attackSpeedMultiplier;
-        public float attackDamage;
+        public float durationBeforeSlamDown;
+        public UnityEvent OnPhaseTransition;
     }
 
     public enum STATE
@@ -22,7 +25,10 @@ public class J_BossBehaviour : Entity
         PREPARING,
         ATTACKING,
         THROWINGPILLOWS,
+        RIPPINGPILLOWS,
+        STEALINGPILLOWS,
         HIT,
+        CONFUSED,
         EXHAUSTED
     }
 
@@ -33,31 +39,33 @@ public class J_BossBehaviour : Entity
         BOTH
     }
 
+    public const string ANIMATOR_IDLE_BOOL = "Ready";
+    public const string ANIMATOR_PREPARING_BOOL = "Preparing";
+    public const string ANIMATOR_EXHAUSTED_BOOL = "Tired";
+    public const string ANIMATOR_CONFUSED_BOOL = "Confused";
+    public const string ANIMATOR_HAND_VALUE = "Hand";
+    public const string ANIMATOR_ATTACK_TRIGGER = "Attack";
+    public const string ANIMATOR_RESET_TRIGGER = "Reset";
+    public const string ANIMATOR_HIT_TRIGGER = "Reset";
+    public const string ANIMATOR_THROW_TRIGGER = "Throw";
+    public const string ANIMATOR_RIP_TRIGGER = "Rip";
+
     [Header("Components")]
     [SerializeField] private GameObject _playerTarget;
     [SerializeField] private Animator _animator;
     [SerializeField] private SphereCollider[] _fistColliders; // Use this list to enable and disable respectively
+    [SerializeField] private BoxCollider _headCollider; // Use this list to enable and disable respectively
     [SerializeField] private CinemachineImpulseSource[] _sources; // Impulse sources, add to the fists
-    [SerializeField] private GameObject[] _shockwaveAffectedGameObjects; // Use this list to trigger the shockwave
     [SerializeField] private GameObject[] _shockwavePlanes;
-    //[SerializeField] private TwoBoneIKConstraint _leftArmRig; // Set weight to 1 / 0 respectively
-    //[SerializeField] private Transform _leftArmTarget;
-
-    //private Vector3 _originalLeftTargetPosition;
-    //private float _leftTargetRigWeight = 0f;
-
+    [SerializeField] private GameObject _fakePillow;
 
     [Header("Additional Boss Data")]
-    [SerializeField] private LayerMask _layersToCheck;
     [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private int _hitsRequired;
-    [SerializeField] private float _attackSpeed; // Applied to the fist swinging down, use for adjusting animation speed
     [SerializeField] private float _shockwaveDamage;
     [SerializeField] private float _maxShockwaveDistance; // Applied to shockwave, maximum distance before shockwave dies down
     [SerializeField] private float _shockwaveIntensity; // Applied to shockwave, how intense the shockwave is
     [SerializeField] private float _shockwaveBandWidth;
     [SerializeField] private float _shockwaveTravelSpeed; // Applied to shockwave, how fast the shockwave travels
-    private float _currentAttackDamage;
 
     [Header("Boss Phases")]
     [SerializeField] Phase[] _phases;
@@ -68,35 +76,58 @@ public class J_BossBehaviour : Entity
     [Header("Boss States")]
     private STATE _currentState;
     private HAND _attackingHand;
-    [SerializeField] int _timesBeforeExhausted;
     [SerializeField] int _hitsBeforeExhausted; // Only for 2nd and 3rd phase
-    private bool _canChangeState;
-    private int _currentTimesAttacked;
+    private int _currentTimesHit;
     private int _leftHandFrequency;
     private int _rightHandFrequency;
-
+    private bool _canChangeState;
 
     [SerializeField] private float _idleDuration;
     [SerializeField] private float _attackCooldown;
-    [SerializeField] private float _readyDuration;
+    [SerializeField] private float _confusedDuration;
     [SerializeField] private float _exhaustedDuration;
+    private float _readyingDuration;
     private float _currentStateTimer;
 
-    private MaterialPropertyBlock _mpb;
+    [Header("Pillow Ripping Settings")]
+    [SerializeField] private float _intervalBetweenRips;
+    [SerializeField] private float _durationBeforeRipPillow;
+    [SerializeField] private float _maximumForwardForce;
+    [SerializeField] private float _horizontalForce;
+    private float _currentRipPillowTimer;
+
+    [Header("Pillow Stealing Settings")]
+    [SerializeField] private float _durationBeforeStealPillow;
+    private float _currentStealPillowTimer;
+    private J_Pillow _currentPillow;
+    public static System.Action OnStealPillow;
+
+    [Header("Pillow Throwing Settings")]
+    [SerializeField] private BoxCollider _throwRangeCollider;
+    [SerializeField] private float _throwSpeed; 
+    [SerializeField] private int _maxNumberOfPillowsInScene;
+    private Vector3 _throwDestination;
+    private int _currentNumberOfPillowsInScene;
 
     [Header("Debug")]
     [SerializeField] private TMP_Text _stateText;
     [SerializeField] private TMP_Text _phaseText;
 
-    private void Awake()
+    private void OnEnable()
     {
-        _mpb = new MaterialPropertyBlock();
+        J_CarryItem.OnCarry += CheckPillowToBeStolen;
     }
 
+    private void OnDisable()
+    {
+        J_CarryItem.OnCarry -= CheckPillowToBeStolen;
+    }
 
     protected override void Start()
     {
         base.Start();
+
+        _canChangeState = true;
 
         // Get the first phase and state
         _currentState = STATE.IDLE;
@@ -104,7 +135,6 @@ public class J_BossBehaviour : Entity
         EnterState(_currentState);
         EnterPhase(_currentPhaseIndex);
 
-        _canChangeState = true;
 
         _leftHandFrequency = 0;
         _rightHandFrequency = 0;
@@ -113,9 +143,6 @@ public class J_BossBehaviour : Entity
     protected override void Update()
     {
         base.Update();
-
-        //Debug.Log("Left arm rig: " + _leftArmRig.weight);
-
 
         // Decrease phase timer for phases that have duration
         if (_phases[_currentPhaseIndex].hasDuration)
@@ -152,6 +179,12 @@ public class J_BossBehaviour : Entity
                 break;
             case STATE.HIT:
                 break;
+            case STATE.CONFUSED:
+                break;
+            case STATE.RIPPINGPILLOWS:
+                break;
+            case STATE.THROWINGPILLOWS:
+                break;
         }
     }
 
@@ -178,16 +211,19 @@ public class J_BossBehaviour : Entity
             if (!_fistColliders[i].enabled)
                 continue;
 
-
             Vector3 worldCenter = _fistColliders[i].transform.TransformPoint(_fistColliders[i].center);
             float scaleFactor = Mathf.Max(_fistColliders[i].transform.lossyScale.x, _fistColliders[i].transform.lossyScale.y, _fistColliders[i].transform.lossyScale.z);
             float actualWorldRadius = _fistColliders[i].radius * scaleFactor;
 
-            // I'm just setting it manually to player layer because a modular script of this doesn't exist yet
+            // Find player
             Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _playerLayer);
             for (int j = 0; j < hitColliders.Length; ++j)
             {
-                hitColliders[j].GetComponent<Entity>().TakeDamage(float.MaxValue);
+                if (hitColliders[j].gameObject.CompareTag("PlayerTag"))
+                {
+                    hitColliders[j].GetComponent<Entity>().TakeDamage(float.MaxValue);
+                    break;
+                }
             }
            
 
@@ -284,17 +320,25 @@ public class J_BossBehaviour : Entity
 
     public override void TakeDamage(float damageTaken)
     {
-        Debug.Log("went here");
-
         if (isInvincible)
-            return;
+        {
+            // Increase number of attacks ONLY for phase 2 AND not hit already
+            if (_currentPhaseIndex == 1 && _currentState != STATE.HIT)
+                _currentTimesHit++;
 
-        Debug.Log("took damage" + damageTaken);
+            // Enter hit state
+            EnterState(STATE.HIT);
+        }
+        else
+        {
+            // Take damage
+            Debug.Log("Monster took damage: " + damageTaken);
 
-        _currentHP -= damageTaken;
-        float healthPercent = _currentHP / _maxHP;
+            _currentHP -= damageTaken;
+            float healthPercent = _currentHP / _maxHP;
 
-        CheckPhaseTransition(healthPercent);
+            CheckPhaseTransition(healthPercent);
+        }
     }
 
     private void CheckPhaseTransition(float healthPercent)
@@ -317,18 +361,27 @@ public class J_BossBehaviour : Entity
         }
     }
 
+    public override void Die()
+    {
+        // TODO: Trigger cutscene, and after cutscene ends, go to ending scene
+        OnDie?.Invoke();
+    }
+
+
     private void EnterPhase(int phaseIndex)
     {
         if (phaseIndex >= _phases.Length)
             return;
 
-        // Go to idle animation and reset stuff
+        // Go to idle animation and reset other booleans
         if (!IsInCurrentAnimationState("Idle") && _currentPhaseIndex > 0)
         {
-            _animator.SetBool("Ready", false);
-            _animator.SetBool("Preparing", false);
-            _animator.SetBool("Tired", false);
+            _animator.SetBool(ANIMATOR_IDLE_BOOL, false);
+            _animator.SetBool(ANIMATOR_PREPARING_BOOL, false);
+            _animator.SetBool(ANIMATOR_EXHAUSTED_BOOL, false);
+            _animator.SetBool(ANIMATOR_CONFUSED_BOOL, false);
 
+            _currentTimesHit = 0;
             _leftHandFrequency = 0;
             _rightHandFrequency = 0;
 
@@ -337,15 +390,14 @@ public class J_BossBehaviour : Entity
             EnterState(STATE.IDLE);
         }
 
+        // Set values
         _currentPhaseIndex = phaseIndex;
         Phase phase = _phases[phaseIndex];
 
-        Debug.Log($"Boss entering phase: {phase.name}");
-        _phaseText.text = phase.ToString();
+        _readyingDuration = _phases[_currentPhaseIndex].durationBeforeSlamDown;
 
-        // Apply phase modifiers
-        _attackSpeed /= phase.attackSpeedMultiplier;
-        _currentAttackDamage = phase.attackDamage;
+        Debug.Log($"Boss entering phase: {phase.name}");
+        _phaseText.text = phase.name.ToString();
 
         if (phase.hasDuration)
             _currentPhaseTimer = phase.phaseTimer;
@@ -357,7 +409,6 @@ public class J_BossBehaviour : Entity
 
     private void InvokePhaseEnterEvent(int index)
     {
-        // TODO: Event should differ based on which phase it is
         OnPhaseEnter?.Invoke(index);
 
         // Phase 2
@@ -372,7 +423,13 @@ public class J_BossBehaviour : Entity
             J_SpawnManager.Instance.UpdateItemLimit("Bug", 15);
             J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", 15);
             J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
+            J_CarryItem.Enable();
         }
+    }
+
+    private void Restart()
+    {
+        // TODO: Restart stage
     }
 
 
@@ -389,42 +446,86 @@ public class J_BossBehaviour : Entity
         {
             case STATE.IDLE:
 
-                // Enter observing state
-                if (_currentStateTimer <= 0f)
+                // Check for phase
+                if (_currentPhaseIndex < 2)
                 {
-                    EnterState(STATE.PREPARING);
+                    // Enter observing state
+                    if (_currentStateTimer <= 0f)
+                        EnterState(STATE.PREPARING);
+                }
+                else
+                {
+                    // Increment timer only if pillow exists
+                    if (_currentPillow != null)
+                        _currentStealPillowTimer += Time.deltaTime;
+
+                    // Go straight to ripping pillows
+                    if (_currentStealPillowTimer >= _durationBeforeStealPillow) {
+                        OnStealPillow?.Invoke();
+                        //_animator.SetTrigger(ANIMA)
+                        EnterState(STATE.RIPPINGPILLOWS);
+                    }
+                    else
+                    {
+                        // Random chance of doing slam attack, throwing pillow or ripping pillow
+                        List<STATE> options = new List<STATE>();
+
+                        if (_currentNumberOfPillowsInScene < _maxNumberOfPillowsInScene) options.Add(STATE.THROWINGPILLOWS);
+                        if (_currentRipPillowTimer >= _durationBeforeRipPillow) options.Add(STATE.RIPPINGPILLOWS);
+                        options.Add(STATE.PREPARING);
+
+                        int chosenOption = Random.Range(0, options.Count);
+
+                        EnterState(options[chosenOption]);
+                    }
                 }
 
-                break;
+                    break;
             case STATE.PREPARING:
 
                 // Enter attacking state
                 if (_currentStateTimer <= 0f)
-                {
                     EnterState(STATE.ATTACKING);
-                }
 
                 break;
             case STATE.ATTACKING:
 
-                // Enter exhausted state
-                if (_currentTimesAttacked >= _hitsBeforeExhausted)
-                {
+                // Enter idle state
+                EnterState(STATE.IDLE);
+
+                break;
+            case STATE.HIT:
+                
+                // Check the number of times hit
+                if (_currentTimesHit >= _hitsBeforeExhausted)
                     EnterState(STATE.EXHAUSTED);
-                }
-                else
-                {
+
+                break;
+            case STATE.CONFUSED:
+
+                // Enter idle state
+                if (_currentStateTimer <= 0f)
                     EnterState(STATE.IDLE);
-                }
+
+                break;
+            case STATE.THROWINGPILLOWS:
+
+                // Enter idle state
+                EnterState(STATE.IDLE);
+
+                break;
+
+            case STATE.RIPPINGPILLOWS:
+
+                // Enter idle state
+                EnterState(STATE.IDLE);
 
                 break;
             case STATE.EXHAUSTED:
 
                 // Enter idle state
                 if (_currentStateTimer <= 0f)
-                {
                     EnterState(STATE.IDLE);
-                }
 
                 break;
         }
@@ -438,10 +539,8 @@ public class J_BossBehaviour : Entity
 
                 // Set the duration
                 _currentStateTimer = _attackCooldown;
-                _animator.SetBool("Tired", false);
-                _animator.SetBool("Ready", true);
-
-                //_leftTargetRigWeight = 0f;
+                _animator.SetBool(ANIMATOR_EXHAUSTED_BOOL, false);
+                _animator.SetBool(ANIMATOR_IDLE_BOOL, true);
 
                 // Disable colliders
                 for (int i = 0; i < _fistColliders.Length; ++i)
@@ -456,22 +555,16 @@ public class J_BossBehaviour : Entity
             case STATE.PREPARING:
 
                 // Set the duration
-                _currentStateTimer = _readyDuration;
+                _currentStateTimer = _readyingDuration;
 
                 // Activate both planes
                 for (int i = 0; i < _shockwavePlanes.Length; ++i)
-                {
                     _shockwavePlanes[i].SetActive(true);
-                }
 
-                // Check the phase
-                if (_currentPhaseIndex == 1)
+
+                // Phase 1: left or right only
+                if (_currentPhaseIndex == 0)
                 {
-                    _attackingHand = HAND.BOTH;
-                }
-                else
-                {
-                    // Decide an attack based on the frequency and chance
                     if (_leftHandFrequency == 2)
                     {
                         _attackingHand = HAND.RIGHT;
@@ -486,43 +579,45 @@ public class J_BossBehaviour : Entity
                     }
                     else
                     {
-                        // Weigh
                         float leftWeight = 100f / (_leftHandFrequency + 1);
                         float rightWeight = 100f / (_rightHandFrequency + 1);
-
                         float rand = Random.Range(0f, leftWeight + rightWeight);
-
                         _attackingHand = rand < leftWeight ? HAND.LEFT : HAND.RIGHT;
-
-                        if (_attackingHand == HAND.LEFT)
-                            _leftHandFrequency++;
-                        else
-                            _rightHandFrequency++;
-
+                        if (_attackingHand == HAND.LEFT) _leftHandFrequency++;
+                        else _rightHandFrequency++;
                     }
                 }
+                // Phase 2: both hands only
+                else if (_currentPhaseIndex == 1)
+                {
+                    _attackingHand = HAND.BOTH;
+                }
+                // Phase 3: left, right, or both
+                else if (_currentPhaseIndex == 2)
+                {
+                    HAND[] options = { HAND.LEFT, HAND.RIGHT, HAND.BOTH };
+                    _attackingHand = options[Random.Range(0, options.Length)];
+                }
+
+
 
                 // Disable whichever plane wasn't active
-                // Switch off the other plane
-                //if (_attackingHand == HAND.LEFT)
-                //    _shockwavePlanes[(int)HAND.RIGHT].SetActive(false);
-                //else if (_attackingHand == HAND.RIGHT)
-                //    _shockwavePlanes[(int)HAND.LEFT].SetActive(false);
+                if (_attackingHand == HAND.LEFT) _shockwavePlanes[(int)HAND.RIGHT].SetActive(false);
+                else if (_attackingHand == HAND.RIGHT) _shockwavePlanes[(int)HAND.LEFT].SetActive(false);
 
                 // Set to preparing for animator
-                _animator.SetBool("Ready", false);
-                _animator.SetBool("Preparing", true);
-                _animator.SetInteger("Hand", (int)_attackingHand);
+                _animator.SetBool(ANIMATOR_IDLE_BOOL, false);
+                _animator.SetBool(ANIMATOR_PREPARING_BOOL, true);
+                _animator.SetInteger(ANIMATOR_HAND_VALUE, (int)_attackingHand);
 
                 break;
             case STATE.ATTACKING:
 
                 _currentStateTimer = 0f;
-                _currentTimesAttacked++;
 
                 // Trigger attack
-                _animator.SetBool("Preparing", false);
-                _animator.SetTrigger("Attack");
+                _animator.SetBool(ANIMATOR_PREPARING_BOOL, false);
+                _animator.SetTrigger(ANIMATOR_ATTACK_TRIGGER);
 
                 _canChangeState = false;
 
@@ -531,11 +626,9 @@ public class J_BossBehaviour : Entity
 
                 // Set the duration
                 _currentStateTimer = _exhaustedDuration;
-                _currentTimesAttacked = 0;
+                _currentTimesHit = 0;
 
-                _animator.SetBool("Tired", true);
-
-                //_leftTargetRigWeight = 0f;
+                _animator.SetBool(ANIMATOR_EXHAUSTED_BOOL, true);
 
                 // Enable colliders
                 for (int i = 0; i < 2; ++i)
@@ -549,7 +642,48 @@ public class J_BossBehaviour : Entity
                 break;
             case STATE.HIT:
 
-                // Set
+                // Set the pillow steal duration to 0
+                _currentStealPillowTimer = 0f;
+
+                // Set animation
+                _animator.SetTrigger(ANIMATOR_HIT_TRIGGER);
+                _canChangeState = false;
+
+                break;
+            case STATE.CONFUSED:
+
+                // Set duration
+                _currentStateTimer = _confusedDuration;
+
+                // Set animation
+                _animator.SetBool(ANIMATOR_EXHAUSTED_BOOL, true);
+                isInvincible = false;
+
+                break;
+            case STATE.RIPPINGPILLOWS:
+
+                // Set the "fake" pillow active
+                _fakePillow.SetActive(true);
+
+                // Reset timer
+                _currentRipPillowTimer = 0f;
+
+                // Set animation
+                _animator.SetTrigger(ANIMATOR_RIP_TRIGGER);
+                _canChangeState = false;
+
+                break;
+            case STATE.THROWINGPILLOWS:
+
+                // Set the "fake" pillow active
+                _fakePillow.SetActive(true);
+
+                // Find a destination for the pillow to go to
+                FindPillowDestination();
+
+                // Set animation
+                _animator.SetTrigger(ANIMATOR_THROW_TRIGGER);
+                _canChangeState = false;
 
                 break;
         }
@@ -560,14 +694,11 @@ public class J_BossBehaviour : Entity
 
     private void Idle()
     {
-        //_currentStateTimer -= Time.deltaTime;
+        // Increase duration
+        _currentStealPillowTimer += Time.deltaTime;
     }
 
-    private void Prepare()
-    {
-        // TODO: Keep aiming for the player
-        //_leftArmTarget =
-    }
+    private void Prepare() { }
 
     private void Attack()
     {
@@ -580,27 +711,125 @@ public class J_BossBehaviour : Entity
 
     }
 
-    public void AllowStateTransition() => _canChangeState = true;
 
 
 
-    //private void UpdateRigTargetPosition(Vector3 position)
-    //{
-    //    // magic number speed for now
-    //    var nextPosition = position;
-    //    nextPosition.y = _originalLeftTargetPosition.y;
-    //    _leftArmTarget.position = Vector3.Lerp(_leftArmTarget.position, position, 1f);
-    //}
 
-    //public void StartTracking()
-    //{
-    //    //_originalLeftTargetPosition = _leftArmTarget.position;
-    //    //_leftTargetRigWeight = 1f;
+    public void StartRippingPillow()
+    {
+        StartCoroutine(SpawnBalls());
+    }
 
-    //    //Debug.Log("Left arm rig: " + _leftArmRig.weight);
-    //}
+    public void StopRippingPillow()
+    {
+        _fakePillow.SetActive(false);
+
+        StopAllCoroutines();
+    }
+
+    private IEnumerator SpawnBalls()
+    {
+        while (true)
+        {
+            var cottonBall = J_SpawnManager.Instance.SpawnAtPosition("CottonBall", _fakePillow.transform.position);
+            cottonBall.GetComponent<Rigidbody>().AddForce((transform.forward * Random.Range(1f, _maximumForwardForce)) + new Vector3(Random.Range(-_horizontalForce, _horizontalForce), 0f, 0f), ForceMode.Impulse);
+
+            yield return new WaitForSeconds(_intervalBetweenRips);
+        }
+    }
 
 
+
+    private void FindPillowDestination()
+    {
+        bool hasNearbyPillow = true;
+        int attempts = 0;
+        Vector3 randomPoint = Vector3.zero;
+
+        do
+        {
+            hasNearbyPillow = false;
+            attempts++;
+
+            // Get random point in local space of the collider
+            Vector3 localPoint = new Vector3(
+                Random.Range(-_throwRangeCollider.size.x / 2f, _throwRangeCollider.size.x / 2f),
+                 (-_throwRangeCollider.size.y / 2f) + (_fakePillow.GetComponent<BoxCollider>().size.y),
+                Random.Range(-_throwRangeCollider.size.z / 2f, _throwRangeCollider.size.z / 2f)
+            ) + _throwRangeCollider.center;
+
+            // Convert to world space
+            randomPoint = _throwRangeCollider.transform.TransformPoint(localPoint);
+
+            // Check if any pillows are nearby
+            Vector3 pillowHalfSize = _fakePillow.GetComponent<BoxCollider>().size / 2f;
+            Collider[] hits = Physics.OverlapBox(randomPoint, pillowHalfSize, Quaternion.identity);
+
+            foreach (Collider hit in hits)
+            {
+                if (hit.GetComponent<J_Pillow>() != null)
+                {
+                    hasNearbyPillow = true;
+                    break;
+                }
+            }
+
+        } while (hasNearbyPillow && attempts < 10);
+
+        _throwDestination = randomPoint;
+    }
+
+    public void ThrowPillow()
+    {
+        // Disable the "fake" pillow
+        _fakePillow.SetActive(false);
+
+        // Spawn a new pillow and throw it to its destination
+        var newPillow = J_SpawnManager.Instance.SpawnAtPosition("Pillow", _fakePillow.transform.position);
+        StartCoroutine(TranslateObject(newPillow));
+        _currentNumberOfPillowsInScene++;
+    }
+
+    private IEnumerator TranslateObject(GameObject pillow)
+    {
+        float t = 0f;
+        float duration = _throwSpeed;
+        Vector3 startPos = pillow.transform.position;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            t = Mathf.Clamp01(t);
+
+            Vector3 currentPos = Vector3.Lerp(startPos, _throwDestination, t);
+            currentPos.y += Mathf.Sin(t * Mathf.PI) * 10f;
+
+            pillow.transform.position = currentPos;
+
+            yield return null;
+        }
+
+        pillow.transform.position = _throwDestination;
+        pillow.GetComponent<J_Pillow>().ReachDestination();
+    }
+
+
+    
+    private void CheckPillowToBeStolen(J_Pillow pillow)
+    {
+        // Set the pillow
+        _currentPillow = pillow;
+        if (_currentPillow == null)
+            _currentStealPillowTimer = 0f;
+    }
+
+
+
+    public void AllowStateTransition()
+    {
+        _canChangeState = true;
+        DisableAllColliders();
+    }
 
     public void EnableColldier(int index)
     {
@@ -620,42 +849,10 @@ public class J_BossBehaviour : Entity
             _fistColliders[i].enabled = false;
         }
     }
-
-
-    private IEnumerator DrawPoint(Vector3 pos)
-    {
-        float timer = 0f;
-
-        while (timer < 5f)
-        {
-            Debug.DrawLine(pos, pos + (Vector3.up * 500f), Color.purple);
-            timer += Time.deltaTime;
-            yield return null;
-        }
-    }
-
     private bool IsInCurrentAnimationState(string stateName)
     {
         return _animator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
     }
-
-    private bool IsCurrentAnimationReadyForNextStep(string name)
-    {
-        // Check if the current animation has played enough to transition
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-
-        return stateInfo.normalizedTime >= 0.7f && stateInfo.IsName(name); // Adjust based on when you want to allow transitions
-    }
-
-    private bool IsCurrentAnimationEnded(string name)
-    {
-        // Check if the current animation has played enough to transition
-        AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-
-        return stateInfo.normalizedTime >= 0.95f && stateInfo.IsName(name); // Adjust based on when you want to allow transitions
-    }
-
-
 
     // DEBUG
     [ContextMenu("Start Next Phase")]
@@ -714,5 +911,7 @@ public class J_BossBehaviour : Entity
                 Gizmos.DrawWireSphere(worldCenter, actualWorldRadius);
             }
         }
+
+        Gizmos.DrawWireSphere(_throwDestination, 1f);
     }
 }

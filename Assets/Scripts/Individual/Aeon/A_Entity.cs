@@ -1,5 +1,6 @@
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
@@ -20,6 +21,8 @@ public class Entity : MonoBehaviour
     [SerializeField] protected AudioClip deathAudio;
     [SerializeField] protected AudioSource audioSource;
     private MaterialPropertyBlock _propertyBlock;
+
+    public static System.Action OnDie;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
@@ -131,6 +134,7 @@ public class Entity : MonoBehaviour
     // Set gameobject to be inactive
     public virtual void Die()
     {
+        OnDie?.Invoke();
         gameObject.SetActive(false);
     }
 }

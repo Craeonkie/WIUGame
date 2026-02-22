@@ -87,7 +87,7 @@ public class J_SpawnManager : MonoBehaviour
         StartCoroutine(_spawnOnceCoroutine);
     }
 
-    public void SpawnAtPosition(string itemName, Vector3 position)
+    public GameObject SpawnAtPosition(string itemName, Vector3 position)
     {
         
         SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
@@ -95,19 +95,21 @@ public class J_SpawnManager : MonoBehaviour
         if (spawnItem.spawnPrefab == null)
         {
             Debug.Log("Spawn item prefab is null!");
-            return;
+            return null;
         }
 
         if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
         {
             Debug.Log("Spawn item limit was hit!");
-            return;
+            return null;
         }
 
         Debug.Log("Spawn At Position was successful!");
 
         var newItem = spawnItem.spawnPool.Get();
         newItem.transform.position = position;
+
+        return newItem;
     }
 
     private void SpawnOnce(string itemName)
@@ -138,6 +140,21 @@ public class J_SpawnManager : MonoBehaviour
 
         _spawnCoroutine = SpawnCoroutine(spawnItem, spawnInterval);
         StartCoroutine(_spawnCoroutine);
+    }
+
+    public GameObject SpawnOnceWithReference(string itemName)
+    {
+        SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
+
+        if (spawnItem.spawnPrefab == null)
+            return null;
+
+        if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+            return null;
+
+        var newItem = spawnItem.spawnPool.Get();
+
+        return newItem;
     }
 
     public void Release(string itemName, GameObject obj)

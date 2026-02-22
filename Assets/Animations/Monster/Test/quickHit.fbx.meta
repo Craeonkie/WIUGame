@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ca2a87ab29f2e2946a6f65933521da8f
+guid: 5950de82a45a4cd40b5afaa5396d7cc6
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: sitReady
+      name: quickHit
       takeName: mixamo.com
       internalID: -203655887218126122
-      firstFrame: 135
-      lastFrame: 189
+      firstFrame: 0
+      lastFrame: 179
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -49,7 +49,7 @@ ModelImporter:
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000

@@ -49,6 +49,9 @@ public class PlayerController : Entity
     [SerializeField] private AnimationHandler animationHandler;
     [SerializeField] protected Animator _animator;
 
+    [Header("Events to invoke")]
+    public static System.Action OnInteract;
+
     private Vector2 _inputMove;
     [SerializeField] private bool _isJumping = false;
     [SerializeField] private bool _isRolling = false;
@@ -151,7 +154,7 @@ public class PlayerController : Entity
                     _canAct = false;
                 }
             }
-            
+
             // Reenable ability to act if player is not midair and not rolling
             if (isGrounded && !_isRolling && !_isMovingObject)
             {
@@ -209,32 +212,33 @@ public class PlayerController : Entity
         //// Handle other inputs
         // Cast a sphere around the player (or use a raycast forward if preferred)
         if (!_isMovingObject)
-        {Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
-
-        Interactable closestInteractable = null;
-        float closestDist = _pickupRange;
-
-        foreach (Collider col in hits)
         {
-            bool alreadyHolding = false;
+            Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
 
-            if (col.gameObject == inventory.ReturnPrimaryItem() || col.gameObject == inventory.ReturnSecondaryItem())
-            {
-                alreadyHolding = true;
-            }
+            Interactable closestInteractable = null;
+            float closestDist = _pickupRange;
 
-            if (alreadyHolding)
+            foreach (Collider col in hits)
             {
-                continue;
-            }
+                bool alreadyHolding = false;
 
-            float dist = Vector3.Distance(transform.position, col.transform.position);
-            float angle = Vector3.Angle(transform.forward, col.transform.position - transform.position);
-            if (dist <= closestDist && angle <= _pickupConeRadius && col.gameObject.TryGetComponent<Interactable>(out closestInteractable))
-            {
-                closestDist = dist;
+                if (col.gameObject == inventory.ReturnPrimaryItem() || col.gameObject == inventory.ReturnSecondaryItem())
+                {
+                    alreadyHolding = true;
+                }
+
+                if (alreadyHolding)
+                {
+                    continue;
+                }
+
+                float dist = Vector3.Distance(transform.position, col.transform.position);
+                float angle = Vector3.Angle(transform.forward, col.transform.position - transform.position);
+                if (dist <= closestDist && angle <= _pickupConeRadius && col.gameObject.TryGetComponent<Interactable>(out closestInteractable))
+                {
+                    closestDist = dist;
+                }
             }
-        }
 
             if (closestInteractable != null)
             {
@@ -242,6 +246,8 @@ public class PlayerController : Entity
                 if (_interactAction.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
                     string tag = closestInteractable.tag;
+
+                    OnInteract?.Invoke();
 
                     // Act according to the item's tag
                     if (tag == "Weapon")

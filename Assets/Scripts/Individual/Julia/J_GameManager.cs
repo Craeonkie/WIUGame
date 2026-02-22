@@ -36,6 +36,7 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
 
     //private Dictionary<Level, bool> _visitedScenes = new Dictionary<Level, bool>();
     private Dictionary<string, bool> _completedStages = new Dictionary<string, bool>();
+    private Vector3 _previousPosition; // Use this to spawn player back in a room or something
 
     private void Awake()
     {
