@@ -4,9 +4,9 @@ using UnityEngine.Rendering;
 public class Inventory : MonoBehaviour
 {
     [Header("GameObject that holds the items")]
-    [SerializeField] private GameObject _weaponSlot;
-    [SerializeField] private GameObject _shieldSlot;
-    [SerializeField] private GameObject _secondaryItemSlot;
+    public GameObject _primarySlot;
+    public GameObject _shieldSlot;
+    public GameObject _throwableItemSlot;
 
     [Header("The items")]
     [SerializeField] private GameObject _primaryItem;
@@ -50,7 +50,14 @@ public class Inventory : MonoBehaviour
         DropItem(_primaryItem);
 
         _primaryItem = item;
-        item.transform.SetParent(_weaponSlot.transform);
+        if (item.TryGetComponent<WeaponWithBlock>(out WeaponWithBlock thisWeapon))
+        {
+            item.transform.SetParent(_shieldSlot.transform);
+        }
+        else
+        {
+            item.transform.SetParent(_primarySlot.transform);
+        }
         item.GetComponent<Item>().PickUp(entityUsingItem);
         item.SetActive(false);
         EquipPrimary();
@@ -65,11 +72,11 @@ public class Inventory : MonoBehaviour
         _secondaryItem = item;
         if (item.TryGetComponent<ThrowableItem>(out _))
         {
-            item.transform.SetParent(_secondaryItemSlot.transform);
+            item.transform.SetParent(_throwableItemSlot.transform);
         }
         else
         {
-            item.transform.SetParent(_primaryItem.transform);
+            item.transform.SetParent(_primarySlot.transform);
         }
         item.GetComponent<Item>().PickUp(entityUsingItem);
         item.SetActive(false);
@@ -87,11 +94,6 @@ public class Inventory : MonoBehaviour
         if (_currentItem != null)
         {
             _currentItem.SetActive(true);
-            if (_currentItem.TryGetComponent<WeaponWithBlock>(out WeaponWithBlock thisWeapon))
-            {
-                _currentItem.transform.SetParent(_shieldSlot.transform);
-                _currentItem.transform.localPosition = Vector3.zero;
-            }
         }
     }
 

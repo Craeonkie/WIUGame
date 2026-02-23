@@ -184,15 +184,15 @@ public class WeaponWithBlock : Weapon
         EndBlocking();
     }
 
-    protected override void OnTriggerEnter(Collider other)
-    {
-        if (isAttacking && !hitEntities.Contains(other.gameObject.GetComponent<Entity>()) && !IsPartOfHierarchy(other.transform, transform.root))
-        {
-            if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
-            {
-                thisEntity.TakeDamage(currentAttackDamage, 0.1f);
-            }
-            hitEntities.Add(other.gameObject.GetComponent<Entity>());
-        }
-    }
+    //protected override void OnTriggerEnter(Collider other)
+    //{
+    //    if (isAttacking && !hitEntities.Contains(other.gameObject.GetComponent<Entity>()) && !IsPartOfHierarchy(other.transform, transform.root))
+    //    {
+    //        if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
+    //        {
+    //            thisEntity.TakeDamage(currentAttackDamage, 0.1f);
+    //        }
+    //        hitEntities.Add(other.gameObject.GetComponent<Entity>());
+    //    }
+    //}
 }

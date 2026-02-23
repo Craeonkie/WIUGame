@@ -91,6 +91,31 @@ public class ThrowableItem : Item
         _animationHandler.PerformAction(primary[0]);
         _isActing = true;
         isThrowing = true;
+
+        // Append the item to the player's hand instead
+        if (_entityUsingItem.TryGetComponent<PlayerController>(out PlayerController player))
+        {
+            transform.SetParent(player.GetComponent<Inventory>()._primarySlot.transform);
+            transform.SetLocalPositionAndRotation(Vector3.zero + offset, Quaternion.identity);
+        }
+    }
+
+    // Picks up an item rigidbody wise and appends it to the player's hand slot
+    public override void PickUp(Entity entityUsingItem)
+    {
+        transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        _entityUsingItem = entityUsingItem;
+
+        // Disable physics
+        if (TryGetComponent<Rigidbody>(out Rigidbody rb))
+        {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+        }
+        if (TryGetComponent<Collider>(out Collider col))
+        {
+            col.isTrigger = true;
+        }
     }
 
     // Actually unparent and launch the item

@@ -8,6 +8,7 @@ public abstract class Weapon : Item
     [SerializeField] protected float invincibilityLength;
     protected bool isAttacking = false;
     protected bool isBlocking = false;
+    protected bool canLoseDurability = false;
     protected float currentAttackDamage;
 
     // Update is called once per frame
@@ -19,12 +20,14 @@ public abstract class Weapon : Item
     public void BeginAttack(float attackDamage)
     {
         isAttacking = true;
+        canLoseDurability = true;
         currentAttackDamage = attackDamage;
         hitEntities.Clear();
     }
 
     public void EndAttack()
     {
+        canLoseDurability = false;
         isAttacking = false;
     }
 
@@ -47,10 +50,14 @@ public abstract class Weapon : Item
     {
         if (isAttacking && !hitEntities.Contains(other.gameObject.GetComponent<Entity>()) && !IsPartOfHierarchy(other.transform, transform.root))
         {
-            Entity thisEntity;
-            if (other.gameObject.TryGetComponent<Entity>(out thisEntity))
+            if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
             {
                 thisEntity.TakeDamage(currentAttackDamage, invincibilityLength);
+                if (canLoseDurability)
+                {
+                    canLoseDurability = false;
+                    currentDurability -= _currentAnimation.durabilityUsed;
+                }
             }
             else
             {

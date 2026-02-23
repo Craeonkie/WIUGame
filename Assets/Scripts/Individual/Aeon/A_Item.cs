@@ -25,6 +25,11 @@ public abstract class Item : Interactable
     public bool hasDurability;
     public int maxDurability;
     public int currentDurability;
+
+    [Header("Item Holding Offset")]
+    public Vector3 offset;
+
+    [Header("Audio")]
     public AudioSource audioSource;
     public AudioClip weaponBreakingSound;
 
@@ -97,7 +102,7 @@ public abstract class Item : Interactable
     // Picks up an item rigidbody wise and appends it to the player's hand slot
     public virtual void PickUp(Entity entityUsingItem)
     {
-        transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        transform.SetLocalPositionAndRotation(Vector3.zero + offset, Quaternion.identity);
         _entityUsingItem = entityUsingItem;
 
         // Disable physics

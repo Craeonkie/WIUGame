@@ -157,7 +157,7 @@ public class PlayerController : Entity
             }
 
             // Reenable ability to act if player is not midair and not rolling
-            if (isGrounded && !_isRolling && !_isMovingObject)
+            if (isGrounded && !_isRolling && !_isMovingObject && !_isStunned)
             {
                 _canAct = true;
             }
@@ -217,7 +217,6 @@ public class PlayerController : Entity
             if (temp.CheckIfBroken())
             {
                 inventory.DropItem(temp.gameObject);
-                temp.Break();
             }
         }
 
@@ -424,6 +423,7 @@ public class PlayerController : Entity
         _currentStunDuration = stunDuration;
         animationHandler.GoBackToIdle();
         _isStunned = true;
+        _isRolling = false;
         myRigidbody.linearVelocity = Vector3.zero;
     }
 
