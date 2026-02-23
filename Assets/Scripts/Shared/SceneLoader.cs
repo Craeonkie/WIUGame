@@ -17,7 +17,7 @@ public class SceneLoader : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public GarbageManager garbageManager;
+    public GameManagerData garbageManager;
     public static System.Action onSceneLoaded;
     //public bool readyToLoad = false;
     //private AsyncOperation asyncOperation;
@@ -61,8 +61,8 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadScene(string nextSceneName)
     {
+        Debug.Log("here");
         SceneManager.LoadScene(nextSceneName);
-        J_GameManager.Instance.SetCurrentScene(nextSceneName);
     }
 
     public void SetTimeScale(float scale)

@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GarbageManager", menuName = "Scriptable Objects/GarbageManager")]
-public class GarbageManager : ScriptableObject
+[CreateAssetMenu(fileName = "GameManagerData", menuName = "Scriptable Objects/GameManagerData")]
+public class GameManagerData : ScriptableObject
 {
 
     [SerializeField] private bool _isUIOpen;

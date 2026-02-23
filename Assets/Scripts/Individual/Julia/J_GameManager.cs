@@ -24,15 +24,18 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
 {
     public static J_GameManager Instance { get; private set; }
     public const string MENU_SCENE = "J_MenuScene";
+    public const string START_SCENE = "StartScene";
     public const string REST_SCENE = "A_RestScene";
     public const string DOG_SCENE = "S_DogScene";
     public const string KID_SCENE = "C_TestScene";
     public const string MONSTER_SCENE = "J_MonsterScene";
+    public const string END_SCENE = "EndScene";
     
     // shoul i make ths serislaizeifle.d..
     // then u can reference and shtia nd like idk add in ur own scene phase number u duration whtaefer
     
     private string _currentScene;
+    private float _currentGameTime;
 
     //private Dictionary<Level, bool> _visitedScenes = new Dictionary<Level, bool>();
     private Dictionary<string, bool> _completedStages = new Dictionary<string, bool>();
@@ -59,12 +62,22 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
         //_visitedScenes.Add(new Level(MONSTER_SCENE, 3), false);
         //_visitedScenes.Add(new Level(REST_SCENE, 0), false);
 
-        _completedStages.Add(MENU_SCENE, false);
-        _completedStages.Add(DOG_SCENE, false);
-        _completedStages.Add(KID_SCENE, false);
-        _completedStages.Add(MONSTER_SCENE, false);
-        _completedStages.Add(REST_SCENE, false);
+        if (_completedStages.Count == 0)
+        {
+            _completedStages.Add(MENU_SCENE, false);
+            _completedStages.Add(DOG_SCENE, false);
+            _completedStages.Add(KID_SCENE, false);
+            _completedStages.Add(MONSTER_SCENE, false);
+            _completedStages.Add(REST_SCENE, false);
+        }
     }
+
+    private void Update()
+    {
+        _currentGameTime += Time.deltaTime;
+    }
+
+    public float GetGameTime() => _currentGameTime;
 
     public void SetCurrentScene(string scene)
     {

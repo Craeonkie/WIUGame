@@ -23,6 +23,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/C_FriendBossScene.unity
     guid: e3ee6fd1a950fc343bef3440c5d85c94
+  - enabled: 1
+    path: Assets/Scenes/StartScene.unity
+    guid: f446945d43b76374594afcfb862f4043
+  - enabled: 1
+    path: Assets/Scenes/EndScene.unity
+    guid: a6349725771f792428e36e70c03068e7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

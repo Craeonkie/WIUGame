@@ -1051,8 +1051,11 @@ public class Dog : Entity
     // Set gameobject to be inactive
     public override void Die()
     {
+        Debug.Log("die");
+
         onDieEvent?.Invoke();
-        J_GameManager.Instance.SetCurrentScene("C_TestScene");
+        J_GameManager.Instance.SetCurrentScene(J_GameManager.DOG_SCENE);
+        SceneLoader.Instance.LoadScene(J_GameManager.REST_SCENE);
 
         //gameObject.SetActive(false);
     }
