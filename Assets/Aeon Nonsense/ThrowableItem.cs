@@ -93,7 +93,7 @@ public class ThrowableItem : Item
     }
 
     // Actually unparent and launch the item
-    public void Throw()
+    public virtual void Throw()
     {
         isInFlight = true;
         lifeTimeLeft = lifeTime;
@@ -135,7 +135,7 @@ public class ThrowableItem : Item
         tag = "Untagged";
     }
 
-    protected void OnCollisionEnter(Collision other)
+    protected virtual void OnCollisionEnter(Collision other)
     {
         if (isInFlight && !hitEntities.Contains(other.gameObject.GetComponent<Entity>()) && !IsPartOfHierarchy(other.transform, transform.root))
         {

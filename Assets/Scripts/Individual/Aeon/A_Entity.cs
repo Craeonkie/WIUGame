@@ -1,7 +1,5 @@
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Entity : MonoBehaviour
 {
@@ -21,6 +19,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected AudioClip deathAudio;
     [SerializeField] protected AudioSource audioSource;
     private MaterialPropertyBlock _propertyBlock;
+    [SerializeField] protected UnityEvent onDieEvent;
 
     public static System.Action OnDie;
 

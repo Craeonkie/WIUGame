@@ -545,13 +545,18 @@ public class PlayerController : Entity
         _canAct = canAct;
     }
 
-    // Sihan function
     public void SetPlayerToTransform(Transform anchor)
     {
+        if (myRigidbody.isKinematic)
+        {
+            myRigidbody.isKinematic = false;
+
+            myRigidbody.linearVelocity = Vector3.zero;
+            myRigidbody.angularVelocity = Vector3.zero;
+        }
+
         myRigidbody.isKinematic = true;
 
-        myRigidbody.linearVelocity = Vector3.zero;
-        myRigidbody.angularVelocity = Vector3.zero;
         myRigidbody.transform.position = anchor.position;
         myRigidbody.transform.rotation = anchor.rotation;
         transform.position = anchor.position;

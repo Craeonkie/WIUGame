@@ -37,6 +37,22 @@ MonoBehaviour:
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
+--- !u!114 &-2489294306987497030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6230db05dfc3bac4886ab1e95b4b13db, type: 3}
+  m_Name: ShockwaveDistortionRendererFeature
+  m_EditorClassIdentifier: Assembly-CSharp::ShockwaveDistortionRendererFeature
+  m_Active: 1
+  settings:
+    passEvent: 550
+    shockwaveDistortion: {fileID: 4800000, guid: a348fb71c7e52f7489a83352bd47734a, type: 3}
 --- !u!114 &-43649738529986294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,7 +98,8 @@ MonoBehaviour:
   - {fileID: -43649738529986294}
   - {fileID: -6136615521895696081}
   - {fileID: -4634198344361271870}
-  m_RendererFeatureMap: ad6b866f10d7b46c0aa96148cbec64ff2f39422eb25cd6aac29da4a92805b0bf
+  - {fileID: -2489294306987497030}
+  m_RendererFeatureMap: ad6b866f10d7b46c0aa96148cbec64ff2f39422eb25cd6aac29da4a92805b0bfbaa99b42044074dd
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
