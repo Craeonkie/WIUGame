@@ -630,7 +630,7 @@ public class Dog : Entity
                         if (hitCollider.CompareTag("PlayerTag") && !_attackedPlayer)
                         {
                             Debug.Log("Hit Player with Bite");
-                            hitCollider.GetComponent<Entity>().TakeDamage(_clawHitDamage);
+                            hitCollider.GetComponent<Entity>().TakeDamage(_clawHitDamage, 0.0f);
                             _attackedPlayer = true;
                         }
                     }
@@ -679,7 +679,7 @@ public class Dog : Entity
                         if (hitCollider.CompareTag("PlayerTag") && !_attackedPlayer)
                         {
                             Debug.Log("Hit Player with Claw");
-                            hitCollider.GetComponent<Entity>().TakeDamage(_clawHitDamage);
+                            hitCollider.GetComponent<Entity>().TakeDamage(_clawHitDamage, 0.0f);
                             _attackedPlayer = true;
                         }
                     }
@@ -785,7 +785,7 @@ public class Dog : Entity
                                 {
                                     Debug.Log("Hit Player during Dash");
                                     _attackedPlayer = true;
-                                    hitCollider.GetComponent<Entity>()?.TakeDamage(_dashHitDamage);
+                                    hitCollider.GetComponent<Entity>()?.TakeDamage(_dashHitDamage, 0.0f);
                                     hitCollider.GetComponent<PlayerController>()?.Stun(_dashHitStunDuration);
                                     Vector3 dogToPlayer = hitCollider.transform.position - transform.position;
                                     dogToPlayer.y = 0;
@@ -970,7 +970,7 @@ public class Dog : Entity
                                     {
                                         Debug.Log("Hit Player during Dash");
                                         _attackedPlayer = true;
-                                        hitCollider.GetComponent<Entity>()?.TakeDamage(_dashHitDamage);
+                                        hitCollider.GetComponent<Entity>()?.TakeDamage(_dashHitDamage, 0.0f);
                                         hitCollider.GetComponent<PlayerController>()?.Stun(_dashHitStunDuration);
                                         Vector3 dogToPlayer = hitCollider.transform.position - transform.position;
                                         dogToPlayer.y = 0;
@@ -1026,7 +1026,7 @@ public class Dog : Entity
                         if (hitCollider.CompareTag("PlayerTag") && !_attackedPlayer)
                         {
                             Debug.Log("Hit player with Double Claw");
-                            hitCollider.GetComponent<Entity>().TakeDamage(_doubleClawHitDamage);
+                            hitCollider.GetComponent<Entity>().TakeDamage(_doubleClawHitDamage, 0.0f);
                             _attackedPlayer = true;
                         }
                     }
