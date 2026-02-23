@@ -192,8 +192,8 @@ MonoBehaviour:
   image: {fileID: 0}
   description: 
   primary:
-  - damage: 100
-    durabilityUsage: 0
+  - damage: 1
+    durabilityUsed: 0
     hasRootMotion: 0
     pressAndHold: 0
     isBlock: 0
@@ -201,19 +201,28 @@ MonoBehaviour:
     audioClip: {fileID: 0}
   secondary: []
   special: []
+  hasDurability: 0
+  maxDurability: 0
+  currentDurability: 0
+  audioSource: {fileID: 0}
+  weaponBreakingSound: {fileID: 0}
+  _entityUsingItem: {fileID: 0}
   _isActing: 0
   _resetAnimationChain: 0
   _chainingAnimation: 0
   _currentAnimationChain: 0
+  _destroyUponDrop: 0
+  _maxTimeBeforeDestroyed: 0
   throwPowerForward: 20
   throwPowerUp: 20
-  throwDistanceForward: 5
+  throwOffsetForward: 1
   breakOnHit: 1
   lifeTime: 10
   hitEntities: []
   isAiming: 0
   isThrowing: 0
   isInFlight: 0
+  _projection: {fileID: 0}
 --- !u!114 &1373428771716635080
 MonoBehaviour:
   m_ObjectHideFlags: 0

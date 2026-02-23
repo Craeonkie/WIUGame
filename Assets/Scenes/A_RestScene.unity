@@ -2990,6 +2990,9 @@ MonoBehaviour:
   hitAudio: []
   deathAudio: {fileID: 0}
   audioSource: {fileID: 0}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _playerInput: {fileID: 1530283422704123325}
   _jumpPower: 0
   _maxSpeed: 32
@@ -3012,6 +3015,6 @@ SceneRoots:
   - {fileID: 26409252}
   - {fileID: 8607788635305573554}
   - {fileID: 242592905}
-  - {fileID: 943395646}
   - {fileID: 744058942}
+  - {fileID: 943395646}
   - {fileID: 942285746}

@@ -2428,12 +2428,9 @@ MonoBehaviour:
   _SpawnArea: {fileID: 397878440}
   _DistBetweenObj: 3
   _Weapons:
-  - weaponPrefab: {fileID: 892668596884859602, guid: a8f7991b1c85edb4fa92b7be80a223e3, type: 3}
+  - weaponPrefab: {fileID: 892668596884859602, guid: 0842c5c7fb5b73d4bb6181f1e3fb544f, type: 3}
     minAmount: 1
-    maxAmount: 3
-  - weaponPrefab: {fileID: 7569054620982660231, guid: d0581f4e89c68ec488fc9064ac820938, type: 3}
-    minAmount: 1
-    maxAmount: 3
+    maxAmount: 10
   _MaxNumOfAttempts: 10
 --- !u!4 &1090949916
 Transform:
@@ -2460,15 +2457,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 936028580051209831, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.76915
+      value: -4.05
       objectReference: {fileID: 0}
     - target: {fileID: 936028580051209831, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.05754
+      value: 2.41
       objectReference: {fileID: 0}
     - target: {fileID: 936028580051209831, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11
+      value: -13.83
       objectReference: {fileID: 0}
     - target: {fileID: 936028580051209831, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2501,6 +2498,14 @@ PrefabInstance:
     - target: {fileID: 1311825357644707697, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_Name
       value: Third Person Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 1311825357644707697, guid: 9e5becda178f34047960f64a29874603, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341662502266032239, guid: 9e5becda178f34047960f64a29874603, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8341662502266032239, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: Target.TrackingTarget
@@ -12852,11 +12857,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 104138f1823445749805ef13f9e70c5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::J_BossBehaviour
-  _maxHP: 500
-  _currentHP: 500
+  _maxHP: 3
+  _currentHP: 3
   _invincibilityCooldown: 0
   _invincibilityMaxCooldown: 0
-  _model: {fileID: 919132148995889591}
   spawnPoint: {x: 0, y: 0, z: 0}
   isInvincible: 0
   isDodging: 0
@@ -12865,6 +12869,9 @@ MonoBehaviour:
   hitAudio: []
   deathAudio: {fileID: 0}
   audioSource: {fileID: 0}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _animator: {fileID: 5866666020995275127}
   _fistColliders:
   - {fileID: 6502182838922981670}

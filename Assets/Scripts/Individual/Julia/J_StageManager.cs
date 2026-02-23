@@ -3,13 +3,13 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class J_Cutscene {
+public class J_Cutscene
+{
     public CinemachineCamera cutsceneCamera;
     public bool wasPlayed;
     public UnityEvent OnCutsceneStart;
     public UnityEvent OnCutsceneEnd;
 }
-
 
 public class J_StageManager : MonoBehaviour
 {

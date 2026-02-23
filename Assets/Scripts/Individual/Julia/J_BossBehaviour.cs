@@ -344,9 +344,6 @@ public class J_BossBehaviour : Entity
         {
             Die();
 
-            // temporary
-            SceneLoader.Instance.LoadScene("EndScene");
-
             return;
         }
 
@@ -365,6 +362,9 @@ public class J_BossBehaviour : Entity
     {
         // TODO: Trigger cutscene, and after cutscene ends, go to ending scene
         OnDie?.Invoke();
+        // temporary
+        J_GameManager.Instance.SetCurrentScene(J_GameManager.MONSTER_SCENE);
+        SceneLoader.Instance.LoadScene(J_GameManager.END_SCENE);
     }
 
 
@@ -416,13 +416,13 @@ public class J_BossBehaviour : Entity
         {
             J_SpawnManager.Instance.UpdateItemLimit("Bug", 8);
             J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", 8);
-            //J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
+            J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
         }
         else if (index == 2)
         {
             J_SpawnManager.Instance.UpdateItemLimit("Bug", 15);
             J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", 15);
-            //J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
+            J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
             J_CarryItem.Enable();
         }
     }
@@ -968,7 +968,7 @@ public class J_BossBehaviour : Entity
     [ContextMenu("Start Next Phase")]
     public void StartNextPhase()
     {
-        if (_currentPhaseIndex >= _phases.Length)
+        if (_currentPhaseIndex + 1 == _phases.Length)
         {
             // Kill off entity
             isInvincible = false;

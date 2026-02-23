@@ -1021,6 +1021,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hanger Weapon
       objectReference: {fileID: 0}
+    - target: {fileID: 2090315549913629512, guid: a8f7991b1c85edb4fa92b7be80a223e3, type: 3}
+      propertyPath: maxDurability
+      value: 5000
+      objectReference: {fileID: 0}
     - target: {fileID: 4382664925926282051, guid: a8f7991b1c85edb4fa92b7be80a223e3, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.474
@@ -2172,8 +2176,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 251652911}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0019560326, y: 0.0019529229, z: -0.000003819986, w: 0.9999962}
-  m_LocalPosition: {x: 0, y: 2.05, z: -1.9499998}
+  m_LocalRotation: {x: 0.008987443, y: 0.008974532, z: -0.000080664584, w: 0.99991935}
+  m_LocalPosition: {x: 0, y: 2.05, z: 8.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2319,15 +2323,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 936028580051209831, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.657476
+      value: 5.29
       objectReference: {fileID: 0}
     - target: {fileID: 936028580051209831, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000034909317
+      value: 1.7999998
       objectReference: {fileID: 0}
     - target: {fileID: 936028580051209831, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.274981
+      value: -7.81
       objectReference: {fileID: 0}
     - target: {fileID: 936028580051209831, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2360,6 +2364,10 @@ PrefabInstance:
     - target: {fileID: 1311825357644707697, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: m_Name
       value: Third Person Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8341662502266032239, guid: 9e5becda178f34047960f64a29874603, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8341662502266032239, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: Lens.FieldOfView
@@ -3826,7 +3834,6 @@ MonoBehaviour:
   _currentHP: 0
   _invincibilityCooldown: 0
   _invincibilityMaxCooldown: 0
-  _model: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
   isInvincible: 0
   isDodging: 0
@@ -3838,7 +3845,7 @@ MonoBehaviour:
   onDieEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1851599099}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 5
@@ -25688,51 +25695,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 928578799663657996, guid: 157e8bc05a0dedc4580c3abc6947c972, type: 3}
   m_PrefabInstance: {fileID: 1848113510}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1851599097
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1851599098}
-  - component: {fileID: 1851599099}
-  m_Layer: 0
-  m_Name: Game Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1851599098
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851599097}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.34482, y: 1.81563, z: 11.16997}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1851599099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1851599097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db07c66831157d64d89f9fcd804a8ab5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneLoader
-  garbageManager: {fileID: 11400000, guid: 6f89a26f6d2dd1a4daea39c50f7a1331, type: 2}
 --- !u!1001 &1857853368
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32971,7 +32933,6 @@ MonoBehaviour:
   _currentHP: 0
   _invincibilityCooldown: 0
   _invincibilityMaxCooldown: 0
-  _model: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
   isInvincible: 0
   isDodging: 0
@@ -35865,7 +35826,6 @@ MonoBehaviour:
   _currentHP: 0
   _invincibilityCooldown: 0
   _invincibilityMaxCooldown: 0
-  _model: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
   isInvincible: 0
   isDodging: 0
@@ -41380,7 +41340,6 @@ MeshCollider:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1851599098}
   - {fileID: 1635413475}
   - {fileID: 747075159}
   - {fileID: 942406360}
