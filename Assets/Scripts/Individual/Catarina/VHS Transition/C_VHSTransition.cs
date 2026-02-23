@@ -64,6 +64,9 @@ public class C_VHSTransition : MonoBehaviour
     [SerializeField] private float _phase1Duration = 1.5f;
     [SerializeField] private float _rotSpeed = 180f;
     private Vector3 _clapperOriginalPos;
+
+    public static event System.Action FinishTransiition;
+
     private void Start()
     {
 
@@ -303,10 +306,9 @@ public class C_VHSTransition : MonoBehaviour
 
         _vhsCanvas.transform.localScale = targetScale;
         _vhsMat.SetFloat("_onVhs", 0);
-        //_volume.SetActive(false);
         _vhsCanvas.SetActive(false);
         _VHSOn = false;
-
+        FinishTransiition?.Invoke();
     }
 
     private IEnumerator StartOfClosingTransition()

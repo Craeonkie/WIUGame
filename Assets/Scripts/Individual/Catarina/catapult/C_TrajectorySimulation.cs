@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 using UnityEngine.SceneManagement;
 using static UnityEditor.PlayerSettings;
@@ -61,6 +62,8 @@ public class C_TrajectorySimulation : MonoBehaviour
         }, false //to prevent returning obj that is already in the pool
         , 100, 800
         );
+        C_FriendBoss.TransitionPhase1Action += awakeThis;
+
     }
     void EnsureSimulationScene()
     {
@@ -178,5 +181,10 @@ public class C_TrajectorySimulation : MonoBehaviour
             _ghostBallPool.Clear();  
             _ghostBallPool.Dispose();
         }
+        C_FriendBoss.TransitionPhase1Action -= awakeThis;
+    }
+    private void awakeThis()
+    {
+        this.enabled = true;
     }
 }

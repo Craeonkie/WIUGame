@@ -62,10 +62,15 @@ public class C_BossCameraManager : MonoBehaviour
     public void OnEnable()
     {
         //playercamera +=SwitchCamera;
+        C_Catapult.ExitCatapultMode += SwitchCamera;
+        C_Catapult.EnterCatapultMode += SwitchCamera;
     }
 
     public void OnDisable()
     {
         //playercamera -=SwitchCamera;
+        C_Catapult.ExitCatapultMode -= SwitchCamera;
+        C_Catapult.EnterCatapultMode -= SwitchCamera;
+
     }
 }

@@ -3479,7 +3479,6 @@ MonoBehaviour:
   _currentHP: 0
   _invincibilityCooldown: 0.5
   _invincibilityMaxCooldown: 0
-  _model: {fileID: 389483825}
   spawnPoint: {x: 0, y: 0, z: 0}
   isInvincible: 0
   isDodging: 0
@@ -3488,6 +3487,9 @@ MonoBehaviour:
   hitAudio: []
   deathAudio: {fileID: 0}
   audioSource: {fileID: 0}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _Animator: {fileID: 389483827}
   _IdleName: idle
   _RedCupParent: {fileID: 160971566}

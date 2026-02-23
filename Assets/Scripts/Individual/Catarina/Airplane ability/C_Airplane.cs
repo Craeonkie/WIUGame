@@ -46,12 +46,16 @@ public class C_Airplane : C_BossAbility
         }, _airplane =>
         {
             // when done and released back to pool
-            _airplane.gameObject.SetActive(false);
+            if (_airplane != null)
+            {
+                _airplane.gameObject.SetActive(false);
+            }
             currentAirplane = null;
         }, _airplane =>
         {
             // destroy obj
-            Destroy(_airplane.gameObject);
+            if (_airplane != null)
+                Destroy(_airplane.gameObject);
         }, false, 1, 1);
     }
 
