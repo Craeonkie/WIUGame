@@ -1127,7 +1127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb8c4604cabd2e349b908e1a51a3dd7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorToAnotherScene
-  nextSceneName: C_TestScene
+  nextSceneName: C_FriendScene
 --- !u!33 &943395649
 MeshFilter:
   m_ObjectHideFlags: 0
