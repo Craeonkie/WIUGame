@@ -6,6 +6,7 @@ public class C_BossCameraManager : MonoBehaviour
     [SerializeField] private CinemachineCamera _TopCamera;
     [SerializeField] private CinemachineCamera _catapultCamera;
     [SerializeField] private CinemachineCamera _cutSceneCamera;
+
     public static event System.Action onPlayerCameraActivity;
     public static event System.Action offPlayerCameraActivity;
 
