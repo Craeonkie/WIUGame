@@ -79,26 +79,26 @@ public class Entity : MonoBehaviour
         transform.position = spawnPoint;
     }
 
-    // Do damage without invincibility cooldown
-    public virtual void TakeDamage(float damageTaken)
-    {
-        if (!isDodging)
-        {
-            _currentHP -= damageTaken;
-            if (hitAudio.Length > 0 && audioSource != null)
-            {
-                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
-            }
-            if (_currentHP <= 0)
-            {
-                if (audioSource != null && deathAudio != null)
-                {
-                    audioSource.PlayOneShot(deathAudio);
-                }
-                Die();
-            }
-        }
-    }
+    //// Do damage without invincibility cooldown
+    //public virtual void TakeDamage(float damageTaken)
+    //{
+    //    if (!isDodging)
+    //    {
+    //        _currentHP -= damageTaken;
+    //        if (hitAudio.Length > 0 && audioSource != null)
+    //        {
+    //            audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+    //        }
+    //        if (_currentHP <= 0)
+    //        {
+    //            if (audioSource != null && deathAudio != null)
+    //            {
+    //                audioSource.PlayOneShot(deathAudio);
+    //            }
+    //            Die();
+    //        }
+    //    }
+    //}
 
     // Do damage with invincibility cooldown
     public virtual void TakeDamage(float damageTaken, float invincibilityLength)

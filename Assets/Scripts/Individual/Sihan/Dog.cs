@@ -981,34 +981,34 @@ public class Dog : Entity
         Gizmos.DrawLine(transform.position + Vector3.up * 0.5f, transform.position + Vector3.up * 0.5f + transform.forward * dogLookaheadDistance);
     }
 
-    // Do damage without invincibility cooldown
-    public override void TakeDamage(float damageTaken)
-    {
-        if (phase2Cutscene.state == PlayState.Playing) return;
+    //// Do damage without invincibility cooldown
+    //public override void TakeDamage(float damageTaken)
+    //{
+    //    if (phase2Cutscene.state == PlayState.Playing) return;
 
-        if (!isDodging)
-        {
-            _currentHP -= damageTaken;
-            if (hitAudio.Length > 0 && audioSource != null)
-            {
-                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
-            }
-            if (_currentHP <= _maxHP / 2 && !phase2)
-            {
-                Debug.Log("Entering Phase 2");
-                phase2Cutscene.Play();
-                phase2 = true;
-            }
-            if (_currentHP <= 0)
-            {
-                if (audioSource != null && deathAudio != null)
-                {
-                    audioSource.PlayOneShot(deathAudio);
-                }
-                Die();
-            }
-        }
-    }
+    //    if (!isDodging)
+    //    {
+    //        _currentHP -= damageTaken;
+    //        if (hitAudio.Length > 0 && audioSource != null)
+    //        {
+    //            audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+    //        }
+    //        if (_currentHP <= _maxHP / 2 && !phase2)
+    //        {
+    //            Debug.Log("Entering Phase 2");
+    //            phase2Cutscene.Play();
+    //            phase2 = true;
+    //        }
+    //        if (_currentHP <= 0)
+    //        {
+    //            if (audioSource != null && deathAudio != null)
+    //            {
+    //                audioSource.PlayOneShot(deathAudio);
+    //            }
+    //            Die();
+    //        }
+    //    }
+    //}
 
     // Do damage with invincibility cooldown
     public override void TakeDamage(float damageTaken, float invincibilityLength)

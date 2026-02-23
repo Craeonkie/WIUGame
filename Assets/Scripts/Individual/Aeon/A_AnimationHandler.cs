@@ -96,10 +96,6 @@ public class AnimationHandler : MonoBehaviour
         _canMove = false;
         _animator.applyRootMotion = currentAnimation.hasRootMotion;
         _myRigidbody.isKinematic = true;
-        if (_currentItem.hasDurability)
-        {
-            _currentItem.currentDurability -= currentAnimation.durabilityUsed;
-        }
 
         _animator.CrossFadeInFixedTime(animationClipName, _crossFadeDuration, 0);
 

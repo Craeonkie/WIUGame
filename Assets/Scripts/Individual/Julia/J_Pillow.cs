@@ -74,7 +74,7 @@ public class J_Pillow : Interactable
     {
         if (!_atDestination && collision.gameObject.CompareTag("PlayerTag"))
         {
-            collision.gameObject.GetComponent<PlayerController>().TakeDamage(100000);
+            collision.gameObject.GetComponent<PlayerController>().TakeDamage(100000, 0.0f);
         }
 
         // TODO: DESTORY WEAPONS AND SHIELDS THAT ARE COLLIDED WITH BY THIS PILLOW UNLESS YOU WANT THE PLAYER TO MANUALLY MOVE THE PILLOW THEMSELVES
