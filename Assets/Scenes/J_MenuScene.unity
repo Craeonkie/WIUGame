@@ -195,6 +195,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneLoader
   garbageManager: {fileID: 11400000, guid: 6f89a26f6d2dd1a4daea39c50f7a1331, type: 2}
+  sceneLoadEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &180699964
 Transform:
   m_ObjectHideFlags: 0
