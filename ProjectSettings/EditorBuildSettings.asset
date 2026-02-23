@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/Scenes/S_DogScene.unity
     guid: 10895bc1e06261e4f8fb89cbbceab7f4
   - enabled: 1
-    path: Assets/Scenes/C_TestScene.unity
+    path: Assets/Scenes/C_FriendBossScene.unity
     guid: e3ee6fd1a950fc343bef3440c5d85c94
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
