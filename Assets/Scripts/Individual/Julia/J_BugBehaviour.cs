@@ -77,7 +77,7 @@ public class J_BugBehaviour : Entity
 
         _onNavMeshLink = false;
 
-        // reset dissolve so it’s visible again
+        // reset dissolve so itâ€™s visible again
         if (_dissolveMat != null)
             _dissolveMat.SetFloat("_Amount", 0f);
 
@@ -127,14 +127,14 @@ public class J_BugBehaviour : Entity
         _navMeshAgent.destination = destination;
     }
 
-    public override void TakeDamage(float damageTaken, float timeTaken = 0.0f)
-    {
-        if (isInvincible)
-            return;
+    //public override void TakeDamage(float damageTaken)
+    //{
+    //    if (isInvincible)
+    //        return;
 
-        _currentHP -= damageTaken;
-        float healthPercent = _currentHP / _maxHP;
-    }
+    //    _currentHP -= damageTaken;
+    //    float healthPercent = _currentHP / _maxHP;
+    //}
 
     private void EnterState(STATE nextState)
     {

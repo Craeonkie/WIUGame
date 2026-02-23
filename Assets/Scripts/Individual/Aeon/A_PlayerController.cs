@@ -43,6 +43,9 @@ public class PlayerController : Entity
     [SerializeField] private LayerMask interactablesLayer;
     [SerializeField] private float _pickupConeRadius;
     [SerializeField] private float _pickupRange;
+    [SerializeField] private bool _handsAreFree;
+    [SerializeField] private float _currentWeight;
+    [SerializeField] private float _targetWeight;
 
     [Header("Other scripts of note")]
     [SerializeField] private GroundChecker groundChecker;
@@ -58,7 +61,8 @@ public class PlayerController : Entity
     [SerializeField] private bool _isRolling = false;
     [SerializeField] private bool _isMovingObject = false;
     [SerializeField] private bool _isHoldingItem = false;
-    [SerializeField] private bool _canAct = true;
+    [SerializeField] private bool _canPlayerInput = true;
+    [SerializeField] private bool _playerInputPaused = true;
     [SerializeField] private bool _primingThrow = false;
     [SerializeField] private bool _wasGroundedPreviously = false;
     [SerializeField] private GameObject _itemBeingMoved;
@@ -115,7 +119,7 @@ public class PlayerController : Entity
         bool canMove = animationHandler.CanMove();
         bool isGrounded = groundChecker.IsGrounded();
         _inputMove = _moveAction.ReadValue<Vector2>();
-        bool isMoving = _inputMove != Vector2.zero && canMove;
+        bool isMoving = _inputMove != Vector2.zero && canMove && !_isStunned;
 
         // Only accept input and rotation if player isn't stunned
         if (!_isStunned)
@@ -139,31 +143,31 @@ public class PlayerController : Entity
             if (isGrounded && !_isJumping)
             {
                 // Jumping
-                if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_primingThrow && !_isMovingObject)
+                if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_primingThrow && !_isMovingObject)
                 {
                     _isJumping = true;
                     _isRolling = false;
                     myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
                 }
                 // Rolling
-                else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canAct && !_isRolling && !_primingThrow && !_isMovingObject)
+                else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_isRolling && !_primingThrow && !_isMovingObject)
                 {
                     _animator.SetTrigger("IsRolling");
                     _currentRollTimer = rollDuration;
                     _isRolling = true;
                     isDodging = true;
-                    _canAct = false;
+                    _canPlayerInput = false;
                 }
             }
 
             // Reenable ability to act if player is not midair and not rolling
-            if (isGrounded && !_isRolling && !_isMovingObject)
+            if (isGrounded && !_isRolling && !_isMovingObject && !_isStunned && !_playerInputPaused)
             {
-                _canAct = true;
+                _canPlayerInput = true;
             }
 
             // Handle movement
-            if (!_isRolling && !myRigidbody.isKinematic)
+            if (!_isRolling && !myRigidbody.isKinematic && !_isStunned)
             {
                 // Handle max velocity
                 float targetSpeed = 0.0f;
@@ -205,19 +209,18 @@ public class PlayerController : Entity
                     _currentSpeed = _maxSpeed;
                     _isRolling = false;
                     isDodging = false;
-                    _canAct = true;
+                    _canPlayerInput = true;
                 }
             }
         }
 
         // Handle breaking items (A bit scuffed)
-        if (inventory.ReturnCurrentItem() != null && !animationHandler.IsActing())
+        if (inventory.ReturnCurrentItem() != null)
         {
             Item temp = inventory.ReturnCurrentItem().GetComponent<Item>();
             if (temp.CheckIfBroken())
             {
                 inventory.DropItem(temp.gameObject);
-                temp.Break();
             }
         }
 
@@ -239,7 +242,7 @@ public class PlayerController : Entity
                     alreadyHolding = true;
                 }
 
-                if (alreadyHolding)
+                if (alreadyHolding || (!_handsAreFree && !col.CompareTag("Interactable")))
                 {
                     continue;
                 }
@@ -278,24 +281,24 @@ public class PlayerController : Entity
                     {
                         closestInteractable.InteractWith();
                     }
-                    else if (tag == "Moveable")
-                    {
-                        closestInteractable.InteractWith();
-                        StartMovingItem(closestInteractable.gameObject);
-                    }
+                    //else if (tag == "Moveable")
+                    //{
+                    //    closestInteractable.InteractWith();
+                    //    StartMovingItem(closestInteractable.gameObject);
+                    //}
                 }
             }
         }
-        else
-        {
-            if (_jumpAction.WasPressedThisDynamicUpdate() || _interactAction.WasPressedThisDynamicUpdate())
-            {
-                StopMovingItem();
-            }
-        }
+        //else
+        //{
+        //    //if (_jumpAction.WasPressedThisDynamicUpdate() || _interactAction.WasPressedThisDynamicUpdate())
+        //    //{
+        //    //    StopMovingItem();
+        //    //}
+        //}
 
         // Only accept input when the player is able act
-        if (_canAct && !_isStunned && isGrounded)
+        if (_canPlayerInput && !_isStunned && isGrounded && _handsAreFree)
         {
             // Primary
             if (_primaryAction.WasPressedThisDynamicUpdate())
@@ -388,7 +391,16 @@ public class PlayerController : Entity
             _isHoldingItem = false;
         }
         _animator.SetBool("IsHoldingItem", _isHoldingItem);
-        _animator.SetBool("IsMovingItem", _isMovingObject);
+        if (_handsAreFree)
+        {
+            _targetWeight = 0;
+        }
+        else
+        {
+            _targetWeight = 1;
+        }
+        _currentWeight = Mathf.MoveTowards(_currentWeight, _targetWeight, Time.deltaTime * 2.0f);
+        _animator.SetLayerWeight(2, _currentWeight);
         _animator.SetFloat("Y Velocity", myRigidbody.linearVelocity.y);
 
         // Handle when the player lands
@@ -424,6 +436,8 @@ public class PlayerController : Entity
         _currentStunDuration = stunDuration;
         animationHandler.GoBackToIdle();
         _isStunned = true;
+        _isRolling = false;
+        myRigidbody.linearVelocity = Vector3.zero;
     }
 
     // Aim in preparation to throw an object or item
@@ -451,25 +465,25 @@ public class PlayerController : Entity
         }
     }
 
-    // Start pushing an item
-    public virtual void StartMovingItem(GameObject itemBeingMoved)
-    {
-        _isMovingObject = true;
-        _itemBeingMoved = itemBeingMoved;
-    }
+    //// Start pushing an item
+    //public virtual void StartMovingItem(GameObject itemBeingMoved)
+    //{
+    //    _isMovingObject = true;
+    //    _itemBeingMoved = itemBeingMoved;
+    //}
 
-    // Stop pushing an item
-    public virtual void StopMovingItem()
-    {
-        _isMovingObject = false;
-        ResetCamera();
-        thirdPersonCameraTarget.SetActive(false);
-        followCameraTarget.SetActive(true);
-        foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
-        {
-            mouseRotationScript.enabled = false;
-        }
-    }
+    //// Stop pushing an item
+    //public virtual void StopMovingItem()
+    //{
+    //    _isMovingObject = false;
+    //    ResetCamera();
+    //    thirdPersonCameraTarget.SetActive(false);
+    //    followCameraTarget.SetActive(true);
+    //    foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
+    //    {
+    //        mouseRotationScript.enabled = false;
+    //    }
+    //}
 
     // Set camera to face player forward
     public void ResetCamera()
@@ -478,26 +492,25 @@ public class PlayerController : Entity
         followCameraTarget.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value = 10.0f;
     }
 
-    // Do damage without invincibility cooldown
-    public override void TakeDamage(float damageTaken)
-    {
-        if (!isDodging)
-        {
-            _currentHP -= damageTaken;
-            _animator.SetTrigger("GetHit");
-            if (hitAudio.Length > 0 && audioSource != null)
-            {
-                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
-            }
-            if (_currentHP <= 0)
-            {
-                audioSource.PlayOneShot(deathAudio);
-                Die();
-            }
-
-            InterruptAction();
-        }
-    }
+    //// Do damage without invincibility cooldown
+    //public override void TakeDamage(float damageTaken)
+    //{
+    //    if (!isDodging)
+    //    {
+    //        _currentHP -= damageTaken;
+    //        _animator.SetTrigger("GetHit");
+    //        if (hitAudio.Length > 0 && audioSource != null)
+    //        {
+    //            audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+    //        }
+    //        if (_currentHP <= 0)
+    //        {
+    //            audioSource.PlayOneShot(deathAudio);
+    //            Die();
+    //        }
+    //        InterruptAction();
+    //    }
+    //}
 
     // Do damage with invincibility cooldown
     public override void TakeDamage(float damageTaken, float invincibilityLength)
@@ -532,17 +545,24 @@ public class PlayerController : Entity
     // Interrupt the player's action
     public void InterruptAction()
     {
-        if (_isMovingObject)
-        {
-            StopMovingItem();
-        }
+        //if (_isMovingObject)
+        //{
+        //    StopMovingItem();
+        //}
     }
 
     // Toggle player ability to move and input
     public void TogglePlayerAbilityToAct(bool canAct)
     {
         InterruptAction();
-        _canAct = canAct;
+        _playerInputPaused = canAct;
+        _canPlayerInput = canAct;
+    }
+
+    // Toggle player ability to move and input
+    public void TogglePlayerAbilityToPickUpitems(bool canPickUpItems)
+    {
+        _handsAreFree = canPickUpItems;
     }
 
     public void SetPlayerToTransform(Transform anchor)

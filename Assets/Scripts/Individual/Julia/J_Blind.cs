@@ -19,7 +19,7 @@ public class J_Blind : MonoBehaviour
         {
             // TODO: Stun player and slow player
             Debug.Log("Blinded player!");
-            other.GetComponent<Entity>().TakeDamage(_damage);
+            other.GetComponent<Entity>().TakeDamage(_damage, 0.0f);
             other.GetComponent<PlayerController>().Stun(_stunDuration);
 
             J_EffectsManager.Instance.StartDustEffect();

@@ -13,6 +13,7 @@ public class RestingPlayerController : Entity
     [Header("Movement")]
     [SerializeField] private float _jumpPower = 5f;
     [SerializeField] private float _maxSpeed = 5f;
+    [SerializeField] private float _currentSpeed = 0f;
     [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private Rigidbody myRigidbody;
 
@@ -26,8 +27,10 @@ public class RestingPlayerController : Entity
 
     [Header("References")]
     [SerializeField] private GroundChecker groundChecker;
+    [SerializeField] private MouseMovement mouseMovement;
 
     private Vector2 _inputMove;
+    private bool _inDialogue;
 
     protected override void Start()
     {
@@ -53,11 +56,11 @@ public class RestingPlayerController : Entity
     {
         base.Update();
 
-        bool isGrounded = groundChecker != null ? groundChecker.IsGrounded() : true;
+        bool isGrounded = groundChecker != null && groundChecker.IsGrounded();
         _inputMove = _moveAction.ReadValue<Vector2>();
-        bool isMoving = _inputMove != Vector2.zero;
+        bool isMoving = _inputMove != Vector2.zero && !_inDialogue;
 
-        if (isGrounded && _jumpAction.WasPressedThisDynamicUpdate())
+        if (isGrounded && _jumpAction.WasPressedThisDynamicUpdate() && !_inDialogue)
         {
             myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
         }
@@ -70,18 +73,10 @@ public class RestingPlayerController : Entity
 
             Vector3 moveDirection = (cameraForward * _inputMove.y + cameraRight * _inputMove.x).normalized;
 
-            // Rotate player body towards movement direction
-            if (moveDirection != Vector3.zero && isGrounded)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-            }
-
             // Apply velocity
             float targetSpeed = isMoving ? _maxSpeed : 0f;
-            Vector3 moveVelocity = moveDirection * targetSpeed;
-
-            // Preserve vertical velocity (gravity/jumping)
+            _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
+            Vector3 moveVelocity = moveDirection * _currentSpeed;
             myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
         }
 
@@ -90,42 +85,52 @@ public class RestingPlayerController : Entity
             return;
         }
 
-        Collider[] hits = Physics.OverlapSphere(cameraTransform.position, _interactionRange, interactablesLayer);
 
-        float closestDist = _interactionRange;
-        Interactable closestInteractable = null;
-
-        foreach (Collider col in hits)
+        if (!_inDialogue)
         {
-            if (!col.TryGetComponent<Interactable>(out var interactable))
+            Collider[] hits = Physics.OverlapSphere(cameraTransform.position, _interactionRange, interactablesLayer);
+
+            float closestDist = _interactionRange;
+            Interactable closestInteractable = null;
+
+            foreach (Collider col in hits)
             {
-                continue;
+                if (!col.TryGetComponent<Interactable>(out var interactable))
+                {
+                    continue;
+                }
+
+                Vector3 playerXZ = new(cameraTransform.position.x, 0f, cameraTransform.position.z);
+                Vector3 objectXZ = new(col.transform.position.x, 0f, col.transform.position.z);
+                float dist = Vector3.Distance(playerXZ, objectXZ);
+
+                Vector3 transformForwardXZ = new Vector3(cameraTransform.forward.x, 0f, cameraTransform.forward.z).normalized;
+
+                // Flatten direction to object to XZ plane
+                Vector3 toObjectXZ = new Vector3(col.transform.position.x - cameraTransform.position.x, 0f, col.transform.position.z - cameraTransform.position.z).normalized;
+
+                float angle = Vector3.Angle(transformForwardXZ, toObjectXZ);
+
+                if (dist <= closestDist && angle <= _interactionConeAngle)
+                {
+                    closestDist = dist;
+                    closestInteractable = interactable;
+                }
             }
 
-            Vector3 playerXZ = new(cameraTransform.position.x, 0f, cameraTransform.position.z);
-            Vector3 objectXZ = new(col.transform.position.x, 0f, col.transform.position.z);
-            float dist = Vector3.Distance(playerXZ, objectXZ);
-
-            Vector3 transformForwardXZ = new Vector3(cameraTransform.forward.x, 0f, cameraTransform.forward.z).normalized;
-
-            // Flatten direction to object to XZ plane
-            Vector3 toObjectXZ = new Vector3(col.transform.position.x - cameraTransform.position.x, 0f, col.transform.position.z - cameraTransform.position.z).normalized;
-
-            float angle = Vector3.Angle(transformForwardXZ, toObjectXZ);
-
-            if (dist <= closestDist && angle <= _interactionConeAngle)
+            // Trigger Interaction
+            if (closestInteractable != null && _interactAction.WasPressedThisFrame())
             {
-                closestDist = dist;
-                closestInteractable = interactable;
+                print("Trying to interact");
+                closestInteractable.InteractWith();
             }
         }
+    }
 
-        // Trigger Interaction
-        if (closestInteractable != null && _interactAction.WasPressedThisFrame())
-        {
-            print("Trying to interact");
-            closestInteractable.InteractWith();
-        }
+    public void ToggleInDialogue(bool inDialogue)
+    {
+        _inDialogue = inDialogue;
+        mouseMovement.enabled = !inDialogue;
     }
 
     private void OnDrawGizmosSelected()
