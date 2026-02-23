@@ -3,7 +3,7 @@ using UnityEngine;
 public class C_Ball : MonoBehaviour
 {
     bool hasBeenPickedUp = false;
-
+   
     [SerializeField] private Rigidbody _rb;
     [SerializeField] private bool _isGhost;
     [SerializeField] private float _DestroyLag = 0f;
