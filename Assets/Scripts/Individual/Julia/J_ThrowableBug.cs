@@ -11,8 +11,8 @@ public class J_ThrowableBug : MonoBehaviour
     {
         StopAllCoroutines();
 
-        _destroyAfterDurationCoroutine = DestroyAfterDuration(_durationBeforeDestroy);
-        StartCoroutine(_destroyAfterDurationCoroutine);
+        //_destroyAfterDurationCoroutine = DestroyAfterDuration(_durationBeforeDestroy);
+        //StartCoroutine(_destroyAfterDurationCoroutine);
     }
 
     public void StopDestroyCountdown()

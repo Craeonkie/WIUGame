@@ -77,7 +77,7 @@ public class J_BugBehaviour : Entity
 
         _onNavMeshLink = false;
 
-        // reset dissolve so it’s visible again
+        // reset dissolve so itâ€™s visible again
         if (_dissolveMat != null)
             _dissolveMat.SetFloat("_Amount", 0f);
 
