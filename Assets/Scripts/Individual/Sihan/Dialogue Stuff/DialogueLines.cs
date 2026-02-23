@@ -23,6 +23,14 @@ public class DialogueLines
     // Whether the player can use left and right arrows like <color> </color> to change colour of text
     public bool useLeftRightArrowShits = true;
 
+    public bool customTypingSpeed = false;
+    public float typingSpeed;
+
+    public bool customAutoNextLineTime = false;
+    public float autoNextLineTime;
+
+    public bool playAnimation = true;
+
     // Dialogue Events that get triggered when entering or exiting this dialogue line
     public DialogueEvent onEnterDialogue;
     public DialogueEvent onExitDialogue;

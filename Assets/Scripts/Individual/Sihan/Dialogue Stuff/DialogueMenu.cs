@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +10,7 @@ public class DialogueMenu : MonoBehaviour
     public DialogueSettings dialogueSettings;
 
     [Header("Dialogue UI Elements")]
+    [SerializeField] private RectTransform _dialogueUI;
     [SerializeField] private Image _dialogueBox;
     [SerializeField] private TMP_Text _dialogueText;
     [SerializeField] private TMP_Text _dialogueName;
@@ -34,6 +36,10 @@ public class DialogueMenu : MonoBehaviour
     [SerializeField] private float _typingCounter;
     // timer to next line (if auto next line is enabled)
     [SerializeField] private float _nextLineTimer;
+    // time for each letter to be typed
+    [SerializeField] private float _typingSpeed;
+    // time to go to the next line if auto next line is enabled
+    [SerializeField] private float _autoNextLineTime;
 
     // current dialogue
     [SerializeField] private Dialogue _currentDialogue;
@@ -43,6 +49,16 @@ public class DialogueMenu : MonoBehaviour
         set => _currentDialogue = value;
     }
     [SerializeField] private StateDialogue _currentStateDialogue;
+
+    [Header("Animation :D")]
+    [SerializeField] private float _defaultScale;
+    [SerializeField] private AnimationCurve _growCurve;
+    [SerializeField] private AnimationCurve _shrinkCurve;
+    [SerializeField] private AnimationCurve _nextLineCurve;
+    [SerializeField] private float _growSpeed;
+    [SerializeField] private float _shrinkSpeed;
+    [SerializeField] private float _nextLineAnimSpeed;
+    private Coroutine _animCoroutine;
 
     public bool isPaused { get; set; }
 
@@ -86,11 +102,17 @@ public class DialogueMenu : MonoBehaviour
                         return;
                     }
 
+                    if (_animCoroutine != null)
+                    {
+                        StopCoroutine(_animCoroutine);
+                        _animCoroutine = null;
+                    }
+
                     // Start the dialogue
                     EnterNewDialogue();
 
                     // Makes dialogue UI visible
-                    transform.GetChild(0).gameObject.SetActive(true);
+                    _dialogueUI.gameObject.SetActive(true);
 
                     break;
                 }
@@ -137,7 +159,7 @@ public class DialogueMenu : MonoBehaviour
                     _typingCounter += Time.deltaTime;
 
                     // Check if typing counter passes the typing speed for each letter
-                    if (_typingCounter >= dialogueSettings.typingSpeed)
+                    if (_typingCounter >= _typingSpeed)
                     {
                         // Reset the typing counter
                         _typingCounter = 0;
@@ -200,10 +222,10 @@ public class DialogueMenu : MonoBehaviour
                 else
                 {
                     // Check if it auto goes to the next line
-                    if (_currentStateDialogue.dialogueLines[_dialogueLineIndex].isAutoNextLine && _currentStateDialogue.dialogueLines[_dialogueLineIndex].ableToEnterNextLine)
+                    if (_currentStateDialogue.dialogueLines[_dialogueLineIndex].isAutoNextLine)
                     {
                         _nextLineTimer += Time.deltaTime;
-                        if (_nextLineTimer >= dialogueSettings.autoNextLineTime)
+                        if (_nextLineTimer >= _autoNextLineTime)
                         {
                             // Go to the next dialogue line since typing alr finished
                             _dialogueLineIndex++;
@@ -220,8 +242,19 @@ public class DialogueMenu : MonoBehaviour
                                     _currentDialogue.dialogueID++;
                                 }
 
-                                ResetDialogue();                                
+                                if (_currentStateDialogue.playCloseAnimation)
+                                {
+                                    if (_animCoroutine != null)
+                                    {
+                                        StopCoroutine(_animCoroutine);
+                                        _animCoroutine = null;
+                                    }
 
+                                    _animCoroutine = StartCoroutine(ShrinkUI());
+                                    return;
+                                }
+
+                                ResetDialogue();
                                 return;
                             }
 
@@ -292,7 +325,7 @@ public class DialogueMenu : MonoBehaviour
                         {
                             // Set typing to false, skip the typing and show the full dialogue line
                             _isTyping = false;
-                            _dialogueText.text = currentLine.dialogue;
+                            _dialogueText.text += currentLine.dialogue.Substring(_typingIndex, _maxTypingIndex - _typingIndex);
 
                             //if (AudioLibrary.Instance != null)
                             //{
@@ -318,8 +351,19 @@ public class DialogueMenu : MonoBehaviour
                                 _currentDialogue.dialogueID++;
                             }
 
-                            ResetDialogue();
+                            if (_currentStateDialogue.playCloseAnimation)
+                            {
+                                if (_animCoroutine != null)
+                                {
+                                    StopCoroutine(_animCoroutine);
+                                    _animCoroutine = null;
+                                }
 
+                                _animCoroutine = StartCoroutine(ShrinkUI());
+                                return;
+                            }
+
+                            ResetDialogue();
                             return;
                         }
 
@@ -349,7 +393,8 @@ public class DialogueMenu : MonoBehaviour
                         {
                             // Set typing to false, skip the typing and show the full dialogue line
                             _isTyping = false;
-                            _dialogueText.text = currentLine.dialogue;
+                            _dialogueText.text += currentLine.dialogue.Substring(_typingIndex, _maxTypingIndex - _typingIndex);
+
 
                             //if (AudioLibrary.Instance != null)
                             //{
@@ -375,8 +420,19 @@ public class DialogueMenu : MonoBehaviour
                                 _currentDialogue.dialogueID++;
                             }
 
-                            ResetDialogue();
+                            if (_currentStateDialogue.playCloseAnimation)
+                            {
+                                if (_animCoroutine != null)
+                                {
+                                    StopCoroutine(_animCoroutine);
+                                    _animCoroutine = null;
+                                }
 
+                                _animCoroutine = StartCoroutine(ShrinkUI());
+                                return;
+                            }
+
+                            ResetDialogue();
                             return;
                         }
 
@@ -409,17 +465,32 @@ public class DialogueMenu : MonoBehaviour
         _currentDialogue = null;
         _currentStateDialogue = null;
         isPaused = false;
+        _typingSpeed = 0;
+        _autoNextLineTime = 0;
 
-        transform.GetChild(0).gameObject.SetActive(false);
+        _dialogueUI.gameObject.SetActive(false);
     }
 
     public void EnterNewDialogue()
     {
         // Enable UI
         // garbageManager.isUIOpen = true;
+        _typingCounter = 0;
 
         if (_dialogueLineIndex >= _maxDialogueLinesIndex)
         {
+            if (_currentStateDialogue.playCloseAnimation)
+            {
+                if (_animCoroutine != null)
+                {
+                    StopCoroutine(_animCoroutine);
+                    _animCoroutine = null;
+                }
+
+                _animCoroutine = StartCoroutine(ShrinkUI());
+                return;
+            }
+
             ResetDialogue();
             return;
         }
@@ -430,6 +501,7 @@ public class DialogueMenu : MonoBehaviour
         currentLine.onEnterDialogue?.InvokeEvent();
         string currentLineDialogue = currentLine.dialogue;
         _maxTypingIndex = currentLineDialogue.Length;
+        
 
         _type = true;
 
@@ -439,13 +511,13 @@ public class DialogueMenu : MonoBehaviour
             _typingCounter = 0;
             _typingIndex = 0;
 
-            if (currentLine.erasePreviousText) _dialogueText.text = "";
+            if (currentLine.erasePreviousText || _dialogueLineIndex == 0) _dialogueText.text = "";
         }
         else
         {
             _isTyping = false;
             _typingIndex = _maxTypingIndex;
-            if (currentLine.erasePreviousText)
+            if (currentLine.erasePreviousText || _dialogueLineIndex == 0)
             {
                 _dialogueText.text = currentLineDialogue;
             }
@@ -453,6 +525,58 @@ public class DialogueMenu : MonoBehaviour
             {
                 _dialogueText.text += currentLineDialogue;
             }
+        }
+
+        if (currentLine.customTypingSpeed)
+        {
+            _typingSpeed = currentLine.typingSpeed;
+        }
+        else
+        {
+            _typingSpeed = dialogueSettings.typingSpeed;
+        }
+
+        if (currentLine.customAutoNextLineTime)
+        {
+            _autoNextLineTime = currentLine.autoNextLineTime;
+        }
+        else
+        {
+            _autoNextLineTime = dialogueSettings.autoNextLineTime;
+        }
+
+        if (_dialogueLineIndex != 0)
+        {
+            if (currentLine.playAnimation)
+            {
+                if (_animCoroutine != null)
+                {
+                    StopCoroutine(_animCoroutine);
+                    _animCoroutine = null;
+                }
+
+                _animCoroutine = StartCoroutine(NextLineAnimUI());
+            }
+            else
+            {
+                if (_animCoroutine != null)
+                {
+                    StopCoroutine(_animCoroutine);
+                    _animCoroutine = null;
+                }
+
+                _dialogueUI.localScale = Vector3.one * _defaultScale;
+            }
+        }
+        else if (_currentStateDialogue.playOpenAnimation)
+        {
+            if (_animCoroutine != null)
+            {
+                StopCoroutine(_animCoroutine);
+                _animCoroutine = null;
+            }
+
+            _animCoroutine = StartCoroutine(GrowUI());
         }
 
         _dialogueName.text = currentLine.name;
@@ -468,6 +592,8 @@ public class DialogueMenu : MonoBehaviour
         if (dialogueSettings.dialogueUIs != null && dialogueUIIndex < dialogueSettings.dialogueUIs.Count)
         {
             var dialogueUI = dialogueSettings.dialogueUIs[dialogueUIIndex];
+            _dialogueUI.anchoredPosition = new Vector2(0, dialogueUI.dialogueUIYOffset);
+
             _dialogueBox.rectTransform.sizeDelta = new Vector2(dialogueUI.dialogueBoxWidth, dialogueUI.dialogueBoxHeight);
             _dialogueBox.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialogueBoxXOffset, dialogueUI.dialogueBoxYOffset);
 
@@ -496,6 +622,62 @@ public class DialogueMenu : MonoBehaviour
         if (currentLine.icon != null)
         {
             _dialogueIcon.sprite = currentLine.icon;
+        }
+    }
+
+    public IEnumerator GrowUI()
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 1)
+        {
+            elapsedTime += Time.deltaTime * _growSpeed;
+            elapsedTime = Mathf.Clamp01(elapsedTime);
+
+            _dialogueUI.localScale = Vector3.one * _defaultScale * Mathf.Clamp(_growCurve.Evaluate(elapsedTime), 0, Mathf.Infinity);
+            yield return null;
+        }
+    }
+
+    public IEnumerator ShrinkUI()
+    {
+        _type = false;
+        _isTyping = false;
+        _dialogueLineIndex = 0;
+        _maxDialogueLinesIndex = 0;
+        _typingCounter = 0;
+        _typingIndex = 0;
+        _currentDialogue = null;
+        _currentStateDialogue = null;
+        isPaused = false;
+        _typingSpeed = 0;
+        _autoNextLineTime = 0;
+
+        float elapsedTime = 0f;
+        float localScale = transform.localScale.x;
+
+        while (elapsedTime < 1)
+        {
+            elapsedTime += Time.deltaTime * _shrinkSpeed;
+            elapsedTime = Mathf.Clamp01(elapsedTime);
+
+            _dialogueUI.localScale = Vector3.one * localScale * Mathf.Clamp(_shrinkCurve.Evaluate(elapsedTime), 0, Mathf.Infinity);
+            yield return null;
+        }
+
+        ResetDialogue();
+    }
+
+    public IEnumerator NextLineAnimUI()
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < 1)
+        {
+            elapsedTime += Time.deltaTime * _nextLineAnimSpeed;
+            elapsedTime = Mathf.Clamp01(elapsedTime);
+            _dialogueUI.localScale = Vector3.one * _defaultScale * Mathf.Clamp(_nextLineCurve.Evaluate(elapsedTime), 0, Mathf.Infinity);
+            yield return null;
         }
     }
 }

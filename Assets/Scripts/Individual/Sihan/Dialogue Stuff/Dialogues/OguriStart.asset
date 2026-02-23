@@ -15,34 +15,58 @@ MonoBehaviour:
   _dialogueID: 0
   stateDialogues:
   - dialogueID: 0
-    increaseMainDialogueIDWhenComplete: 1
-    dialogueLines:
-    - dialogue: Use <size=200%><font="Anton SDF" material="Anton SDF - Drop Shadow"><#ffffff>multiple
-        fonts</color></font></size> and <i><b><#ffffaa>Sprites</color></b></i> <sprite=1>
-        per text <size=150%>object</size>.
-      icon: {fileID: 21300000, guid: 0ca63bdbe95de3248b22a208fbb12026, type: 3}
-      name: Oguri
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 0
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 1
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
-  - dialogueID: 1
     increaseMainDialogueIDWhenComplete: 0
+    playOpenAnimation: 1
+    playCloseAnimation: 1
     dialogueLines:
-    - dialogue: Umapyoi Umapyoi
-      icon: {fileID: 21300000, guid: 0ca63bdbe95de3248b22a208fbb12026, type: 3}
-      name: Oguri
+    - dialogue: <#fece84>woof</color><#d6c6af>...</color>
+      icon: {fileID: 21300000, guid: 37b19497c33e81c41a5e41ab572b2163, type: 3}
+      name: Dog
       dialogueUIIndex: 0
       isSkippable: 1
       ableToEnterNextLine: 1
-      isAutoNextLine: 0
+      isAutoNextLine: 1
       isInstant: 0
-      erasePreviousText: 1
+      erasePreviousText: 0
       useLeftRightArrowShits: 1
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
+      customTypingSpeed: 1
+      typingSpeed: 0.2
+      customAutoNextLineTime: 1
+      autoNextLineTime: 2
+      playAnimation: 1
+      onEnterDialogue: {fileID: 11400000, guid: 6dbb284dfbe31284499f6b0b6984b549, type: 2}
+      onExitDialogue: {fileID: 11400000, guid: d956fc57eab079044b7c94f0ed8d11fb, type: 2}
+    - dialogue: <#fece84>woof</color><#d6c6af>...</color>
+      icon: {fileID: 21300000, guid: 37b19497c33e81c41a5e41ab572b2163, type: 3}
+      name: Dog
+      dialogueUIIndex: 0
+      isSkippable: 1
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 0
+      useLeftRightArrowShits: 1
+      customTypingSpeed: 1
+      typingSpeed: 0.2
+      customAutoNextLineTime: 1
+      autoNextLineTime: 2
+      playAnimation: 1
+      onEnterDialogue: {fileID: 11400000, guid: 6dbb284dfbe31284499f6b0b6984b549, type: 2}
+      onExitDialogue: {fileID: 11400000, guid: d956fc57eab079044b7c94f0ed8d11fb, type: 2}
+    - dialogue: <#fece84>woof</color><#d6c6af>...</color>
+      icon: {fileID: 21300000, guid: 37b19497c33e81c41a5e41ab572b2163, type: 3}
+      name: Dog
+      dialogueUIIndex: 0
+      isSkippable: 1
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 0
+      useLeftRightArrowShits: 1
+      customTypingSpeed: 1
+      typingSpeed: 0.2
+      customAutoNextLineTime: 1
+      autoNextLineTime: 2
+      playAnimation: 1
+      onEnterDialogue: {fileID: 11400000, guid: 6dbb284dfbe31284499f6b0b6984b549, type: 2}
+      onExitDialogue: {fileID: 11400000, guid: d956fc57eab079044b7c94f0ed8d11fb, type: 2}
