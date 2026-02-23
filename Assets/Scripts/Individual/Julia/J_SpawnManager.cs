@@ -10,6 +10,7 @@ public class SpawnItem
     public int spawnedAmount;
     public float spawnDelay;
     public bool hasSpawnLimit;
+    public bool spawnOnAwake;
     public int spawnLimit;
     [System.NonSerialized] public ObjectPool<GameObject> spawnPool; 
 }

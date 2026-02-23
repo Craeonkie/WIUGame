@@ -138,7 +138,7 @@ public class J_BugBehaviour : Entity
 
     private void EnterState(STATE nextState)
     {
-        Debug.Log("entering state");
+        //Debug.Log("entering state");
 
         switch (nextState)
         {
@@ -194,7 +194,7 @@ public class J_BugBehaviour : Entity
 
         _state = nextState;
         _stateText.text = _state.ToString();
-        Debug.Log("State: " + _state.ToString());
+        //Debug.Log("State: " + _state.ToString());
     }
 
     private void UpdateState()
@@ -285,7 +285,7 @@ public class J_BugBehaviour : Entity
     // Check for player jump
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) 
+        if (!other.CompareTag("PlayerTag")) 
             return;
 
         CapsuleCollider playerCapsule = _player.GetComponent<CapsuleCollider>();
