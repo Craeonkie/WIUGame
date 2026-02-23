@@ -1,7 +1,5 @@
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Entity : MonoBehaviour
 {
@@ -9,7 +7,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float _currentHP;
     [SerializeField] protected float _invincibilityCooldown;
     [SerializeField] protected float _invincibilityMaxCooldown;
-    [SerializeField] protected GameObject _model;
+    //[SerializeField] protected GameObject _model;
     //[SerializeField] protected SkinnedMeshRenderer[] renderers;
     //[SerializeField] protected Material damageMaterial;
     [SerializeField] protected Vector3 spawnPoint;
@@ -21,6 +19,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected AudioClip deathAudio;
     [SerializeField] protected AudioSource audioSource;
     private MaterialPropertyBlock _propertyBlock;
+    [SerializeField] protected UnityEvent onDieEvent;
 
     public static System.Action OnDie;
 

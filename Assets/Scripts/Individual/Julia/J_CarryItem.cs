@@ -17,11 +17,13 @@ public class J_CarryItem : MonoBehaviour
     private void OnEnable()
     {
         PlayerController.OnInteract += Interact;
+        J_BossBehaviour.OnStealPillow += ForceDropPillow;
     }
 
     private void OnDisable()
     {
         PlayerController.OnInteract -= Interact;
+        J_BossBehaviour.OnStealPillow -= ForceDropPillow;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -149,6 +151,20 @@ public class J_CarryItem : MonoBehaviour
         _currentPillow.GetStacked();
         _currentPillow = null;
         OnCarry?.Invoke(_currentPillow);
+    }
+
+    private void ForceDropPillow()
+    {
+        if (_currentPillow == null)
+        {
+            Debug.Log("Current pillow is null! But the boss is trying to steal it");
+            return;
+        }
+
+        _currentPillow.transform.parent = null;
+        _currentPillow.GetDropped();
+        J_SpawnManager.Instance.Release("Pillow", _currentPillow.gameObject);
+        _currentPillow = null;
     }
 
     private void OnDrawGizmos()
