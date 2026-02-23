@@ -28,7 +28,8 @@ public class C_Catapult : MonoBehaviour
     private bool _blockedLeft = false;
     private bool _blockedRight = false;
 
-    public static event System.Action ExitCatapultMode;
+    public static event System.Action<C_BossCameraManager.c_CameraMode> ExitCatapultMode;
+    public static event System.Action<C_BossCameraManager.c_CameraMode> EnterCatapultMode;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -62,8 +63,9 @@ public class C_Catapult : MonoBehaviour
 
         if (_inputActionAsset["Interact"].WasPressedThisFrame())
         {
-            ExitCatapultMode?.Invoke();
+            ExitCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.PLAYER_CAMERA);
             this.enabled = false;
+            _playerInput.enabled = false;
         }
     }
     Vector3 GetShootVelocity()
@@ -163,5 +165,7 @@ public class C_Catapult : MonoBehaviour
     private void awakeThis()
     {
         this.enabled = true;
+        _playerInput.enabled = true;
+        EnterCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.CATAPULT_CAMERA);
     }
 }
