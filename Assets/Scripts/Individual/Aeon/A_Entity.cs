@@ -7,7 +7,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float _currentHP;
     [SerializeField] protected float _invincibilityCooldown;
     [SerializeField] protected float _invincibilityMaxCooldown;
-    [SerializeField] protected GameObject _model;
+    //[SerializeField] protected GameObject _model;
     //[SerializeField] protected SkinnedMeshRenderer[] renderers;
     //[SerializeField] protected Material damageMaterial;
     [SerializeField] protected Vector3 spawnPoint;
