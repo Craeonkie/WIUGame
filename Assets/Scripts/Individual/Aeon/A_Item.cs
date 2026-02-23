@@ -25,6 +25,7 @@ public abstract class Item : Interactable
     public bool hasDurability;
     public int maxDurability;
     public int currentDurability;
+    protected bool canLoseDurabilityThisAttack = false;
 
     [Header("Item Holding Offset")]
     public Vector3 offset;
