@@ -11,13 +11,19 @@ public class J_EffectsManager : MonoBehaviour
 {
     public static J_EffectsManager Instance;
 
+    [Header("Fire Effect")]
+    [SerializeField] private Material _fireMat;
+    [SerializeField] private Material _smokeMat;
+    [SerializeField] private float _burnEffectSpeed = 1f; // Single speed for both
+    [SerializeField] private float _fireStartValue = 10f; // Starting vignette power
+    [SerializeField] private float _fireTargetValue = 3f; // Target vignette power
+    private Coroutine _burnCoroutine;
+
     [Header("Dust Effect")]
-    [SerializeField] private Material _material;
+    [SerializeField] private Material _dustMat;
     [SerializeField] private float _dustIncreaseSpeed;
     [SerializeField] private float _dustDecreaseSpeed;
-
-    private IEnumerator _increaseStrengthCoroutine;
-    private IEnumerator _decreaseStrengthCoroutine;
+    private Coroutine _dustCoroutine;
 
     private void Awake()
     {
@@ -26,65 +32,133 @@ public class J_EffectsManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
     }
 
     public void StartDustEffect()
     {
-        if (_increaseStrengthCoroutine != null)
+        if (_dustCoroutine != null)
         {
-            StopCoroutine(_increaseStrengthCoroutine);
-            _increaseStrengthCoroutine = null;
+            StopCoroutine(_dustCoroutine);
         }
-
-        _increaseStrengthCoroutine = IncreaseStrength();
-        StartCoroutine(_increaseStrengthCoroutine);
+        _dustCoroutine = StartCoroutine(IncreaseDustStrength());
     }
 
-    private IEnumerator IncreaseStrength()
+    public void StartBurnEffect()
     {
-        float currentDustStrength = _material.GetFloat("_DustStrength");
+        if (_burnCoroutine != null)
+        {
+            StopCoroutine(_burnCoroutine);
+        }
+        _burnCoroutine = StartCoroutine(IncreaseBurnEffect());
+    }
 
+    public void StopBurnEffect()
+    {
+        if (_burnCoroutine != null)
+        {
+            StopCoroutine(_burnCoroutine);
+        }
+        _burnCoroutine = StartCoroutine(DecreaseBurnEffect());
+    }
+
+    private IEnumerator IncreaseDustStrength()
+    {
+        float currentDustStrength = _dustMat.GetFloat("_DustStrength");
         while (currentDustStrength < 1)
         {
             currentDustStrength += _dustIncreaseSpeed * Time.deltaTime;
             currentDustStrength = Mathf.Clamp01(currentDustStrength);
-            _material.SetFloat("_DustStrength", currentDustStrength);
+            _dustMat.SetFloat("_DustStrength", currentDustStrength);
             yield return null;
         }
+        _dustMat.SetFloat("_DustStrength", 1f);
 
-        Debug.Log("out");
-
-        _material.SetFloat("_DustStrength", 1f);
-        _increaseStrengthCoroutine = null;
-        _decreaseStrengthCoroutine = DecreaseStrength();
-        StartCoroutine(_decreaseStrengthCoroutine);
+        // Auto-decrease after reaching max
+        _dustCoroutine = StartCoroutine(DecreaseDustStrength());
     }
 
-    private IEnumerator DecreaseStrength()
+    private IEnumerator DecreaseDustStrength()
     {
-        float currentDustStrength = _material.GetFloat("_DustStrength");
-
-        Debug.Log("here");
-
+        float currentDustStrength = _dustMat.GetFloat("_DustStrength");
         while (currentDustStrength > 0)
         {
             currentDustStrength -= _dustDecreaseSpeed * Time.deltaTime;
             currentDustStrength = Mathf.Clamp01(currentDustStrength);
-            _material.SetFloat("_DustStrength", currentDustStrength);
+            _dustMat.SetFloat("_DustStrength", currentDustStrength);
+            yield return null;
+        }
+        _dustMat.SetFloat("_DustStrength", 0f);
+        _dustCoroutine = null;
+    }
+
+    // COMBINED BURN EFFECT (Fire + Smoke synced)
+    private IEnumerator IncreaseBurnEffect()
+    {
+        float currentFireStrength = _fireMat.GetFloat("_VignettePower");
+        float currentSmokeStrength = _smokeMat.GetFloat("_DustStrength");
+
+        // Calculate the normalized progress (0 to 1)
+        while (currentFireStrength > _fireTargetValue)
+        {
+            currentFireStrength -= _burnEffectSpeed * Time.deltaTime;
+            currentFireStrength = Mathf.Max(_fireTargetValue, currentFireStrength);
+
+            // Calculate progress from fire values
+            float progress = 1f - ((currentFireStrength - _fireTargetValue) / (_fireStartValue - _fireTargetValue));
+            progress = Mathf.Clamp01(progress);
+
+            // Sync smoke to the same progress
+            currentSmokeStrength = progress;
+
+            _fireMat.SetFloat("_VignettePower", currentFireStrength);
+            _smokeMat.SetFloat("_DustStrength", currentSmokeStrength);
+
             yield return null;
         }
 
-        _material.SetFloat("_DustStrength", 0f);
-        _decreaseStrengthCoroutine = null;
+        // Ensure final values
+        _fireMat.SetFloat("_VignettePower", _fireTargetValue);
+        _smokeMat.SetFloat("_DustStrength", 1f);
+        _burnCoroutine = null;
     }
 
+    private IEnumerator DecreaseBurnEffect()
+    {
+        float currentFireStrength = _fireMat.GetFloat("_VignettePower");
+        float currentSmokeStrength = _smokeMat.GetFloat("_DustStrength");
+
+        while (currentFireStrength < _fireStartValue)
+        {
+            currentFireStrength += _burnEffectSpeed * Time.deltaTime;
+            currentFireStrength = Mathf.Min(_fireStartValue, currentFireStrength);
+
+            // Calculate progress (1 to 0 as fire returns to start)
+            float progress = 1f - ((currentFireStrength - _fireTargetValue) / (_fireStartValue - _fireTargetValue));
+            progress = Mathf.Clamp01(progress);
+
+            // Sync smoke to the same progress
+            currentSmokeStrength = progress;
+
+            _fireMat.SetFloat("_VignettePower", currentFireStrength);
+            _smokeMat.SetFloat("_DustStrength", currentSmokeStrength);
+
+            yield return null;
+        }
+
+        // Ensure final values
+        _fireMat.SetFloat("_VignettePower", _fireStartValue);
+        _smokeMat.SetFloat("_DustStrength", 0f);
+        _burnCoroutine = null;
+    }
 
     private void Reset()
     {
-        _material.SetFloat("_DustStrength", 0f);
+        _dustMat.SetFloat("_DustStrength", 0f);
+        _fireMat.SetFloat("_VignettePower", _fireStartValue);
+        _smokeMat.SetFloat("_DustStrength", 0f);
     }
+
     private void OnDestroy()
     {
         Reset();

@@ -38,6 +38,7 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     private float _currentGameTime;
 
     //private Dictionary<Level, bool> _visitedScenes = new Dictionary<Level, bool>();
+    private string _nextStage;
     private Dictionary<string, bool> _completedStages = new Dictionary<string, bool>();
     private Vector3 _previousPosition; // Use this to spawn player back in a room or something
 
@@ -87,6 +88,12 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
 
         // Visit current scene
         _completedStages[scene] = true;
+        UpdateNextScene();
+    }
+
+    public string GetNextStage()
+    {
+        return _nextStage;
     }
 
     public bool IsSceneVisited(string scene)
@@ -97,10 +104,19 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
         return _completedStages[scene];
     }
 
-    //public void UpdateScenePhase(string sceneName, int phaseNumber)
-    //{
-
-    //}
+    private void UpdateNextScene()
+    {
+        if (!_completedStages[DOG_SCENE])
+            _nextStage = DOG_SCENE;
+        else if (!_completedStages[KID_SCENE])
+            _nextStage = KID_SCENE;
+        else if (!_completedStages[MONSTER_SCENE])
+            _nextStage = MONSTER_SCENE;
+        else
+        {
+            Debug.Log("All scenes were completed");
+        }
+    }
 
     public void LoadData(J_GameData data)
     {
