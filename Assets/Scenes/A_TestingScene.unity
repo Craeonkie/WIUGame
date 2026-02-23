@@ -1214,6 +1214,10 @@ PrefabInstance:
       value: Chopsticks
       objectReference: {fileID: 0}
     - target: {fileID: 7495190497894522309, guid: a337c927df8666244877d66f2b48925e, type: 3}
+      propertyPath: primary.Array.data[0].durabilityUsed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495190497894522309, guid: a337c927df8666244877d66f2b48925e, type: 3}
       propertyPath: primary.Array.data[1].durabilityUsed
       value: 1
       objectReference: {fileID: 0}

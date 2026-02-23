@@ -75,7 +75,7 @@ public class RestingPlayerController : Entity
 
             // Apply velocity
             float targetSpeed = isMoving ? _maxSpeed : 0f;
-            _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
+            _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed /*/ 0.1f*/ * Time.deltaTime);
             Vector3 moveVelocity = moveDirection * _currentSpeed;
             myRigidbody.linearVelocity = new Vector3(moveVelocity.x, myRigidbody.linearVelocity.y, moveVelocity.z);
         }
