@@ -16,6 +16,8 @@ public class C_FriendAI : MonoBehaviour
     [Header("Patrol")]
     [SerializeField] private float _PatrolRad = 10f;
     [SerializeField] private string _RunAnimBoolName;
+    [SerializeField] private string _runAnimName;
+    
     private Vector3 _CurrentPatrolPt;
     private bool _HasPt;
 
@@ -49,31 +51,24 @@ public class C_FriendAI : MonoBehaviour
     public static event System.Action<GameObject> onPickUPAction;
 
     [Header("Defend")]
-    [SerializeField] string _DefendAnimName;
+    [SerializeField] string _HurtAnimName;
     [SerializeField] string _DefendAnimBoolName;
+    [SerializeField] string _DefendAnimName;
+    [SerializeField] string _HurtTriggerName;
     [SerializeField] float _DefendTime = 3f;
     [SerializeField] float _SafeRad = 3f;
     private bool _playerInZone = false;
     public bool _isDefending { get; set; }
     float _DefendCounter = 0f;
 
-
-    [Header("Dead")]
-    [SerializeField] private string _DeadAnimatorName;
-    [SerializeField] private string _DeadAnimBool;
-    bool _IsDead = false;
-
-    private void OnEnable()
-    {
-        C_FriendBoss.deadAction += IsDead;
-
+    private void OnEnable() { 
+    
         C_FriendBoss.gettingAtkAction += GettingAtk;
 
         C_FriendBoss.TransitionPhase1Action += Disable;
     }
     private void OnDisable()
     {
-        C_FriendBoss.deadAction -= IsDead;
 
         C_FriendBoss.gettingAtkAction -= GettingAtk;
 
@@ -127,21 +122,15 @@ public class C_FriendAI : MonoBehaviour
     //doing the switching of state logic
     private void FSM()
     {
-        if (_IsDead)
-        {
-            BeDead();
-            return;
-        }
-        else if (_isDefending)
+        if (_isDefending)
         {
             PerformDefend();
         }
-        else if ((_wasfightingPlayer && !_HaveWeapon) || (((!_IsPlayerVisable && !_IsPlayerInRange )|| _FindingWeapon) && !_wasfightingPlayer) )
+        else if ((_wasfightingPlayer && !_HaveWeapon) || (((!_IsPlayerVisable && !_IsPlayerInRange) || _FindingWeapon) && !_wasfightingPlayer))
         {
-
             PerformaPatrol();
         }
-        else if ((_IsPlayerVisable && !_IsPlayerInRange )|| (_wasfightingPlayer))
+        else if ((_IsPlayerVisable && !_IsPlayerInRange) || (_wasfightingPlayer && !_IsPlayerInRange))
         {
             if (_HaveWeapon)
             {
@@ -180,29 +169,11 @@ public class C_FriendAI : MonoBehaviour
 
     }
 
-    //the dead state logic
-    private void BeDead()
-    {
-        var state = _Animator.GetCurrentAnimatorStateInfo(0);
-        if (state.IsName(_DeadAnimatorName) && state.normalizedTime >= 0.95f)
-        {
-            //dont know maybe some cut scene who knows
-            return;
-        }
-    }
-
-    //the dead trigger
-    public void IsDead()
-    {
-        _IsDead = true;
-        _Animator.SetBool(_DeadAnimBool, true);
-        _Agent.SetDestination(transform.position);
-    }
 
     //the attacking logic
     private void PerformAtk()
     {
-
+        _wasfightingPlayer = true;
         if (_PlayerTransform != null)
         {
             transform.LookAt(_PlayerTransform);
@@ -227,10 +198,21 @@ public class C_FriendAI : MonoBehaviour
     //the chasing logic
     private void PerformChase()
     {
+        if (!_Animator.GetBool(_RunAnimBoolName))
+        {
+            _Animator.SetBool(_RunAnimBoolName, true);
+        }
+        var state = _Animator.GetCurrentAnimatorStateInfo(0);
+        if (!state.IsName(_runAnimName))
+        {
+            _Agent.SetDestination(transform.position);
+            return;
+        }
         if (_PlayerTransform != null)
         {
             _Agent.SetDestination(_PlayerTransform.position);
         }
+
     }
 
     //the patrolling logic
@@ -379,23 +361,6 @@ public class C_FriendAI : MonoBehaviour
     }
 
     //the player detection logic
-    //private void DetectPlayer()
-    //{
-    //    var cols = Physics.OverlapSphere(transform.position, _VisionRange, _PlayerLayer);
-    //    _IsPlayerVisable = cols.Length > 0;
-
-    //    if (_IsPlayerVisable)
-    //    {
-    //        var dist = Vector3.Distance(transform.position, cols[0].transform.position);
-    //        _IsPlayerInRange = dist <= _ATkRange;
-    //        _playerInZone = dist <= _SafeRad;
-    //    }
-    //    else
-    //    {
-    //        _IsPlayerInRange = false;
-    //        _playerInZone = false;
-    //    }
-    //}
     private void DetectPlayer()
     {
         _IsPlayerVisable = false;
@@ -403,23 +368,31 @@ public class C_FriendAI : MonoBehaviour
         _playerInZone = false;
 
         Collider[] cols = Physics.OverlapSphere(transform.position, _VisionRange);
+        if (cols == null || cols.Length <= 0) return;
+
+        float shortestDist = float.MaxValue;
+        Transform bestTar = null;
 
         for (int i = 0; i < cols.Length; i++)
         {
-            if (cols[i].CompareTag(_PlayerTagName))
+            if (!cols[i].CompareTag(_PlayerTagName)) continue;
+
+            float dist = Vector3.Distance(transform.position, cols[i].transform.position);
+
+            if (dist < shortestDist)
             {
-                _IsPlayerVisable = true;
-
-                float dist = Vector3.Distance(transform.position, cols[i].transform.position);
-
-                _IsPlayerInRange = dist <= _ATkRange;
-                _playerInZone = dist <= _SafeRad;
-
-                _PlayerTransform = cols[i].transform;
-
-                break; 
+                shortestDist = dist;
+                bestTar = cols[i].transform;
             }
         }
+
+        if (bestTar == null) return;
+
+        _PlayerTransform = bestTar;
+
+        _IsPlayerVisable = true;
+        _IsPlayerInRange = shortestDist <= _ATkRange;
+        _playerInZone = shortestDist <= _SafeRad;
     }
 
     //detecting of weapon
@@ -461,7 +434,8 @@ public class C_FriendAI : MonoBehaviour
         _isDefending = true;
         _DefendCounter = _DefendTime;
         _Animator.SetBool(_DefendAnimBoolName, true);
-        _Animator.CrossFade(_DefendAnimName, 0.15f);
+        _Animator.SetTrigger(_HurtTriggerName);
+        _Animator.CrossFade(_HurtAnimName, 0.15f);
 
     }
 }
