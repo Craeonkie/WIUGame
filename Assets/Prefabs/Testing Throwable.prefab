@@ -158,7 +158,7 @@ MonoBehaviour:
   description: 
   primary:
   - damage: 100
-    durabilityUsage: 0
+    durabilityUsed: 0
     hasRootMotion: 1
     pressAndHold: 0
     isBlock: 0
@@ -166,12 +166,18 @@ MonoBehaviour:
     audioClip: {fileID: 0}
   secondary: []
   special: []
+  hasDurability: 0
+  maxDurability: 0
+  currentDurability: 0
+  audioSource: {fileID: 0}
+  weaponBreakingSound: {fileID: 0}
+  _entityUsingItem: {fileID: 0}
   _isActing: 0
   _resetAnimationChain: 0
   _chainingAnimation: 0
   _currentAnimationChain: 0
   _destroyUponDrop: 0
-  _timeBeforeDestroyed: 5
+  _maxTimeBeforeDestroyed: 0
   throwPowerForward: 10
   throwPowerUp: 3
   throwOffsetForward: 1

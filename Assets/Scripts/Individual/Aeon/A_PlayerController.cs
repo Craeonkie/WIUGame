@@ -29,6 +29,7 @@ public class PlayerController : Entity
     [Header("Camera Movement")]
     [SerializeField] private GameObject followCameraTarget;
     [SerializeField] private GameObject thirdPersonCameraTarget;
+    [SerializeField] private GameObject topDownViewCameraTarget;
     [SerializeField] private MouseMovement[] mouseRotationScripts;
 
     private Vector3 _rollDirection;
@@ -422,7 +423,7 @@ public class PlayerController : Entity
     {
         _currentStunDuration = stunDuration;
         animationHandler.GoBackToIdle();
-        _canAct = false;
+        _isStunned = true;
     }
 
     // Aim in preparation to throw an object or item
@@ -535,5 +536,27 @@ public class PlayerController : Entity
         {
             StopMovingItem();
         }
+    }
+
+    // Toggle player ability to move and input
+    public void TogglePlayerAbilityToAct(bool canAct)
+    {
+        InterruptAction();
+        _canAct = canAct;
+    }
+
+    // Sihan function
+    public void SetPlayerToTransform(Transform anchor)
+    {
+        myRigidbody.isKinematic = true;
+
+        myRigidbody.linearVelocity = Vector3.zero;
+        myRigidbody.angularVelocity = Vector3.zero;
+        myRigidbody.transform.position = anchor.position;
+        myRigidbody.transform.rotation = anchor.rotation;
+        transform.position = anchor.position;
+        transform.rotation = anchor.rotation;
+
+        myRigidbody.isKinematic = false;
     }
 }
