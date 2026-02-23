@@ -127,14 +127,14 @@ public class J_BugBehaviour : Entity
         _navMeshAgent.destination = destination;
     }
 
-    public override void TakeDamage(float damageTaken)
-    {
-        if (isInvincible)
-            return;
+    //public override void TakeDamage(float damageTaken)
+    //{
+    //    if (isInvincible)
+    //        return;
 
-        _currentHP -= damageTaken;
-        float healthPercent = _currentHP / _maxHP;
-    }
+    //    _currentHP -= damageTaken;
+    //    float healthPercent = _currentHP / _maxHP;
+    //}
 
     private void EnterState(STATE nextState)
     {
@@ -166,7 +166,7 @@ public class J_BugBehaviour : Entity
 
                 // Attack the player
                 Entity player = GameObject.FindWithTag("PlayerTag").GetComponent<Entity>();
-                player.TakeDamage(_damage);
+                player.TakeDamage(_damage, 0.0f);
                 Debug.Log(player.name + " took damage!");
 
                 // TODO: PLAY PINCING AUDIO

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SlashWeapon : Weapon
+public class StandardWeapon : Weapon
 {
     // Update is called once per frame
     new void Update()

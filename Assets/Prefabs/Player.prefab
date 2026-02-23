@@ -290,6 +290,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 190404764271436900}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1362579462617876947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6867397197272109065}
+  m_Layer: 0
+  m_Name: Shield Slot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6867397197272109065
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362579462617876947}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.001, y: 0.125, z: -0.087}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3298943181224373794}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1524779029629809291
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,7 +569,6 @@ MonoBehaviour:
   _currentHP: 0
   _invincibilityCooldown: 5
   _invincibilityMaxCooldown: 5
-  _model: {fileID: 8614931687109046585}
   spawnPoint: {x: 0, y: 0, z: 0}
   isInvincible: 0
   isDodging: 0
@@ -547,6 +577,9 @@ MonoBehaviour:
   hitAudio: []
   deathAudio: {fileID: 0}
   audioSource: {fileID: 0}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _playerInput: {fileID: 1530283421745691673}
   _jumpPower: 5
   _maxSpeed: 4
@@ -557,6 +590,7 @@ MonoBehaviour:
   playerRotationSpeed: 480
   followCameraTarget: {fileID: 0}
   thirdPersonCameraTarget: {fileID: 0}
+  topDownViewCameraTarget: {fileID: 0}
   mouseRotationScripts:
   - {fileID: 7920285744145684585}
   - {fileID: 7752284483529489912}
@@ -592,6 +626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponSlot: {fileID: 5322012954972354777}
+  _shieldSlot: {fileID: 1362579462617876947}
   _secondaryItemSlot: {fileID: 4738615355534829651}
   _primaryItem: {fileID: 0}
   _secondaryItem: {fileID: 0}
@@ -2821,6 +2856,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6867397197272109065}
   - {fileID: 2495419532665658079}
   m_Father: {fileID: 78365541812444462}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

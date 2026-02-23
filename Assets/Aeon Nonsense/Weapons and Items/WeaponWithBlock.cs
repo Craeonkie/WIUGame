@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ShieldWeapon : Weapon
+public class WeaponWithBlock : Weapon
 {
     private bool isBlockingBeingHeld;
 

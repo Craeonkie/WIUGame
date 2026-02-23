@@ -215,7 +215,7 @@ public class J_BossBehaviour : Entity
             {
                 if (hitColliders[j].gameObject.CompareTag("PlayerTag"))
                 {
-                    hitColliders[j].GetComponent<Entity>().TakeDamage(float.MaxValue);
+                    hitColliders[j].GetComponent<Entity>().TakeDamage(float.MaxValue, 0.0f);
                     break;
                 }
             }
@@ -290,7 +290,7 @@ public class J_BossBehaviour : Entity
                     // Check distance from center of shockwave and check if hit the shockwave
                     if ((startPos - hits[i].gameObject.transform.position).magnitude > innerRadius)
                     {
-                        hits[i].GetComponent<Entity>().TakeDamage(_shockwaveDamage);
+                        hits[i].GetComponent<Entity>().TakeDamage(_shockwaveDamage, 0.0f);
                         Debug.Log("Player was hit by the shockwave!");
                         collidedWith = true;
                         break;

@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Weapon : Item
 {
     [SerializeField] protected List<Entity> hitEntities;
+    [SerializeField] protected float invincibilityLength;
     protected bool isAttacking = false;
     protected bool isBlocking = false;
     protected float currentAttackDamage;
@@ -49,14 +50,14 @@ public abstract class Weapon : Item
             Entity thisEntity;
             if (other.gameObject.TryGetComponent<Entity>(out thisEntity))
             {
-                thisEntity.TakeDamage(currentAttackDamage);
+                thisEntity.TakeDamage(currentAttackDamage, invincibilityLength);
             }
             else
             {
                 thisEntity = other.gameObject.GetComponentInParent<Entity>();
                 if (thisEntity != null)
                 {
-                    thisEntity.TakeDamage(currentAttackDamage);
+                    thisEntity.TakeDamage(currentAttackDamage, invincibilityLength);
                 }
             }
             hitEntities.Add(other.gameObject.GetComponent<Entity>());

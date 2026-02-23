@@ -426,6 +426,11 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &487223675 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1362579462617876947, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+  m_PrefabInstance: {fileID: 4986429940583847079}
+  m_PrefabAsset: {fileID: 0}
 --- !u!82 &489399884 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 3993523232059114397, guid: d0581f4e89c68ec488fc9064ac820938, type: 3}
@@ -791,6 +796,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 846915257984111300, guid: 183f2af7c063f10408b6ec4de66dad4d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 846915257984111300, guid: 183f2af7c063f10408b6ec4de66dad4d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 846915257984111300, guid: 183f2af7c063f10408b6ec4de66dad4d, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.59
       objectReference: {fileID: 0}
@@ -900,6 +913,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Third Person Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 1311825357644707697, guid: 9e5becda178f34047960f64a29874603, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8341662502266032239, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: Target.TrackingTarget
       value: 
@@ -1002,6 +1019,26 @@ PrefabInstance:
       propertyPath: thirdPersonCameraTarget
       value: 
       objectReference: {fileID: 407119109}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: topDownViewCameraTarget
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3259785618068131602, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: _shieldSlot
+      value: 
+      objectReference: {fileID: 487223675}
+    - target: {fileID: 6867397197272109065, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.953717
+      objectReference: {fileID: 0}
+    - target: {fileID: 6867397197272109065, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.30070576
+      objectReference: {fileID: 0}
+    - target: {fileID: 6867397197272109065, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -35
+      objectReference: {fileID: 0}
     - target: {fileID: 8607788634351402262, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -43,6 +43,8 @@ public abstract class Item : Interactable
     [Header("Destroy on drop parameters")]
     [SerializeField] protected bool _destroyUponDrop;
     [SerializeField] protected float _maxTimeBeforeDestroyed;
+    [SerializeField] protected bool _expiresAfterDropped;
+    [SerializeField] protected float _maxTimeBeforeExpiring;
     protected float _timeBeforeDestroyed;
     protected bool _hasBeenDropped;
 

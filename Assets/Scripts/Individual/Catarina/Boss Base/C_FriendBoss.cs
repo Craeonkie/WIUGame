@@ -66,18 +66,18 @@ public class C_FriendBoss : Entity
         }
     }
 
-    public override void TakeDamage(float damageTaken)
-    {
-        if (!isDodging)
-        {
-            gettingAtkAction?.Invoke();
-            _currentHP -= damageTaken;
-            if (_currentHP <= 0)
-            {
-                Die();
-            }
-        }
-    }
+    //public override void TakeDamage(float damageTaken)
+    //{
+    //    if (!isDodging)
+    //    {
+    //        gettingAtkAction?.Invoke();
+    //        _currentHP -= damageTaken;
+    //        if (_currentHP <= 0)
+    //        {
+    //            Die();
+    //        }
+    //    }
+    //}
 
     public void CheckPhase()
     {
@@ -108,7 +108,7 @@ public class C_FriendBoss : Entity
             CheckPhase();
             if (Input.GetKeyDown(KeyCode.F))
             {
-                TakeDamage(5);
+                TakeDamage(5, 0.0f);
             }
         }
         else

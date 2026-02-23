@@ -8,6 +8,7 @@ public class ThrowableItem : Item
     [SerializeField] protected float throwOffsetForward = 1.0f;
     [SerializeField] protected bool breakOnHit = false;
     [SerializeField] protected float lifeTime = 10.0f;
+    [SerializeField] protected float invincibilityTimeApplied = 0.0f;
     protected float lifeTimeLeft;
 
     [SerializeField] protected List<Entity> hitEntities;
@@ -142,14 +143,14 @@ public class ThrowableItem : Item
             Entity thisEntity;
             if (other.gameObject.TryGetComponent<Entity>(out thisEntity))
             {
-                thisEntity.TakeDamage(primary[0].damage);
+                thisEntity.TakeDamage(primary[0].damage, invincibilityTimeApplied);
             }
             else
             {
                 thisEntity = other.gameObject.GetComponentInParent<Entity>();
                 if (thisEntity != null)
                 {
-                    thisEntity.TakeDamage(primary[0].damage);
+                    thisEntity.TakeDamage(primary[0].damage, invincibilityTimeApplied);
                 }
             }
             hitEntities.Add(other.gameObject.GetComponent<Entity>());

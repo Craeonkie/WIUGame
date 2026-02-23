@@ -163,7 +163,7 @@ public class PlayerController : Entity
             }
 
             // Handle movement
-            if (!_isRolling && !myRigidbody.isKinematic)
+            if (!_isRolling && !myRigidbody.isKinematic && !_isStunned)
             {
                 // Handle max velocity
                 float targetSpeed = 0.0f;
@@ -424,6 +424,7 @@ public class PlayerController : Entity
         _currentStunDuration = stunDuration;
         animationHandler.GoBackToIdle();
         _isStunned = true;
+        myRigidbody.linearVelocity = Vector3.zero;
     }
 
     // Aim in preparation to throw an object or item
@@ -478,26 +479,25 @@ public class PlayerController : Entity
         followCameraTarget.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value = 10.0f;
     }
 
-    // Do damage without invincibility cooldown
-    public override void TakeDamage(float damageTaken)
-    {
-        if (!isDodging)
-        {
-            _currentHP -= damageTaken;
-            _animator.SetTrigger("GetHit");
-            if (hitAudio.Length > 0 && audioSource != null)
-            {
-                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
-            }
-            if (_currentHP <= 0)
-            {
-                audioSource.PlayOneShot(deathAudio);
-                Die();
-            }
-
-            InterruptAction();
-        }
-    }
+    //// Do damage without invincibility cooldown
+    //public override void TakeDamage(float damageTaken)
+    //{
+    //    if (!isDodging)
+    //    {
+    //        _currentHP -= damageTaken;
+    //        _animator.SetTrigger("GetHit");
+    //        if (hitAudio.Length > 0 && audioSource != null)
+    //        {
+    //            audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+    //        }
+    //        if (_currentHP <= 0)
+    //        {
+    //            audioSource.PlayOneShot(deathAudio);
+    //            Die();
+    //        }
+    //        InterruptAction();
+    //    }
+    //}
 
     // Do damage with invincibility cooldown
     public override void TakeDamage(float damageTaken, float invincibilityLength)

@@ -5,6 +5,7 @@ public class Inventory : MonoBehaviour
 {
     [Header("GameObject that holds the items")]
     [SerializeField] private GameObject _weaponSlot;
+    [SerializeField] private GameObject _shieldSlot;
     [SerializeField] private GameObject _secondaryItemSlot;
 
     [Header("The items")]
@@ -86,6 +87,11 @@ public class Inventory : MonoBehaviour
         if (_currentItem != null)
         {
             _currentItem.SetActive(true);
+            if (_currentItem.TryGetComponent<WeaponWithBlock>(out WeaponWithBlock thisWeapon))
+            {
+                _currentItem.transform.SetParent(_shieldSlot.transform);
+                _currentItem.transform.localPosition = Vector3.zero;
+            }
         }
     }
 
