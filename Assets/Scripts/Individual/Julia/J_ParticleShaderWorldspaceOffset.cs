@@ -18,6 +18,8 @@ public class ParticleShaderWorldSpaceOffset : MonoBehaviour
 
     void Update()
     {
+        if (_renderer == null || _propBlock == null) return;
+
         _renderer.GetPropertyBlock(_propBlock);
         Vector3 existingWorldPos = _propBlock.GetVector(WorldPos);
         if (existingWorldPos != transform.position)

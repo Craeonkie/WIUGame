@@ -17,25 +17,27 @@ MonoBehaviour:
   _autoNextLineTime: 5
   dialogueUIs:
   - dialogueUIName: 0 (???)
+    dialogueUIYOffset: -360
     dialogueBoxXOffset: 0
-    dialogueBoxYOffset: -360
+    dialogueBoxYOffset: 0
     dialogueBoxWidth: 1600
     dialogueBoxHeight: 300
     dialoguePortraitXOffset: -560
-    dialoguePortraitYOffset: -270
+    dialoguePortraitYOffset: 90
     dialoguePortraitWidth: 400
     dialoguePortraitHeight: 400
     dialogueNameXOffset: 220
-    dialogueNameYOffset: -245
+    dialogueNameYOffset: 115
     dialogueNameWidth: 1100
     dialogueNameHeight: 50
     dialogueNameFontSize: 36
     dialogueTextXOffset: 220
-    dialogueTextYOffset: -370
+    dialogueTextYOffset: -10
     dialogueTextWidth: 1100
     dialogueTextHeight: 200
     dialogueTextFontSize: 36
   - dialogueUIName: 1 (???)
+    dialogueUIYOffset: 0
     dialogueBoxXOffset: 0
     dialogueBoxYOffset: 0
     dialogueBoxWidth: 1.5

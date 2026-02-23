@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Playables;
@@ -62,6 +63,16 @@ public class Dog : Entity
     private bool attackFinished;
     private bool attackReady;
     private bool dashing;
+    [SerializeField] private Vector3 _attackColliderOffset;
+    [SerializeField] private float _attackColliderRadius;
+    [SerializeField] private Vector3 _dashColliderOffset1;
+    [SerializeField] private Vector3 _dashColliderOffset2;
+    [SerializeField] private float _dashColliderRadius;
+    [SerializeField] private Vector2 _dashHitIntensity;
+    [SerializeField] private float _dashHitStunDuration;
+    [SerializeField] private float _dashHitDamage;
+    [SerializeField] private float _clawHitDamage;
+    [SerializeField] private float _doubleClawHitDamage;
 
     [Header("Misc")]
     [SerializeField] private ParticleSystem wind;
@@ -75,6 +86,9 @@ public class Dog : Entity
     [SerializeField] private PlayableDirector phase2Cutscene;
     [SerializeField] private Volume _globalVolume;
     private ShockwaveDistortionVolume _distortionVolume;
+    [SerializeField] private float _gravity;
+    [SerializeField] private bool _attackPlayer;
+    [SerializeField] private bool _attackedPlayer;
 
     [Header("Debugging")]
     [SerializeField] private DogStates currentState = DogStates.EnterIdle;
@@ -204,6 +218,9 @@ public class Dog : Entity
                 animator.SetBool("Right", currentRotate > 0);
                 animator.SetBool("Left", currentRotate < 0);
             }
+
+            if (dogController.enabled)
+                dogController.Move(Vector3.up * _gravity * Time.deltaTime);
 
             return;
         }
@@ -604,6 +621,21 @@ public class Dog : Entity
                     currentState = DogStates.ExitBite;
                     return;
                 }
+
+                if (_attackPlayer && !_attackedPlayer)
+                {
+                    Collider[] hitColliders = Physics.OverlapSphere(transform.TransformPoint(_attackColliderOffset), _attackColliderRadius);
+                    foreach (var hitCollider in hitColliders)
+                    {
+                        if (hitCollider.CompareTag("PlayerTag") && !_attackedPlayer)
+                        {
+                            Debug.Log("Hit Player with Bite");
+                            hitCollider.GetComponent<Entity>().TakeDamage(_clawHitDamage);
+                            _attackedPlayer = true;
+                        }
+                    }
+                }
+
                 break;
             case DogStates.ExitBite:
                 agent.enabled = true;
@@ -638,6 +670,21 @@ public class Dog : Entity
                     currentState = DogStates.ExitClaw;
                     return;
                 }
+
+                if (_attackPlayer && !_attackedPlayer)
+                {
+                    Collider[] hitColliders = Physics.OverlapSphere(transform.TransformPoint(_attackColliderOffset), _attackColliderRadius);
+                    foreach (var hitCollider in hitColliders)
+                    {
+                        if (hitCollider.CompareTag("PlayerTag") && !_attackedPlayer)
+                        {
+                            Debug.Log("Hit Player with Claw");
+                            hitCollider.GetComponent<Entity>().TakeDamage(_clawHitDamage);
+                            _attackedPlayer = true;
+                        }
+                    }
+                }
+
                 break;
             case DogStates.ExitClaw:
                 agent.enabled = true;
@@ -677,6 +724,7 @@ public class Dog : Entity
                         rotateMultiplier = 1.5f;
                         currentSpeedMultiplier = dashSpeedMultiplier;
                         wind.Play();
+                        SetAttackPlayer(1);
                     }
                 }
                 else
@@ -723,6 +771,29 @@ public class Dog : Entity
                             dashing = false;
                             wind.Stop();
                         }
+
+                        if (_attackPlayer && !_attackedPlayer)
+                        {
+                            Vector3 p1 = transform.TransformPoint(_dashColliderOffset1);
+                            Vector3 p2 = transform.TransformPoint(_dashColliderOffset2);
+
+                            Collider[] hitColliders = Physics.OverlapCapsule(p1, p2, _dashColliderRadius);
+
+                            foreach (var hitCollider in hitColliders)
+                            {
+                                if (hitCollider.CompareTag("PlayerTag"))
+                                {
+                                    Debug.Log("Hit Player during Dash");
+                                    _attackedPlayer = true;
+                                    hitCollider.GetComponent<Entity>()?.TakeDamage(_dashHitDamage);
+                                    hitCollider.GetComponent<PlayerController>()?.Stun(_dashHitStunDuration);
+                                    Vector3 dogToPlayer = hitCollider.transform.position - transform.position;
+                                    dogToPlayer.y = 0;
+                                    dogToPlayer.Normalize();
+                                    hitCollider.GetComponent<Rigidbody>().AddForce(dogToPlayer * _dashHitIntensity.x + Vector3.up * _dashHitIntensity.y, ForceMode.Impulse);
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -734,6 +805,7 @@ public class Dog : Entity
                 attackCooldown = Random.Range(attackFrequency.x, attackFrequency.y);
                 currentState = nextState;
                 wind.Stop();
+                _attackPlayer = false;
                 Debug.Log("Exiting Dash State");
                 break;
             case DogStates.EnterPingPongShit:
@@ -764,6 +836,7 @@ public class Dog : Entity
                         dashDirection.Normalize(); rotateMultiplier = 2f;
                         currentSpeedMultiplier = dashSpeedMultiplier;
                         wind.Play();
+                        SetAttackPlayer(1);
                     }
                 }
                 else
@@ -874,6 +947,35 @@ public class Dog : Entity
                                         dashDirection = Vector3.Reflect(dashDirection, hit.normal);
                                         dashDirection.y = 0;
                                         dashDirection.Normalize();
+                                        _attackedPlayer = false;
+
+                                        if (bounces >= bounced)
+                                        {
+                                            _attackPlayer = false;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (_attackPlayer && !_attackedPlayer)
+                            {
+                                Vector3 p1 = transform.TransformPoint(_dashColliderOffset1);
+                                Vector3 p2 = transform.TransformPoint(_dashColliderOffset2);
+
+                                Collider[] hitColliders = Physics.OverlapCapsule(p1, p2, _dashColliderRadius);
+
+                                foreach (var hitCollider in hitColliders)
+                                {
+                                    if (hitCollider.CompareTag("PlayerTag"))
+                                    {
+                                        Debug.Log("Hit Player during Dash");
+                                        _attackedPlayer = true;
+                                        hitCollider.GetComponent<Entity>()?.TakeDamage(_dashHitDamage);
+                                        hitCollider.GetComponent<PlayerController>()?.Stun(_dashHitStunDuration);
+                                        Vector3 dogToPlayer = hitCollider.transform.position - transform.position;
+                                        dogToPlayer.y = 0;
+                                        dogToPlayer.Normalize();
+                                        hitCollider.GetComponent<Rigidbody>().AddForce(dogToPlayer * _dashHitIntensity.x + Vector3.up * _dashHitIntensity.y, ForceMode.Impulse);
                                     }
                                 }
                             }
@@ -915,6 +1017,21 @@ public class Dog : Entity
                     currentState = DogStates.ExitDoubleClaw;
                     return;
                 }
+
+                if (_attackPlayer && !_attackedPlayer)
+                {
+                    Collider[] hitColliders = Physics.OverlapSphere(transform.TransformPoint(_attackColliderOffset), _attackColliderRadius);
+                    foreach (var hitCollider in hitColliders)
+                    {
+                        if (hitCollider.CompareTag("PlayerTag") && !_attackedPlayer)
+                        {
+                            Debug.Log("Hit player with Double Claw");
+                            hitCollider.GetComponent<Entity>().TakeDamage(_doubleClawHitDamage);
+                            _attackedPlayer = true;
+                        }
+                    }
+                }
+
                 break;
             case DogStates.ExitDoubleClaw:
                 agent.enabled = true;
@@ -931,6 +1048,8 @@ public class Dog : Entity
             default:
                 break;
         }
+
+        dogController.Move(Vector3.up * _gravity * Time.deltaTime);
     }
 
     public void SetAttackFinished(int finished)
@@ -943,6 +1062,12 @@ public class Dog : Entity
         attackReady = ready == 1;
     }
 
+    public void SetAttackPlayer(int attack)
+    {
+        _attackPlayer = attack == 1;
+        _attackedPlayer = attack == 0;
+    }
+
     public void SetDogToTransform(Transform anchor)
     {
         transform.position = anchor.position;
@@ -953,6 +1078,7 @@ public class Dog : Entity
     {
         agent.enabled = false;
         dogController.enabled = false;
+        _attackPlayer = false;
         wind.Stop();
     }
 
@@ -963,6 +1089,7 @@ public class Dog : Entity
         dogController.enabled = true;
         currentState = DogStates.EnterIdle;
         target = null;
+        _attackPlayer = false;
         for (int i = 0; i < attackTimes.Length; i++)
         {
             attackTimes[i] = 0;
@@ -979,6 +1106,20 @@ public class Dog : Entity
         Gizmos.DrawWireSphere(transform.position, stopRange);
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position + Vector3.up * 0.5f, transform.position + Vector3.up * 0.5f + transform.forward * dogLookaheadDistance);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.TransformPoint(_attackColliderOffset), _attackColliderRadius);
+        Gizmos.color = Color.magenta;
+        Vector3 pointA = transform.TransformPoint(_dashColliderOffset1);
+        Vector3 pointB = transform.TransformPoint(_dashColliderOffset2);
+        Gizmos.DrawLine(pointA, pointB);
+        Gizmos.DrawWireSphere(pointA, _dashColliderRadius);
+        Gizmos.DrawWireSphere(pointB, _dashColliderRadius);
+        Vector3 direction = (pointB - pointA).normalized;
+        Vector3 ortho = Vector3.Cross(direction, Vector3.up).normalized * _dashColliderRadius;
+        if (ortho.sqrMagnitude < 0.001f)
+            ortho = Vector3.Cross(direction, Vector3.right).normalized * _dashColliderRadius;
+        Gizmos.DrawLine(pointA + ortho, pointB + ortho);
+        Gizmos.DrawLine(pointA - ortho, pointB - ortho);
     }
 
     // Do damage without invincibility cooldown

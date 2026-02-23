@@ -29,6 +29,9 @@ public class DialogueSettings : ScriptableObject
         [Header("Thingamabob")]
         public string dialogueUIName;
 
+        [Header("Dialogue UI")]
+        public float dialogueUIYOffset;
+
         [Header("Dialogue Box")]
         public float dialogueBoxXOffset;
         public float dialogueBoxYOffset;
