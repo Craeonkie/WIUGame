@@ -404,10 +404,12 @@ public class J_BossBehaviour : Entity
         else
             _currentPhaseTimer = 0f;
 
-        InvokePhaseEnterEvent(phaseIndex);
+        phase.OnPhaseTransition?.Invoke();
+
+        //InvokePhaseEnterEvent(phaseIndex);
     }
 
-    private void InvokePhaseEnterEvent(int index)
+    public void InvokePhaseEnterEvent(int index)
     {
         OnPhaseEnter?.Invoke(index);
 

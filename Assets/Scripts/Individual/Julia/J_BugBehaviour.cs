@@ -288,7 +288,7 @@ public class J_BugBehaviour : Entity
         if (!other.CompareTag("PlayerTag")) 
             return;
 
-        CapsuleCollider playerCapsule = _player.GetComponent<CapsuleCollider>();
+        CapsuleCollider playerCapsule = other.GetComponent<CapsuleCollider>();
 
         if (playerCapsule == null)
         {
@@ -377,22 +377,22 @@ public class J_BugBehaviour : Entity
     }
 
 
-    private void OnDrawGizmos()
-    {
-        float magnitude = (_jumpableBoxCollider.transform.position - _player.transform.position).magnitude;
-        float newMagnitude = (new Vector2(_jumpableBoxCollider.transform.position.x, _jumpableBoxCollider.transform.position.z) - new Vector2(_player.transform.position.x, _player.transform.position.z)).magnitude;
+    //private void OnDrawGizmos()
+    //{
+    //    float magnitude = (_jumpableBoxCollider.transform.position - _player.transform.position).magnitude;
+    //    float newMagnitude = (new Vector2(_jumpableBoxCollider.transform.position.x, _jumpableBoxCollider.transform.position.z) - new Vector2(_player.transform.position.x, _player.transform.position.z)).magnitude;
 
-        Vector3 worldCenter = _jumpableBoxCollider.transform.TransformPoint(_jumpableBoxCollider.center);
+    //    Vector3 worldCenter = _jumpableBoxCollider.transform.TransformPoint(_jumpableBoxCollider.center);
 
-        if (Mathf.Abs(worldCenter.x - _player.transform.position.x) <= (_jumpableBoxCollider.size.x / 2) && Mathf.Abs(worldCenter.z - _player.transform.position.z) <= (_jumpableBoxCollider.size.z / 2))
-        {
-            Gizmos.color = Color.aliceBlue;
-        }
-        else
-        {
-            Gizmos.color = Color.red;
-        }
+    //    if (Mathf.Abs(worldCenter.x - _player.transform.position.x) <= (_jumpableBoxCollider.size.x / 2) && Mathf.Abs(worldCenter.z - _player.transform.position.z) <= (_jumpableBoxCollider.size.z / 2))
+    //    {
+    //        Gizmos.color = Color.aliceBlue;
+    //    }
+    //    else
+    //    {
+    //        Gizmos.color = Color.red;
+    //    }
 
-        Gizmos.DrawLine(_jumpableBoxCollider.transform.position, _player.transform.position);
-    }
+    //    Gizmos.DrawLine(_jumpableBoxCollider.transform.position, _player.transform.position);
+    //}
 }

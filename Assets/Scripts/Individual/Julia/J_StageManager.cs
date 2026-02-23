@@ -10,6 +10,7 @@ public class J_Cutscene
     public bool wasPlayed;
     public UnityEvent OnCutsceneStart;
     public UnityEvent OnCutsceneEnd;
+    public UnityEvent OnCutScenePause;
 
     public void Play()
     {
@@ -27,6 +28,15 @@ public class J_Cutscene
         {
             director.Stop();
             OnCutsceneEnd?.Invoke();
+        }
+    }
+
+    public void Pause()
+    {
+        if (director != null)
+        {
+            director.Pause();
+            OnCutScenePause?.Invoke();
         }
     }
 }
@@ -101,6 +111,10 @@ public class J_StageManager : MonoBehaviour
         if (index >= 0 && index < _cutscenes.Length)
         {
             _currentCutsceneIndex = index;
+
+            // TODO: CHECK PARENT AND ACTIVATE PARENT GAME OBJECT IF NOT LAZY FIX
+            //if (_cutscenes[index].pla)
+
             _cutscenes[index].Play();
         }
     }
@@ -111,6 +125,14 @@ public class J_StageManager : MonoBehaviour
         if (_currentCutsceneIndex < _cutscenes.Length)
         {
             _cutscenes[_currentCutsceneIndex].Play();
+        }
+    }
+
+    public void PauseCutscene()
+    {
+        if (_currentCutsceneIndex >= 0 && _currentCutsceneIndex < _cutscenes.Length)
+        {
+            _cutscenes[_currentCutsceneIndex].Pause();
         }
     }
 
