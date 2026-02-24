@@ -620,12 +620,18 @@ MonoBehaviour:
   rollDuration: 1
   landDuration: 0.8
   playerRotationSpeed: 480
-  followCameraTarget: {fileID: 0}
-  thirdPersonCameraTarget: {fileID: 0}
-  topDownViewCameraTarget: {fileID: 0}
+  followCamera: {fileID: 0}
+  thirdPersonCamera: {fileID: 0}
+  cameraTarget: {fileID: 4802861318567262673}
   mouseRotationScripts:
   - {fileID: 7920285744145684585}
   - {fileID: 7752284483529489912}
+  _throwRotationSpeed: 480
+  _endThrowNormalizedTime: 0.8
+  _throwingAnimationName: Throw
+  _defaultBlendSpeed: 2
+  _aimBlendingSpeed: 1
+  _setBlendingSpeedBackToNormal: 0
   _currentStunDuration: 0
   _isStunned: 0
   interactablesLayer:
@@ -646,7 +652,7 @@ MonoBehaviour:
   _isHoldingItem: 0
   _canPlayerInput: 1
   _playerInputPaused: 1
-  _primingThrow: 0
+  _isAiming: 0
   _wasGroundedPreviously: 0
   _itemBeingMoved: {fileID: 0}
 --- !u!114 &3259785618068131602
@@ -2423,13 +2429,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4802861318567262673}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8607788634351402262}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!114 &7752284483529489912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2445,8 +2451,8 @@ MonoBehaviour:
   playerInput: {fileID: 1530283421745691673}
   rotateUpDown: 1
   rotateLeftRight: 0
-  clampLimitUp: 90
-  clampLimitDown: 90
+  clampLimitUp: 80
+  clampLimitDown: 50
   upDownSensitivity: 0.1
   leftRightSensitivity: 0.1
   lockCursor: 1

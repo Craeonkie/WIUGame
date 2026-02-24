@@ -1165,19 +1165,7 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 222077092}
     - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
-      propertyPath: _handsAreFree
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: thirdPersonCamera
-      value: 
-      objectReference: {fileID: 407119109}
-    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
-      propertyPath: followCameraTarget
-      value: 
-      objectReference: {fileID: 222077092}
-    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
-      propertyPath: thirdPersonCameraTarget
       value: 
       objectReference: {fileID: 407119109}
     - target: {fileID: 3238872249499830047, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
@@ -1199,14 +1187,6 @@ PrefabInstance:
     - target: {fileID: 3238872249499830047, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 3238872249499830047, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7752284483529489912, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7752284483529489912, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: clampLimitUp
