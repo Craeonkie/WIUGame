@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Playables;
@@ -84,11 +83,30 @@ public class Dog : Entity
     private GameObject target;
     private CharacterController dogController;
     [SerializeField] private PlayableDirector phase2Cutscene;
+    [SerializeField] private PlayableDirector deadCutscene;
     [SerializeField] private Volume _globalVolume;
     private ShockwaveDistortionVolume _distortionVolume;
     [SerializeField] private float _gravity;
     [SerializeField] private bool _attackPlayer;
     [SerializeField] private bool _attackedPlayer;
+    [SerializeField] private GameObject _boneRoot;
+    [SerializeField] private Dictionary<string, Transform> _bones = new Dictionary<string, Transform>();
+    [SerializeField] private GameObject _afterImagePrefab;
+    [SerializeField] private float _afterImageInterval;
+    [SerializeField] private float _afterImageFadeInDuration;
+    [SerializeField] private float _afterImageHoldDuration;
+    [SerializeField] private float _afterImageFadeOutDuration;
+    [SerializeField] private float _afterImageTargetAlpha;
+    [ColorUsage(true, true)]
+    [SerializeField] private Color _afterImageColor;
+    private Coroutine _afterImageCoroutine;
+    [SerializeField] private ParticleSystem[] dizzyParticles;
+    [SerializeField] private SkinnedMeshRenderer[] _meshRenderers;
+    private List<Material> _warningMaterials = new List<Material>();
+    [SerializeField] private float _warningTargetAlpha;
+    [ColorUsage(true, true)]
+    [SerializeField] private Color _warningColor;
+    private Coroutine _warningCoroutine;
 
     [Header("Debugging")]
     [SerializeField] private DogStates currentState = DogStates.EnterIdle;
@@ -186,6 +204,91 @@ public class Dog : Entity
         }
     }
 
+    public IEnumerator SpawnAfterImages()
+    {
+        float timer = 0;
+
+        while (true)
+        {
+            timer += Time.deltaTime;
+
+            if (timer >= _afterImageInterval)
+            {
+                timer = 0;
+
+                GameObject afterImage = Instantiate(_afterImagePrefab, transform.position, transform.rotation);
+                afterImage.GetComponent<AfterImages>().Initialise(_bones, _afterImageFadeInDuration, _afterImageHoldDuration, _afterImageFadeOutDuration, _afterImageTargetAlpha, _afterImageColor);
+            }
+
+            yield return null;
+        }
+    }
+
+    public void PlayWarning(float fadeInDuration)
+    {
+        if (_warningCoroutine != null)
+            StopCoroutine(_warningCoroutine);
+
+        _warningCoroutine = StartCoroutine(WarningStart(fadeInDuration));
+    }
+
+    public void StopWarning(float fadeOutDuration)
+    {
+        if (_warningCoroutine != null)
+            StopCoroutine(_warningCoroutine);
+
+        _warningCoroutine = StartCoroutine(WarningEnd(fadeOutDuration));
+    }
+
+    public IEnumerator WarningStart(float fadeInDuration)
+    {
+        if (_warningMaterials != null && _warningMaterials.Count > 0)
+        {
+            float timer = _warningMaterials[0].GetFloat("_Alpha") / _warningTargetAlpha;
+
+            while (timer < fadeInDuration)
+            {
+                timer += Time.unscaledDeltaTime;
+
+                if (timer > fadeInDuration) timer = fadeInDuration;
+
+                float percentage = timer / fadeInDuration;
+
+                UpdateWarningMaterials(percentage);
+
+                yield return null;
+            }
+        }
+    }
+
+    public IEnumerator WarningEnd(float fadeOutDuration)
+    {
+        if (_warningMaterials != null && _warningMaterials.Count > 0)
+        {
+            float timer = _warningMaterials[0].GetFloat("_Alpha") / _warningTargetAlpha;
+
+            while (timer > 0)
+            {
+                timer -= Time.unscaledDeltaTime;
+
+                if (timer < 0) timer = 0;
+
+                float percentage = timer / fadeOutDuration;
+
+                UpdateWarningMaterials(percentage);
+
+                yield return null;
+            }
+        }
+    }
+
+    private void UpdateWarningMaterials(float value)
+    {
+        foreach (var mat in _warningMaterials)
+        {
+            mat.SetFloat("_Alpha", value * _warningTargetAlpha);
+        }
+    }
 
     new void Start()
     {
@@ -196,6 +299,29 @@ public class Dog : Entity
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updatePosition = false;
+
+
+        _bones.Clear();
+        Transform[] allBones = _boneRoot.GetComponentsInChildren<Transform>();
+
+        foreach (var bone in allBones)
+        {
+            _bones[bone.name] = bone;
+        }
+
+        _warningMaterials.Clear();
+        foreach (var renderer in _meshRenderers)
+        {
+            Material[] mats = renderer.materials;
+
+            if (mats.Length > 2)
+            {
+                mats[2].SetColor("_Color", _warningColor);
+
+                renderer.materials = mats;
+                _warningMaterials.Add(mats[2]);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -232,6 +358,7 @@ public class Dog : Entity
         {
             case DogStates.EnterIdle:
                 currentState = DogStates.Idle;
+                dogController.excludeLayers = 0;
                 break;
             case DogStates.Idle:
                 Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRange);
@@ -292,6 +419,7 @@ public class Dog : Entity
                 break;
             case DogStates.EnterChase:
                 currentState = DogStates.Chase;
+                dogController.excludeLayers = 0;
                 break;
             case DogStates.Chase:
                 if (target != null)
@@ -602,6 +730,7 @@ public class Dog : Entity
                 attackReady = false;
                 currentState = DogStates.Bite;
                 Debug.Log("Entering Bite State");
+                dogController.excludeLayers = 0;
                 break;
             case DogStates.Bite:
                 currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
@@ -652,6 +781,8 @@ public class Dog : Entity
                 attackFinished = false;
                 attackReady = false;
                 currentState = DogStates.Claw;
+                dogController.excludeLayers = 0;
+
                 Debug.Log("Entering Claw State");
                 break;
             case DogStates.Claw:
@@ -703,6 +834,8 @@ public class Dog : Entity
                 attackReady = false;
                 currentState = DogStates.Dash;
                 currentSpeed = 0;
+                dogController.excludeLayers = 0;
+
                 Debug.Log("Entering Dash State");
                 break;
             case DogStates.Dash:
@@ -725,6 +858,14 @@ public class Dog : Entity
                         currentSpeedMultiplier = dashSpeedMultiplier;
                         wind.Play();
                         SetAttackPlayer(1);
+                        dogController.excludeLayers = LayerMask.GetMask("Player");
+
+                        if (_afterImageCoroutine != null)
+                            StopCoroutine(_afterImageCoroutine);
+
+                        _afterImageCoroutine = StartCoroutine(SpawnAfterImages());
+
+                        PlayWarning(0.5f);
                     }
                 }
                 else
@@ -733,6 +874,14 @@ public class Dog : Entity
                     {
                         nextState = DogStates.EnterChase;
                         currentState = DogStates.ExitDash;
+
+                        foreach (var dizzyParticle in dizzyParticles)
+                        {
+                            dizzyParticle.Stop();
+                        }
+
+                        StopWarning(0.5f);
+
                         return;
                     }
 
@@ -770,6 +919,17 @@ public class Dog : Entity
                             animator.SetTrigger("Wince");
                             dashing = false;
                             wind.Stop();
+                            dogController.excludeLayers = 0;
+
+                            if (_afterImageCoroutine != null)
+                                StopCoroutine(_afterImageCoroutine);
+
+                            foreach (var dizzyParticle in dizzyParticles)
+                            {
+                                dizzyParticle.Play();
+                            }
+
+                            StopWarning(0.5f);
                         }
 
                         if (_attackPlayer && !_attackedPlayer)
@@ -785,8 +945,8 @@ public class Dog : Entity
                                 {
                                     Debug.Log("Hit Player during Dash");
                                     _attackedPlayer = true;
-                                    hitCollider.GetComponent<Entity>()?.TakeDamage(_dashHitDamage, 0.0f);
-                                    hitCollider.GetComponent<PlayerController>()?.Stun(_dashHitStunDuration);
+                                    hitCollider.GetComponent<Entity>().TakeDamage(_dashHitDamage, 0.0f);
+                                    hitCollider.GetComponent<PlayerController>().Stun(_dashHitStunDuration);
                                     Vector3 dogToPlayer = hitCollider.transform.position - transform.position;
                                     dogToPlayer.y = 0;
                                     dogToPlayer.Normalize();
@@ -818,6 +978,8 @@ public class Dog : Entity
                 currentState = DogStates.PingPongShit;
                 bounces = Random.Range((int)bounceAmount.x, (int)bounceAmount.y + 1);
                 bounced = 0;
+                dogController.excludeLayers = 0;
+
                 Debug.Log("Entering Ping Pong State with " + bounces + " bounces");
                 break;
             case DogStates.PingPongShit:
@@ -837,17 +999,18 @@ public class Dog : Entity
                         currentSpeedMultiplier = dashSpeedMultiplier;
                         wind.Play();
                         SetAttackPlayer(1);
+                        dogController.excludeLayers = LayerMask.GetMask("Player");
+
+                        if (_afterImageCoroutine != null)
+                            StopCoroutine(_afterImageCoroutine);
+
+                        _afterImageCoroutine = StartCoroutine(SpawnAfterImages());
+
+                        PlayWarning(0.5f);
                     }
                 }
                 else
                 {
-                    if (attackFinished)
-                    {
-                        nextState = DogStates.EnterChase;
-                        currentState = DogStates.ExitPingPongShit;
-                        return;
-                    }
-
                     if (dashing)
                     {
                         if (bounced >= bounces)
@@ -949,9 +1112,10 @@ public class Dog : Entity
                                         dashDirection.Normalize();
                                         _attackedPlayer = false;
 
-                                        if (bounces >= bounced)
+                                        if (bounced >= bounces)
                                         {
                                             _attackPlayer = false;
+                                            dogController.excludeLayers = 0;
                                         }
                                     }
                                 }
@@ -970,8 +1134,8 @@ public class Dog : Entity
                                     {
                                         Debug.Log("Hit Player during Dash");
                                         _attackedPlayer = true;
-                                        hitCollider.GetComponent<Entity>()?.TakeDamage(_dashHitDamage, 0.0f);
-                                        hitCollider.GetComponent<PlayerController>()?.Stun(_dashHitStunDuration);
+                                        hitCollider.GetComponent<Entity>().TakeDamage(_dashHitDamage, 0.0f);
+                                        hitCollider.GetComponent<PlayerController>().Stun(_dashHitStunDuration);
                                         Vector3 dogToPlayer = hitCollider.transform.position - transform.position;
                                         dogToPlayer.y = 0;
                                         dogToPlayer.Normalize();
@@ -990,6 +1154,11 @@ public class Dog : Entity
 
                 currentState = nextState;
                 wind.Stop();
+                if (_afterImageCoroutine != null)
+                    StopCoroutine(_afterImageCoroutine);
+
+                StopWarning(0.5f);
+
                 Debug.Log("Exiting Ping Pong");
                 break;
             case DogStates.EnterDoubleClaw:
@@ -999,6 +1168,8 @@ public class Dog : Entity
                 attackFinished = false;
                 attackReady = false;
                 currentState = DogStates.Claw;
+                dogController.excludeLayers = 0;
+
                 Debug.Log("Entering DoubleClaw State");
                 break;
             case DogStates.DoubleClaw:
@@ -1080,6 +1251,16 @@ public class Dog : Entity
         dogController.enabled = false;
         _attackPlayer = false;
         wind.Stop();
+
+        if (_afterImageCoroutine != null)
+            StopCoroutine(_afterImageCoroutine);
+
+        foreach (var dizzyParticle in dizzyParticles)
+        {
+            dizzyParticle.Stop();
+        }
+
+        StopWarning(0.5f);
     }
 
     public void ResetDog()
@@ -1088,12 +1269,20 @@ public class Dog : Entity
         agent.Warp(transform.position);
         dogController.enabled = true;
         currentState = DogStates.EnterIdle;
+        nextState = DogStates.Idle;
         target = null;
         _attackPlayer = false;
         for (int i = 0; i < attackTimes.Length; i++)
         {
             attackTimes[i] = 0;
         }
+        currentRotate = 0;
+        currentSpeed = 0;
+        animator.Play("Moving", 0, 0);
+        animator.SetFloat("Move", 0);
+        animator.SetFloat("Turn", 0);
+        animator.SetBool("Right", false);
+        animator.SetBool("Left", false);
     }
 
     private void OnDrawGizmosSelected()
@@ -1154,9 +1343,9 @@ public class Dog : Entity
     // Do damage with invincibility cooldown
     public override void TakeDamage(float damageTaken, float invincibilityLength)
     {
-        if (phase2Cutscene.state == PlayState.Playing) return;
+        if (phase2Cutscene.state == PlayState.Playing || deadCutscene.state == PlayState.Playing) return;
 
-        if (!isInvincible && !isDodging)
+        if (!isInvincible && !isDodging && _currentHP > 0)
         {
             _currentHP -= damageTaken;
             _invincibilityMaxCooldown = invincibilityLength;
@@ -1164,12 +1353,6 @@ public class Dog : Entity
             if (hitAudio.Length > 0 && audioSource != null)
             {
                 audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
-            }
-            if (_currentHP <= _maxHP / 2 && !phase2)
-            {
-                Debug.Log("Entering Phase 2");
-                phase2Cutscene.Play();
-                phase2 = true;
             }
             if (_currentHP <= 0)
             {
@@ -1181,6 +1364,13 @@ public class Dog : Entity
             }
             else
             {
+                if (_currentHP <= _maxHP / 2 && !phase2)
+                {
+                    Debug.Log("Entering Phase 2");
+                    phase2Cutscene.Play();
+                    phase2 = true;
+                }
+
                 if (_invincibilityCooldown > 0)
                 {
                     isInvincible = true;
@@ -1192,12 +1382,27 @@ public class Dog : Entity
     // Set gameobject to be inactive
     public override void Die()
     {
+        currentRotate = 0;
+        currentSpeed = 0;
+        animator.SetFloat("Move", 0);
+        animator.SetFloat("Turn", 0);
+        animator.SetBool("Right", false);
+        animator.SetBool("Left", false);
+
+        deadCutscene.Play();
+        currentState = DogStates.EnterDead;
+
         Debug.Log("die");
 
         onDieEvent?.Invoke();
         J_GameManager.Instance.SetCurrentScene(J_GameManager.DOG_SCENE);
-        SceneLoader.Instance.LoadScene(J_GameManager.REST_SCENE);
+        //SceneLoader.Instance.LoadScene(J_GameManager.REST_SCENE);
 
         //gameObject.SetActive(false);
+    }
+
+    public void LoadIntoRestScene()
+    {
+        SceneLoader.Instance.LoadScene(J_GameManager.REST_SCENE);
     }
 }
