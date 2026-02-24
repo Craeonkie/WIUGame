@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -12,7 +13,8 @@ public class SpawnItem
     public bool hasSpawnLimit;
     public bool spawnOnAwake;
     public int spawnLimit;
-    [System.NonSerialized] public ObjectPool<GameObject> spawnPool; 
+    [System.NonSerialized] public ObjectPool<GameObject> spawnPool;
+    [System.NonSerialized] public List<GameObject> activeObjects = new List<GameObject>();
 }
 
 public class J_SpawnManager : MonoBehaviour
@@ -109,6 +111,7 @@ public class J_SpawnManager : MonoBehaviour
 
         var newItem = spawnItem.spawnPool.Get();
         newItem.transform.position = position;
+        spawnItem.activeObjects.Add(newItem);
 
         return newItem;
     }
@@ -124,6 +127,7 @@ public class J_SpawnManager : MonoBehaviour
             return;
 
         var newItem = spawnItem.spawnPool.Get();
+        spawnItem.activeObjects.Add(newItem);
 
         // Spawn a new instance randomly
         Vector3 randomPosition = GetRandomPointInBounds(_spawnerBoundingBox.bounds);
@@ -174,6 +178,27 @@ public class J_SpawnManager : MonoBehaviour
 
         Debug.LogWarning($"No pool found for itemName={itemName}. Disabling object.");
         obj.SetActive(false);
+    }
+
+    public void ReleaseAll(string itemName)
+    {
+        SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
+        if (spawnItem == null) return;
+
+        for (int i = spawnItem.activeObjects.Count - 1; i >= 0; i--)
+        {
+            spawnItem.spawnPool.Release(spawnItem.activeObjects[i]);
+        }
+
+        spawnItem.activeObjects.Clear();
+    }
+
+    public void ReleaseAll()
+    {
+        for (int i = 0; i < _spawnItems.Length; i++)
+        {
+            ReleaseAll(_spawnItems[i].itemName);
+        }
     }
 
     public void UpdateItemLimit(string itemName, int newLimit)
