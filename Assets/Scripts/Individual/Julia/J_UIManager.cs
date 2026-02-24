@@ -3,15 +3,29 @@ using UnityEngine.UI;
 
 public class J_UIManager : MonoBehaviour
 {
-    [Header("Combat UI")]
+    [Header("Components")]
     [SerializeField] private GameObject _combatUI;
-    [SerializeField] private Image _playerHealthbar;
+
+    [Header("Weapon UI")]
+    [SerializeField] private J_AssetManager _assetManager;
+    [SerializeField] private Image _primaryWeaponIcon;
+    [SerializeField] private Image _secondaryWeaponIcon;
+    [SerializeField] private Image _shieldWeaponIcon;
+    [SerializeField] private Image _shieldHealthbar;
+    [SerializeField] private float _fullDurabilityThreshold;
+    [SerializeField] private float _halfDurabilityThreshold;
+    [SerializeField] private float _brokenDurabilityThreshold;
+
+    [Header("Boss UI")]
     [SerializeField] private Image _bossHealthbar;
     [SerializeField] private RectTransform _bossIcon;
     [SerializeField] private Vector2 _iconOffset;
     [SerializeField] private Sprite _dogBossIcon;
     [SerializeField] private Sprite _friendBossIcon;
     [SerializeField] private Sprite _monsterBossIcon;
+
+    [Header("Player UI")]
+    [SerializeField] private Image _playerHealthbar;
 
     private void OnEnable()
     {
@@ -43,6 +57,41 @@ public class J_UIManager : MonoBehaviour
     {
         float healthPercentage = Mathf.Clamp01(currentHealth / maxHealth);
         _playerHealthbar.fillAmount = healthPercentage;
+    }
+
+    private void UpdateShieldHealth(float currentShieldHealth, float maxShieldHealth)
+    {
+        float healthPercentage = Mathf.Clamp01(currentShieldHealth / maxShieldHealth);
+        _shieldHealthbar.fillAmount = healthPercentage;
+    }
+
+    private void UpdatePrimaryWeapon(Item primaryWeapon)
+    {
+        if (primaryWeapon == null)
+        {
+            _primaryWeaponIcon.sprite = _assetManager.emptyPrimaryWeaponSprite;
+        }
+        else
+        {
+            // Get durability
+            float durabilityPercentage = primaryWeapon.currentDurability / primaryWeapon.maxDurability;
+            if (durabilityPercentage > _halfDurabilityThreshold)
+                _primaryWeaponIcon.sprite = _assetManager.GetFullDurabilitySprite(primaryWeapon);
+            else if (durabilityPercentage > _halfDurabilityThreshold)
+                _primaryWeaponIcon.sprite = _assetManager.GetHalfDurabilitySprite(primaryWeapon);
+            else
+                _primaryWeaponIcon.sprite = _assetManager.GetBrokenDurabilitySprite(primaryWeapon);
+        }
+    }
+
+    private void UpdateSecondaryWeapon(Item secondaryWeapon)
+    {
+
+    }
+
+    private void UpdateShield(Item shield)
+    {
+
     }
 
     private void UpdateBossIcon(string sceneName)
