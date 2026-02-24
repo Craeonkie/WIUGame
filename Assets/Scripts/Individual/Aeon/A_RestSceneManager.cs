@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class RestSceneManagerManager : MonoBehaviour
+public class A_RestSceneManager : MonoBehaviour
 {
     [SerializeField] private DoorToAnotherScene kidRoomDoor;
     [SerializeField] private DoorToAnotherScene kitchenDoor;
@@ -26,19 +26,19 @@ public class RestSceneManagerManager : MonoBehaviour
         parentsRoomDoor.ToggleSceneEnterable(false, false);
 
         // Check if kids room is completed
-        if (J_GameManager.Instance.IsSceneVisited(kidRoomDoor.ReturnNextSceneName()))
+        if (J_GameManager.Instance.IsStageCompleted(kidRoomDoor.ReturnNextSceneName()))
         {
             kidRoomDoor.ToggleSceneEnterable(false, true);
             kidsRoomSceneCompleted?.Invoke();
 
             // Check if kitchen is completed
-            if (J_GameManager.Instance.IsSceneVisited(kitchenDoor.ReturnNextSceneName()))
+            if (J_GameManager.Instance.IsStageCompleted(kitchenDoor.ReturnNextSceneName()))
             {
                 kitchenDoor.ToggleSceneEnterable(false, true);
                 kitchenSceneCompleted?.Invoke();
 
                 // Check if parents room is completed (Shouldn't run)
-                if (J_GameManager.Instance.IsSceneVisited(parentsRoomDoor.ReturnNextSceneName()))
+                if (J_GameManager.Instance.IsStageCompleted(parentsRoomDoor.ReturnNextSceneName()))
                 {
                     parentsRoomDoor.ToggleSceneEnterable(true, false);
                     parentsRoomSceneCompleted?.Invoke();

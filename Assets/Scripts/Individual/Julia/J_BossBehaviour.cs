@@ -360,10 +360,12 @@ public class J_BossBehaviour : Entity
 
     public override void Die()
     {
-        // TODO: Trigger cutscene, and after cutscene ends, go to ending scene
         OnDie?.Invoke();
-        // temporary
         J_GameManager.Instance.SetCurrentScene(J_GameManager.MONSTER_SCENE);
+    }
+
+    public void EndFight()
+    {
         SceneLoader.Instance.LoadScene(J_GameManager.END_SCENE);
     }
 

@@ -26,11 +26,13 @@ public class DoorToAnotherScene : Interactable
         }
         if (isEnterable)
         {
+            Debug.Log(gameObject.name + " here");
             tag = "Interactable";
         }
         else
         {
-            tag = "Default";
+            Debug.Log(gameObject.name + " here");
+            tag = "Untagged";
         }
     }
 

@@ -13,6 +13,8 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject _secondaryItem;
     [SerializeField] private GameObject _currentItem;
 
+    public static System.Action<string, float, float> OnEquip;
+
     void Start()
     {
         _primaryItem = null;
@@ -94,6 +96,19 @@ public class Inventory : MonoBehaviour
         if (_currentItem != null)
         {
             _currentItem.SetActive(true);
+
+            // Check item type
+            string itemType = "";
+            if (_currentItem.GetComponent<StandardWeapon>() || _currentItem.GetComponent<StabWeapon>()) itemType = "Weapon";
+            else if (_currentItem.GetComponent<WeaponWithBlock>()) itemType = "Shield";
+
+            var item = _currentItem.GetComponent<Item>();
+
+            OnEquip?.Invoke(itemType, item.currentDurability, item.maxDurability);
+        }
+        else
+        {
+            OnEquip?.Invoke(null, 0, 0);
         }
     }
 
@@ -122,6 +137,8 @@ public class Inventory : MonoBehaviour
             Vector3 dropPos = transform.position + transform.forward * 1.0f + Vector3.up * 0.5f;
             item.GetComponent<Item>().Drop(dropPos, Vector3.forward * 5.0f);
             item.transform.SetParent(null);
+
+            OnEquip?.Invoke(null, 0, 0);
         }
     }
 
