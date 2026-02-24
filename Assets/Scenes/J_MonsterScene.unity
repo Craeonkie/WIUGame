@@ -11178,8 +11178,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1079937131}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.079316765, y: -0.21020795, z: -0.017113099, w: 0.9742837}
-  m_LocalPosition: {x: 11.31, y: 3.33, z: -2.6899998}
+  m_LocalRotation: {x: -0.079316735, y: 0.21020812, z: 0.017113108, w: 0.97428364}
+  m_LocalPosition: {x: -11.31, y: 3.33, z: -2.6899998}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12883,10 +12883,10 @@ MonoBehaviour:
         z: 1.6345229
       Rotation:
         value:
-          x: -0.6074184
-          y: 0.5291889
+          x: -0.60741836
+          y: 0.52918893
           z: 0.5150225
-          w: 0.29283756
+          w: 0.29283762
     - Position:
         x: 1.6199989
         y: 8.29
@@ -12919,9 +12919,9 @@ MonoBehaviour:
         z: 2.0546927
       Rotation:
         value:
-          x: 0.16086164
-          y: -0.010032543
-          z: 0.27246642
+          x: 0.16086161
+          y: -0.010032542
+          z: 0.27246636
           w: 0.94856995
     - Position:
         x: 4.7599983
@@ -46405,6 +46405,9 @@ MonoBehaviour:
   _secondaryWeaponIcon: {fileID: 0}
   _shieldWeaponIcon: {fileID: 0}
   _shieldHealthbar: {fileID: 0}
+  _fullDurabilityThreshold: 0
+  _halfDurabilityThreshold: 0
+  _brokenDurabilityThreshold: 0
   _bossHealthbar: {fileID: 1724551074}
   _bossIcon: {fileID: 657768759}
   _iconOffset: {x: 50, y: 1288}
@@ -51496,12 +51499,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'L_Wrist'\n\tTransform 'L_UpperArm'\n\tTransform
-    'Neck'\n\tTransform 'L_Pinky_jnt3'\n\tTransform 'Spine2'\n\tTransform 'R_Pinky_jnt3'\n\tTransform
-    'L_Hand'\n\tTransform 'L_Middle_jnt2'\n\tTransform 'L_Clavicle'\n\tTransform
-    'R_Middle_jnt1'\n\tand more ..."
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
