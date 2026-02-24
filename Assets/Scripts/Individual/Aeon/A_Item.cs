@@ -115,9 +115,10 @@ public abstract class Item : Interactable
             rb.isKinematic = true;
             rb.useGravity = false;
         }
-        if (TryGetComponent<Collider>(out Collider col))
+
+        for (int i = 0; i < GetComponents<Collider>().Length; i++)
         {
-            col.isTrigger = true;
+            GetComponents<Collider>()[i].isTrigger = true;
         }
     }
 
@@ -140,9 +141,9 @@ public abstract class Item : Interactable
             rb.isKinematic = false;
             rb.useGravity = true;
         }
-        if (TryGetComponent<Collider>(out Collider col))
+        for (int i = 0; i < GetComponents<Collider>().Length; i++)
         {
-            col.isTrigger = false;
+            GetComponents<Collider>()[i].isTrigger = false;
         }
 
         // Position and add force to the item
