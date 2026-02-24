@@ -75,6 +75,8 @@ public class PlayerController : Entity
     [SerializeField] private bool _wasGroundedPreviously = false;
     [SerializeField] private GameObject _itemBeingMoved;
 
+    public static System.Action<float, float> OnPlayerHealthChanged;
+
     protected override void Start()
     {
         base.Start();
@@ -287,6 +289,7 @@ public class PlayerController : Entity
                     }
                     else if (tag == "Interactable")
                     {
+                        Debug.Log("here");
                         closestInteractable.InteractWith();
                     }
                     //else if (tag == "Moveable")
@@ -563,6 +566,8 @@ public class PlayerController : Entity
             _animator.SetTrigger("GetHit");
             _invincibilityMaxCooldown = invincibilityLength;
             _invincibilityCooldown = invincibilityLength;
+            OnPlayerHealthChanged?.Invoke(_currentHP, _maxHP);
+
             if (hitAudio.Length > 0 && audioSource != null)
             {
                 audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);

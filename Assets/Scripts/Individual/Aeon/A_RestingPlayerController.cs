@@ -119,7 +119,7 @@ public class RestingPlayerController : Entity
             }
 
             // Trigger Interaction
-            if (closestInteractable != null && _interactAction.WasPressedThisFrame())
+            if (closestInteractable != null && _interactAction.WasPressedThisFrame() && closestInteractable.gameObject.tag == "Interactable")
             {
                 print("Trying to interact");
                 closestInteractable.InteractWith();

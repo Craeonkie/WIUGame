@@ -30,14 +30,11 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     public const string KID_SCENE = "C_FriendScene";
     public const string MONSTER_SCENE = "J_MonsterScene";
     public const string END_SCENE = "EndScene";
-    
-    // shoul i make ths serislaizeifle.d..
-    // then u can reference and shtia nd like idk add in ur own scene phase number u duration whtaefer
-    
+
+    private int _currentPhase;
     private string _currentScene;
     private float _currentGameTime;
 
-    //private Dictionary<Level, bool> _visitedScenes = new Dictionary<Level, bool>();
     private string _nextStage;
     private Dictionary<string, bool> _completedStages = new Dictionary<string, bool>();
     private Vector3 _previousPosition; // Use this to spawn player back in a room or something
@@ -57,12 +54,6 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     private void Start()
     {
         // Initialise dictionary
-        //_visitedScenes.Add(new Level(MENU_SCENE, 0), false);
-        //_visitedScenes.Add(new Level(DOG_SCENE, 2), false);
-        //_visitedScenes.Add(new Level(KID_SCENE, 2), false);
-        //_visitedScenes.Add(new Level(MONSTER_SCENE, 3), false);
-        //_visitedScenes.Add(new Level(REST_SCENE, 0), false);
-
         if (_completedStages.Count == 0)
         {
             _completedStages.Add(MENU_SCENE, false);
@@ -70,6 +61,7 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
             _completedStages.Add(KID_SCENE, false);
             _completedStages.Add(MONSTER_SCENE, false);
             _completedStages.Add(REST_SCENE, false);
+            _currentPhase = 0;
         }
     }
 
@@ -91,16 +83,28 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
         UpdateNextScene();
     }
 
+    public void SetCurrentPhase(int phase)
+    {
+        _currentPhase = phase;
+    }
+
     public string GetNextStage()
     {
         return _nextStage;
     }
 
-    public bool IsSceneVisited(string scene)
+    public int GetCurrentPhase()
     {
+        return _currentPhase;
+    }
+
+    public bool IsStageCompleted(string scene)
+    {
+
         if (!_completedStages.ContainsKey(scene))
             return false;
 
+        Debug.Log("scene: " + scene + " is " + _completedStages[scene]);
         return _completedStages[scene];
     }
 

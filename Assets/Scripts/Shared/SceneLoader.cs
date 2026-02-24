@@ -19,7 +19,7 @@ public class SceneLoader : MonoBehaviour
     }
 
     public GameManagerData garbageManager;
-    public static System.Action onSceneLoaded;
+    public static System.Action<string> OnSceneLoaded;
     public UnityEvent sceneLoadEvent;
     //public bool readyToLoad = false;
     //private AsyncOperation asyncOperation;
@@ -36,7 +36,7 @@ public class SceneLoader : MonoBehaviour
 
         // Set menu open to false immediately
         //garbageManager.isMenuOpen = false;
-        onSceneLoaded?.Invoke();
+        OnSceneLoaded?.Invoke(SceneManager.GetActiveScene().name);
         sceneLoadEvent?.Invoke();
     }
 

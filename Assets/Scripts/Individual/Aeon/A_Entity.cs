@@ -21,6 +21,7 @@ public class Entity : MonoBehaviour
     private MaterialPropertyBlock _propertyBlock;
     [SerializeField] protected UnityEvent onDieEvent;
 
+    public static System.Action<float, float> OnHealthChanged;
     public static System.Action OnDie;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
