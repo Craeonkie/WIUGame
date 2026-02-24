@@ -29,13 +29,19 @@ public class MouseMovement : MonoBehaviour
     {
         if (lockCursor)
         {
+            yRotation = transform.localEulerAngles.y;
+            xRotation = transform.localEulerAngles.x;
+            if (xRotation >= 180.0f)
+            {
+                xRotation -= 360.0f;
+            }
+
             if (rotateLeftRight)
             {
                 float mouseX;
                 mouseX = mouseAction.ReadValue<Vector2>().x * leftRightSensitivity;
 
                 // Control rotation around y axis (Look left and right)
-                yRotation = transform.localEulerAngles.y;
                 yRotation += mouseX;
             }
 

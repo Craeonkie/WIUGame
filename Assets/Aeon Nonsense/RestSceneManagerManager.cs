@@ -1,10 +1,15 @@
 using UnityEngine;
+using UnityEngine.Events;
 
-public class DoorManager : MonoBehaviour
+public class RestSceneManagerManager : MonoBehaviour
 {
     [SerializeField] private DoorToAnotherScene kidRoomDoor;
     [SerializeField] private DoorToAnotherScene kitchenDoor;
     [SerializeField] private DoorToAnotherScene parentsRoomDoor;
+
+    public UnityEvent kidsRoomSceneCompleted;
+    public UnityEvent kitchenSceneCompleted;
+    public UnityEvent parentsRoomSceneCompleted;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,14 +29,19 @@ public class DoorManager : MonoBehaviour
         if (J_GameManager.Instance.IsSceneVisited(kidRoomDoor.ReturnNextSceneName()))
         {
             kidRoomDoor.ToggleSceneEnterable(false, true);
+            kidsRoomSceneCompleted?.Invoke();
+
             // Check if kitchen is completed
             if (J_GameManager.Instance.IsSceneVisited(kitchenDoor.ReturnNextSceneName()))
             {
                 kitchenDoor.ToggleSceneEnterable(false, true);
+                kitchenSceneCompleted?.Invoke();
+
                 // Check if parents room is completed (Shouldn't run)
-                if (J_GameManager.Instance.IsSceneVisited(kitchenDoor.ReturnNextSceneName()))
+                if (J_GameManager.Instance.IsSceneVisited(parentsRoomDoor.ReturnNextSceneName()))
                 {
                     parentsRoomDoor.ToggleSceneEnterable(true, false);
+                    parentsRoomSceneCompleted?.Invoke();
                 }
                 else
                 {

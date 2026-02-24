@@ -27,10 +27,15 @@ public class PlayerController : Entity
     [SerializeField] private float playerRotationSpeed;
 
     [Header("Camera Movement")]
-    [SerializeField] private GameObject followCameraTarget;
-    [SerializeField] private GameObject thirdPersonCameraTarget;
-    [SerializeField] private GameObject topDownViewCameraTarget;
+    [SerializeField] private GameObject followCamera;
+    [SerializeField] private GameObject thirdPersonCamera;
+    [SerializeField] private GameObject cameraTarget;
     [SerializeField] private MouseMovement[] mouseRotationScripts;
+
+    [Header("Aiming")]
+    [SerializeField] private float _throwRotationSpeed = 480.0f;
+    [SerializeField] private float _endThrowNormalizedTime = 0.8f;
+    [SerializeField] private string _throwingAnimationName = "Throw";
 
     private Vector3 _rollDirection;
     private float _currentSpeed;
@@ -63,7 +68,7 @@ public class PlayerController : Entity
     [SerializeField] private bool _isHoldingItem = false;
     [SerializeField] private bool _canPlayerInput = true;
     [SerializeField] private bool _playerInputPaused = true;
-    [SerializeField] private bool _primingThrow = false;
+    [SerializeField] private bool _isAiming = false;
     [SerializeField] private bool _wasGroundedPreviously = false;
     [SerializeField] private GameObject _itemBeingMoved;
 
@@ -125,9 +130,9 @@ public class PlayerController : Entity
         if (!_isStunned)
         {
             // Handle rotation
-            if (isMoving && !_isMovingObject && !_primingThrow && !_isRolling && _currentLandTimer <= 0)
+            if (isMoving && !_isMovingObject && !_isAiming && !_isRolling && _currentLandTimer <= 0)
             {
-                Quaternion cameraYawOnly = Quaternion.Euler(0, followCameraTarget.transform.eulerAngles.y, 0);
+                Quaternion cameraYawOnly = Quaternion.Euler(0, followCamera.transform.eulerAngles.y, 0);
                 Vector3 cameraForward = cameraYawOnly * Vector3.forward;
                 Vector3 cameraRight = cameraYawOnly * Vector3.right;
 
@@ -143,14 +148,14 @@ public class PlayerController : Entity
             if (isGrounded && !_isJumping)
             {
                 // Jumping
-                if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_primingThrow && !_isMovingObject)
+                if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_isAiming && !_isMovingObject)
                 {
                     _isJumping = true;
                     _isRolling = false;
                     myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
                 }
                 // Rolling
-                else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_isRolling && !_primingThrow && !_isMovingObject)
+                else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_isRolling && !_isAiming && !_isMovingObject)
                 {
                     _animator.SetTrigger("IsRolling");
                     _currentRollTimer = rollDuration;
@@ -177,7 +182,7 @@ public class PlayerController : Entity
                 }
 
                 // Always move forward
-                if (!_primingThrow)
+                if (!_isAiming)
                 {
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
                     Vector3 moveVelocity = transform.forward * _currentSpeed;
@@ -188,7 +193,7 @@ public class PlayerController : Entity
                 {
                     _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, _maxSpeed / 0.1f * Time.deltaTime);
 
-                    Quaternion cameraYawOnly = Quaternion.Euler(0, thirdPersonCameraTarget.transform.eulerAngles.y, 0);
+                    Quaternion cameraYawOnly = Quaternion.Euler(0, thirdPersonCamera.transform.eulerAngles.y, 0);
                     Vector3 cameraForward = cameraYawOnly * Vector3.forward;
                     Vector3 cameraRight = cameraYawOnly * Vector3.right;
 
@@ -301,7 +306,7 @@ public class PlayerController : Entity
         if (_canPlayerInput && !_isStunned && isGrounded && _handsAreFree)
         {
             // Primary
-            if (_primaryAction.WasPressedThisDynamicUpdate())
+            if (_primaryAction.WasPressedThisDynamicUpdate() && !_isAiming)
             {
                 animationHandler.TryingToUsePrimary(true);
                 if (inventory.ReturnCurrentItem() != null && inventory.ReturnCurrentItem().TryGetComponent<ThrowableItem>(out _))
@@ -312,33 +317,29 @@ public class PlayerController : Entity
             if (_primaryAction.WasReleasedThisDynamicUpdate())
             {
                 animationHandler.TryingToUsePrimary(false);
-                if (_primingThrow)
-                {
-                    StopAiming();
-                }
             }
 
             // Secondary
-            if (_secondaryAction.WasPressedThisDynamicUpdate())
+            if (_secondaryAction.WasPressedThisDynamicUpdate() && !_isAiming)
             {
                 animationHandler.TryingToUseSecondary(true);
             }
-            if (_secondaryAction.WasReleasedThisDynamicUpdate())
+            if (_secondaryAction.WasReleasedThisDynamicUpdate() && !_isAiming)
             {
                 animationHandler.TryingToUseSecondary(false);
             }
 
             // Special
-            if (_specialAction.WasPressedThisDynamicUpdate())
+            if (_specialAction.WasPressedThisDynamicUpdate() && !_isAiming)
             {
                 animationHandler.TryingToUseSpecial(true);
             }
-            if (_specialAction.WasReleasedThisDynamicUpdate())
+            if (_specialAction.WasReleasedThisDynamicUpdate() && !_isAiming)
             {
                 animationHandler.TryingToUseSpecial(false);
             }
 
-            if (!animationHandler.IsActing())
+            if (!animationHandler.IsActing() && !_isAiming)
             {
                 // Dropping
                 if (_dropAction.WasPressedThisDynamicUpdate() && !_isStunned)
@@ -373,6 +374,63 @@ public class PlayerController : Entity
             }
         }
 
+        // Handle aiming camera logic
+        if (_isAiming)
+        {
+            // Handle player in throwing animation
+            if (_animator.GetCurrentAnimatorStateInfo(0).IsName(_throwingAnimationName))
+            {
+                // Make the player stop aiming and go back to normal
+                if (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime > _endThrowNormalizedTime)
+                {
+                    StopAiming();
+                }
+                // Make the player stop inputting when throwing
+                else
+                {
+                    foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
+                    {
+                        mouseRotationScript.enabled = false;
+                    }
+                }
+            }
+            // Make player rotate towards the correct direction when aiming
+            else
+            {
+                if (cameraTarget.transform.localEulerAngles.y > 0)
+                {
+                    Vector3 cameraTargetRot = cameraTarget.transform.localEulerAngles;
+                    Vector3 playerRot = transform.localEulerAngles;
+                    if (cameraTargetRot.y >= 180.0f)
+                    {
+                        cameraTargetRot.y -= 360.0f;
+                    }
+
+                    float newCameraY = Mathf.MoveTowards(cameraTargetRot.y, 0f, _throwRotationSpeed * Time.deltaTime);
+                    float delta = cameraTargetRot.y - newCameraY;
+
+                    cameraTargetRot.y = newCameraY;
+                    playerRot.y += delta;
+
+                    cameraTarget.transform.localEulerAngles = cameraTargetRot;
+                    transform.localEulerAngles = playerRot;
+
+                    foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
+                    {
+                        mouseRotationScript.enabled = false;
+                    }
+                }
+                // Only let player rotate when they are facing the correct direction
+                else
+                {
+                    foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
+                    {
+                        mouseRotationScript.enabled = true;
+                    }
+                }
+            }
+        }
+
         // Send parameters to animator
         _animator.SetBool("IsMoving", isMoving);
         _animator.SetBool("IsGrounded", isGrounded);
@@ -400,7 +458,7 @@ public class PlayerController : Entity
             _targetWeight = 1;
         }
         _currentWeight = Mathf.MoveTowards(_currentWeight, _targetWeight, Time.deltaTime * 2.0f);
-        _animator.SetLayerWeight(2, _currentWeight);
+        _animator.SetLayerWeight(1, _currentWeight);
         _animator.SetFloat("Y Velocity", myRigidbody.linearVelocity.y);
 
         // Handle when the player lands
@@ -410,7 +468,7 @@ public class PlayerController : Entity
         }
         else if (_isRolling || !isGrounded)
         {
-            _currentLandTimer = 0;
+            _currentLandTimer = 0; 
         }
 
         // Update this for the next frame
@@ -443,74 +501,41 @@ public class PlayerController : Entity
     // Aim in preparation to throw an object or item
     public virtual void StartAiming()
     {
-        _primingThrow = true;
-        thirdPersonCameraTarget.SetActive(true);
-        followCameraTarget.SetActive(false);
+        _isAiming = true;
+        AlignCameraTarget();
+        thirdPersonCamera.GetComponent<CinemachineCamera>().Priority = 10;
+        followCamera.GetComponent<CinemachineCamera>().Priority = 9;
         foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
         {
             mouseRotationScript.enabled = true;
         }
     }
 
+    // Make the camera target rotate towards the follow camera
+    public void AlignCameraTarget()
+    {
+        cameraTarget.transform.rotation = Quaternion.Euler(0.0f, followCamera.transform.eulerAngles.y, 0.0f);
+    }
+
     // Stop aiming
     public virtual void StopAiming()
     {
-        _primingThrow = false;
-        ResetCamera();
-        thirdPersonCameraTarget.SetActive(false);
-        followCameraTarget.SetActive(true);
+        _isAiming = false;
+        CenterFollowCamera();
+        thirdPersonCamera.GetComponent<CinemachineCamera>().Priority = 9;
+        followCamera.GetComponent<CinemachineCamera>().Priority = 10;
         foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
         {
             mouseRotationScript.enabled = false;
         }
     }
 
-    //// Start pushing an item
-    //public virtual void StartMovingItem(GameObject itemBeingMoved)
-    //{
-    //    _isMovingObject = true;
-    //    _itemBeingMoved = itemBeingMoved;
-    //}
-
-    //// Stop pushing an item
-    //public virtual void StopMovingItem()
-    //{
-    //    _isMovingObject = false;
-    //    ResetCamera();
-    //    thirdPersonCameraTarget.SetActive(false);
-    //    followCameraTarget.SetActive(true);
-    //    foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
-    //    {
-    //        mouseRotationScript.enabled = false;
-    //    }
-    //}
-
-    // Set camera to face player forward
-    public void ResetCamera()
+    // Set camera to face the player's forward
+    public void CenterFollowCamera()
     {
-        followCameraTarget.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value = transform.rotation.eulerAngles.y;
-        followCameraTarget.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value = 10.0f;
+        followCamera.GetComponent<CinemachineOrbitalFollow>().HorizontalAxis.Value = transform.rotation.eulerAngles.y;
+        followCamera.GetComponent<CinemachineOrbitalFollow>().VerticalAxis.Value = 10.0f;
     }
-
-    //// Do damage without invincibility cooldown
-    //public override void TakeDamage(float damageTaken)
-    //{
-    //    if (!isDodging)
-    //    {
-    //        _currentHP -= damageTaken;
-    //        _animator.SetTrigger("GetHit");
-    //        if (hitAudio.Length > 0 && audioSource != null)
-    //        {
-    //            audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
-    //        }
-    //        if (_currentHP <= 0)
-    //        {
-    //            audioSource.PlayOneShot(deathAudio);
-    //            Die();
-    //        }
-    //        InterruptAction();
-    //    }
-    //}
 
     // Do damage with invincibility cooldown
     public override void TakeDamage(float damageTaken, float invincibilityLength)
@@ -565,6 +590,7 @@ public class PlayerController : Entity
         _handsAreFree = canPickUpItems;
     }
 
+    // Sihan function
     public void SetPlayerToTransform(Transform anchor)
     {
         if (myRigidbody.isKinematic)
