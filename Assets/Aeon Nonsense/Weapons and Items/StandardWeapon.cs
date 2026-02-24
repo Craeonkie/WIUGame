@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StandardWeapon : Weapon
@@ -92,6 +93,8 @@ public class StandardWeapon : Weapon
     // Actually performing the action
     public override void PerformAction()
     {
+        bool canAttack = true;
+
         switch (_inputType)
         {
             case InputType.Primary:
@@ -133,13 +136,36 @@ public class StandardWeapon : Weapon
                 }
         }
 
-        // Set Animator
-        _animationHandler.PerformAction(_currentAnimation);
-        _isActing = true;
-        _currentAnimationChain += 1;
+        // Handle special attack
+        if ((PlayerController)_entityUsingItem && consumesEnergy)
+        {
+            if (_inputType == InputType.Special)
+            {
+                canAttack = false;
+            }
+            if (((PlayerController)_entityUsingItem).UseEnergy(_currentAnimation.energyUsed, _inputType == InputType.Special))
+            {
+                canAttack = true;
+            }
+        }
 
-        // Do own logic
-        BeginAttack(_currentAnimation.damage);
+        // Will be false if move requires energy and there isn't enough
+        if (canAttack)
+        {
+            // Set Animator
+            _animationHandler.PerformAction(_currentAnimation);
+            _isActing = true;
+            _currentAnimationChain += 1;
+
+            // Do own logic
+            BeginAttack(_currentAnimation.damage);
+        }
+        else
+        {
+            _currentAnimationChain = 0;
+            _resetAnimationChain = false;
+            _animationHandler.GoBackToIdle();
+        }
     }
 
     // Called whenever an animation ends

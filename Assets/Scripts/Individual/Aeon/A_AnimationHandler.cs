@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum InputType
 {
@@ -58,6 +59,24 @@ public class AnimationHandler : MonoBehaviour
             _pressedSpecial = false;
 
             _wasHoldingItem = true;
+
+            if (_isActing)
+            {
+                Quaternion targetRotation = Quaternion.Euler(_currentAnimation.rotation);
+                _currentItem.transform.localRotation = Quaternion.RotateTowards(
+                    _currentItem.transform.localRotation,
+                    targetRotation,
+                    _currentAnimation.rotationSpeed * Time.deltaTime
+                );
+            }
+            else
+            {
+                _currentItem.transform.localRotation = Quaternion.RotateTowards(
+                    _currentItem.transform.localRotation,
+                    Quaternion.identity,
+                    _currentAnimation.rotationSpeed * Time.deltaTime
+                    );
+            }
         }
         // If the player was holding an item the previous frame but there isn't one anymore, return to idle
         else if (_wasHoldingItem && !_letAnimationFinish)
@@ -155,6 +174,7 @@ public class AnimationHandler : MonoBehaviour
     {
         UnequipItem();
         _currentItem = item;
+        _currentItem.transform.localEulerAngles = Vector3.zero;
         _currentItem.SetAnimationHandler(this);
         GoBackToIdle();
     }
@@ -164,6 +184,7 @@ public class AnimationHandler : MonoBehaviour
     {
         if (_currentItem != null)
         {
+            _currentItem.transform.localEulerAngles = Vector3.zero;
             _currentItem.SetAnimationHandler(null);
             _currentItem = null;
             GoBackToIdle();
@@ -175,6 +196,7 @@ public class AnimationHandler : MonoBehaviour
     {
         if (_currentItem != null)
         {
+            _currentItem.transform.localEulerAngles = Vector3.zero;
             _currentItem.SetAnimationHandler(null);
             _currentItem = null;
             _letAnimationFinish = true;
@@ -193,9 +215,12 @@ public struct Animation
     [Header("Animation Information")]
     public float damage;
     public int durabilityUsed;
+    public int energyUsed;
     public bool hasRootMotion;
     public bool pressAndHold;
     public bool isBlock;
+    public Vector3 rotation;
+    public float rotationSpeed;
 
     [Header("Animation")]
     public AnimationClip animationClip;
