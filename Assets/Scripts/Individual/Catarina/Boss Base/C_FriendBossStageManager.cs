@@ -7,6 +7,17 @@ public class C_FriendBossStageManager : MonoBehaviour
 {
     [SerializeField] private string _SceneName;
     [SerializeField] private GameObject _BoardCollider;
+
+
+    [SerializeField] private GameObject _enemy;
+    [SerializeField] private GameObject _enemyTPPoint;
+    [SerializeField] private Vector3 RotateAngle;
+
+    [SerializeField] private GameObject _kid;
+    [SerializeField] private GameObject _kidTPPoint;
+    [SerializeField] private Vector3 KidRotateAngle;
+
+
     private void EnteringPhase2()
     {
         var navmesh = FindFirstObjectByType<NavMeshSurface>();
@@ -56,5 +67,29 @@ public class C_FriendBossStageManager : MonoBehaviour
             return;
         }
         J_GameManager.Instance.SetCurrentScene(this._SceneName);
+    }
+
+    public void StartPhaseTransitionCutScene()
+    {
+        Vector3 pos = _enemyTPPoint.transform.position;
+        pos.y = _enemy.transform.position.y; 
+        _enemy.transform.position = pos;
+        _enemy.transform.rotation = Quaternion.Euler(RotateAngle);
+    }
+
+    public void StartPhaseTransition2ndMarker()
+    {
+        Vector3 pos = _kidTPPoint.transform.position;
+        pos.y = _kid.transform.position.y;
+        _kid.transform.position = pos;
+
+        // face the enemy (or any target)
+        Vector3 dir = _enemy.transform.position - _kid.transform.position;
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude > 0.0001f)
+        {
+            _kid.transform.rotation = Quaternion.LookRotation(dir);
+        }
     }
 }
