@@ -1042,25 +1042,13 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7805025325140745525, guid: 9e5becda178f34047960f64a29874603, type: 3}
-      propertyPath: AvoidObstacles.Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7929166909348990277, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: CollideAgainst.m_Bits
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7929166909348990277, guid: 9e5becda178f34047960f64a29874603, type: 3}
-      propertyPath: AvoidObstacles.Strategy
-      value: 0
+      value: 129023
       objectReference: {fileID: 0}
     - target: {fileID: 7929166909348990277, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: TransparentLayers.m_Bits
       value: 4294967295
-      objectReference: {fileID: 0}
-    - target: {fileID: 7929166909348990277, guid: 9e5becda178f34047960f64a29874603, type: 3}
-      propertyPath: AvoidObstacles.MaximumEffort
-      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8341662502266032239, guid: 9e5becda178f34047960f64a29874603, type: 3}
       propertyPath: Target.TrackingTarget
