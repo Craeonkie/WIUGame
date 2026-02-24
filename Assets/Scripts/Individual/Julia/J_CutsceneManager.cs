@@ -1,4 +1,3 @@
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
@@ -41,9 +40,9 @@ public class J_Cutscene
     }
 }
 
-public class J_StageManager : MonoBehaviour
+public class J_CutsceneManager : MonoBehaviour
 {
-    public static J_StageManager Instance;
+    public static J_CutsceneManager Instance;
 
     [SerializeField] private J_Cutscene[] _cutscenes;
     [SerializeField] private bool _playOnAwake;
