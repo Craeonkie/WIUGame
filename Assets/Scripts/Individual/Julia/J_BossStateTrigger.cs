@@ -30,12 +30,12 @@ public class J_BossStateTrigger : Interactable
     private void OnDrawGizmos()
     {
         // Check player controller's distance to this object
-        PlayerController player = FindFirstObjectByType<PlayerController>();
-        if ((player.transform.position - transform.position).magnitude <= _minimumInteractDistance)
-            Gizmos.color = Color.green;
-        else
-            Gizmos.color = Color.yellow;
+        //PlayerController player = FindFirstObjectByType<PlayerController>();
+        //if ((player.transform.position - transform.position).magnitude <= _minimumInteractDistance)
+        //    Gizmos.color = Color.green;
+        //else
+        //    Gizmos.color = Color.yellow;
 
-        Gizmos.DrawLine(player.transform.position, transform.position);
+        //Gizmos.DrawLine(player.transform.position, transform.position);
     }
 }
