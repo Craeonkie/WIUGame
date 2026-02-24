@@ -183,7 +183,7 @@ MonoBehaviour:
   _maxTimeBeforeExpiring: 0
   throwPowerForward: 10
   throwPowerUp: 3
-  throwOffsetForward: 1
+  throwOffsetForward: {x: 0, y: 0, z: 1}
   breakOnHit: 0
   lifeTime: 100
   invincibilityTimeApplied: 0

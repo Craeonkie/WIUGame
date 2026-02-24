@@ -29,7 +29,7 @@ public class PlayerController : Entity
     [Header("Camera Movement")]
     [SerializeField] private GameObject followCamera;
     [SerializeField] private GameObject thirdPersonCamera;
-    [SerializeField] private GameObject cameraTarget;
+    public GameObject cameraTarget;
     [SerializeField] private MouseMovement[] mouseRotationScripts;
 
     [Header("Aiming")]

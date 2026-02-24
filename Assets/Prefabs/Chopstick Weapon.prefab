@@ -102,7 +102,7 @@ MonoBehaviour:
   description: 
   primary:
   - damage: 30
-    durabilityUsed: 10
+    durabilityUsed: 1
     hasRootMotion: 0
     pressAndHold: 0
     isBlock: 0
