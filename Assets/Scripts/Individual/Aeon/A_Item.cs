@@ -27,6 +27,9 @@ public abstract class Item : Interactable
     public int currentDurability;
     protected bool canLoseDurabilityThisAttack = false;
 
+    [Header("Energy")]
+    [SerializeField] protected bool consumesEnergy;
+
     [Header("Item Holding Offset")]
     public Vector3 offset;
 

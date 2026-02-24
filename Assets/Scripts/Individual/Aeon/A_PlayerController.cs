@@ -1,4 +1,5 @@
 using Unity.Cinemachine;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -39,6 +40,17 @@ public class PlayerController : Entity
     [SerializeField] private float _defaultBlendSpeed = 2.0f;
     [SerializeField] private float _aimBlendingSpeed = 1.0f;
     [SerializeField] private bool _setBlendingSpeedBackToNormal = false;
+
+    [Header("Energy System")]
+    [SerializeField] private float _maxEnergy = 100.0f;
+    [SerializeField] private float _remainingEnergy = 0.0f;
+    [SerializeField] private float rollEnergyRequired;
+    [SerializeField] private float energyPassiveRegeneration;
+
+    [Header("Special Cooldown")]
+    [SerializeField] private float _maxSpecialCooldown = 1.0f;
+    [SerializeField] private float _currentSpecialCooldown = 0.0f;
+    [SerializeField] private bool _canUseSpecial = true;
 
     private Vector3 _rollDirection;
     private float _currentSpeed;
@@ -102,12 +114,16 @@ public class PlayerController : Entity
         Cursor.lockState = CursorLockMode.Locked;
 
         _rollDirection = Vector3.forward;
+
+        _remainingEnergy = _maxEnergy;
+        _canUseSpecial = true;
     }
 
     protected override void Update()
     {
         base.Update();
 
+        // Handle stunned
         if (_currentStunDuration > 0)
         {
             _currentStunDuration -= Time.deltaTime;
@@ -116,6 +132,22 @@ public class PlayerController : Entity
             {
                 _isStunned = false;
             }
+        }
+
+        // Handle special cooldown
+        if (_currentSpecialCooldown > 0)
+        {
+            _currentSpecialCooldown -= Time.deltaTime;
+            if (_currentSpecialCooldown <= 0)
+            {
+                _canUseSpecial = true;
+            }
+        }
+
+        // Stamina regeneration
+        if (_remainingEnergy < _maxEnergy && energyPassiveRegeneration != 0)
+        {
+            _remainingEnergy = Mathf.MoveTowards(_remainingEnergy, _maxEnergy, energyPassiveRegeneration * Time.deltaTime);
         }
 
         // Handle player landed duration
@@ -157,14 +189,17 @@ public class PlayerController : Entity
                     _isRolling = false;
                     myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
                 }
-                // Rolling
+                // Rolling (Only if the player has enough stamina)
                 else if (_rollAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_isRolling && !_isAiming && !_isMovingObject)
                 {
-                    _animator.SetTrigger("IsRolling");
-                    _currentRollTimer = rollDuration;
-                    _isRolling = true;
-                    isDodging = true;
-                    _canPlayerInput = false;
+                    if (UseEnergy(rollEnergyRequired, false))
+                    {
+                        _animator.SetTrigger("IsRolling");
+                        _currentRollTimer = rollDuration;
+                        _isRolling = true;
+                        isDodging = true;
+                        _canPlayerInput = false;
+                    }
                 }
             }
 
@@ -333,13 +368,16 @@ public class PlayerController : Entity
             }
 
             // Special
-            if (_specialAction.WasPressedThisDynamicUpdate() && !_isAiming)
+            if (_canUseSpecial)
             {
-                animationHandler.TryingToUseSpecial(true);
-            }
-            if (_specialAction.WasReleasedThisDynamicUpdate() && !_isAiming)
-            {
-                animationHandler.TryingToUseSpecial(false);
+                if (_specialAction.WasPressedThisDynamicUpdate() && !_isAiming)
+                {
+                    animationHandler.TryingToUseSpecial(true);
+                }
+                if (_specialAction.WasReleasedThisDynamicUpdate() && !_isAiming)
+                {
+                    animationHandler.TryingToUseSpecial(false);
+                }
             }
 
             if (!animationHandler.IsActing() && !_isAiming)
@@ -634,5 +672,23 @@ public class PlayerController : Entity
         _animator.SetTrigger("Die");
         _animator.SetLayerWeight(3, 1);
         Stun(1000);
+    }
+
+    // Use energy (used to perform special attack mostly)
+    public bool UseEnergy(float energyUsed, bool usedSpecial)
+    {
+        if (_remainingEnergy >= energyUsed)
+        {
+            if (usedSpecial)
+            {
+                _canUseSpecial = false;
+                _currentSpecialCooldown += _maxSpecialCooldown;
+            }
+
+            _remainingEnergy -= energyUsed;
+            return true;
+        }
+
+        return false;
     }
 }
