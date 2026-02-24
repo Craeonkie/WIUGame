@@ -36,6 +36,9 @@ public class PlayerController : Entity
     [SerializeField] private float _throwRotationSpeed = 480.0f;
     [SerializeField] private float _endThrowNormalizedTime = 0.8f;
     [SerializeField] private string _throwingAnimationName = "Throw";
+    [SerializeField] private float _defaultBlendSpeed = 2.0f;
+    [SerializeField] private float _aimBlendingSpeed = 1.0f;
+    [SerializeField] private bool _setBlendingSpeedBackToNormal = false;
 
     private Vector3 _rollDirection;
     private float _currentSpeed;
@@ -431,6 +434,15 @@ public class PlayerController : Entity
             }
         }
 
+        if (_setBlendingSpeedBackToNormal && Camera.main.TryGetComponent<CinemachineBrain>(out CinemachineBrain cinemachineBrain))
+        {
+            if (cinemachineBrain.ActiveBlend != null)
+            {
+                _setBlendingSpeedBackToNormal = false;
+                cinemachineBrain.DefaultBlend.Time = _defaultBlendSpeed;
+            }
+        }
+
         // Send parameters to animator
         _animator.SetBool("IsMoving", isMoving);
         _animator.SetBool("IsGrounded", isGrounded);
@@ -503,6 +515,10 @@ public class PlayerController : Entity
     {
         _isAiming = true;
         AlignCameraTarget();
+        if (Camera.main.TryGetComponent<CinemachineBrain>(out CinemachineBrain cinemachineBrain))
+        {
+            cinemachineBrain.DefaultBlend.Time = _aimBlendingSpeed;
+        }
         thirdPersonCamera.GetComponent<CinemachineCamera>().Priority = 10;
         followCamera.GetComponent<CinemachineCamera>().Priority = 9;
         foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
@@ -524,6 +540,7 @@ public class PlayerController : Entity
         CenterFollowCamera();
         thirdPersonCamera.GetComponent<CinemachineCamera>().Priority = 9;
         followCamera.GetComponent<CinemachineCamera>().Priority = 10;
+        _setBlendingSpeedBackToNormal = true;
         foreach (MouseMovement mouseRotationScript in mouseRotationScripts)
         {
             mouseRotationScript.enabled = false;
