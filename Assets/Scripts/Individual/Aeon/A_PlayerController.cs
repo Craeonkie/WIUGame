@@ -627,4 +627,12 @@ public class PlayerController : Entity
 
         myRigidbody.isKinematic = false;
     }
+
+    // Die
+    public override void Die()
+    {
+        _animator.SetTrigger("Die");
+        _animator.SetLayerWeight(3, 1);
+        Stun(1000);
+    }
 }
