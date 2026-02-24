@@ -1789,6 +1789,7 @@ MonoBehaviour:
   _dialogueText: {fileID: 1158154788}
   _dialogueName: {fileID: 64684883}
   _dialogueIcon: {fileID: 28191695}
+  _dialogueIcon2: {fileID: 0}
   _type: 0
   _isTyping: 0
   _maxDialogueLinesIndex: 0

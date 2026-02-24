@@ -26,6 +26,16 @@ public class AudioRetriever : MonoBehaviour
         }
     }
 
+    public GameObject Play3DAtTransform(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            return AudioLibrary.Instance.PlaySoundAtPointCustom(name, transform.position);
+        }
+
+        return null;
+    }
+
     public void StopSound(string name)
     {
         if (AudioLibrary.Instance != null)

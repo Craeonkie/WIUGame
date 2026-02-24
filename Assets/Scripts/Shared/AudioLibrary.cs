@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class AudioLibrary : MonoBehaviour
 {
@@ -108,9 +109,9 @@ public class AudioLibrary : MonoBehaviour
         Debug.LogWarning("Audio not found in library: " + name);
     }
 
-    public void PlaySoundAtPointCustom(string name, Vector3 position)
+    public GameObject PlaySoundAtPointCustom(string name, Vector3 position)
     {
-        if (_audioManager == null) return;
+        if (_audioManager == null) return null;
 
         foreach (var audio in _audios)
         {
@@ -118,14 +119,16 @@ public class AudioLibrary : MonoBehaviour
             {
                 var obj = Instantiate(_objectWith3DAudioPrefab, position, Quaternion.identity);
                 var audioComponent = obj.GetComponent<ObjectWith3DAudio>();
-                audioComponent.audio = audio;
+                audioComponent.audio3D = audio;
                 audioComponent._playOnStart = true;
                 Destroy(obj, audio.clip.length);
 
-                return;
+                return obj;
             }
         }
         Debug.LogWarning("Audio not found in library: " + name);
+
+        return null;
     }
 
     public void PlayOneShot(string name)
