@@ -5,7 +5,7 @@ public class ThrowableItem : Item
 {
     [SerializeField] protected float throwPowerForward = 10.0f;
     [SerializeField] protected float throwPowerUp = 10.0f;
-    [SerializeField] protected float throwOffsetForward = 1.0f;
+    [SerializeField] protected Vector3 throwOffsetForward = new Vector3(0.0f, 0.0f, 1.0f);
     [SerializeField] protected bool breakOnHit = false;
     [SerializeField] protected float lifeTime = 10.0f;
     [SerializeField] protected float invincibilityTimeApplied = 0.0f;
@@ -142,9 +142,18 @@ public class ThrowableItem : Item
         }
 
         // Position and add force to the item
-        transform.position += _entityUsingItem.transform.forward * throwOffsetForward;
-        rb.linearVelocity = Vector3.zero;
-        rb.AddForce(_entityUsingItem.transform.forward * throwPowerForward + _entityUsingItem.transform.up * throwPowerUp, ForceMode.Impulse);
+        if (!(PlayerController)_entityUsingItem)
+        {
+            transform.position += _entityUsingItem.transform.right * throwOffsetForward.x + _entityUsingItem.transform.up * throwOffsetForward.y +_entityUsingItem.transform.forward * throwOffsetForward.z;
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce(_entityUsingItem.transform.forward * throwPowerForward + _entityUsingItem.transform.up * throwPowerUp, ForceMode.Impulse);
+        }
+        else
+        {
+            transform.position += ((PlayerController)_entityUsingItem).cameraTarget.transform.right * throwOffsetForward.x + ((PlayerController)_entityUsingItem).cameraTarget.transform.up * throwOffsetForward.y + ((PlayerController)_entityUsingItem).cameraTarget.transform.forward * throwOffsetForward.z;
+            rb.linearVelocity = Vector3.zero;
+            rb.AddForce(((PlayerController)_entityUsingItem).cameraTarget.transform.forward * throwPowerForward + ((PlayerController)_entityUsingItem).cameraTarget.transform.up * throwPowerUp, ForceMode.Impulse);
+        }
 
         // Make the player's inventory stop referencing this item
         if (_entityUsingItem.TryGetComponent<PlayerController>(out PlayerController player))

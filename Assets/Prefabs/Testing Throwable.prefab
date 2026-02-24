@@ -169,6 +169,7 @@ MonoBehaviour:
   hasDurability: 0
   maxDurability: 0
   currentDurability: 0
+  offset: {x: 0, y: 0.1, z: 0.2}
   audioSource: {fileID: 0}
   weaponBreakingSound: {fileID: 0}
   _entityUsingItem: {fileID: 0}
@@ -178,11 +179,14 @@ MonoBehaviour:
   _currentAnimationChain: 0
   _destroyUponDrop: 0
   _maxTimeBeforeDestroyed: 0
+  _expiresAfterDropped: 0
+  _maxTimeBeforeExpiring: 0
   throwPowerForward: 10
   throwPowerUp: 3
-  throwOffsetForward: 1
+  throwOffsetForward: {x: 0, y: 0, z: 1}
   breakOnHit: 0
   lifeTime: 100
+  invincibilityTimeApplied: 0
   hitEntities: []
   isAiming: 0
   isThrowing: 0

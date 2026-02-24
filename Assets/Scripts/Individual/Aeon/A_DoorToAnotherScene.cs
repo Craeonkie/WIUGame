@@ -3,15 +3,11 @@ using UnityEngine;
 public class DoorToAnotherScene : Interactable
 {
     [SerializeField] private string nextSceneName;
-    [SerializeField] private bool canEnterScene;
     [SerializeField] private GameObject doorGameobject;
 
     public override void InteractWith()
     {
-        if (canEnterScene)
-        {
-            SceneLoader.Instance.LoadScene(nextSceneName);
-        }
+        SceneLoader.Instance.LoadScene(nextSceneName);
     }
 
     // Set the door open (Should not ever be true, true, for our purposes)
@@ -28,7 +24,14 @@ public class DoorToAnotherScene : Interactable
                 doorGameobject.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
-        canEnterScene = isEnterable;
+        if (isEnterable)
+        {
+            tag = "Interactable";
+        }
+        else
+        {
+            tag = "Default";
+        }
     }
 
     public string ReturnNextSceneName()
