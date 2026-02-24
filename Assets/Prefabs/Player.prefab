@@ -599,8 +599,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHP: 1000
   _currentHP: 0
-  _invincibilityCooldown: 5
-  _invincibilityMaxCooldown: 5
+  _invincibilityCooldown: 0
+  _invincibilityMaxCooldown: 0
   spawnPoint: {x: 0, y: 0, z: 0}
   isInvincible: 0
   isDodging: 0
@@ -632,6 +632,13 @@ MonoBehaviour:
   _defaultBlendSpeed: 2
   _aimBlendingSpeed: 1
   _setBlendingSpeedBackToNormal: 0
+  _maxEnergy: 100
+  _remainingEnergy: 0
+  rollEnergyRequired: 0
+  energyPassiveRegeneration: 0
+  _maxSpecialCooldown: 10
+  _currentSpecialCooldown: 0
+  _canUseSpecial: 0
   _currentStunDuration: 0
   _isStunned: 0
   interactablesLayer:
