@@ -1283,6 +1283,8 @@ public class Dog : Entity
         animator.SetFloat("Turn", 0);
         animator.SetBool("Right", false);
         animator.SetBool("Left", false);
+        attackReady = false;
+        attackFinished = false;
     }
 
     private void OnDrawGizmosSelected()

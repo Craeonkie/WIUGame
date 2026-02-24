@@ -15,6 +15,8 @@ public class DialogueMenu : MonoBehaviour
     [SerializeField] private TMP_Text _dialogueText;
     [SerializeField] private TMP_Text _dialogueName;
     [SerializeField] private Image _dialogueIcon;
+    [SerializeField] private Image _dialogueIcon2;
+
 
     [Header("Garbage Manager")]
     //public GarbageManager garbageManager;
@@ -459,9 +461,10 @@ public class DialogueMenu : MonoBehaviour
         _maxDialogueLinesIndex = 0;
         _typingCounter = 0;
         _typingIndex = 0;
-        _dialogueText.text = "";
-        _dialogueName.text = "";
-        _dialogueIcon.sprite = null;
+        if (_dialogueText != null) _dialogueText.text = "";
+        if (_dialogueName != null) _dialogueName.text = "";
+        if (_dialogueIcon != null) _dialogueIcon.sprite = null;
+        if (_dialogueIcon2 != null) _dialogueIcon2.sprite = null;
         _currentDialogue = null;
         _currentStateDialogue = null;
         isPaused = false;
@@ -527,24 +530,6 @@ public class DialogueMenu : MonoBehaviour
             }
         }
 
-        if (currentLine.customTypingSpeed)
-        {
-            _typingSpeed = currentLine.typingSpeed;
-        }
-        else
-        {
-            _typingSpeed = dialogueSettings.typingSpeed;
-        }
-
-        if (currentLine.customAutoNextLineTime)
-        {
-            _autoNextLineTime = currentLine.autoNextLineTime;
-        }
-        else
-        {
-            _autoNextLineTime = dialogueSettings.autoNextLineTime;
-        }
-
         if (_dialogueLineIndex != 0)
         {
             if (currentLine.playAnimation)
@@ -589,24 +574,49 @@ public class DialogueMenu : MonoBehaviour
         }
 
         var dialogueUIIndex = currentLine.dialogueUIIndex;
-        if (dialogueSettings.dialogueUIs != null && dialogueUIIndex < dialogueSettings.dialogueUIs.Count)
+        if (dialogueSettings.dialogueUserInterfaces != null && dialogueUIIndex < dialogueSettings.dialogueUserInterfaces.Count)
         {
-            var dialogueUI = dialogueSettings.dialogueUIs[dialogueUIIndex];
-            _dialogueUI.anchoredPosition = new Vector2(0, dialogueUI.dialogueUIYOffset);
+            var dialogueUI = dialogueSettings.dialogueUserInterfaces[dialogueUIIndex];
+            if (_dialogueUI != null)
+            {
+                _dialogueUI.anchoredPosition = new Vector2(0, dialogueUI.dialogueUIYOffset);
+            }
 
-            _dialogueBox.rectTransform.sizeDelta = new Vector2(dialogueUI.dialogueBoxWidth, dialogueUI.dialogueBoxHeight);
-            _dialogueBox.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialogueBoxXOffset, dialogueUI.dialogueBoxYOffset);
+            if (_dialogueBox != null)
+            {
+                _dialogueBox.rectTransform.sizeDelta = new Vector2(dialogueUI.dialogueBoxWidth, dialogueUI.dialogueBoxHeight);
+                _dialogueBox.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialogueBoxXOffset, dialogueUI.dialogueBoxYOffset);
+            }
 
-            _dialogueIcon.rectTransform.sizeDelta = new Vector2(dialogueUI.dialoguePortraitWidth, dialogueUI.dialoguePortraitHeight);
-            _dialogueIcon.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialoguePortraitXOffset, dialogueUI.dialoguePortraitYOffset);
+            if (_dialogueIcon != null)
+            {
+                _dialogueIcon.rectTransform.sizeDelta = new Vector2(dialogueUI.dialoguePortraitWidth, dialogueUI.dialoguePortraitHeight);
+                _dialogueIcon.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialoguePortraitXOffset, dialogueUI.dialoguePortraitYOffset);
+                _dialogueIcon.color = currentLine.iconColor;
+            }
 
-            _dialogueName.rectTransform.sizeDelta = new Vector2(dialogueUI.dialogueNameWidth, dialogueUI.dialogueNameHeight);
-            _dialogueName.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialogueNameXOffset, dialogueUI.dialogueNameYOffset);
-            _dialogueName.fontSize = dialogueUI.dialogueNameFontSize;
+            if (_dialogueIcon2 != null)
+            {
+                _dialogueIcon2.rectTransform.sizeDelta = new Vector2(dialogueUI.dialoguePortrait2Width, dialogueUI.dialoguePortrait2Height);
+                _dialogueIcon2.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialoguePortrait2XOffset, dialogueUI.dialoguePortrait2YOffset);
+                _dialogueIcon2.color = currentLine.iconColor2;
+            }
 
-            _dialogueText.rectTransform.sizeDelta = new Vector2(dialogueUI.dialogueTextWidth, dialogueUI.dialogueTextHeight);
-            _dialogueText.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialogueTextXOffset, dialogueUI.dialogueTextYOffset);
-            _dialogueText.fontSize = dialogueUI.dialogueTextFontSize;
+            if (_dialogueName != null)
+            {
+                _dialogueName.rectTransform.sizeDelta = new Vector2(dialogueUI.dialogueNameWidth, dialogueUI.dialogueNameHeight);
+                _dialogueName.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialogueNameXOffset, dialogueUI.dialogueNameYOffset);
+                _dialogueName.fontSize = dialogueUI.dialogueNameFontSize;
+                _dialogueName.alignment = dialogueUI.dialogueNameTextAlignment;
+            }
+
+            if (_dialogueText != null)
+            {
+                _dialogueText.rectTransform.sizeDelta = new Vector2(dialogueUI.dialogueTextWidth, dialogueUI.dialogueTextHeight);
+                _dialogueText.rectTransform.anchoredPosition = new Vector2(dialogueUI.dialogueTextXOffset, dialogueUI.dialogueTextYOffset);
+                _dialogueText.fontSize = dialogueUI.dialogueTextFontSize;
+                _dialogueText.alignment = dialogueUI.dialogueTextAlignment;
+            }
 
 
             //if (AudioLibrary.Instance != null)
@@ -619,9 +629,55 @@ public class DialogueMenu : MonoBehaviour
             Debug.LogWarning("Dialogue UI Settings not found, using default editor UI Settings");
         }
 
-        if (currentLine.icon != null)
+        if (_dialogueIcon != null)
         {
-            _dialogueIcon.sprite = currentLine.icon;
+            if (currentLine.icon != null)
+            {
+                _dialogueIcon.sprite = currentLine.icon;
+                _dialogueIcon.color = currentLine.iconColor;
+            }
+            else
+                _dialogueIcon.color = new Color(0, 0, 0, 0);
+        }
+
+        if (_dialogueIcon2 != null)
+        {
+            if (currentLine.icon2 != null)
+            {
+                _dialogueIcon2.sprite = currentLine.icon2;
+                _dialogueIcon2.color = currentLine.iconColor2;
+            }
+            else
+                _dialogueIcon2.color = new Color(0, 0, 0, 0);
+        }
+
+        // Overriding
+        if (currentLine.overrideTypingSpeed)
+        {
+            _typingSpeed = currentLine.typingSpeed;
+        }
+        else
+        {
+            _typingSpeed = dialogueSettings.typingSpeed;
+        }
+
+        if (currentLine.overrideAutoNextLineTime)
+        {
+            _autoNextLineTime = currentLine.autoNextLineTime;
+        }
+        else
+        {
+            _autoNextLineTime = dialogueSettings.autoNextLineTime;
+        }
+
+        if (currentLine.overrideDialogueNameAlignment)
+        {
+            _dialogueName.alignment = currentLine.dialogueNameAlignment;
+        }
+
+        if (currentLine.overrideDialogueTextAlignment)
+        {
+            _dialogueText.alignment = currentLine.dialogueTextAlignment;
         }
     }
 
