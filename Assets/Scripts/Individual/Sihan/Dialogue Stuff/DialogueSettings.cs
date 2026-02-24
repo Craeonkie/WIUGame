@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 [CreateAssetMenu(fileName = "DialogueSettings", menuName = "Scriptable Objects/DialogueSettings")]
 public class DialogueSettings : ScriptableObject
@@ -44,12 +45,20 @@ public class DialogueSettings : ScriptableObject
         public float dialoguePortraitWidth;
         public float dialoguePortraitHeight;
 
+        [Header("Dialogue Portrait 2")]
+        public float dialoguePortrait2XOffset;
+        public float dialoguePortrait2YOffset;
+        public float dialoguePortrait2Width;
+        public float dialoguePortrait2Height;
+
         [Header("Dialogue Name")]
         public float dialogueNameXOffset;
         public float dialogueNameYOffset;
         public float dialogueNameWidth;
         public float dialogueNameHeight;
         public float dialogueNameFontSize;
+        public TextAlignmentOptions dialogueNameTextAlignment;
+
 
         [Header("Dialogue Text")]
         public float dialogueTextXOffset;
@@ -57,7 +66,8 @@ public class DialogueSettings : ScriptableObject
         public float dialogueTextWidth;
         public float dialogueTextHeight;
         public float dialogueTextFontSize;
+        public TextAlignmentOptions dialogueTextAlignment;
     }
 
-    public List<DialogueUISettings> dialogueUIs;
+    public List<DialogueUISettings> dialogueUserInterfaces;
 }

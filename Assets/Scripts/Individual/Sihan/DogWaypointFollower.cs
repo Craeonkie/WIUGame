@@ -12,8 +12,11 @@ public class DogWaypointFollower : MonoBehaviour
     [SerializeField] private float acceleration = 2f;
     [SerializeField] private float arrivalThreshold = 0.5f;
     [SerializeField] private float rotateSpeed = 5f;
+    [SerializeField] private float rotateIncrementSpeed = 5f;
     [SerializeField] private float maxRotate = 90f;
     [SerializeField] private bool loop = true;
+    [SerializeField] private bool _canMove = true;
+    public bool canMove { get => _canMove; set => _canMove = value; }
 
     [Header("Components")]
     private NavMeshAgent agent;
@@ -41,6 +44,17 @@ public class DogWaypointFollower : MonoBehaviour
 
     void Update()
     {
+        if (!_canMove)
+        {
+            currentSpeed -= Time.deltaTime * acceleration;
+            currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateIncrementSpeed);
+
+            animator.SetFloat("Move", currentSpeed);
+            animator.SetFloat("Turn", currentRotate);
+            animator.SetBool("Right", currentRotate > 0);
+            animator.SetBool("Left", currentRotate < 0);
+        }
+
         if (waypoints.Count == 0) return;
 
         float distanceToTarget = Vector3.Distance(transform.position, waypoints[currentWaypointIndex].position);
@@ -73,6 +87,12 @@ public class DogWaypointFollower : MonoBehaviour
         if (desiredDir != Vector3.zero)
         {
             float angle = Vector3.SignedAngle(transform.forward, desiredDir, Vector3.up);
+
+            if (Mathf.Abs(angle) > 170f)
+            {
+                angle = 175f;
+            }
+
             float targetRotate = Mathf.Clamp(angle / 90f, -maxRotate / 90f, maxRotate / 90f);
 
             Quaternion targetRotation = Quaternion.LookRotation(desiredDir);
@@ -84,7 +104,7 @@ public class DogWaypointFollower : MonoBehaviour
 
             currentSpeed += Time.deltaTime * acceleration;
             currentSpeed = Mathf.Clamp(currentSpeed, 0, maxSpeed);
-            currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateSpeed);
+            currentRotate = Mathf.MoveTowards(currentRotate, targetRotate, Time.deltaTime * rotateIncrementSpeed);
 
             float rotationOffset = 90f * currentRotate;
             Vector3 adjustedForward = Quaternion.AngleAxis(rotationOffset, Vector3.up) * transform.forward;
@@ -100,7 +120,7 @@ public class DogWaypointFollower : MonoBehaviour
         else
         {
             currentSpeed -= Time.deltaTime * acceleration;
-            currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
+            currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateIncrementSpeed);
 
             animator.SetFloat("Move", currentSpeed);
             animator.SetFloat("Turn", currentRotate);
@@ -124,5 +144,11 @@ public class DogWaypointFollower : MonoBehaviour
             else if (loop && waypoints[0] != null)
                 Gizmos.DrawLine(waypoints[i].position, waypoints[0].position);
         }
+    }
+
+    public void SetDogToTransform(Transform anchor)
+    {
+        transform.position = anchor.position;
+        transform.rotation = anchor.rotation;
     }
 }

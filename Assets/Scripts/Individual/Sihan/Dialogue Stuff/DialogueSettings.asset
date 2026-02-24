@@ -15,8 +15,8 @@ MonoBehaviour:
   typingSpeed: 0.01
   _autoNextLine: 0
   _autoNextLineTime: 5
-  dialogueUIs:
-  - dialogueUIName: 0 (???)
+  dialogueUserInterfaces:
+  - dialogueUIName: (0) Base Top Left, 2 Portraits on Left
     dialogueUIYOffset: -360
     dialogueBoxXOffset: 0
     dialogueBoxYOffset: 0
@@ -26,33 +26,45 @@ MonoBehaviour:
     dialoguePortraitYOffset: 90
     dialoguePortraitWidth: 400
     dialoguePortraitHeight: 400
+    dialoguePortrait2XOffset: -615
+    dialoguePortrait2YOffset: 150
+    dialoguePortrait2Width: 400
+    dialoguePortrait2Height: 400
     dialogueNameXOffset: 220
     dialogueNameYOffset: 115
     dialogueNameWidth: 1100
     dialogueNameHeight: 50
     dialogueNameFontSize: 36
+    dialogueNameTextAlignment: 513
     dialogueTextXOffset: 220
     dialogueTextYOffset: -10
     dialogueTextWidth: 1100
     dialogueTextHeight: 200
     dialogueTextFontSize: 36
-  - dialogueUIName: 1 (???)
-    dialogueUIYOffset: 0
+    dialogueTextAlignment: 257
+  - dialogueUIName: (1) Base Centered, Portraits on Both Sides
+    dialogueUIYOffset: -360
     dialogueBoxXOffset: 0
     dialogueBoxYOffset: 0
-    dialogueBoxWidth: 1.5
-    dialogueBoxHeight: 0.3
-    dialoguePortraitXOffset: -0.6
-    dialoguePortraitYOffset: 0
-    dialoguePortraitWidth: 0.25
-    dialoguePortraitHeight: 0.25
-    dialogueNameXOffset: 0.288
-    dialogueNameYOffset: -0.13
-    dialogueNameWidth: 1.5
-    dialogueNameHeight: 0.5
-    dialogueNameFontSize: 0.07
-    dialogueTextXOffset: 0.294
-    dialogueTextYOffset: -0.214
-    dialogueTextWidth: 1.5
-    dialogueTextHeight: 0.5
-    dialogueTextFontSize: 0.06
+    dialogueBoxWidth: 1600
+    dialogueBoxHeight: 300
+    dialoguePortraitXOffset: -560
+    dialoguePortraitYOffset: 90
+    dialoguePortraitWidth: 400
+    dialoguePortraitHeight: 400
+    dialoguePortrait2XOffset: 560
+    dialoguePortrait2YOffset: 90
+    dialoguePortrait2Width: 400
+    dialoguePortrait2Height: 400
+    dialogueNameXOffset: 0
+    dialogueNameYOffset: 105
+    dialogueNameWidth: 600
+    dialogueNameHeight: 50
+    dialogueNameFontSize: 36
+    dialogueNameTextAlignment: 514
+    dialogueTextXOffset: 0
+    dialogueTextYOffset: -20
+    dialogueTextWidth: 600
+    dialogueTextHeight: 200
+    dialogueTextFontSize: 36
+    dialogueTextAlignment: 514
