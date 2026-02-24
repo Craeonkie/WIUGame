@@ -180,6 +180,7 @@ public class ThrowableItem : Item
             }
             hitEntities.Add(other.gameObject.GetComponent<Entity>());
         }
+
         if (isInFlight && breakOnHit)
         {
             gameObject.SetActive(false);

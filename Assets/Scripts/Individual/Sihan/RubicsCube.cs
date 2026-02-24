@@ -20,9 +20,25 @@ public class RubicsCube : ThrowableItem
 
     protected override void OnCollisionEnter(Collision other)
     {
-        base.OnCollisionEnter(other);
+        if (isInFlight && !hitEntities.Contains(other.gameObject.GetComponent<Entity>()) && !IsPartOfHierarchy(other.transform, transform.root))
+        {
+            Entity thisEntity;
+            if (other.gameObject.TryGetComponent<Entity>(out thisEntity))
+            {
+                thisEntity.TakeDamage(primary[0].damage, invincibilityTimeApplied);
+            }
+            else
+            {
+                thisEntity = other.gameObject.GetComponentInParent<Entity>();
+                if (thisEntity != null)
+                {
+                    thisEntity.TakeDamage(primary[0].damage, invincibilityTimeApplied);
+                }
+            }
+            hitEntities.Add(other.gameObject.GetComponent<Entity>());
+        }
 
-        if (isInFlight)
+        if (isInFlight && breakOnHit)
         {
             GameObject blocker = Instantiate(cubeBlockerPrefab, transform.position, transform.rotation);
 
@@ -30,6 +46,9 @@ public class RubicsCube : ThrowableItem
             {
                 blockerScript._smallScale = transform.localScale.x;
             }
+
+            Destroy(gameObject);
+            isInFlight = false;
         }
     }
 }
