@@ -8,7 +8,8 @@ public abstract class Weapon : Item
     protected bool isAttacking = false;
     protected bool isBlocking = false;
     protected float currentAttackDamage;
-    public static System.Action<float, float> OnDurabilityChange;
+    public static System.Action<Item> OnDurabilityChangeWeapon;
+    public static System.Action<float, float> OnDurabilityChangeShield;
 
     protected new void Start()
     {
@@ -53,6 +54,7 @@ public abstract class Weapon : Item
     public void BlockDamage()
     {
         currentDurability -= _currentAnimation.durabilityUsed;
+        OnDurabilityChangeShield?.Invoke(currentDurability, maxDurability);
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -66,7 +68,7 @@ public abstract class Weapon : Item
                 {
                     canLoseDurabilityThisAttack = false;
                     currentDurability -= _currentAnimation.durabilityUsed;
-                    OnDurabilityChange?.Invoke(currentDurability, maxDurability);
+                    OnDurabilityChangeWeapon?.Invoke(this);
                 }
             }
             else
@@ -79,7 +81,7 @@ public abstract class Weapon : Item
                     {
                         canLoseDurabilityThisAttack = false;
                         currentDurability -= _currentAnimation.durabilityUsed;
-                        OnDurabilityChange?.Invoke(currentDurability, maxDurability);
+                        OnDurabilityChangeWeapon?.Invoke(this);
                     }
                 }
             }

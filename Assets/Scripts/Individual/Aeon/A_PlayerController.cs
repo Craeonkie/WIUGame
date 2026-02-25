@@ -91,6 +91,7 @@ public class PlayerController : Entity
     [SerializeField] private bool _isTopDown;
 
     public static System.Action<float, float> OnPlayerHealthChanged;
+    public static System.Action<float, float> OnEnergyChanged;
 
     protected override void Start()
     {
@@ -119,7 +120,7 @@ public class PlayerController : Entity
         Cursor.lockState = CursorLockMode.Locked;
 
         _rollDirection = Vector3.forward;
-;
+        ;
         _remainingEnergy = _maxEnergy;
         _canUseSpecial = true;
     }
@@ -153,6 +154,7 @@ public class PlayerController : Entity
         if (_remainingEnergy < _maxEnergy && energyPassiveRegeneration != 0)
         {
             _remainingEnergy = Mathf.MoveTowards(_remainingEnergy, _maxEnergy, energyPassiveRegeneration * Time.deltaTime);
+            OnEnergyChanged?.Invoke(_remainingEnergy, _maxEnergy);
         }
 
         // Handle player landed duration
@@ -539,7 +541,7 @@ public class PlayerController : Entity
         }
         else if (_isRolling || !isGrounded)
         {
-            _currentLandTimer = 0; 
+            _currentLandTimer = 0;
         }
 
         // Update this for the next frame

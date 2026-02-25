@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class Level
 {
     public string keyName;
     public Dictionary<int, bool> visitedPhases;
-
-    //[SerializeField] Cutscene _cutScenes; // then have a isvisied before in case
 
     public Level(string name, int numOfPhases)
     {
@@ -43,6 +42,10 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     public float bgmVolume;
     public float sfxVolume;
 
+    private PlayerInput _input;
+    private InputAction _pauseAction;
+    public static System.Action OnPause;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -57,6 +60,10 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
 
     private void Start()
     {
+        _input = GetComponent<PlayerInput>();
+
+        _pauseAction = _input.actions["Pause"];
+
         // Initialise dictionary
         if (_completedStages.Count == 0)
         {
@@ -72,6 +79,13 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     private void Update()
     {
         _currentGameTime += Time.deltaTime;
+
+        // Toggle pause menu
+        if (_pauseAction.WasPressedThisDynamicUpdate())
+        {
+            Debug.Log("kms");
+            OnPause?.Invoke();
+        }
     }
 
     public float GetGameTime() => _currentGameTime;

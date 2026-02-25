@@ -136,7 +136,8 @@ public class C_FriendBoss : Entity
 
     public void Teleport()
     {
-        transform.position = _Phase1SpawnPos.position;
+        if (_Phase1SpawnPos != null)
+            transform.position = _Phase1SpawnPos.position;
         _Rigidbody = GetComponent<Rigidbody>();
 
         transform.Rotate(0f, 180f, 0f);

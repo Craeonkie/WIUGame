@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -5,6 +7,8 @@ public class C_Airplane : C_BossAbility
 {
     public static event System.Action <Transform> FindTarget;
     public static event System.Action<float> FollowThrough;
+    public static event System.Action<C_BossCameraManager.c_CameraMode> ChangeCamera;
+
     public static event System.Action finishAbility;
 
 
@@ -12,10 +16,14 @@ public class C_Airplane : C_BossAbility
     [SerializeField] private Transform[] _SpawnTransform;
     [SerializeField] private GameObject _AirplanePrefab;
     [SerializeField] private float _SearchTime = 10f;
-    
+    [SerializeField] private CinemachineCamera _airplaneCam;
+
+    private Coroutine _AirplaneCamCoroutine;
+
     private PlayerController _player;
 
     [Header("FollowThrough")]
+    [SerializeField] private float _followAirplaneCameraTime = 1.5f;
     [SerializeField] private float _FollowThroughSpeedMultiplier = 2f; // prob call this via System.action? 
     private float _CurrentSearchTimeCounter = 0f;
     C_Boid currentAirplane = null;
@@ -92,13 +100,20 @@ public class C_Airplane : C_BossAbility
         }
     }
 
+    private float switchCamOriSpeed = 0f;
+
     protected override void GameSetUp()
     {
         if (_SpawnTransform.Length <= 0) return;
         if (_player == null)
         {
-            Debug.LogWarning("Missing player");
-            return;
+            _player = FindFirstObjectByType<PlayerController>();
+
+            if (_player == null)
+            {
+                Debug.LogWarning("Missing player");
+                return;
+            }
         }
         _CurrentSearchTimeCounter = 0f;
 
@@ -117,6 +132,20 @@ public class C_Airplane : C_BossAbility
         }
         _followThroughTriggered = false;
         this.startAbility = true;
+
+        _airplaneCam.Target.TrackingTarget = currentAirplane.transform;
+
+        if (Camera.main.TryGetComponent<CinemachineBrain>(out CinemachineBrain brain))
+        {
+            switchCamOriSpeed = brain.DefaultBlend.Time;
+            brain.DefaultBlend.Time = 0f;
+        }
+        ChangeCamera?.Invoke(C_BossCameraManager.c_CameraMode.AIRPLANE_CAMERA);
+        if (_AirplaneCamCoroutine != null)
+        {
+            StopCoroutine(_AirplaneCamCoroutine);
+        }
+        _AirplaneCamCoroutine = StartCoroutine(FollowAirplaneCamera());
     }
 
     protected override void GameTearDown()
@@ -135,5 +164,15 @@ public class C_Airplane : C_BossAbility
         finishAbility?.Invoke();
         //do an explosion here NOT HERE DO IT IN THE BOID CODE
         this.enabled = false;
+    }
+
+    private IEnumerator FollowAirplaneCamera()
+    {
+        yield return new WaitForSeconds(_followAirplaneCameraTime);
+        ChangeCamera?.Invoke(C_BossCameraManager.c_CameraMode.TOP_CAMERA);
+        if (Camera.main.TryGetComponent<CinemachineBrain>(out CinemachineBrain brain))
+        {
+            brain.DefaultBlend.Time = switchCamOriSpeed;
+        }
     }
 }

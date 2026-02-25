@@ -18,9 +18,9 @@ public class C_FallingObj : MonoBehaviour
     [SerializeField] private float _maxWarningDistance = 10f;
     private GameObject _warningDecalInstance;
     private Renderer _decalRenderer;
-    // mpb is per renderer so each falling obj has its own independent alpha value
+
     private MaterialPropertyBlock _mpb;
-    // cached shader property id, faster than passing string every frame
+
     private static readonly int ColorID = Shader.PropertyToID("_color");
     private bool _isBeingReleased = false;
     public C_FallingObj PrefabKey { get; private set; }
