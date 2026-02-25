@@ -13,11 +13,9 @@ public class C_FriendBossStageManager : MonoBehaviour
     [SerializeField] private GameObject _enemyTPPoint;
     [SerializeField] private Vector3 RotateAngle;
 
-    [SerializeField] private GameObject _kid;
-    [SerializeField] private GameObject _kidTPPoint;
-    [SerializeField] private Vector3 KidRotateAngle;
+    [SerializeField] private GameObject _player;
 
-
+    [SerializeField] J_CutsceneManager _CutsceneManager;
     private void EnteringPhase2()
     {
         var navmesh = FindFirstObjectByType<NavMeshSurface>();
@@ -44,6 +42,7 @@ public class C_FriendBossStageManager : MonoBehaviour
         {
             _BoardCollider.SetActive(false);
         }
+        _CutsceneManager.PlayCutscene(1);
     }
 
     private void OnEnable()
@@ -77,19 +76,10 @@ public class C_FriendBossStageManager : MonoBehaviour
         _enemy.transform.rotation = Quaternion.Euler(RotateAngle);
     }
 
-    public void StartPhaseTransition2ndMarker()
+    private void Start()
     {
-        Vector3 pos = _kidTPPoint.transform.position;
-        pos.y = _kid.transform.position.y;
-        _kid.transform.position = pos;
+        _CutsceneManager.PlayCutscene(0);
+        _player.SetActive(false);
 
-        // face the enemy (or any target)
-        Vector3 dir = _enemy.transform.position - _kid.transform.position;
-        dir.y = 0f;
-
-        if (dir.sqrMagnitude > 0.0001f)
-        {
-            _kid.transform.rotation = Quaternion.LookRotation(dir);
-        }
     }
 }

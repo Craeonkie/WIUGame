@@ -1,5 +1,5 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Inventory : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private GameObject _secondaryItem;
     [SerializeField] private GameObject _currentItem;
 
-    public static System.Action<string, float, float> OnEquip;
+    public static System.Action<Item> OnEquipPrimary, OnEquipSecondary, OnEquipShield;
 
     void Start()
     {
@@ -88,6 +88,66 @@ public class Inventory : MonoBehaviour
     // Equip item in the primary slot
     public void EquipPrimary()
     {
+        // UI EVENT CALL
+        // SCENARIO 1 --> EQUIP PRIMARY ONLY, BECAUSE SHIELD ICON DOESN'T CHANGE
+        // Check if current item is SHIELD
+        if (_currentItem != null && _currentItem != _secondaryItem && _primaryItem != null)
+        {
+            Debug.Log("Scenario P1, Item name: " + _primaryItem.name);
+
+            // Check if it was NOT a shield
+            if (_currentItem.GetComponent<WeaponWithBlock>() == null)
+            {
+                Debug.Log("Equipped!");
+                OnEquipPrimary?.Invoke(_currentItem.GetComponent<Item>());
+            }
+            else
+            {
+                OnEquipShield?.Invoke(_primaryItem.GetComponent<Item>());
+            }
+        }
+        // SCENARIO 2 --> EQUIP PRIMARY AND SWAP OUT PRIMARY AND SECONDARY IN UI
+        else if (_currentItem != null && _currentItem == _secondaryItem && _primaryItem != null)
+        {
+            Debug.Log("Scenario P2, Primary Item name: " + _primaryItem.name);
+            Debug.Log("Scenario P2, Current Item name: " + _currentItem.name);
+            Debug.Log("Scenario P2, Secondary Item name: " + _secondaryItem.name);
+
+            // Check if it was NOT a shield
+            if (_primaryItem.GetComponent<WeaponWithBlock>() == null)
+            {
+                Debug.Log("Equipped!");
+                OnEquipSecondary?.Invoke(_secondaryItem.GetComponent<Item>());
+                OnEquipPrimary?.Invoke(_primaryItem.GetComponent<Item>());
+            }
+            else
+            {
+                OnEquipShield?.Invoke(_primaryItem.GetComponent<Item>());
+            }
+            // ELSE DO NOTHING
+        }
+        // SCENARIO 3 --> EQUIP PRIMARY ONLY, BECAUSE NO WEAPONS ARE ON HAND
+        else if (_currentItem == null && _primaryItem != null)
+        {
+            Debug.Log("Scenario P3, Item name: " + _primaryItem.name);
+
+            // Check if it was NOT a shield
+            if (_primaryItem.GetComponent<WeaponWithBlock>() == null)
+            {
+                Debug.Log("Equipped!");
+                Debug.Log("Primary item has item component: " + _primaryItem.GetComponent<Item>());
+                OnEquipPrimary?.Invoke(_primaryItem.GetComponent<Item>());
+                if (_secondaryItem == null)
+                    OnEquipSecondary?.Invoke(null);
+            }
+            else
+            {
+                OnEquipShield?.Invoke(_primaryItem.GetComponent<Item>());
+            }
+        }
+        // SCENARIO 4 --> EQUIP PRIMARY, BECAUSE CURRENT ITEM IS NULL
+        //else if (_currentItem == null)
+
         if (_currentItem != null)
         {
             _currentItem.SetActive(false);
@@ -96,25 +156,45 @@ public class Inventory : MonoBehaviour
         if (_currentItem != null)
         {
             _currentItem.SetActive(true);
-
-            // Check item type
-            string itemType = "";
-            if (_currentItem.GetComponent<StandardWeapon>()) itemType = "Weapon";
-            else if (_currentItem.GetComponent<WeaponWithBlock>()) itemType = "Shield";
-
-            var item = _currentItem.GetComponent<Item>();
-
-            OnEquip?.Invoke(itemType, item.currentDurability, item.maxDurability);
-        }
-        else
-        {
-            OnEquip?.Invoke(null, 0, 0);
         }
     }
 
     // Equip item in the secondary slot
     public void EquipSecondary()
     {
+        // UI EVENT CALL
+        // SCENARIO 1: CURRENT ITEM IS EMPTY, BUT SECONDARY ITEM EXISTS
+        if (_currentItem == null && _secondaryItem != null && _primaryItem == null)
+        {
+            Debug.Log("Scenario S1, Item Name: " + _secondaryItem.name);
+
+            // Check if the secondary item ISN'T a shield item
+            if (_secondaryItem.GetComponent<WeaponWithBlock>() == null)
+            {
+                Debug.Log("Equipped!");
+                OnEquipPrimary?.Invoke(_secondaryItem.GetComponent<Item>()); // SWAP IT TO THE PRIMARY SLOT
+            }
+        }
+        // SCENARIO 2: CURRENT ITEM IS EITHER THE PRIMARY ITEM OR SHIELD AND SECONDARY ITEM IS NOT THE CURRENT ITEM AND EXISTS
+        else if (_currentItem != null && _secondaryItem != null && _currentItem != _secondaryItem)
+        {
+            Debug.Log("Scenario S2, Item Name: " + _secondaryItem.name);
+
+            // CHECK IF CURRENT ITEM IS NOT A SHIELD
+            if (_currentItem.GetComponent<WeaponWithBlock>() == null)
+            {
+                Debug.Log("Equipped!");
+                OnEquipPrimary?.Invoke(_secondaryItem.GetComponent<Item>());
+                OnEquipSecondary?.Invoke(_primaryItem.GetComponent<Item>());
+            }
+            else
+            {
+                Debug.Log("Equipped!");
+                OnEquipPrimary?.Invoke(_secondaryItem.GetComponent<Item>());
+                OnEquipShield?.Invoke(_primaryItem.GetComponent<Item>());
+            }
+        }
+
         if (_currentItem != null)
         {
             _currentItem.SetActive(false);
@@ -137,19 +217,33 @@ public class Inventory : MonoBehaviour
             Vector3 dropPos = transform.position + transform.forward * 1.0f + Vector3.up * 0.5f;
             item.GetComponent<Item>().Drop(dropPos, Vector3.forward * 5.0f);
             item.transform.SetParent(null);
-
-            OnEquip?.Invoke(null, 0, 0);
         }
     }
 
     // Remove the item from the inventory
     public void RemoveItemFromInventory(GameObject item)
     {
+        Debug.Log("remove called!");
+
         if (item != null)
         {
             // Remove item from current hand
             if (_currentItem == item)
             {
+                // Check if it's the shield
+                if (item.GetComponent<WeaponWithBlock>())
+                    OnEquipShield?.Invoke(null);
+                else if (_currentItem == _primaryItem)
+                    OnEquipPrimary?.Invoke(null);
+                else if (_currentItem == _secondaryItem) {
+                    Debug.Log("dropping a throwable");
+                    Debug.Log("primary: " + _primaryItem);
+                    Debug.Log("secondary: " + _secondaryItem);
+                    
+                    OnEquipPrimary?.Invoke(null);
+                    OnEquipSecondary?.Invoke(_primaryItem.GetComponent<Item>());
+                }
+
                 _currentItem = null;
             }
 

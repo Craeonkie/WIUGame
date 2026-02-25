@@ -66,18 +66,6 @@ public class C_FriendBoss : Entity
         }
     }
 
-    //public override void TakeDamage(float damageTaken)
-    //{
-    //    if (!isDodging)
-    //    {
-    //        gettingAtkAction?.Invoke();
-    //        _currentHP -= damageTaken;
-    //        if (_currentHP <= 0)
-    //        {
-    //            Die();
-    //        }
-    //    }
-    //}
 
     public void CheckPhase()
     {
@@ -90,7 +78,7 @@ public class C_FriendBoss : Entity
                 if (TransitionPhase1Action != null)
                 {
                     TransitionPhase1Action?.Invoke();
-                    Teleport();
+                    //Teleport();
                 }
             }
 

@@ -62,7 +62,7 @@ public class C_TrajectorySimulation : MonoBehaviour
         }, false //to prevent returning obj that is already in the pool
         , 100, 800
         );
-        C_FriendBoss.TransitionPhase1Action += awakeThis;
+        C_Catapult.CatapultEnabled += awakeThis;
 
     }
     void EnsureSimulationScene()
@@ -181,7 +181,7 @@ public class C_TrajectorySimulation : MonoBehaviour
             _ghostBallPool.Clear();  
             _ghostBallPool.Dispose();
         }
-        C_FriendBoss.TransitionPhase1Action -= awakeThis;
+        C_Catapult.CatapultEnabled += awakeThis;
     }
     private void awakeThis()
     {

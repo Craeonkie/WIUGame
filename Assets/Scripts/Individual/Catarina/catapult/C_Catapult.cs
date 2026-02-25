@@ -30,6 +30,7 @@ public class C_Catapult : MonoBehaviour
 
     public static event System.Action<C_BossCameraManager.c_CameraMode> ExitCatapultMode;
     public static event System.Action<C_BossCameraManager.c_CameraMode> EnterCatapultMode;
+    public static event System.Action CatapultEnabled;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -146,6 +147,7 @@ public class C_Catapult : MonoBehaviour
     private void OnEnable()
     {
         C_CatapultChecker.ChangeMoveAction += ChangeCanMove;
+        awakeThis();
     }
 
     private void OnDisable()
@@ -153,19 +155,10 @@ public class C_Catapult : MonoBehaviour
         C_CatapultChecker.ChangeMoveAction -= ChangeCanMove;
     }
 
-    private void Awake()
+    public void awakeThis()
     {
-        C_FriendBoss.TransitionPhase1Action += awakeThis;
-    }
-
-    private void OnDestroy()
-    {
-        C_FriendBoss.TransitionPhase1Action -= awakeThis;
-    }
-    private void awakeThis()
-    {
-        this.enabled = true;
         _playerInput.enabled = true;
         EnterCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.CATAPULT_CAMERA);
+        CatapultEnabled?.Invoke();
     }
 }

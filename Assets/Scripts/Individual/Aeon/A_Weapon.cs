@@ -8,6 +8,7 @@ public abstract class Weapon : Item
     protected bool isAttacking = false;
     protected bool isBlocking = false;
     protected float currentAttackDamage;
+    public static System.Action<float, float> OnDurabilityChange;
 
     protected new void Start()
     {
@@ -65,6 +66,7 @@ public abstract class Weapon : Item
                 {
                     canLoseDurabilityThisAttack = false;
                     currentDurability -= _currentAnimation.durabilityUsed;
+                    OnDurabilityChange?.Invoke(currentDurability, maxDurability);
                 }
             }
             else
@@ -77,6 +79,7 @@ public abstract class Weapon : Item
                     {
                         canLoseDurabilityThisAttack = false;
                         currentDurability -= _currentAnimation.durabilityUsed;
+                        OnDurabilityChange?.Invoke(currentDurability, maxDurability);
                     }
                 }
             }

@@ -48732,7 +48732,7 @@ MonoBehaviour:
           m_CallState: 2
         - m_Target: {fileID: 1214139270}
           m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-          m_MethodName: ResetCamera
+          m_MethodName: CenterFollowCamera
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -49977,9 +49977,12 @@ MonoBehaviour:
   primary:
   - damage: 1
     durabilityUsed: 0
+    energyUsed: 0
     hasRootMotion: 0
     pressAndHold: 0
     isBlock: 0
+    rotation: {x: 0, y: 0, z: 0}
+    rotationSpeed: 0
     animationClip: {fileID: -203655887218126122, guid: 1ff090c11757d3544b9fa499f87f22b2, type: 3}
     audioClip: {fileID: 0}
   secondary: []
@@ -49987,6 +49990,7 @@ MonoBehaviour:
   hasDurability: 0
   maxDurability: 0
   currentDurability: 0
+  consumesEnergy: 0
   offset: {x: 0, y: 0, z: 0}
   audioSource: {fileID: 0}
   weaponBreakingSound: {fileID: 0}
@@ -55017,7 +55021,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!199 &2042844965
 ParticleSystemRenderer:
   serializedVersion: 7
