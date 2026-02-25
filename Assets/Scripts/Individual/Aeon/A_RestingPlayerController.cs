@@ -27,7 +27,7 @@ public class RestingPlayerController : Entity
 
     [Header("References")]
     [SerializeField] private GroundChecker groundChecker;
-    [SerializeField] private MouseMovement mouseMovement;
+    [SerializeField] private MouseMovement[] mouseMovements;
 
     private Vector2 _inputMove;
     private bool _inDialogue;
@@ -48,7 +48,6 @@ public class RestingPlayerController : Entity
             _interactAction.Enable();
         }
 
-        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
@@ -130,7 +129,10 @@ public class RestingPlayerController : Entity
     public void ToggleInDialogue(bool inDialogue)
     {
         _inDialogue = inDialogue;
-        mouseMovement.enabled = !inDialogue;
+        foreach (MouseMovement mouseMovement in mouseMovements)
+        {
+            mouseMovement.enabled = !inDialogue;
+        }
     }
 
     private void OnDrawGizmosSelected()

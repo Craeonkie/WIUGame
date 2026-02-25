@@ -659,7 +659,7 @@ MonoBehaviour:
   _isMovingObject: 0
   _isHoldingItem: 0
   _canPlayerInput: 1
-  _playerInputPaused: 1
+  _playerInputPaused: 0
   _isAiming: 0
   _wasGroundedPreviously: 0
   _itemBeingMoved: {fileID: 0}

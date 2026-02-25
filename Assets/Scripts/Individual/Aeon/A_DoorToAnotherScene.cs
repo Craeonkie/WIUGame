@@ -1,13 +1,20 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DoorToAnotherScene : Interactable
 {
     [SerializeField] private string nextSceneName;
     [SerializeField] private GameObject doorGameobject;
+    [SerializeField] private DialogueMenu _dialogueMenu;
+    [SerializeField] private Dialogue _dialogue;
+    public UnityEvent interactWith;
 
     public override void InteractWith()
     {
-        SceneLoader.Instance.LoadScene(nextSceneName);
+        if (interactWith != null)
+        {
+            interactWith.Invoke();
+        }
     }
 
     // Set the door open (Should not ever be true, true, for our purposes)
@@ -26,18 +33,21 @@ public class DoorToAnotherScene : Interactable
         }
         if (isEnterable)
         {
-            Debug.Log(gameObject.name + " here");
-            tag = "Interactable";
+            _dialogue.SetDialogueID(1);
         }
         else
         {
-            Debug.Log(gameObject.name + " here");
-            tag = "Untagged";
+            _dialogue.SetDialogueID(0);
         }
     }
 
     public string ReturnNextSceneName()
     {
         return nextSceneName;
+    }
+
+    public void GoToNextScene()
+    {
+        SceneLoader.Instance.LoadScene(nextSceneName);
     }
 }

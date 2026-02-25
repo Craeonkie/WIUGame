@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class NPCInteractable : Interactable
+public class DialogueInteractable : Interactable
 {
     [SerializeField] private float rotationSpeed;
     private bool facingPlayer;
     private RestingPlayerController player;
-    public UnityEvent interactWithNPC;
+    public UnityEvent triggerDialogue;
 
     private void Start()
     {
@@ -16,20 +16,20 @@ public class NPCInteractable : Interactable
     public override void InteractWith()
     {
         base.InteractWith();
-        interactWithNPC.Invoke();
+        triggerDialogue.Invoke();
     }
 
-    public void ExitDialogue()
-    {
-        facingPlayer = false;
-    }
+    //public void ExitDialogue()
+    //{
+    //    facingPlayer = false;
+    //}
 
     private void Update()
     {
-        // Rotate NPC towards player
-        if (facingPlayer)
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position), Time.deltaTime * rotationSpeed);
-        }
+        //// Rotate NPC towards player
+        //if (facingPlayer)
+        //{
+        //    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position), Time.deltaTime * rotationSpeed);
+        //}
     }
 }

@@ -198,22 +198,6 @@ public class PlayerController : Entity
 
                     float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
                     transform.eulerAngles = new Vector3(0, newY, 0);
-
-                    // Flatten the camera's forward and right onto the XZ plane
-                    //Vector3 playerForward = topDownCamera.transform.forward;
-                    //playerForward.y = 0;
-                    //playerForward.Normalize();
-
-                    //Vector3 playerRight = topDownCamera.transform.right;
-                    //playerRight.y = 0;
-                    //playerRight.Normalize();
-
-                    //Vector3 moveDir = playerForward * _inputMove.y + playerRight * _inputMove.x;
-                    //Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
-
-                    //float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
-                    //transform.eulerAngles = new Vector3(0, newY, 0);
-
                 }
                 _rollDirection = transform.forward;
             }
