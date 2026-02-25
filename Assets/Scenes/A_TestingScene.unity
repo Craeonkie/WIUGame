@@ -1242,6 +1242,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6845742482195035334, guid: 2e48fea1c3709da4087390f6ab608e56, type: 3}
+      propertyPath: primary.Array.data[0].animationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 5382c9f3a528413448fc27554dd73d74, type: 3}
+    - target: {fileID: 6845742482195035334, guid: 2e48fea1c3709da4087390f6ab608e56, type: 3}
+      propertyPath: primary.Array.data[1].animationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 16b4a0031272510489ca40cdfd99c114, type: 3}
+    - target: {fileID: 6845742482195035334, guid: 2e48fea1c3709da4087390f6ab608e56, type: 3}
+      propertyPath: special.Array.data[0].animationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: f94c62a8b96f5a7469ce0da8ccac09b3, type: 3}
     - target: {fileID: 8541783717229059686, guid: 2e48fea1c3709da4087390f6ab608e56, type: 3}
       propertyPath: m_Name
       value: Bread Weapon
@@ -1782,6 +1794,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bolster Weapon
       objectReference: {fileID: 0}
+    - target: {fileID: 7799722250576519343, guid: d53529ec2239f3c43a1b6aedc1dc2ff0, type: 3}
+      propertyPath: primary.Array.data[0].animationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 5382c9f3a528413448fc27554dd73d74, type: 3}
+    - target: {fileID: 7799722250576519343, guid: d53529ec2239f3c43a1b6aedc1dc2ff0, type: 3}
+      propertyPath: primary.Array.data[1].animationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 16b4a0031272510489ca40cdfd99c114, type: 3}
     - target: {fileID: 9022375702063682363, guid: d53529ec2239f3c43a1b6aedc1dc2ff0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.63
@@ -1936,6 +1956,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hammer Weapon
       objectReference: {fileID: 0}
+    - target: {fileID: 7672325754935206846, guid: 9cf80ae0ebe6138449a432369fc08482, type: 3}
+      propertyPath: primary.Array.data[0].animationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 5382c9f3a528413448fc27554dd73d74, type: 3}
+    - target: {fileID: 7672325754935206846, guid: 9cf80ae0ebe6138449a432369fc08482, type: 3}
+      propertyPath: primary.Array.data[1].animationClip
+      value: 
+      objectReference: {fileID: 7400000, guid: 16b4a0031272510489ca40cdfd99c114, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

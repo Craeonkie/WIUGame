@@ -312,18 +312,15 @@ public class PlayerController : Entity
                     if (tag == "Weapon")
                     {
                         inventory.PutItemInPrimary(closestInteractable.gameObject, this);
-                        inventory.EquipPrimary();
-                        animationHandler.EquipItem((Item)closestInteractable);
+                        animationHandler.ReferenceItem((Item)closestInteractable);
                     }
                     else if (tag == "Item")
                     {
                         inventory.PutItemInSecondary(closestInteractable.gameObject, this);
-                        inventory.EquipSecondary();
-                        animationHandler.EquipItem((Item)closestInteractable);
+                        animationHandler.ReferenceItem((Item)closestInteractable);
                     }
                     else if (tag == "Interactable")
                     {
-                        Debug.Log("here");
                         closestInteractable.InteractWith();
                     }
                     //else if (tag == "Moveable")
@@ -397,10 +394,10 @@ public class PlayerController : Entity
                 if (_equipPrimary.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
                     inventory.EquipPrimary();
-                    animationHandler.UnequipItem();
+                    animationHandler.StopReferencingOldItem();
                     if (inventory.ReturnCurrentItem() != null)
                     {
-                        animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                        animationHandler.ReferenceItem(inventory.ReturnCurrentItem().GetComponent<Item>());
                     }
                 }
 
@@ -408,10 +405,10 @@ public class PlayerController : Entity
                 if (_equipSecondary.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
                     inventory.EquipSecondary();
-                    animationHandler.UnequipItem();
+                    animationHandler.StopReferencingOldItem();
                     if (inventory.ReturnCurrentItem() != null)
                     {
-                        animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                        animationHandler.ReferenceItem(inventory.ReturnCurrentItem().GetComponent<Item>());
                     }
                 }
             }

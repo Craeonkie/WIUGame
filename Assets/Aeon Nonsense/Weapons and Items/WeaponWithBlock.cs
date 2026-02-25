@@ -34,9 +34,9 @@ public class WeaponWithBlock : Weapon
                 _currentAnimationChain = 0;
                 _chainingAnimation = false;
                 _resetAnimationChain = false;
+                isBlockingBeingHeld = isBeingHeld;
                 PerformAction();
             }
-            isBlockingBeingHeld = isBeingHeld;
             return;
         }
 

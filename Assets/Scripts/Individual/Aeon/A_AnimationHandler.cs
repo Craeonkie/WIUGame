@@ -170,9 +170,9 @@ public class AnimationHandler : MonoBehaviour
     }
 
     // Equip the referenced item
-    public void EquipItem(Item item)
+    public void ReferenceItem(Item item)
     {
-        UnequipItem();
+        StopReferencingOldItem();
         _currentItem = item;
         _currentItem.transform.localEulerAngles = Vector3.zero;
         _currentItem.SetAnimationHandler(this);
@@ -180,24 +180,22 @@ public class AnimationHandler : MonoBehaviour
     }
 
     // Update animation handler to stop referencing current item
-    public void UnequipItem()
+    public void StopReferencingOldItem()
     {
         if (_currentItem != null)
         {
             _currentItem.transform.localEulerAngles = Vector3.zero;
-            _currentItem.SetAnimationHandler(null);
             _currentItem = null;
             GoBackToIdle();
         }
     }
 
-    // Update animation handler to stop referencing current item
-    public void UnequipItemButFinishAnimation()
+    // Update animation handler to stop referencing current item but let the animation it had finish (throwing)
+    public void StopReferencingItemButFinishAnimation()
     {
         if (_currentItem != null)
         {
             _currentItem.transform.localEulerAngles = Vector3.zero;
-            _currentItem.SetAnimationHandler(null);
             _currentItem = null;
             _letAnimationFinish = true;
         }

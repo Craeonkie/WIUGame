@@ -84,49 +84,6 @@ public abstract class Weapon : Item
         }
     }
 
-    // Drops an item rigidbody wise and in this case, breaks the item if it has a durability and it's too low
-    public override void Drop(Vector3 dropPos, Vector3 force)
-    {
-        // Unparent
-        transform.SetParent(null);
-        _currentAnimationChain = 0;
-        _isActing = false;
-        EndAction();
-        // Make animation handler stop equipping it, then stop referencing it
-        _animationHandler.UnequipItem();
-        _animationHandler = null;
-        _entityUsingItem = null;
-
-        // Enable physics
-        if (TryGetComponent<Rigidbody>(out Rigidbody rb))
-        {
-            rb.isKinematic = false;
-            rb.useGravity = true;
-        }
-        if (TryGetComponent<Collider>(out Collider col))
-        {
-            col.isTrigger = false;
-        }
-
-        // Position and add force to the item
-        transform.position = dropPos;
-        rb.linearVelocity = Vector3.zero;
-        rb.AddForce(force, ForceMode.Impulse);
-
-        if (_destroyUponDrop)
-        {
-            // Change tag accordingly
-            tag = "Untagged";
-            _hasBeenDropped = true;
-            _timeBeforeDestroyed = _maxTimeBeforeDestroyed;
-        }
-
-        if (currentDurability <= 0 && hasDurability)
-        {
-            gameObject.SetActive(false);
-        }
-    }
-
     public override void ResetItem()
     {
         currentDurability = maxDurability;
