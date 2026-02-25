@@ -99,7 +99,7 @@ public class Inventory : MonoBehaviour
 
             // Check item type
             string itemType = "";
-            if (_currentItem.GetComponent<StandardWeapon>() || _currentItem.GetComponent<StabWeapon>()) itemType = "Weapon";
+            if (_currentItem.GetComponent<StandardWeapon>()) itemType = "Weapon";
             else if (_currentItem.GetComponent<WeaponWithBlock>()) itemType = "Shield";
 
             var item = _currentItem.GetComponent<Item>();

@@ -51,7 +51,7 @@ public abstract class Weapon : Item
 
     public void BlockDamage()
     {
-        currentDurability -= _currentAnimation.durabilityUsedByAttacking;
+        currentDurability -= _currentAnimation.durabilityUsed;
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -64,7 +64,7 @@ public abstract class Weapon : Item
                 if (canLoseDurabilityThisAttack)
                 {
                     canLoseDurabilityThisAttack = false;
-                    currentDurability -= _currentAnimation.durabilityUsedByAttacking;
+                    currentDurability -= _currentAnimation.durabilityUsed;
                 }
             }
             else
@@ -76,7 +76,7 @@ public abstract class Weapon : Item
                     if (canLoseDurabilityThisAttack)
                     {
                         canLoseDurabilityThisAttack = false;
-                        currentDurability -= _currentAnimation.durabilityUsedByAttacking;
+                        currentDurability -= _currentAnimation.durabilityUsed;
                     }
                 }
             }

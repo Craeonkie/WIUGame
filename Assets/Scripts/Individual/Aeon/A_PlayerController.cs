@@ -82,7 +82,7 @@ public class PlayerController : Entity
     [SerializeField] private bool _isMovingObject = false;
     [SerializeField] private bool _isHoldingItem = false;
     [SerializeField] private bool _canPlayerInput = true;
-    [SerializeField] private bool _playerInputPaused = true;
+    [SerializeField] private bool _playerInputPaused = false;
     [SerializeField] private bool _isAiming = false;
     [SerializeField] private bool _wasGroundedPreviously = false;
     [SerializeField] private GameObject _itemBeingMoved;
@@ -115,7 +115,8 @@ public class PlayerController : Entity
 
         Cursor.lockState = CursorLockMode.Locked;
 
-        _rollDirection = Vector3.forward;;
+        _rollDirection = Vector3.forward;
+;
         _remainingEnergy = _maxEnergy;
         _canUseSpecial = true;
     }
@@ -160,7 +161,7 @@ public class PlayerController : Entity
         bool canMove = animationHandler.CanMove();
         bool isGrounded = groundChecker.IsGrounded();
         _inputMove = _moveAction.ReadValue<Vector2>();
-        bool isMoving = _inputMove != Vector2.zero && canMove && !_isStunned;
+        bool isMoving = _inputMove != Vector2.zero && canMove && !_isStunned && !_playerInputPaused;
 
         // Only accept input and rotation if player isn't stunned
         if (!_isStunned)
@@ -181,7 +182,7 @@ public class PlayerController : Entity
             }
 
             // Runs if is grounded and not jumping
-            if (isGrounded && !_isJumping)
+            if (isGrounded && !_isJumping && !_playerInputPaused)
             {
                 // Jumping
                 if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_isAiming && !_isMovingObject)
@@ -643,7 +644,7 @@ public class PlayerController : Entity
     public void TogglePlayerAbilityToAct(bool canAct)
     {
         InterruptAction();
-        _playerInputPaused = canAct;
+        _playerInputPaused = !canAct;
         _canPlayerInput = canAct;
     }
 

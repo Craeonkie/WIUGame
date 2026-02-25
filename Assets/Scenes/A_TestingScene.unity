@@ -1597,18 +1597,6 @@ PrefabInstance:
       propertyPath: thirdPersonCamera
       value: 
       objectReference: {fileID: 407119109}
-    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
-      propertyPath: _maxSpecialCooldown
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
-      propertyPath: _invincibilityCooldown
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
-      propertyPath: _invincibilityMaxCooldown
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8607788634351402262, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.26

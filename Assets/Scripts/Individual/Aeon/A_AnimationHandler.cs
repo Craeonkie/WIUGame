@@ -212,7 +212,7 @@ public struct Animation
 {
     [Header("Animation Information")]
     public float damage;
-    public int durabilityUsedByAttacking;
+    public int durabilityUsed;
     public int energyUsed;
     public bool hasRootMotion;
     public bool pressAndHold;

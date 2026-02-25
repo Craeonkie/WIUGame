@@ -417,22 +417,22 @@ MonoBehaviour:
     isBlock: 0
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 720
-    animationClip: {fileID: 1827226128182048838, guid: 97535de166f71ef42aa10a6e985a1dd8, type: 3}
+    animationClip: {fileID: 7400000, guid: 5382c9f3a528413448fc27554dd73d74, type: 3}
     audioClip: {fileID: 0}
   - damage: 10
-    durabilityUsed: 2
+    durabilityUsed: 3
     energyUsed: 0
     hasRootMotion: 0
     pressAndHold: 0
     isBlock: 0
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 720
-    animationClip: {fileID: 1827226128182048838, guid: f21b60013b235a049abe20c4478d913d, type: 3}
+    animationClip: {fileID: 7400000, guid: 16b4a0031272510489ca40cdfd99c114, type: 3}
     audioClip: {fileID: 0}
   secondary: []
   special:
   - damage: 30
-    durabilityUsed: 5
+    durabilityUsed: 3
     energyUsed: 0
     hasRootMotion: 1
     pressAndHold: 0
@@ -448,6 +448,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   audioSource: {fileID: 5934618741953710455}
   weaponBreakingSound: {fileID: 0}
+  _animationHandler: {fileID: 0}
   _entityUsingItem: {fileID: 0}
   _isActing: 0
   _resetAnimationChain: 0
