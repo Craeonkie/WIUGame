@@ -49,7 +49,22 @@ public class ObjectWith3DAudio : MonoBehaviour
             //StopTracking();
             //trackingCoroutine = coroutineRunner.StartCoroutine(TrackAudioCompletion());
         }
+    }
 
+    public void PlayLerp()
+    {
+        if (audio3D != null)
+        {
+            audio3D.PlayLerp();
+        }
+    }
+
+    public void PlayLerpCustom(float lerpTime)
+    {
+        if (audio3D != null)
+        {
+            audio3D.PlayLerpCustom(lerpTime);
+        }
     }
 
     public void Pause()
@@ -97,6 +112,21 @@ public class ObjectWith3DAudio : MonoBehaviour
     {
         if (audio3D != null)
             audio3D.Stop();
+    }
+
+    public void StopLerp() {
+        if (audio3D != null)
+        {
+            audio3D.StopLerp();
+        }
+    }
+
+    public void StopLerpCustom(float lerpTime)
+    {
+        if (audio3D != null)
+        {
+            audio3D.StopLerpCustom(lerpTime);
+        }
     }
 
     public void Resume()
