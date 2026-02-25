@@ -606,6 +606,7 @@ MonoBehaviour:
   isDodging: 0
   _animationHasReset: 0
   _hasDamageFlicker: 1
+  _isBlocking: 0
   hitAudio: []
   deathAudio: {fileID: 0}
   audioSource: {fileID: 0}

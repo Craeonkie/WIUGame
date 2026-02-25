@@ -82,7 +82,7 @@ public class PlayerController : Entity
     [SerializeField] private bool _isMovingObject = false;
     [SerializeField] private bool _isHoldingItem = false;
     [SerializeField] private bool _canPlayerInput = true;
-    [SerializeField] private bool _playerInputPaused = true;
+    [SerializeField] private bool _playerInputPaused = false;
     [SerializeField] private bool _isAiming = false;
     [SerializeField] private bool _wasGroundedPreviously = false;
     [SerializeField] private GameObject _itemBeingMoved;
@@ -116,7 +116,7 @@ public class PlayerController : Entity
         Cursor.lockState = CursorLockMode.Locked;
 
         _rollDirection = Vector3.forward;
-
+;
         _remainingEnergy = _maxEnergy;
         _canUseSpecial = true;
     }
@@ -161,7 +161,7 @@ public class PlayerController : Entity
         bool canMove = animationHandler.CanMove();
         bool isGrounded = groundChecker.IsGrounded();
         _inputMove = _moveAction.ReadValue<Vector2>();
-        bool isMoving = _inputMove != Vector2.zero && canMove && !_isStunned;
+        bool isMoving = _inputMove != Vector2.zero && canMove && !_isStunned && !_playerInputPaused;
 
         // Only accept input and rotation if player isn't stunned
         if (!_isStunned)
@@ -182,7 +182,7 @@ public class PlayerController : Entity
             }
 
             // Runs if is grounded and not jumping
-            if (isGrounded && !_isJumping)
+            if (isGrounded && !_isJumping && !_playerInputPaused)
             {
                 // Jumping
                 if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_isAiming && !_isMovingObject)
@@ -315,18 +315,15 @@ public class PlayerController : Entity
                         Debug.Log("closest interactable game object: " + closestInteractable.gameObject);
                         Debug.Log("this: " + this);
                         inventory.PutItemInPrimary(closestInteractable.gameObject, this);
-                        //inventory.EquipPrimary();
-                        animationHandler.EquipItem((Item)closestInteractable);
+                        animationHandler.ReferenceItem((Item)closestInteractable);
                     }
                     else if (tag == "Item")
                     {
                         inventory.PutItemInSecondary(closestInteractable.gameObject, this);
-                        //inventory.EquipSecondary();
-                        animationHandler.EquipItem((Item)closestInteractable);
+                        animationHandler.ReferenceItem((Item)closestInteractable);
                     }
                     else if (tag == "Interactable")
                     {
-                        Debug.Log("here");
                         closestInteractable.InteractWith();
                     }
                     //else if (tag == "Moveable")
@@ -400,10 +397,10 @@ public class PlayerController : Entity
                 if (_equipPrimary.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
                     inventory.EquipPrimary();
-                    animationHandler.UnequipItem();
+                    animationHandler.StopReferencingOldItem();
                     if (inventory.ReturnCurrentItem() != null)
                     {
-                        animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                        animationHandler.ReferenceItem(inventory.ReturnCurrentItem().GetComponent<Item>());
                     }
                 }
 
@@ -411,10 +408,10 @@ public class PlayerController : Entity
                 if (_equipSecondary.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
                     inventory.EquipSecondary();
-                    animationHandler.UnequipItem();
+                    animationHandler.StopReferencingOldItem();
                     if (inventory.ReturnCurrentItem() != null)
                     {
-                        animationHandler.EquipItem(inventory.ReturnCurrentItem().GetComponent<Item>());
+                        animationHandler.ReferenceItem(inventory.ReturnCurrentItem().GetComponent<Item>());
                     }
                 }
             }
@@ -602,30 +599,37 @@ public class PlayerController : Entity
     {
         if (!isInvincible && !isDodging)
         {
-            _currentHP -= damageTaken;
-            _animator.SetTrigger("GetHit");
-            _invincibilityMaxCooldown = invincibilityLength;
-            _invincibilityCooldown = invincibilityLength;
-            OnPlayerHealthChanged?.Invoke(_currentHP, _maxHP);
-
-            if (hitAudio.Length > 0 && audioSource != null)
+            if (inventory.ReturnCurrentItem().TryGetComponent<Weapon>(out Weapon currentWeapon) && currentWeapon.IsBlocking())
             {
-                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
-            }
-            if (_currentHP <= 0)
-            {
-                audioSource.PlayOneShot(deathAudio);
-                Die();
+                currentWeapon.BlockDamage();
             }
             else
             {
-                if (_invincibilityCooldown > 0)
-                {
-                    isInvincible = true;
-                }
-            }
+                _currentHP -= damageTaken;
+                _animator.SetTrigger("GetHit");
+                _invincibilityMaxCooldown = invincibilityLength;
+                _invincibilityCooldown = invincibilityLength;
+                OnPlayerHealthChanged?.Invoke(_currentHP, _maxHP);
 
-            InterruptAction();
+                if (hitAudio.Length > 0 && audioSource != null)
+                {
+                    audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+                }
+                if (_currentHP <= 0)
+                {
+                    audioSource.PlayOneShot(deathAudio);
+                    Die();
+                }
+                else
+                {
+                    if (_invincibilityCooldown > 0)
+                    {
+                        isInvincible = true;
+                    }
+                }
+
+                InterruptAction();
+            }
         }
     }
 
@@ -642,7 +646,7 @@ public class PlayerController : Entity
     public void TogglePlayerAbilityToAct(bool canAct)
     {
         InterruptAction();
-        _playerInputPaused = canAct;
+        _playerInputPaused = !canAct;
         _canPlayerInput = canAct;
     }
 

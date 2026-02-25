@@ -38,7 +38,7 @@ public abstract class Item : Interactable
     public AudioClip weaponBreakingSound;
 
     [Header("Exposed for debugging")]
-    protected AnimationHandler _animationHandler;
+    [SerializeField] protected AnimationHandler _animationHandler;
     public Entity _entityUsingItem;
 
     protected InputType _inputType;
@@ -107,7 +107,7 @@ public abstract class Item : Interactable
     public virtual void PickUp(Entity entityUsingItem)
     {
         transform.SetLocalPositionAndRotation(Vector3.zero + offset, Quaternion.identity);
-        _entityUsingItem = entityUsingItem;
+        SetEntity(entityUsingItem);
 
         // Disable physics
         if (TryGetComponent<Rigidbody>(out Rigidbody rb))
@@ -115,9 +115,10 @@ public abstract class Item : Interactable
             rb.isKinematic = true;
             rb.useGravity = false;
         }
-        if (TryGetComponent<Collider>(out Collider col))
+
+        for (int i = 0; i < GetComponents<Collider>().Length; i++)
         {
-            col.isTrigger = true;
+            GetComponents<Collider>()[i].isTrigger = true;
         }
     }
 
@@ -130,9 +131,9 @@ public abstract class Item : Interactable
         _isActing = false;
         EndAction();
         // Make animation handler stop equipping it, then stop referencing it
-        _animationHandler.UnequipItem();
-        _animationHandler = null;
-        _entityUsingItem = null;
+        _animationHandler.StopReferencingOldItem();
+        SetAnimationHandler(null);
+        SetEntity(null);
 
         // Enable physics
         if (TryGetComponent<Rigidbody>(out Rigidbody rb))
@@ -140,9 +141,9 @@ public abstract class Item : Interactable
             rb.isKinematic = false;
             rb.useGravity = true;
         }
-        if (TryGetComponent<Collider>(out Collider col))
+        for (int i = 0; i < GetComponents<Collider>().Length; i++)
         {
-            col.isTrigger = false;
+            GetComponents<Collider>()[i].isTrigger = false;
         }
 
         // Position and add force to the item
@@ -157,6 +158,11 @@ public abstract class Item : Interactable
             _hasBeenDropped = true;
             _timeBeforeDestroyed = _maxTimeBeforeDestroyed;
         }
+
+        if (currentDurability <= 0 && hasDurability)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     // Set current animation handler (Upon pickup, drop, equip or unequip)
@@ -169,7 +175,7 @@ public abstract class Item : Interactable
     }
 
     // Set current entity wielding this (Upon pickup or drop)
-    public virtual void SetEntity(Entity entity)
+    protected virtual void SetEntity(Entity entity)
     {
         _entityUsingItem = entity;
     }

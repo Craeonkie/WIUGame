@@ -52,7 +52,7 @@ public class Inventory : MonoBehaviour
         DropItem(_primaryItem);
 
         _primaryItem = item;
-        if (item.TryGetComponent<WeaponWithBlock>(out WeaponWithBlock thisWeapon))
+        if (item.TryGetComponent<WeaponWithBlock>(out _))
         {
             item.transform.SetParent(_shieldSlot.transform);
         }

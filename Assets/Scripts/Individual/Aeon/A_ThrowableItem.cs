@@ -100,24 +100,6 @@ public class ThrowableItem : Item
         }
     }
 
-    // Picks up an item rigidbody wise and appends it to the player's hand slot
-    public override void PickUp(Entity entityUsingItem)
-    {
-        transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        _entityUsingItem = entityUsingItem;
-
-        // Disable physics
-        if (TryGetComponent<Rigidbody>(out Rigidbody rb))
-        {
-            rb.isKinematic = true;
-            rb.useGravity = false;
-        }
-        if (TryGetComponent<Collider>(out Collider col))
-        {
-            col.isTrigger = true;
-        }
-    }
-
     // Actually unparent and launch the item
     public virtual void Throw()
     {
@@ -162,9 +144,9 @@ public class ThrowableItem : Item
         }
 
         // Make animation handler stop equipping it, then stop referencing it
-        _animationHandler.UnequipItemButFinishAnimation();
-        _animationHandler = null;
-        _entityUsingItem = null;
+        _animationHandler.StopReferencingItemButFinishAnimation();
+        SetAnimationHandler(null);
+        SetEntity(null);
 
         // Change tag accordingly
         tag = "Untagged";
