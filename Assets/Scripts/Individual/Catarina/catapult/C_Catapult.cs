@@ -45,7 +45,6 @@ public class C_Catapult : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _inputActionAsset = _playerInput.actions;
         if (spawnTrajectory != null)
         {
             spawnTrajectory?.Invoke(GetShootVelocity());
@@ -60,6 +59,8 @@ public class C_Catapult : MonoBehaviour
     }
     private void Awake()
     {
+        _inputActionAsset = _playerInput.actions;
+
         C_CatapultManager.UseCatapult += AwakeThis;
         C_CatapultManager.CatapultSetObj += SpawnObj;
     }
@@ -108,7 +109,7 @@ public class C_Catapult : MonoBehaviour
         //a d = moving left and right
         bool changed = false;
 
-        Vector2 input = _inputActionAsset["Move"].ReadValue<Vector2>();
+        Vector2 input = _inputActionAsset.FindActionMap("Catapult")["Move"].ReadValue<Vector2>();
 
         if (input.y < 0)
         {
@@ -161,7 +162,8 @@ public class C_Catapult : MonoBehaviour
         }
         if (canShoot)
         {
-            if (_inputActionAsset["Interact"].WasPressedThisFrame())
+            if (_inputActionAsset.FindActionMap("Catapult")["Interact"].WasPressedThisFrame()
+)
             {
                 if (obj != null)
                 {
@@ -185,7 +187,6 @@ public class C_Catapult : MonoBehaviour
         yield return new WaitForSeconds(1.75f);
         ExitCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.PLAYER_CAMERA);
         this.enabled = false;
-        _playerInput.enabled = false;
         _traj.enabled = false;
     }
 
@@ -199,6 +200,7 @@ public class C_Catapult : MonoBehaviour
 
     private void OnEnable()
     {
+
         C_CatapultChecker.ChangeMoveAction += ChangeCanMove;
         awakeThis();
     }
@@ -209,11 +211,15 @@ public class C_Catapult : MonoBehaviour
         CatapultDisable?.Invoke();
         _traj.enabled = false;
         canShoot = false;
+        _playerInput.actions.FindActionMap("Catapult").Disable();
+        _playerInput.actions.FindActionMap("Player").Enable();
     }
 
     public void awakeThis()
     {
         _playerInput.enabled = true;
+        _playerInput.actions.FindActionMap("Player").Disable();
+        _playerInput.actions.FindActionMap("Catapult").Enable();
         EnterCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.CATAPULT_CAMERA);
         CatapultEnabled?.Invoke();
         _traj.enabled = true;
