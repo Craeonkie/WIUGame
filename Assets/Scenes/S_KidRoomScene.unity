@@ -641,6 +641,9 @@ MonoBehaviour:
   m_Events:
     m_Signals:
     - {fileID: 11400000, guid: 2a28c335baaf51546bd69ab27c27edaf, type: 2}
+    - {fileID: 11400000, guid: 0009a4494d784b145a10489294621f5b, type: 2}
+    - {fileID: 11400000, guid: 33056b7d9641d9f40a7655e8ba6466c4, type: 2}
+    - {fileID: 11400000, guid: 1597c9232f9a07049b27b84af09bdd4f, type: 2}
     m_Events:
     - m_PersistentCalls:
         m_Calls:
@@ -692,6 +695,126 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 161641513}
+          m_TargetAssemblyTypeName: AudioRetriever, Assembly-CSharp
+          m_MethodName: Play3DAtTransformNoReturnObject
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: DogBark5
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1562500560}
+          m_TargetAssemblyTypeName: ObjectWith3DAudio, Assembly-CSharp
+          m_MethodName: Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1562500560}
+          m_TargetAssemblyTypeName: ObjectWith3DAudio, Assembly-CSharp
+          m_MethodName: Stop
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &161641513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161641504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e025f2ac1563d364abaa1abd158dd9a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioRetriever
+--- !u!114 &161641515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161641504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18b77317398f0ef439cc7cee5b8eaf21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectWith3DAudio
+  _playOnStart: 1
+  audio3D:
+    name: Dog Panting
+    clip: {fileID: 8300000, guid: a93c40c3d8d6ccc458d804cd4c8183d2, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 60
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 128
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+--- !u!4 &161641516 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
+  m_PrefabInstance: {fileID: 471153484}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &161937471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1157,7 +1280,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 402743557}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0019273567, y: 0.9013612, z: -0.4330452, w: 0.0040116925}
+  m_LocalRotation: {x: 0.0019273987, y: 0.9013612, z: -0.4330452, w: 0.0040117814}
   m_LocalPosition: {x: 49.49, y: 15.42, z: -46.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1186,7 +1309,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 60.36
+      value: 66.25817
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1194,11 +1317,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -32.17
+      value: -43.533546
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.07385636
+      value: -0.9496201
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1206,7 +1329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9972689
+      value: 0.31340337
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1218,7 +1341,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -171.529
+      value: -396.529
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1379,7 +1502,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: -840777845830954692, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1562500561}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       insertIndex: -1
@@ -1393,6 +1519,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 161641512}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 161641513}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 161641515}
   m_SourcePrefab: {fileID: 100100000, guid: 0f1ed0181db739f4e840441e39723adc, type: 3}
 --- !u!1 &483173998
 GameObject:
@@ -1789,6 +1921,7 @@ MonoBehaviour:
   _dialogueText: {fileID: 1158154788}
   _dialogueName: {fileID: 64684883}
   _dialogueIcon: {fileID: 28191695}
+  _dialogueIcon2: {fileID: 0}
   _type: 0
   _isTyping: 0
   _maxDialogueLinesIndex: 0
@@ -2571,6 +2704,50 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4465315455489950968, guid: ef73d8cf5d6a5b7488ab78935db6770f, type: 3}
+--- !u!1 &937598103
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 937598105}
+  - component: {fileID: 937598104}
+  m_Layer: 0
+  m_Name: AudioRetriever
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &937598104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937598103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e025f2ac1563d364abaa1abd158dd9a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioRetriever
+--- !u!4 &937598105
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 937598103}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 73.11008, y: 14.26466, z: 35.70307}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &942285741
 GameObject:
   m_ObjectHideFlags: 0
@@ -4053,6 +4230,99 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.010000011, y: 0.012366853, z: 0.01040318}
   m_Center: {x: 0, y: 0.0015629255, z: -0.00020158831}
+--- !u!1 &1562500559
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1562500561}
+  - component: {fileID: 1562500560}
+  m_Layer: 0
+  m_Name: Growl Audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1562500560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562500559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18b77317398f0ef439cc7cee5b8eaf21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectWith3DAudio
+  _playOnStart: 0
+  audio3D:
+    name: Dog Panting
+    clip: {fileID: 8300000, guid: a2ee4e63a9c34ea429727ed71eccac77, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 100
+    maxDistance: 600
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.6
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+--- !u!4 &1562500561
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562500559}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.01, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 161641516}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1563278452
 GameObject:
   m_ObjectHideFlags: 0
@@ -4838,6 +5108,429 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2056545835}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1938533069
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1938533071}
+  - component: {fileID: 1938533070}
+  m_Layer: 0
+  m_Name: AudioLibrary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1938533070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938533069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55af41cb4b78134899a08be03fef442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioLibrary
+  _audioManager: {fileID: 11400000, guid: 00e5f34164aed6e448f0d2c6d8020838, type: 2}
+  _audios:
+  - name: DogPanting
+    clip: {fileID: 8300000, guid: a93c40c3d8d6ccc458d804cd4c8183d2, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+  - name: DogBark1
+    clip: {fileID: 8300000, guid: 686e914aa9cb59f48a8fb8ae272171b4, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+  - name: DogBark2
+    clip: {fileID: 8300000, guid: 08c2d6d6a0462244a97445102844173c, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+  - name: DogBark3
+    clip: {fileID: 8300000, guid: 5dcfb5655baac72479abb5ffa9170d2e, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+  - name: DogBark4
+    clip: {fileID: 8300000, guid: 539a79c833e78e941afedefa516d4a28, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+  - name: DogBark5
+    clip: {fileID: 8300000, guid: ff6f71bdd13fd3442bc56b4cecbad79d, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.6
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+  - name: DogGrowl
+    clip: {fileID: 8300000, guid: fccec4cfc6fb9544492036db160c4205, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.6
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+  - name: DogHowl
+    clip: {fileID: 8300000, guid: fccec4cfc6fb9544492036db160c4205, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+  _objectWith3DAudioPrefab: {fileID: 3957085431154048013, guid: c230cb87dc87b3d48973682a104ec238, type: 3}
+--- !u!4 &1938533071
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938533069}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 73.11008, y: 14.26466, z: 35.70307}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1942360623
 GameObject:
   m_ObjectHideFlags: 0
@@ -5315,7 +6008,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: a88fe302d006b5e4a9c2aab49f4abc33, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 0
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -8262,9 +8955,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2086105263174480395}
-  m_Layer: 0
+  - component: {fileID: 2086105263174480396}
+  - component: {fileID: 2086105263174480397}
+  m_Layer: 6
   m_Name: Mask
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8787,6 +9482,54 @@ Transform:
   - {fileID: 5810496068644246175}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -62.275, y: -25.187, z: 3.031}
+--- !u!114 &2086105263174480396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709262309691893937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0812a47cd741b0459f1f8e500cab0db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SimpleInteractable
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2124730613}
+        m_TargetAssemblyTypeName: UnityEngine.Playables.PlayableDirector, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!65 &2086105263174480397
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709262309691893937}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 1.02, z: 0}
 --- !u!4 &2122149506720044633
 Transform:
   m_ObjectHideFlags: 0
@@ -20200,3 +20943,5 @@ SceneRoots:
   - {fileID: 531952318}
   - {fileID: 823491341}
   - {fileID: 1665437538}
+  - {fileID: 1938533071}
+  - {fileID: 937598105}

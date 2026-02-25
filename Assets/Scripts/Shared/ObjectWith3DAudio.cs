@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ObjectWith3DAudio : MonoBehaviour
 {
     public bool _playOnStart;
 
-    public new Audio audio = new Audio();
+    public Audio audio3D = new Audio();
 
     public void OnEnable()
     {
@@ -18,14 +19,14 @@ public class ObjectWith3DAudio : MonoBehaviour
 
     private void Start()
     {
-        audio.Init(this.gameObject);
+        audio3D.Init(this.gameObject);
 
-        audio.Play();
+        audio3D.Play();
 
         if (!_playOnStart)
         {
-            audio.Stop();
-            audio.Reset();
+            audio3D.Stop();
+            audio3D.Reset();
         }
 
         UpdateSourceAudio();
@@ -35,15 +36,15 @@ public class ObjectWith3DAudio : MonoBehaviour
     {
         if (AudioLibrary.Instance != null)
         {
-            AudioLibrary.Instance.UpdateSpecificAudioSettings(audio);
+            AudioLibrary.Instance.UpdateSpecificAudioSettings(audio3D);
         }
     }
 
     public void Play()
     {
-        if (audio != null)
+        if (audio3D != null)
         {
-            audio.Play();
+            audio3D.Play();
 
             //StopTracking();
             //trackingCoroutine = coroutineRunner.StartCoroutine(TrackAudioCompletion());
@@ -53,17 +54,17 @@ public class ObjectWith3DAudio : MonoBehaviour
 
     public void Pause()
     {
-        if (audio != null)
+        if (audio3D != null)
         {
-            audio.Pause();
+            audio3D.Pause();
         }
     }
 
     public void PlayClipAtPoint(Vector3 position)
     {
-        if (audio != null)
+        if (audio3D != null)
         {
-            AudioSource.PlayClipAtPoint(audio.clip, position);
+            AudioSource.PlayClipAtPoint(audio3D.clip, position);
         }
     }
 
@@ -78,9 +79,9 @@ public class ObjectWith3DAudio : MonoBehaviour
 
     public void PlayOneShot()
     {
-        if (audio != null)
+        if (audio3D != null)
         {
-            audio.PlayOneShot();
+            audio3D.PlayOneShot();
 
             //coroutineRunner.StartCoroutine(TrackOneShotCompletion(clip.length));
         }
@@ -88,28 +89,28 @@ public class ObjectWith3DAudio : MonoBehaviour
 
     public void Reset()
     {
-        if (audio != null)
-            audio.Reset();
+        if (audio3D != null)
+            audio3D.Reset();
     }
 
     public void Stop()
     {
-        if (audio != null)
-            audio.Stop();
+        if (audio3D != null)
+            audio3D.Stop();
     }
 
     public void Resume()
     {
-        if (audio != null)
+        if (audio3D != null)
         {
-            audio.Play();
+            audio3D.Play();
         }
     }
 
     public void ApplySettings(float master, float bgm, float sfx, float pitch)
     {
-        if (audio == null) return;
+        if (audio3D == null) return;
 
-        audio.ApplySettings(master, bgm, sfx, pitch);
+        audio3D.ApplySettings(master, bgm, sfx, pitch);
     }
 }

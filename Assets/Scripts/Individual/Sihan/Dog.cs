@@ -130,7 +130,7 @@ public class Dog : Entity
         yield return StartCoroutine(DistortionEffectStart(startEndDuration));
 
         float timer = 0;
-        float speed = /*Random.Range(1f, 3f)*/ 1;
+        float speed = 1;
         float upTimer = 0;
         float target = Random.Range(0.25f, 1);
         float baseIntensity = 1;
@@ -143,7 +143,6 @@ public class Dog : Entity
             if (upTimer >= 1)
             {
                 upTimer = 0;
-                speed = Random.Range(5f, 10f);
                 target = Random.Range(0.25f, 1);
                 baseIntensity = _distortionVolume.intensity.value;
             }
