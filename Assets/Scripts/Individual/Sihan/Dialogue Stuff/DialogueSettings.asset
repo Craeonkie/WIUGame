@@ -68,3 +68,29 @@ MonoBehaviour:
     dialogueTextHeight: 200
     dialogueTextFontSize: 36
     dialogueTextAlignment: 514
+  - dialogueUIName: (2) NO Portrait, Centered Text, No Name
+    dialogueUIYOffset: -360
+    dialogueBoxXOffset: 0
+    dialogueBoxYOffset: 0
+    dialogueBoxWidth: 1600
+    dialogueBoxHeight: 300
+    dialoguePortraitXOffset: -560
+    dialoguePortraitYOffset: 90
+    dialoguePortraitWidth: 400
+    dialoguePortraitHeight: 400
+    dialoguePortrait2XOffset: 560
+    dialoguePortrait2YOffset: 90
+    dialoguePortrait2Width: 400
+    dialoguePortrait2Height: 400
+    dialogueNameXOffset: 0
+    dialogueNameYOffset: 105
+    dialogueNameWidth: 1200
+    dialogueNameHeight: 50
+    dialogueNameFontSize: 36
+    dialogueNameTextAlignment: 514
+    dialogueTextXOffset: 0
+    dialogueTextYOffset: -20
+    dialogueTextWidth: 1200
+    dialogueTextHeight: 200
+    dialogueTextFontSize: 36
+    dialogueTextAlignment: 514
