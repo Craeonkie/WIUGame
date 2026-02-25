@@ -231,12 +231,8 @@ public class Inventory : MonoBehaviour
     // Remove the item from the inventory
     public void RemoveItemFromInventory(GameObject item)
     {
-        Debug.Log("remove called!");
-
         if (item != null)
         {
-            Debug.Log("went in here");
-
             // Remove item from current hand
             if (_currentItem == item)
             {

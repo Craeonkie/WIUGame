@@ -176,6 +176,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0.1, z: 0.2}
   audioSource: {fileID: 0}
   weaponBreakingSound: {fileID: 0}
+  _animationHandler: {fileID: 0}
   _entityUsingItem: {fileID: 0}
   _isActing: 0
   _resetAnimationChain: 0
@@ -185,8 +186,8 @@ MonoBehaviour:
   _maxTimeBeforeDestroyed: 0
   _expiresAfterDropped: 0
   _maxTimeBeforeExpiring: 0
-  throwPowerForward: 10
-  throwPowerUp: 3
+  throwPowerForward: 15
+  throwPowerUp: 10
   throwOffsetForward: {x: 0, y: 0, z: 1}
   breakOnHit: 0
   lifeTime: 100

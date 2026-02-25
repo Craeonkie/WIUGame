@@ -12,6 +12,7 @@ public class SpawnItem
     public float spawnDelay;
     public bool hasSpawnLimit;
     public bool spawnOnAwake;
+    public bool loopSpawning;
     public int spawnLimit;
     [System.NonSerialized] public ObjectPool<GameObject> spawnPool;
     [System.NonSerialized] public List<GameObject> activeObjects = new List<GameObject>();
@@ -73,6 +74,18 @@ public class J_SpawnManager : MonoBehaviour
             );
 
             _spawnItems[i] = item;
+
+            if (_spawnItems[i].spawnOnAwake)
+            {
+                if (_spawnItems[i].loopSpawning)
+                {
+                    SpawnContinuously(_spawnItems[i].itemName, _spawnItems[i].spawnDelay);
+                }
+                else
+                {
+                    SpawnAfterDelay(_spawnItems[i], _spawnItems[i].spawnDelay);
+                }
+            }
         }
     }
 
