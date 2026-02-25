@@ -42,21 +42,40 @@ public class C_FriendBossStageManager : MonoBehaviour
         {
             _BoardCollider.SetActive(false);
         }
+
+        StartPhaseTransitionCutScene();
         _CutsceneManager.PlayCutscene(1);
+
     }
 
     private void OnEnable()
     {
         C_FriendBoss.TransitionPhase1Action += EnteringPhase2;
         C_CupManager._EndGame += GameEnded;
+        C_Catapult.CatapultEnabled += ChangeToTopDownView;
+        C_Catapult.CatapultDisable += ChangeFromTopDownView;
     }
 
     private void OnDisable()
     {
         C_FriendBoss.TransitionPhase1Action -= EnteringPhase2;
         C_CupManager._EndGame -= GameEnded;
+        C_Catapult.CatapultEnabled -= ChangeToTopDownView;
+        C_Catapult.CatapultDisable -= ChangeFromTopDownView;
+
     }
 
+    private void ChangeToTopDownView()
+    {
+        var _ply =  _player.GetComponent<PlayerController>();
+        _ply.ToggleTopDownCamera(true);
+    }
+
+    private void ChangeFromTopDownView()
+    {
+        var _ply = _player.GetComponent<PlayerController>();
+        _ply.ToggleTopDownCamera(false);
+    }
     private void GameEnded ()
     {
         Debug.Log("Game ended");
