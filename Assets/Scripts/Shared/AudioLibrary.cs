@@ -17,6 +17,10 @@ public class AudioLibrary : MonoBehaviour
 
     public static System.Action<float, float, float, float> UpdateAudio;
 
+    public float _masterVolume;
+    public float _sfxVolume;
+    public float _bgmVolume;
+
 
     private void Awake()
     {
@@ -58,6 +62,9 @@ public class AudioLibrary : MonoBehaviour
                 audio.ApplySettings(_audioManager.masterVolume, _audioManager.bgmVolume, _audioManager.sfxVolume, _audioManager.globalPitch);
             }
 
+            _masterVolume = _audioManager.masterVolume;
+            _bgmVolume = _audioManager.bgmVolume;
+            _sfxVolume = _audioManager.sfxVolume;
             UpdateAudio?.Invoke(_audioManager.masterVolume, _audioManager.bgmVolume, _audioManager.sfxVolume, _audioManager.globalPitch);
         }
     }

@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class J_MenuManager : MonoBehaviour, J_IDataPersistence
@@ -112,6 +111,8 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
         _audioManager.masterVolume = _masterSlider.value;
         _audioManager.bgmVolume = _bgmSlider.value;
         _audioManager.sfxVolume = _sfxSlider.value;
+
+        J_GameManager.Instance.UpdateAudio(_masterSlider.value, _bgmSlider.value, _sfxSlider.value);
     }
 
     public void UpdateAudioSliders()
