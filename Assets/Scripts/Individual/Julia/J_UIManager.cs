@@ -12,9 +12,14 @@ public class J_UIManager : MonoBehaviour
     [SerializeField] private Image _secondaryWeaponIcon;
     [SerializeField] private Image _shieldWeaponIcon;
     [SerializeField] private Image _shieldHealthbar;
+    [SerializeField] private Image _primarySpecialCooldown;
+    [SerializeField] private Image _secondarySpecialCooldown;
+    [SerializeField] private Image _shieldSpecialCooldown;
+    [SerializeField] private Image _energyBar;
     [SerializeField] private float _fullDurabilityThreshold;
     [SerializeField] private float _halfDurabilityThreshold;
     [SerializeField] private float _brokenDurabilityThreshold;
+
 
     [Header("Boss UI")]
     [SerializeField] private Image _bossHealthbar;
@@ -32,6 +37,9 @@ public class J_UIManager : MonoBehaviour
         SceneLoader.OnSceneLoaded += UpdateBossIcon;
         Entity.OnHealthChanged += UpdateBossHealth;
         PlayerController.OnPlayerHealthChanged += UpdatePlayerHealth;
+        Inventory.OnEquipPrimary += UpdatePrimaryWeapon;
+        Inventory.OnEquipSecondary += UpdateSecondaryWeapon;
+        Inventory.OnEquipShield += UpdateShieldIcon;
     }
 
     private void OnDisable()
@@ -39,6 +47,9 @@ public class J_UIManager : MonoBehaviour
         SceneLoader.OnSceneLoaded -= UpdateBossIcon;
         Entity.OnHealthChanged -= UpdateBossHealth;
         PlayerController.OnPlayerHealthChanged -= UpdatePlayerHealth;
+        Inventory.OnEquipPrimary -= UpdatePrimaryWeapon;
+        Inventory.OnEquipSecondary -= UpdateSecondaryWeapon;
+        Inventory.OnEquipShield -= UpdateShieldIcon;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -73,25 +84,79 @@ public class J_UIManager : MonoBehaviour
         }
         else
         {
-            // Get durability
-            float durabilityPercentage = primaryWeapon.currentDurability / primaryWeapon.maxDurability;
-            if (durabilityPercentage > _halfDurabilityThreshold)
-                _primaryWeaponIcon.sprite = _assetManager.GetFullDurabilitySprite(primaryWeapon);
-            else if (durabilityPercentage > _halfDurabilityThreshold)
-                _primaryWeaponIcon.sprite = _assetManager.GetHalfDurabilitySprite(primaryWeapon);
-            else
-                _primaryWeaponIcon.sprite = _assetManager.GetBrokenDurabilitySprite(primaryWeapon);
+            UpdatePrimaryWeaponDurability(primaryWeapon);
         }
+    }
+
+    private void UpdatePrimaryWeaponDurability(Item primaryWeapon)
+    {
+        if (!primaryWeapon.hasDurability)
+        {
+            _primaryWeaponIcon.sprite = _assetManager.GetFullDurabilitySprite(primaryWeapon);
+            return;
+        }
+
+        // Get durability
+        float durabilityPercentage = primaryWeapon.currentDurability / primaryWeapon.maxDurability;
+        if (durabilityPercentage > _halfDurabilityThreshold)
+            _primaryWeaponIcon.sprite = _assetManager.GetFullDurabilitySprite(primaryWeapon);
+        else if (durabilityPercentage > _halfDurabilityThreshold)
+            _primaryWeaponIcon.sprite = _assetManager.GetHalfDurabilitySprite(primaryWeapon);
+        else
+            _primaryWeaponIcon.sprite = _assetManager.GetBrokenDurabilitySprite(primaryWeapon);
     }
 
     private void UpdateSecondaryWeapon(Item secondaryWeapon)
     {
+        Debug.Log("secondary wewapon: " + secondaryWeapon);
 
+        if (secondaryWeapon == null)
+        {
+            _secondaryWeaponIcon.sprite = _assetManager.emptySecondaryWeaponSprite;
+        }
+        else
+        {
+            UpdateSecondaryWeaponDurability(secondaryWeapon);
+        }
     }
 
-    private void UpdateShield(Item shield)
+    private void UpdateSecondaryWeaponDurability(Item secondaryWeapon)
     {
+        if (!secondaryWeapon.hasDurability)
+        {
+            _secondaryWeaponIcon.sprite = _assetManager.GetFullDurabilitySprite(secondaryWeapon);
+            return;
+        }
 
+        // Get durability
+        float durabilityPercentage = secondaryWeapon.currentDurability / secondaryWeapon.maxDurability;
+        if (durabilityPercentage > _halfDurabilityThreshold)
+            _secondaryWeaponIcon.sprite = _assetManager.GetFullDurabilitySprite(secondaryWeapon);
+        else if (durabilityPercentage > _halfDurabilityThreshold)
+            _secondaryWeaponIcon.sprite = _assetManager.GetHalfDurabilitySprite(secondaryWeapon);
+        else
+            _secondaryWeaponIcon.sprite = _assetManager.GetBrokenDurabilitySprite(secondaryWeapon);
+    }
+
+    private void UpdateShieldIcon(Item shield)
+    {
+        if (shield == null)
+        {
+            _shieldWeaponIcon.sprite = _assetManager.emptyShieldWeaponSprite;
+            UpdateShieldHealth(0f, 1f);
+        }
+        else
+        {
+            // Get durability
+            _shieldWeaponIcon.sprite = _assetManager.GetFullDurabilitySprite(shield);
+            UpdateShieldHealth(shield.currentDurability, shield.maxDurability);
+        }
+    }
+
+    private void UpdateEnergyBar(float currentEnergy, float maxEnergy)
+    {
+        float energyPercentage = currentEnergy / maxEnergy;
+        _energyBar.fillAmount = energyPercentage;
     }
 
     private void UpdateBossIcon(string sceneName)

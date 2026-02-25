@@ -24,6 +24,8 @@ public class J_AssetManager : ScriptableObject
         if (uiWeapon == null)
             return null;
 
+        Debug.Log("weapon not null");
+
         return uiWeapon.fullDurabilitySprite;
     }
     public Sprite GetHalfDurabilitySprite(Item weapon)
@@ -64,8 +66,14 @@ public class J_AssetManager : ScriptableObject
 
     private UIWeaponSO GetWeapon(Item weapon)
     {
+        if (weapon == null)
+            Debug.Log("weapon is null!");
+
         for (int i = 0; i < uiWeapons.Length; i++) {
-            if (weapon == uiWeapons[i].weapon)
+            if (uiWeapons[i].weapon == null)
+                continue;
+
+            if (weapon.itemName == uiWeapons[i].weapon.itemName)
                 return uiWeapons[i];
         }
 

@@ -39,6 +39,10 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     private Dictionary<string, bool> _completedStages = new Dictionary<string, bool>();
     private Vector3 _previousPosition; // Use this to spawn player back in a room or something
 
+    public float masterVolume;
+    public float bgmVolume;
+    public float sfxVolume;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -120,6 +124,13 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
         {
             Debug.Log("All scenes were completed");
         }
+    }
+
+    public void UpdateAudio(float master, float bgm, float sfx)
+    {
+        masterVolume = master;
+        bgmVolume = bgm;
+        sfxVolume = sfx;
     }
 
     public void LoadData(J_GameData data)

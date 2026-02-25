@@ -312,14 +312,16 @@ public class PlayerController : Entity
                     // Act according to the item's tag
                     if (tag == "Weapon")
                     {
+                        Debug.Log("closest interactable game object: " + closestInteractable.gameObject);
+                        Debug.Log("this: " + this);
                         inventory.PutItemInPrimary(closestInteractable.gameObject, this);
-                        inventory.EquipPrimary();
+                        //inventory.EquipPrimary();
                         animationHandler.EquipItem((Item)closestInteractable);
                     }
                     else if (tag == "Item")
                     {
                         inventory.PutItemInSecondary(closestInteractable.gameObject, this);
-                        inventory.EquipSecondary();
+                        //inventory.EquipSecondary();
                         animationHandler.EquipItem((Item)closestInteractable);
                     }
                     else if (tag == "Interactable")

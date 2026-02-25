@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cf16a286c074054a9800023a2149665, type: 3}
   m_Name: J_AssetManager
   m_EditorClassIdentifier: Assembly-CSharp::J_AssetManager
+  emptyPrimaryWeaponSprite: {fileID: 1335957501, guid: cc1d94562df5736449209ec90f795c02, type: 3}
+  emptySecondaryWeaponSprite: {fileID: -255565077, guid: 05709ceb856472a43acf71fd0e77cf6a, type: 3}
+  emptyShieldWeaponSprite: {fileID: 733321389, guid: 383187056cadb654bb360dddeacc38c7, type: 3}
   uiWeapons:
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 2090315549913629512, guid: a8f7991b1c85edb4fa92b7be80a223e3, type: 3}
     fullDurabilitySprite: {fileID: 374683764, guid: 382c1ca223f35364585ddd7a3cf9bab6, type: 3}
     halfDurabilitySprite: {fileID: 1418562356, guid: 2d8bd04772df295489086269ab18b967, type: 3}
     brokenDurabilitySprite: {fileID: -86219620, guid: 28c47b592cee4f64f8796265a02e0011, type: 3}
@@ -61,13 +64,13 @@ MonoBehaviour:
     brokenDurabilitySprite: {fileID: -876388534, guid: a31c6789008198447ac5cb4833b93d0a, type: 3}
     swapSprite: {fileID: 1359047762, guid: bd7c6609a6f8ceb439f26d0505d07071, type: 3}
     throwableSprite: {fileID: 0}
-  - weapon: {fileID: 0}
-    fullDurabilitySprite: {fileID: 0}
+  - weapon: {fileID: 7401152922874543599, guid: 3afd7da178eb04648be91f34e5b9afc6, type: 3}
+    fullDurabilitySprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
     halfDurabilitySprite: {fileID: 0}
     brokenDurabilitySprite: {fileID: 0}
     swapSprite: {fileID: 0}
     throwableSprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 1693830362972775678, guid: 183f2af7c063f10408b6ec4de66dad4d, type: 3}
     fullDurabilitySprite: {fileID: 1255450684, guid: adffc8ec319f42c48b1f67fef7e372ee, type: 3}
     halfDurabilitySprite: {fileID: 0}
     brokenDurabilitySprite: {fileID: 0}

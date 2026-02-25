@@ -154,29 +154,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc0aa9c43b3e14d4f9a30f7607de215f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShieldWeapon
-  itemName: 
+  itemName: testShield
   image: {fileID: 0}
   description: 
   primary:
   - damage: 50
     durabilityUsed: 0
+    energyUsed: 0
     hasRootMotion: 1
     pressAndHold: 0
     isBlock: 0
+    rotation: {x: 0, y: 0, z: 0}
+    rotationSpeed: 0
     animationClip: {fileID: -203655887218126122, guid: 907b7ef252fda914c97d880d03d58452, type: 3}
     audioClip: {fileID: 0}
   secondary:
   - damage: 0
     durabilityUsed: 0
+    energyUsed: 0
     hasRootMotion: 0
     pressAndHold: 1
     isBlock: 1
+    rotation: {x: 0, y: 0, z: 0}
+    rotationSpeed: 0
     animationClip: {fileID: -203655887218126122, guid: 39763a1d73342bd449e8cff3448420ae, type: 3}
     audioClip: {fileID: 0}
   special: []
   hasDurability: 0
   maxDurability: 0
   currentDurability: 0
+  consumesEnergy: 0
+  offset: {x: 0, y: 0, z: 0}
   audioSource: {fileID: 1062905029780199009}
   weaponBreakingSound: {fileID: 0}
   _entityUsingItem: {fileID: 0}
@@ -186,7 +194,10 @@ MonoBehaviour:
   _currentAnimationChain: 0
   _destroyUponDrop: 0
   _maxTimeBeforeDestroyed: 0
+  _expiresAfterDropped: 0
+  _maxTimeBeforeExpiring: 0
   hitEntities: []
+  invincibilityLength: 0
 --- !u!82 &1062905029780199009
 AudioSource:
   m_ObjectHideFlags: 0

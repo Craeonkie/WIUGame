@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9398d12a8632342ab1e3c5492716b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TestItem
-  itemName: 
+  itemName: testThrowable
   image: {fileID: 0}
   description: 
   primary:

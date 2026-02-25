@@ -332,6 +332,7 @@ public class J_BossBehaviour : Entity
 
             _currentHP -= damageTaken;
             float healthPercent = _currentHP / _maxHP;
+            OnHealthChanged?.Invoke(_currentHP, _maxHP);
 
             CheckPhaseTransition(healthPercent);
         }
