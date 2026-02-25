@@ -72,14 +72,17 @@ public class C_Airplane : C_BossAbility
         C_FriendBossPhase2.StartAirplaneAbility -= StartAbility;
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnDisable();
+
         C_Boid.hitSmtAction += ReturnToPool;
         GameSetUp();
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         C_Boid.hitSmtAction -= ReturnToPool;
         GameTearDown();
         this.startAbility = false;

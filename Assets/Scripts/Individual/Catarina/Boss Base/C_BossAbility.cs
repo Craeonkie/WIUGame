@@ -26,4 +26,14 @@ public abstract class C_BossAbility : MonoBehaviour
     {
         this.enabled = true;
     }
+
+    protected virtual void OnEnable()
+    {
+        C_FriendBossPhase2.StopAbility += GameTearDown;
+    }
+
+    protected virtual void OnDisable()
+    {
+        C_FriendBossPhase2.StopAbility += GameTearDown;
+    }
 }

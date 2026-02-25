@@ -14,6 +14,8 @@ public class C_Boid : MonoBehaviour
     [SerializeField] private string PlayerTagName;
     [SerializeField] private float _CastRadius = 0.5f; // much smaller
 
+    [SerializeField] private float Damage =10f;
+
     private float autoResetCountdown = 5f;
 
     private float autoResetTimer = 0f;
@@ -152,6 +154,12 @@ public class C_Boid : MonoBehaviour
         {
             HitSmt();
             hitSmtAction?.Invoke(false);
+        }
+
+        var _ply = other.gameObject.GetComponent<PlayerController>();
+        if (_ply != null)
+        {
+            _ply.TakeDamage(Damage, 0f);
         }
     }
 

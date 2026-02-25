@@ -62,23 +62,34 @@ public class C_FriendBossStageManager : MonoBehaviour
         C_CupManager._EndGame -= GameEnded;
         C_Catapult.CatapultEnabled -= ChangeToTopDownView;
         C_Catapult.CatapultDisable -= ChangeFromTopDownView;
-
+        if (_player != null)
+        {
+            _player.SetActive(false);
+        }
     }
 
     private void ChangeToTopDownView()
     {
         var _ply =  _player.GetComponent<PlayerController>();
         _ply.ToggleTopDownCamera(true);
+        _player.SetActive(false);
     }
 
     private void ChangeFromTopDownView()
     {
         var _ply = _player.GetComponent<PlayerController>();
         _ply.ToggleTopDownCamera(false);
+        _player.SetActive(true);
     }
     private void GameEnded ()
     {
         Debug.Log("Game ended");
+        _CutsceneManager.PlayCutscene(2);
+
+    }
+
+    public void FinishLvl()
+    {
         if (J_GameManager.Instance == null)
         {
             Debug.LogWarning("u r not starting from the start scene! Make sure start scene have the manager!");

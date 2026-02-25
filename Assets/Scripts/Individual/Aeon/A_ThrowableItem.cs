@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ThrowableItem : Item
 {
@@ -17,8 +18,7 @@ public class ThrowableItem : Item
     [SerializeField] protected bool isInFlight = false;
     AnimatorStateInfo animatorStateInfo;
 
-    [Header("Simulate Trajectory")]
-    [SerializeField] private C_TrajectorySimulation _projection;
+    [SerializeField] protected bool _OneTimeUse = true;
 
     // Update is called once per frame
     protected new void Update()
@@ -149,7 +149,13 @@ public class ThrowableItem : Item
         SetEntity(null);
 
         // Change tag accordingly
-        tag = "Untagged";
+        if (_OneTimeUse)
+            tag = "Untagged";
+    }
+
+    public void ChangeOneTimeUse(bool _IsOneTimeUse)
+    {
+        _OneTimeUse = _IsOneTimeUse;
     }
 
     protected virtual void OnCollisionEnter(Collision other)

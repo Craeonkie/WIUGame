@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39622b1d798039744958f052049453fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C_Boid
-  _MaxSpeed: 6
+  _MaxSpeed: 4
   _SteeringTime: 0.54
   _SeekWeight: 1
   _ObsAvoidWeight: 0.381
@@ -58,6 +58,7 @@ MonoBehaviour:
     m_Bits: 5128
   PlayerTagName: PlayerTag
   _CastRadius: 2.5
+  Damage: 10
 --- !u!54 &137775478357765058
 Rigidbody:
   m_ObjectHideFlags: 0

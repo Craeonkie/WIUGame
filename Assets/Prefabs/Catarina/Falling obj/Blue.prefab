@@ -82,6 +82,7 @@ MonoBehaviour:
     m_Bits: 1032
   _oriCD: 2.5
   _maxWarningDistance: 30
+  Damage: 10
 --- !u!136 &4241697862625964305
 CapsuleCollider:
   m_ObjectHideFlags: 0
