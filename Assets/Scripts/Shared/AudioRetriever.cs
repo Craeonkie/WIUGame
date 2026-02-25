@@ -36,6 +36,14 @@ public class AudioRetriever : MonoBehaviour
         return null;
     }
 
+    public void Play3DAtTransformNoReturnObject(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundAtPointCustom(name, transform.position);
+        }
+    }
+
     public void StopSound(string name)
     {
         if (AudioLibrary.Instance != null)
