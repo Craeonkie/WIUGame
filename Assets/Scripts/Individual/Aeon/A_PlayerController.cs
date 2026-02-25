@@ -88,6 +88,7 @@ public class PlayerController : Entity
     [SerializeField] private GameObject _itemBeingMoved;
 
     public static System.Action<float, float> OnPlayerHealthChanged;
+    public static System.Action<float, float> OnEnergyChanged;
 
     protected override void Start()
     {
@@ -150,6 +151,7 @@ public class PlayerController : Entity
         if (_remainingEnergy < _maxEnergy && energyPassiveRegeneration != 0)
         {
             _remainingEnergy = Mathf.MoveTowards(_remainingEnergy, _maxEnergy, energyPassiveRegeneration * Time.deltaTime);
+            OnEnergyChanged?.Invoke(_remainingEnergy, _maxEnergy);
         }
 
         // Handle player landed duration
@@ -599,7 +601,7 @@ public class PlayerController : Entity
     {
         if (!isInvincible && !isDodging)
         {
-            if (inventory.ReturnCurrentItem().TryGetComponent<Weapon>(out Weapon currentWeapon) && currentWeapon.IsBlocking())
+            if (inventory.ReturnCurrentItem() != null && inventory.ReturnCurrentItem().TryGetComponent<Weapon>(out Weapon currentWeapon) && currentWeapon.IsBlocking())
             {
                 currentWeapon.BlockDamage();
             }

@@ -12,9 +12,9 @@ public class J_UIManager : MonoBehaviour
     [SerializeField] private Image _secondaryWeaponIcon;
     [SerializeField] private Image _shieldWeaponIcon;
     [SerializeField] private Image _shieldHealthbar;
-    [SerializeField] private Image _primarySpecialCooldown;
-    [SerializeField] private Image _secondarySpecialCooldown;
-    [SerializeField] private Image _shieldSpecialCooldown;
+    //[SerializeField] private Image _primarySpecialCooldown;
+    //[SerializeField] private Image _secondarySpecialCooldown;
+    //[SerializeField] private Image _shieldSpecialCooldown;
     [SerializeField] private Image _energyBar;
     [SerializeField] private float _fullDurabilityThreshold;
     [SerializeField] private float _halfDurabilityThreshold;
@@ -40,6 +40,9 @@ public class J_UIManager : MonoBehaviour
         Inventory.OnEquipPrimary += UpdatePrimaryWeapon;
         Inventory.OnEquipSecondary += UpdateSecondaryWeapon;
         Inventory.OnEquipShield += UpdateShieldIcon;
+        Weapon.OnDurabilityChangeWeapon += UpdatePrimaryWeaponDurability;
+        Weapon.OnDurabilityChangeShield += UpdateShieldHealth;
+        PlayerController.OnEnergyChanged += UpdateEnergyBar;
     }
 
     private void OnDisable()
@@ -50,6 +53,9 @@ public class J_UIManager : MonoBehaviour
         Inventory.OnEquipPrimary -= UpdatePrimaryWeapon;
         Inventory.OnEquipSecondary -= UpdateSecondaryWeapon;
         Inventory.OnEquipShield -= UpdateShieldIcon;
+        Weapon.OnDurabilityChangeWeapon -= UpdatePrimaryWeaponDurability;
+        Weapon.OnDurabilityChangeShield -= UpdateShieldHealth;
+        PlayerController.OnEnergyChanged -= UpdateEnergyBar;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

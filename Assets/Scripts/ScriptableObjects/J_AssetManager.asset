@@ -16,13 +16,13 @@ MonoBehaviour:
   emptySecondaryWeaponSprite: {fileID: -255565077, guid: 05709ceb856472a43acf71fd0e77cf6a, type: 3}
   emptyShieldWeaponSprite: {fileID: 733321389, guid: 383187056cadb654bb360dddeacc38c7, type: 3}
   uiWeapons:
-  - weapon: {fileID: 2090315549913629512, guid: a8f7991b1c85edb4fa92b7be80a223e3, type: 3}
+  - weapon: {fileID: 6845742482195035334, guid: 2e48fea1c3709da4087390f6ab608e56, type: 3}
     fullDurabilitySprite: {fileID: 374683764, guid: 382c1ca223f35364585ddd7a3cf9bab6, type: 3}
     halfDurabilitySprite: {fileID: 1418562356, guid: 2d8bd04772df295489086269ab18b967, type: 3}
     brokenDurabilitySprite: {fileID: -86219620, guid: 28c47b592cee4f64f8796265a02e0011, type: 3}
     swapSprite: {fileID: -695243960, guid: 6596e409fe5a4ac41a7193955e3f4a0b, type: 3}
     throwableSprite: {fileID: 0}
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 6060244601492110454, guid: 4f203a964f81a1a42a59bb0ba6962c49, type: 3}
     fullDurabilitySprite: {fileID: -422852255, guid: 10cc073873984f34da3d2c23ebf086e8, type: 3}
     halfDurabilitySprite: {fileID: 2092937212, guid: 4f634b3a049dd9345abf4e56a0ab8c10, type: 3}
     brokenDurabilitySprite: {fileID: 2114885735, guid: d7effd6d6d792fd45ba35ebb8dc35c1c, type: 3}
@@ -34,31 +34,31 @@ MonoBehaviour:
     brokenDurabilitySprite: {fileID: -1386885012, guid: f40295161fa12754f996183916d8d445, type: 3}
     swapSprite: {fileID: -1898973987, guid: 48f15439ecef13842b34c5fdbdeb8526, type: 3}
     throwableSprite: {fileID: 0}
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 1501469838674890844, guid: dbca2c8f65e46b0419d266410cc58328, type: 3}
     fullDurabilitySprite: {fileID: 586304055, guid: 58cb4921bc7e04f419250772c5f2ff98, type: 3}
     halfDurabilitySprite: {fileID: 433601508, guid: d7b11735cbf2c874ba56fcef3651a9be, type: 3}
     brokenDurabilitySprite: {fileID: 687927689, guid: 659942e303cc4424d9296629fedf7f12, type: 3}
     swapSprite: {fileID: 1371053732, guid: 4530668dddcc86144950e377612f1a9d, type: 3}
     throwableSprite: {fileID: 0}
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 7672325754935206846, guid: 9cf80ae0ebe6138449a432369fc08482, type: 3}
     fullDurabilitySprite: {fileID: -1694275876, guid: a4e84a1054b4cf4478142365a5a6a11c, type: 3}
     halfDurabilitySprite: {fileID: 1314363078, guid: d8fcf50cde51d274f9fd03b4508607db, type: 3}
     brokenDurabilitySprite: {fileID: 1739313054, guid: b81c47c11471d2845840c711d9d88a67, type: 3}
     swapSprite: {fileID: -1022574238, guid: 26be460f4a57e1546ac34a59c9c5738b, type: 3}
     throwableSprite: {fileID: 0}
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 2973652666749638515, guid: 46bf8d02c96e4574fbf12876d2ef10bc, type: 3}
     fullDurabilitySprite: {fileID: -36452217, guid: 4fcd92e986ec7ff42b492745779eed10, type: 3}
     halfDurabilitySprite: {fileID: -1797140844, guid: e01f5b6a5ef970146b9926589289c13e, type: 3}
     brokenDurabilitySprite: {fileID: -1102419622, guid: 53e24808f57433d4893f656ad5af61a6, type: 3}
     swapSprite: {fileID: -45838510, guid: 200dab07d0832ac4a835e64c29ee9b11, type: 3}
     throwableSprite: {fileID: 0}
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 2748545637902055951, guid: ca1c9bf87a9a18f40952a9d411cd99bd, type: 3}
     fullDurabilitySprite: {fileID: 2069956007, guid: 256782ac4dc1ec243aba2276b735eecd, type: 3}
     halfDurabilitySprite: {fileID: 745730354, guid: c5636ae158d98c349a8e8f680db480cc, type: 3}
     brokenDurabilitySprite: {fileID: -1848817641, guid: 4111c94008c40b54b90b56b905434b78, type: 3}
     swapSprite: {fileID: 734581154, guid: 52bc3191e90199846adc22d29cba4401, type: 3}
     throwableSprite: {fileID: 0}
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 148288725709925899, guid: dd56d836f146f0e4cbcf42c3bffa4490, type: 3}
     fullDurabilitySprite: {fileID: 363452716, guid: 57f0e4653f8afc24a8969236e3ae75a2, type: 3}
     halfDurabilitySprite: {fileID: 1704531966, guid: e336d01fa04e8e148af8169b22b7d491, type: 3}
     brokenDurabilitySprite: {fileID: -876388534, guid: a31c6789008198447ac5cb4833b93d0a, type: 3}
@@ -70,19 +70,19 @@ MonoBehaviour:
     brokenDurabilitySprite: {fileID: 0}
     swapSprite: {fileID: 0}
     throwableSprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
-  - weapon: {fileID: 1693830362972775678, guid: 183f2af7c063f10408b6ec4de66dad4d, type: 3}
+  - weapon: {fileID: 956096571035299487, guid: bb06bd4b4b1fb3e4c8a49867f1120722, type: 3}
     fullDurabilitySprite: {fileID: 1255450684, guid: adffc8ec319f42c48b1f67fef7e372ee, type: 3}
     halfDurabilitySprite: {fileID: 0}
     brokenDurabilitySprite: {fileID: 0}
     swapSprite: {fileID: 0}
     throwableSprite: {fileID: 0}
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 5281667697160198223, guid: 2cddca2ef0b8b794196ca272c7c6edf0, type: 3}
     fullDurabilitySprite: {fileID: 681936179, guid: 76cb47075dc8e9f438a39f24bc6e3899, type: 3}
     halfDurabilitySprite: {fileID: 0}
     brokenDurabilitySprite: {fileID: 0}
     swapSprite: {fileID: 0}
     throwableSprite: {fileID: 0}
-  - weapon: {fileID: 0}
+  - weapon: {fileID: 772382555551593320, guid: b06f010e14cd5ea43a29b767753b28e0, type: 3}
     fullDurabilitySprite: {fileID: -1193882131, guid: 9eae9320ec2f43940a33a18dd4f8b0a3, type: 3}
     halfDurabilitySprite: {fileID: 0}
     brokenDurabilitySprite: {fileID: 0}

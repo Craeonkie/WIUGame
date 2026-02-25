@@ -1,0 +1,311 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Monster Arms Mask
+  m_Mask: 00000000010000000000000000000000000000000100000001000000010000000100000000000000000000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: CTRL
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_L_UpperLeg_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_L_UpperLeg_Ctrl/L_UpperLeg_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_L_UpperLeg_Ctrl/L_UpperLeg_Ctrl/Offset_L_LowerLeg_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_L_UpperLeg_Ctrl/L_UpperLeg_Ctrl/Offset_L_LowerLeg_Ctrl/L_LowerLeg_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_L_UpperLeg_Ctrl/L_UpperLeg_Ctrl/Offset_L_LowerLeg_Ctrl/L_LowerLeg_Ctrl/Offset_L_Ankle_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_L_UpperLeg_Ctrl/L_UpperLeg_Ctrl/Offset_L_LowerLeg_Ctrl/L_LowerLeg_Ctrl/Offset_L_Ankle_Ctrl/L_Ankle_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_L_UpperLeg_Ctrl/L_UpperLeg_Ctrl/Offset_L_LowerLeg_Ctrl/L_LowerLeg_Ctrl/Offset_L_Ankle_Ctrl/L_Ankle_Ctrl/Offset_L_Foot_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_L_UpperLeg_Ctrl/L_UpperLeg_Ctrl/Offset_L_LowerLeg_Ctrl/L_LowerLeg_Ctrl/Offset_L_Ankle_Ctrl/L_Ankle_Ctrl/Offset_L_Foot_Ctrl/L_Foot_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_R_UpperLeg_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_R_UpperLeg_Ctrl/R_UpperLeg_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_R_UpperLeg_Ctrl/R_UpperLeg_Ctrl/Offset_R_LowerLeg_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_R_UpperLeg_Ctrl/R_UpperLeg_Ctrl/Offset_R_LowerLeg_Ctrl/R_LowerLeg_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_R_UpperLeg_Ctrl/R_UpperLeg_Ctrl/Offset_R_LowerLeg_Ctrl/R_LowerLeg_Ctrl/Offset_R_Ankle_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_R_UpperLeg_Ctrl/R_UpperLeg_Ctrl/Offset_R_LowerLeg_Ctrl/R_LowerLeg_Ctrl/Offset_R_Ankle_Ctrl/R_Ankle_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_R_UpperLeg_Ctrl/R_UpperLeg_Ctrl/Offset_R_LowerLeg_Ctrl/R_LowerLeg_Ctrl/Offset_R_Ankle_Ctrl/R_Ankle_Ctrl/Offset_R_Foot_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_R_UpperLeg_Ctrl/R_UpperLeg_Ctrl/Offset_R_LowerLeg_Ctrl/R_LowerLeg_Ctrl/Offset_R_Ankle_Ctrl/R_Ankle_Ctrl/Offset_R_Foot_Ctrl/R_Foot_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_Head_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_Head_Ctrl/Head_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Middle_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Middle_1_Ctrl/L_Middle_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Middle_1_Ctrl/L_Middle_1_Ctrl/Offset_L_Middle_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Middle_1_Ctrl/L_Middle_1_Ctrl/Offset_L_Middle_2_Ctrl/L_Middle_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Middle_1_Ctrl/L_Middle_1_Ctrl/Offset_L_Middle_2_Ctrl/L_Middle_2_Ctrl/Offset_L_Middle_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Middle_1_Ctrl/L_Middle_1_Ctrl/Offset_L_Middle_2_Ctrl/L_Middle_2_Ctrl/Offset_L_Middle_3_Ctrl/L_Middle_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Pinky_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Pinky_1_Ctrl/L_Pinky_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Pinky_1_Ctrl/L_Pinky_1_Ctrl/Offset_L_Pinky_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Pinky_1_Ctrl/L_Pinky_1_Ctrl/Offset_L_Pinky_2_Ctrl/L_Pinky_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Pinky_1_Ctrl/L_Pinky_1_Ctrl/Offset_L_Pinky_2_Ctrl/L_Pinky_2_Ctrl/Offset_L_Pinky_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Pinky_1_Ctrl/L_Pinky_1_Ctrl/Offset_L_Pinky_2_Ctrl/L_Pinky_2_Ctrl/Offset_L_Pinky_3_Ctrl/L_Pinky_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Thumb_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Thumb_1_Ctrl/L_Thumb_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Thumb_1_Ctrl/L_Thumb_1_Ctrl/Offset_L_Thumb_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Thumb_1_Ctrl/L_Thumb_1_Ctrl/Offset_L_Thumb_2_Ctrl/L_Thumb_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Thumb_1_Ctrl/L_Thumb_1_Ctrl/Offset_L_Thumb_2_Ctrl/L_Thumb_2_Ctrl/Offset_L_Thumb_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_L_Clavicle_Ctrl/L_Clavicle_Ctrl/Offset_L_Upper_Arm_Ctrl/L_Upper_Arm_Ctrl/Offset_L_Lower_Arm_Ctrl/L_Lower_Arm_Ctrl/Offset_L_Wrist_Ctrl/L_Wrist_Ctrl/Offset_L_Thumb_1_Ctrl/L_Thumb_1_Ctrl/Offset_L_Thumb_2_Ctrl/L_Thumb_2_Ctrl/Offset_L_Thumb_3_Ctrl/L_Thumb_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_Neck_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_Neck_Ctrl/Neck_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Middle_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Middle_1_Ctrl/R_Middle_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Middle_1_Ctrl/R_Middle_1_Ctrl/Offset_R_Middle_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Middle_1_Ctrl/R_Middle_1_Ctrl/Offset_R_Middle_2_Ctrl/R_Middle_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Middle_1_Ctrl/R_Middle_1_Ctrl/Offset_R_Middle_2_Ctrl/R_Middle_2_Ctrl/Offset_R_Middle_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Middle_1_Ctrl/R_Middle_1_Ctrl/Offset_R_Middle_2_Ctrl/R_Middle_2_Ctrl/Offset_R_Middle_3_Ctrl/R_Middle_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Pinky_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Pinky_1_Ctrl/R_Pinky_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Pinky_1_Ctrl/R_Pinky_1_Ctrl/Offset_R_Pinky_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Pinky_1_Ctrl/R_Pinky_1_Ctrl/Offset_R_Pinky_2_Ctrl/R_Pinky_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Pinky_1_Ctrl/R_Pinky_1_Ctrl/Offset_R_Pinky_2_Ctrl/R_Pinky_2_Ctrl/Offset_R_Pinky_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Pinky_1_Ctrl/R_Pinky_1_Ctrl/Offset_R_Pinky_2_Ctrl/R_Pinky_2_Ctrl/Offset_R_Pinky_3_Ctrl/R_Pinky_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Thumb_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Thumb_1_Ctrl/R_Thumb_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Thumb_1_Ctrl/R_Thumb_1_Ctrl/Offset_R_Thumb_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Thumb_1_Ctrl/R_Thumb_1_Ctrl/Offset_R_Thumb_2_Ctrl/R_Thumb_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Thumb_1_Ctrl/R_Thumb_1_Ctrl/Offset_R_Thumb_2_Ctrl/R_Thumb_2_Ctrl/Offset_R_Thumb_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Spine1_Ctrl/Spine1_Ctrl/Offset_Spine2_Ctrl/Spine2_Ctrl/Offset_R_Clavicle_Ctrl/R_Clavicle_Ctrl/Offset_R_Upper_Arm_Ctrl/R_Upper_Arm_Ctrl/Offset_R_Lower_Arm_Ctrl/R_Lower_Arm_Ctrl/Offset_R_Wrist_Ctrl/R_Wrist_Ctrl/Offset_R_Thumb_1_Ctrl/R_Thumb_1_Ctrl/Offset_R_Thumb_2_Ctrl/R_Thumb_2_Ctrl/Offset_R_Thumb_3_Ctrl/R_Thumb_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl/Tail_2_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl/Tail_2_Ctrl/Offset_Tail_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl/Tail_2_Ctrl/Offset_Tail_3_Ctrl/Tail_3_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl/Tail_2_Ctrl/Offset_Tail_3_Ctrl/Tail_3_Ctrl/Offset_Tail_4_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl/Tail_2_Ctrl/Offset_Tail_3_Ctrl/Tail_3_Ctrl/Offset_Tail_4_Ctrl/Tail_4_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl/Tail_2_Ctrl/Offset_Tail_3_Ctrl/Tail_3_Ctrl/Offset_Tail_4_Ctrl/Tail_4_Ctrl/Offset_Tail_5_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl/Tail_2_Ctrl/Offset_Tail_3_Ctrl/Tail_3_Ctrl/Offset_Tail_4_Ctrl/Tail_4_Ctrl/Offset_Tail_5_Ctrl/Tail_5_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl/Tail_2_Ctrl/Offset_Tail_3_Ctrl/Tail_3_Ctrl/Offset_Tail_4_Ctrl/Tail_4_Ctrl/Offset_Tail_5_Ctrl/Tail_5_Ctrl/Offset_Tail_6_Ctrl
+    m_Weight: 1
+  - m_Path: CTRL/Offset_Hips_Ctrl/Hips_Ctrl/Offset_Tail_1_Ctrl/Tail_1_Ctrl/Offset_Tail_2_Ctrl/Tail_2_Ctrl/Offset_Tail_3_Ctrl/Tail_3_Ctrl/Offset_Tail_4_Ctrl/Tail_4_Ctrl/Offset_Tail_5_Ctrl/Tail_5_Ctrl/Offset_Tail_6_Ctrl/Tail_6_Ctrl
+    m_Weight: 1
+  - m_Path: DadMesh
+    m_Weight: 1
+  - m_Path: Hips
+    m_Weight: 1
+  - m_Path: Hips/L_UpperLeg
+    m_Weight: 1
+  - m_Path: Hips/L_UpperLeg/L_LowerLeg
+    m_Weight: 1
+  - m_Path: Hips/L_UpperLeg/L_LowerLeg/L_Ankle
+    m_Weight: 1
+  - m_Path: Hips/L_UpperLeg/L_LowerLeg/L_Ankle/L_Foot
+    m_Weight: 1
+  - m_Path: Hips/L_UpperLeg/L_LowerLeg/L_Ankle/L_Foot/L_Foot_End
+    m_Weight: 1
+  - m_Path: Hips/R_UpperLeg
+    m_Weight: 1
+  - m_Path: Hips/R_UpperLeg/R_LowerLeg
+    m_Weight: 1
+  - m_Path: Hips/R_UpperLeg/R_LowerLeg/R_Ankle
+    m_Weight: 1
+  - m_Path: Hips/R_UpperLeg/R_LowerLeg/R_Ankle/R_Foot
+    m_Weight: 1
+  - m_Path: Hips/R_UpperLeg/R_LowerLeg/R_Ankle/R_Foot/R_Foot_End
+    m_Weight: 1
+  - m_Path: Hips/Spine1
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Middle_jnt1
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Middle_jnt1/L_Middle_jnt2
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Middle_jnt1/L_Middle_jnt2/L_Middle_jnt3
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Middle_jnt1/L_Middle_jnt2/L_Middle_jnt3/L_Middle_jnt4
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Pinky_jnt1
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Pinky_jnt1/L_Pinky_jnt2
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Pinky_jnt1/L_Pinky_jnt2/L_Pinky_jnt3
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Pinky_jnt1/L_Pinky_jnt2/L_Pinky_jnt3/L_Pinky_jnt4
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Thumb_jnt1
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Thumb_jnt1/L_Thumb_jnt2
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Thumb_jnt1/L_Thumb_jnt2/L_Thumb_jnt3
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/L_Clavicle/L_UpperArm/L_LowerArm/L_Wrist/L_Hand/L_Thumb_jnt1/L_Thumb_jnt2/L_Thumb_jnt3/L_Thumb_jnt4
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/Neck
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/Neck/Head
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/Neck/Head/Head_End
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Middle_jnt1
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Middle_jnt1/R_Middle_jnt2
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Middle_jnt1/R_Middle_jnt2/R_Middle_jnt3
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Middle_jnt1/R_Middle_jnt2/R_Middle_jnt3/R_Middle_jnt4
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Pinky_jnt1
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Pinky_jnt1/R_Pinky_jnt2
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Pinky_jnt1/R_Pinky_jnt2/R_Pinky_jnt3
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Pinky_jnt1/R_Pinky_jnt2/R_Pinky_jnt3/R_Pinky_jnt4
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Thumb_jnt1
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Thumb_jnt1/R_Thumb_jnt2
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Thumb_jnt1/R_Thumb_jnt2/R_Thumb_jnt3
+    m_Weight: 1
+  - m_Path: Hips/Spine1/Spine2/R_Clavicle/R_UpperArm/R_LowerArm/R_Wrist/R_Hand/R_Thumb_jnt1/R_Thumb_jnt2/R_Thumb_jnt3/R_Thumb_jnt4
+    m_Weight: 1
+  - m_Path: Hips/tail_jnt1
+    m_Weight: 1
+  - m_Path: Hips/tail_jnt1/tail_jnt2
+    m_Weight: 1
+  - m_Path: Hips/tail_jnt1/tail_jnt2/tail_jnt3
+    m_Weight: 1
+  - m_Path: Hips/tail_jnt1/tail_jnt2/tail_jnt3/tail_jnt4
+    m_Weight: 1
+  - m_Path: Hips/tail_jnt1/tail_jnt2/tail_jnt3/tail_jnt4/tail_jnt5
+    m_Weight: 1
+  - m_Path: Hips/tail_jnt1/tail_jnt2/tail_jnt3/tail_jnt4/tail_jnt5/tail_jnt6
+    m_Weight: 1
+  - m_Path: Hips/tail_jnt1/tail_jnt2/tail_jnt3/tail_jnt4/tail_jnt5/tail_jnt6/tail_jnt7
+    m_Weight: 1

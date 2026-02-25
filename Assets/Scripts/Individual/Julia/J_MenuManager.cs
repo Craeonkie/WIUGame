@@ -1,5 +1,7 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class J_MenuManager : MonoBehaviour, J_IDataPersistence
@@ -17,8 +19,9 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
     public static System.Action OnNewGame;
     public static System.Action OnOpenSettings;
     public static System.Action<string, FontStyles> OnUpdateQuality;
-    public static System.Action OnPause;
-    public static System.Action OnExit;
+    public UnityEvent OnPause;
+    public UnityEvent OnResume;
+    public UnityEvent OnExit;
 
 
     // TEMPORARY CAMERA SENSITIVITY VALUE HERE
@@ -40,12 +43,12 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
 
     private void OnEnable()
     {
-        // InputManager.OnPaused += PauseGame();
+        J_GameManager.OnPause += PauseGame;
     }
 
     private void OnDisable()
     {
-        // InputManager.OnPaused -= PauseGame();
+        J_GameManager.OnPause -= PauseGame;
     }
 
     // Public functions that can have stuff added into them
@@ -53,7 +56,7 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
     {
         OnEnterGame?.Invoke();
         // NOTE: I don't know if we should still handle time scale here or not
-        // Time.timeScale = 1f;
+         Time.timeScale = 1f;
 
         Debug.Log("Enter Game was called!"); // comment when done
         
@@ -68,13 +71,13 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
 
         // might shift this, since enter game exists anyways so i can just call time scale in enter game
         // NOTE: I don't know if we should still handle time scale here or not
-        // Time.timeScale = 1f;
+         Time.timeScale = 1f;
 
         Debug.Log("New Game was called!"); // comment when done
 
         // Reset the game
         J_DataPersistenceManager.instance.ResetGame();
-        SceneLoader.Instance.LoadScene(J_GameManager.REST_SCENE);
+        SceneLoader.Instance.LoadScene(J_GameManager.START_SCENE);
 
         // TODO: might want to go to a different start scene to play beginning cutscenes?
     }
@@ -131,20 +134,31 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
 
     public void PauseGame()
     {
-        OnPause?.Invoke();
+        if (_pauseMenu.activeSelf)
+            return;
 
-        // NOTE: I don't know if we should still handle time scale here or not
-        // Time.timeScale = 0f;
+        OnPause?.Invoke();
+        Time.timeScale = 0f;
 
         Debug.Log("Pause Game was called!"); // comment when done
+    }
+
+    public void ResumeGame()
+    {
+        OnResume?.Invoke();
+        Time.timeScale = 1f;
     }
 
     public void ExitGame()
     {
         OnExit?.Invoke();
+        Time.timeScale = 1f;
+
+        // Put here cause rn theres no leaving transition
+        SceneLoader.Instance.LoadScene(J_GameManager.MENU_SCENE);
 
         // Save the game in its current state
-        //DataPersistenceManager.instance.SaveGame();
+        J_DataPersistenceManager.instance.SaveGame();
     }
 
     public void QuitGame()

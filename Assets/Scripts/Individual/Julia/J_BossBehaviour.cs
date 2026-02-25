@@ -1015,6 +1015,8 @@ public class J_BossBehaviour : Entity
 
     private void OnDrawGizmos()
     {
+        return;
+
         for (int i = 0; i < 2; ++i)
         {
             if (_fistColliders[i].enabled)
