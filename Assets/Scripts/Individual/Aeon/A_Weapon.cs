@@ -49,6 +49,11 @@ public abstract class Weapon : Item
         return isBlocking;
     }
 
+    public void BlockDamage()
+    {
+        currentDurability -= _currentAnimation.durabilityUsedByAttacking;
+    }
+
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (isAttacking && !hitEntities.Contains(other.gameObject.GetComponent<Entity>()) && !IsPartOfHierarchy(other.transform, transform.root))
@@ -59,7 +64,7 @@ public abstract class Weapon : Item
                 if (canLoseDurabilityThisAttack)
                 {
                     canLoseDurabilityThisAttack = false;
-                    currentDurability -= _currentAnimation.durabilityUsed;
+                    currentDurability -= _currentAnimation.durabilityUsedByAttacking;
                 }
             }
             else
@@ -71,7 +76,7 @@ public abstract class Weapon : Item
                     if (canLoseDurabilityThisAttack)
                     {
                         canLoseDurabilityThisAttack = false;
-                        currentDurability -= _currentAnimation.durabilityUsed;
+                        currentDurability -= _currentAnimation.durabilityUsedByAttacking;
                     }
                 }
             }

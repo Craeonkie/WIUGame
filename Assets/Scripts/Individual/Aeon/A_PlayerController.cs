@@ -115,8 +115,7 @@ public class PlayerController : Entity
 
         Cursor.lockState = CursorLockMode.Locked;
 
-        _rollDirection = Vector3.forward;
-
+        _rollDirection = Vector3.forward;;
         _remainingEnergy = _maxEnergy;
         _canUseSpecial = true;
     }
@@ -600,30 +599,37 @@ public class PlayerController : Entity
     {
         if (!isInvincible && !isDodging)
         {
-            _currentHP -= damageTaken;
-            _animator.SetTrigger("GetHit");
-            _invincibilityMaxCooldown = invincibilityLength;
-            _invincibilityCooldown = invincibilityLength;
-            OnPlayerHealthChanged?.Invoke(_currentHP, _maxHP);
-
-            if (hitAudio.Length > 0 && audioSource != null)
+            if (inventory.ReturnCurrentItem().TryGetComponent<Weapon>(out Weapon currentWeapon) && currentWeapon.IsBlocking())
             {
-                audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
-            }
-            if (_currentHP <= 0)
-            {
-                audioSource.PlayOneShot(deathAudio);
-                Die();
+                currentWeapon.BlockDamage();
             }
             else
             {
-                if (_invincibilityCooldown > 0)
-                {
-                    isInvincible = true;
-                }
-            }
+                _currentHP -= damageTaken;
+                _animator.SetTrigger("GetHit");
+                _invincibilityMaxCooldown = invincibilityLength;
+                _invincibilityCooldown = invincibilityLength;
+                OnPlayerHealthChanged?.Invoke(_currentHP, _maxHP);
 
-            InterruptAction();
+                if (hitAudio.Length > 0 && audioSource != null)
+                {
+                    audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+                }
+                if (_currentHP <= 0)
+                {
+                    audioSource.PlayOneShot(deathAudio);
+                    Die();
+                }
+                else
+                {
+                    if (_invincibilityCooldown > 0)
+                    {
+                        isInvincible = true;
+                    }
+                }
+
+                InterruptAction();
+            }
         }
     }
 

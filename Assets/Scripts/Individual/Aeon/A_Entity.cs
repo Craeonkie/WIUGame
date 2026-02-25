@@ -15,6 +15,7 @@ public class Entity : MonoBehaviour
     [SerializeField] protected bool isDodging = false;
     [SerializeField] protected bool _animationHasReset = false;
     [SerializeField] protected bool _hasDamageFlicker = false;
+    [SerializeField] protected bool _isBlocking = false;
     [SerializeField] protected AudioClip[] hitAudio;
     [SerializeField] protected AudioClip deathAudio;
     [SerializeField] protected AudioSource audioSource;

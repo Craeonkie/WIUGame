@@ -28,7 +28,7 @@ public class WeaponWithBlock : Weapon
                 _resetAnimationChain = false;
                 HandleActionEnd();
             }
-            if (wasPressedThisFrame)
+            if (wasPressedThisFrame && !_isActing)
             {
                 _inputType = inputType;
                 _currentAnimationChain = 0;
