@@ -38,14 +38,14 @@ Material:
     m_Ints: []
     m_Floats:
     - _Fullscreen_DepthWrite: 0
-    - _blur_offset: 0.0036
-    - _noiseAmount: 0.81
+    - _blur_offset: 0.00222
+    - _noiseAmount: 0.788
     - _noiseScale: 1000
-    - _numberOfScanLine: 51
-    - _onVhs: 1
+    - _numberOfScanLine: 46
+    - _onVhs: 0
     - _scan_lines_speed: 0.00312
     m_Colors:
-    - _Color: {r: 3.1777463, g: 3.0824137, b: 2.2244222, a: 1}
+    - _Color: {r: 2.9960783, g: 2.7971013, b: 2.1877024, a: 1}
     - _damageColor: {r: 1, g: 0, b: 0, a: 1}
     - _noiseSpeed: {r: 15.63, g: -0.21, b: 0, a: 0}
   m_BuildTextureStacks: []

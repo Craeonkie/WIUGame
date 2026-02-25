@@ -26,22 +26,22 @@ public class C_FriendBossPhase2 : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        C_FriendBoss.TransitionPhase1Action += awakeSelf;
+        //C_FriendBoss.TransitionPhase1Action += awakeSelf;
         C_Airplane.finishAbility += ResetAirplane;
         C_PencilAbility.finishAbility += ResetPencil;
 
     }
     private void OnDestroy()
     {
-        C_FriendBoss.TransitionPhase1Action -= awakeSelf;
+        //C_FriendBoss.TransitionPhase1Action -= awakeSelf;
         C_Airplane.finishAbility -= ResetAirplane;
         C_PencilAbility.finishAbility -= ResetPencil;
     }
 
-    private void awakeSelf()
-    {
-        this.enabled = true;
-    }
+    //private void awakeSelf()
+    //{
+    //    this.enabled = true;
+    //}
 
     private void ResetAirplane()
     {
