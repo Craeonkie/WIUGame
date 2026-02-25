@@ -14965,6 +14965,7 @@ MonoBehaviour:
   isDodging: 0
   _animationHasReset: 0
   _hasDamageFlicker: 0
+  _isBlocking: 0
   hitAudio: []
   deathAudio: {fileID: 0}
   audioSource: {fileID: 0}
@@ -49994,6 +49995,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   audioSource: {fileID: 0}
   weaponBreakingSound: {fileID: 0}
+  _animationHandler: {fileID: 0}
   _entityUsingItem: {fileID: 0}
   _isActing: 0
   _resetAnimationChain: 0
@@ -61326,6 +61328,7 @@ MonoBehaviour:
   isDodging: 0
   _animationHasReset: 0
   _hasDamageFlicker: 0
+  _isBlocking: 0
   hitAudio: []
   deathAudio: {fileID: 0}
   audioSource: {fileID: 0}
@@ -64245,6 +64248,7 @@ MonoBehaviour:
   isDodging: 0
   _animationHasReset: 0
   _hasDamageFlicker: 0
+  _isBlocking: 0
   hitAudio: []
   deathAudio: {fileID: 0}
   audioSource: {fileID: 0}

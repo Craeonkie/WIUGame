@@ -1,5 +1,8 @@
+using UnityEditor;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class A_RestSceneManager : MonoBehaviour
 {
@@ -7,6 +10,8 @@ public class A_RestSceneManager : MonoBehaviour
     [SerializeField] private DoorToAnotherScene kitchenDoor;
     [SerializeField] private DoorToAnotherScene parentsRoomDoor;
 
+
+    [Header("Do these things when the corresponding scene is completed")]
     public UnityEvent kidsRoomSceneCompleted;
     public UnityEvent kitchenSceneCompleted;
     public UnityEvent parentsRoomSceneCompleted;
@@ -14,6 +19,12 @@ public class A_RestSceneManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //if (J_GameManager.Instance == null)
+        //{
+        //    Cursor.lockState = CursorLockMode.Confined;
+        //    SceneManager.LoadScene("J_MenuScene", LoadSceneMode.Single);
+        //    return;
+        //}
         UpdateDoorsInScene();
     }
 

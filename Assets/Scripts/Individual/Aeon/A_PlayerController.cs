@@ -30,6 +30,7 @@ public class PlayerController : Entity
     [Header("Camera Movement")]
     [SerializeField] private GameObject followCamera;
     [SerializeField] private GameObject thirdPersonCamera;
+    [SerializeField] private GameObject topDownCamera;
     public GameObject cameraTarget;
     [SerializeField] private MouseMovement[] mouseRotationScripts;
 
@@ -76,6 +77,7 @@ public class PlayerController : Entity
     [Header("Events to invoke")]
     public static System.Action OnInteract;
 
+    [Header("Expose to inspector for debugging")]
     private Vector2 _inputMove;
     [SerializeField] private bool _isJumping = false;
     [SerializeField] private bool _isRolling = false;
@@ -86,6 +88,7 @@ public class PlayerController : Entity
     [SerializeField] private bool _isAiming = false;
     [SerializeField] private bool _wasGroundedPreviously = false;
     [SerializeField] private GameObject _itemBeingMoved;
+    [SerializeField] private bool _isTopDown;
 
     public static System.Action<float, float> OnPlayerHealthChanged;
 
@@ -169,15 +172,31 @@ public class PlayerController : Entity
             // Handle rotation
             if (isMoving && !_isMovingObject && !_isAiming && !_isRolling && _currentLandTimer <= 0)
             {
-                Quaternion cameraYawOnly = Quaternion.Euler(0, followCamera.transform.eulerAngles.y, 0);
-                Vector3 cameraForward = cameraYawOnly * Vector3.forward;
-                Vector3 cameraRight = cameraYawOnly * Vector3.right;
+                // Follow camera rotation
+                if (!_isTopDown)
+                {
+                    Quaternion cameraYawOnly = Quaternion.Euler(0, followCamera.transform.eulerAngles.y, 0);
+                    Vector3 cameraForward = cameraYawOnly * Vector3.forward;
+                    Vector3 cameraRight = cameraYawOnly * Vector3.right;
 
-                Vector3 moveDir = cameraForward * _inputMove.y + cameraRight * _inputMove.x;
-                Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
+                    Vector3 moveDir = cameraForward * _inputMove.y + cameraRight * _inputMove.x;
+                    Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
 
-                float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
-                transform.eulerAngles = new Vector3(0, newY, 0);
+                    float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
+                    transform.eulerAngles = new Vector3(0, newY, 0);
+                }
+                // Top down
+                else
+                {
+                    Vector3 playerForward = topDownCamera.transform.forward;
+                    Vector3 playerRight = topDownCamera.transform.right;
+
+                    Vector3 moveDir = playerForward * _inputMove.y + playerRight * _inputMove.x;
+                    Quaternion targetRot = Quaternion.LookRotation(moveDir, Vector3.up);
+
+                    float newY = Mathf.MoveTowardsAngle(transform.eulerAngles.y, targetRot.eulerAngles.y, playerRotationSpeed * Time.deltaTime);
+                    transform.eulerAngles = new Vector3(0, newY, 0);
+                }
                 _rollDirection = transform.forward;
             }
 
@@ -599,7 +618,7 @@ public class PlayerController : Entity
     {
         if (!isInvincible && !isDodging)
         {
-            if (inventory.ReturnCurrentItem().TryGetComponent<Weapon>(out Weapon currentWeapon) && currentWeapon.IsBlocking())
+            if (inventory.ReturnCurrentItem() != null && inventory.ReturnCurrentItem().TryGetComponent<Weapon>(out Weapon currentWeapon) && currentWeapon.IsBlocking())
             {
                 currentWeapon.BlockDamage();
             }
@@ -654,6 +673,12 @@ public class PlayerController : Entity
     public void TogglePlayerAbilityToPickUpitems(bool canPickUpItems)
     {
         _handsAreFree = canPickUpItems;
+    }
+
+    // Toggle player ability to move and input
+    public void ToggleTopDownCamera(bool isTopDown)
+    {
+        _isTopDown = isTopDown;
     }
 
     // Sihan function
