@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
@@ -5,7 +6,9 @@ using UnityEngine;
 public class C_CombineMesh : MonoBehaviour
 {
     [SerializeField] bool _CreateRB;
+    [SerializeField] bool _isKinematic;
 
+    private Rigidbody _rb = null;
     public void Optimize()
     {
         MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
@@ -57,10 +60,21 @@ public class C_CombineMesh : MonoBehaviour
         GetComponent<MeshCollider>().sharedMesh = mesh;
 
         if (_CreateRB)
-            gameObject.AddComponent<Rigidbody>();
+        {
+             _rb = gameObject.AddComponent<Rigidbody>();
+            if (_isKinematic) _rb.isKinematic = true;
+        }
     }
     private void Start()
     {
         Optimize();
+    }
+
+   public void IsKinematic(bool _IsKinematic)
+    {
+        if (_rb != null)
+        {
+            _rb.isKinematic= _IsKinematic;
+        }
     }
 }

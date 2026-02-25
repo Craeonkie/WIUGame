@@ -80,7 +80,6 @@ public class C_FriendAI : MonoBehaviour
     {
         this.enabled = false;
     }
-
     private void Awake()
     {
         if (_PlayerTransform == null)
@@ -102,7 +101,15 @@ public class C_FriendAI : MonoBehaviour
                 Debug.LogWarning("Missing Animator in the FRIEND????");
             }
         }
+
+        C_VHSTransition.FinishTransiition += EnableThis;
+
         _HasPt = false; 
+    }
+
+    private void OnDestroy()
+    {
+        C_VHSTransition.FinishTransiition -= EnableThis;
     }
 
     private void Update()
@@ -111,6 +118,10 @@ public class C_FriendAI : MonoBehaviour
         FSM();
     }
 
+    private void EnableThis()
+    {
+        this.enabled = true;
+    }
 
     // need to pick up obj
     //use it n atk
