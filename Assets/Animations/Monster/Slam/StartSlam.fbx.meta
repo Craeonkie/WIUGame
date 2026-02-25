@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: eb1477ecb69c0ed4aa591ef1bc03a1b8
+guid: 45519b38c3d008e4492bd1030bd13fd7
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -31,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Slam
+      name: StartSlam
       takeName: Slam
       internalID: -1515349500964892227
       firstFrame: 0
-      lastFrame: 55
+      lastFrame: 15.6
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -45,7 +45,7 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
       keepOriginalPositionY: 0

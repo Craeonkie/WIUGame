@@ -139,6 +139,8 @@ public class Inventory : MonoBehaviour
                 OnEquipPrimary?.Invoke(_primaryItem.GetComponent<Item>());
                 if (_secondaryItem == null)
                     OnEquipSecondary?.Invoke(null);
+                else
+                    OnEquipSecondary?.Invoke(_secondaryItem.GetComponent<Item>());
             }
             else
             {
@@ -146,7 +148,11 @@ public class Inventory : MonoBehaviour
             }
         }
         // SCENARIO 4 --> EQUIP PRIMARY, BECAUSE CURRENT ITEM IS NULL
-        //else if (_currentItem == null)
+        else if (_currentItem == _secondaryItem && _currentItem != null && _primaryItem == null)
+        {
+            OnEquipSecondary?.Invoke(_secondaryItem.GetComponent<Item>());
+            OnEquipPrimary?.Invoke(null);
+        }
 
         if (_currentItem != null)
         {
@@ -173,6 +179,7 @@ public class Inventory : MonoBehaviour
             {
                 Debug.Log("Equipped!");
                 OnEquipPrimary?.Invoke(_secondaryItem.GetComponent<Item>()); // SWAP IT TO THE PRIMARY SLOT
+                OnEquipSecondary?.Invoke(null);
             }
         }
         // SCENARIO 2: CURRENT ITEM IS EITHER THE PRIMARY ITEM OR SHIELD AND SECONDARY ITEM IS NOT THE CURRENT ITEM AND EXISTS
@@ -191,6 +198,7 @@ public class Inventory : MonoBehaviour
             {
                 Debug.Log("Equipped!");
                 OnEquipPrimary?.Invoke(_secondaryItem.GetComponent<Item>());
+                OnEquipSecondary?.Invoke(null);
                 OnEquipShield?.Invoke(_primaryItem.GetComponent<Item>());
             }
         }
@@ -227,21 +235,42 @@ public class Inventory : MonoBehaviour
 
         if (item != null)
         {
+            Debug.Log("went in here");
+
             // Remove item from current hand
             if (_currentItem == item)
             {
                 // Check if it's the shield
-                if (item.GetComponent<WeaponWithBlock>())
+                if (_currentItem.GetComponent<WeaponWithBlock>())
+                {
+                    Debug.Log("removing shield");
                     OnEquipShield?.Invoke(null);
+                }
                 else if (_currentItem == _primaryItem)
-                    OnEquipPrimary?.Invoke(null);
-                else if (_currentItem == _secondaryItem) {
+                {
+                    if (_primaryItem.GetComponent<WeaponWithBlock>() != null)
+                    {
+                        OnEquipShield?.Invoke(null);
+                    }
+                    else
+                    {
+                        OnEquipPrimary?.Invoke(null);
+                    }
+
+                    if (_secondaryItem != null)
+                    {
+                        OnEquipSecondary?.Invoke(_secondaryItem.GetComponent<Item>());
+                    }
+                }
+                else if (_currentItem == _secondaryItem)
+                {
                     Debug.Log("dropping a throwable");
                     Debug.Log("primary: " + _primaryItem);
                     Debug.Log("secondary: " + _secondaryItem);
-                    
+
                     OnEquipPrimary?.Invoke(null);
-                    OnEquipSecondary?.Invoke(_primaryItem.GetComponent<Item>());
+                    if (_primaryItem != null && _primaryItem.GetComponent<WeaponWithBlock>() == null)
+                        OnEquipSecondary?.Invoke(_primaryItem.GetComponent<Item>());
                 }
 
                 _currentItem = null;

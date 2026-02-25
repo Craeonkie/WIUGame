@@ -284,7 +284,7 @@
                 {
                     "name": "",
                     "id": "198fcbdc-7cc5-411c-9d09-59115419d421",
-                    "path": "<Mouse>/middleButton",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -350,7 +350,7 @@
                 {
                     "name": "",
                     "id": "088b30b3-dfc4-4577-82d6-c74e967832a5",
-                    "path": "<Keyboard>/tab",
+                    "path": "<Keyboard>/m",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
