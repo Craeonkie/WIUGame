@@ -6,10 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class A_RestSceneManager : MonoBehaviour
 {
-    [SerializeField] private DoorToAnotherScene kidRoomDoor;
-    [SerializeField] private DoorToAnotherScene kitchenDoor;
-    [SerializeField] private DoorToAnotherScene parentsRoomDoor;
-
+    [SerializeField] private DoorToAnotherScene _kidRoomDoor;
+    [SerializeField] private DoorToAnotherScene _kitchenDoor;
+    [SerializeField] private DoorToAnotherScene _parentsRoomDoor;
+    [SerializeField] private RestingPlayerController _player;
+    [SerializeField] private Vector3 _spawnPoint;
+    [SerializeField] private Vector3 _kidsDoorSpawn;
+    [SerializeField] private Vector3 _kitchenSpawn;
+    [SerializeField] private Vector3 _parentsDoorSpawn;
 
     [Header("Do these things when the corresponding scene is completed")]
     public UnityEvent kidsRoomSceneCompleted;
@@ -19,12 +23,6 @@ public class A_RestSceneManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //if (J_GameManager.Instance == null)
-        //{
-        //    Cursor.lockState = CursorLockMode.Confined;
-        //    SceneManager.LoadScene("J_MenuScene", LoadSceneMode.Single);
-        //    return;
-        //}
         UpdateDoorsInScene();
     }
 
@@ -32,36 +30,40 @@ public class A_RestSceneManager : MonoBehaviour
     public void UpdateDoorsInScene()
     {
         // Make only kids room accessible
-        kidRoomDoor.ToggleSceneEnterable(true, false);
-        kitchenDoor.ToggleSceneEnterable(false, false);
-        parentsRoomDoor.ToggleSceneEnterable(false, false);
+        _kidRoomDoor.ToggleSceneEnterable(true, false);
+        _kitchenDoor.ToggleSceneEnterable(false, false);
+        _parentsRoomDoor.ToggleSceneEnterable(false, false);
+        _player.MovePlayerTo(_spawnPoint);
 
         // Check if kids room is completed
-        if (J_GameManager.Instance.IsStageCompleted(kidRoomDoor.ReturnNextSceneName()))
+        if (J_GameManager.Instance.IsStageCompleted(_kidRoomDoor.ReturnNextSceneName()))
         {
-            kidRoomDoor.ToggleSceneEnterable(false, true);
+            _kidRoomDoor.ToggleSceneEnterable(false, true);
             kidsRoomSceneCompleted?.Invoke();
+            _player.MovePlayerTo(_kidsDoorSpawn);
 
             // Check if kitchen is completed
-            if (J_GameManager.Instance.IsStageCompleted(kitchenDoor.ReturnNextSceneName()))
+            if (J_GameManager.Instance.IsStageCompleted(_kitchenDoor.ReturnNextSceneName()))
             {
-                kitchenDoor.ToggleSceneEnterable(false, true);
+                _kitchenDoor.ToggleSceneEnterable(false, true);
                 kitchenSceneCompleted?.Invoke();
+                _player.MovePlayerTo(_kitchenSpawn);
 
                 // Check if parents room is completed (Shouldn't run)
-                if (J_GameManager.Instance.IsStageCompleted(parentsRoomDoor.ReturnNextSceneName()))
+                if (J_GameManager.Instance.IsStageCompleted(_parentsRoomDoor.ReturnNextSceneName()))
                 {
-                    parentsRoomDoor.ToggleSceneEnterable(true, false);
+                    _parentsRoomDoor.ToggleSceneEnterable(true, false);
                     parentsRoomSceneCompleted?.Invoke();
+                    _player.MovePlayerTo(_parentsDoorSpawn);
                 }
                 else
                 {
-                    parentsRoomDoor.ToggleSceneEnterable(false, true);
+                    _parentsRoomDoor.ToggleSceneEnterable(false, true);
                 }
             }
             else
             {
-                kitchenDoor.ToggleSceneEnterable(true, false);
+                _kitchenDoor.ToggleSceneEnterable(true, false);
             }
         }
     }
