@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5441696580150701405}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  0|-1|-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4018613556327871519}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ -1| 1| 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1302287467537546840}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  0| 1| 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4134850087324907469}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  1|-1| 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1230762906292509717}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  0| 0| 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -164,7 +164,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6072622604363495057}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  0| 0|-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5289305870431307396}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Base Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -252,7 +252,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5107268856455354894}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  1| 0| 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -283,7 +283,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 731657947640211528}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  1| 1| 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5524242708127632386}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  0|-1| 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1671369964327724776}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  1| 1|-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +379,7 @@ GameObject:
   - component: {fileID: 6025228111346462363}
   - component: {fileID: 5495630963848620067}
   - component: {fileID: 2611207641738512809}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Rubixcube (Blocker)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -544,7 +544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5839542624187216134}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ -1| 1|-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -575,7 +575,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8685547759672468310}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ -1|-1| 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -606,7 +606,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7200783308332368469}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  0| 1|-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -637,7 +637,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9012070526407316380}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  1| 0| 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,7 +668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4325740397307860194}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ -1| 0| 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -699,7 +699,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6394007150636281479}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  0| 1| 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -730,7 +730,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8243828769708031575}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  1| 0|-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -761,7 +761,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 558464134401426249}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ -1| 0| 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -792,7 +792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2108590510337363227}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  1|-1| 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -823,7 +823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1309135428097109754}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  1|-1|-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -854,7 +854,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5891864168380819733}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  0|-1| 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -885,7 +885,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2768341076820218429}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ -1|-1| 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -916,7 +916,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4832173775740151764}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ -1|-1|-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -948,7 +948,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2589439540929969564}
   - component: {fileID: 4186135285975282837}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Rubix Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1072,7 +1072,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 145774088078774034}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ -1| 0|-1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1103,7 +1103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 350252529445345959}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ  1| 1| 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1205,7 +1205,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 793668792802443286}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: XYZ -1| 1| 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
