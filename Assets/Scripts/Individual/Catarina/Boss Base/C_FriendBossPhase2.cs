@@ -9,6 +9,7 @@ public class C_FriendBossPhase2 : MonoBehaviour
         PENCIL=1
     }
     [Header("Settings")]
+    [SerializeField] float StartWaitTime = 3f;
     [SerializeField] float _MinTiming = 8;
     [SerializeField] float _MaxTiming =12;
     [SerializeField] private int _MaxConsecutive = 2;
@@ -22,6 +23,7 @@ public class C_FriendBossPhase2 : MonoBehaviour
 
 
     public static event System.Action StartFallingObjAbility;
+    public static event System.Action<C_BossCameraManager.c_CameraMode> ChangeCameraAnagle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -38,10 +40,24 @@ public class C_FriendBossPhase2 : MonoBehaviour
         C_PencilAbility.finishAbility -= ResetPencil;
     }
 
-    //private void awakeSelf()
-    //{
-    //    this.enabled = true;
-    //}
+    private bool firstTime = false, _isInStartWait = false;
+    private void OnEnable()
+    {
+        ChangeCameraAnagle?.Invoke(C_BossCameraManager.c_CameraMode.TOP_CAMERA);
+
+        if (!firstTime)
+        {
+            firstTime = true;
+            _isInStartWait = true;  
+            startingCounter = 0f;
+        }
+        else
+        {
+            // Skip the wait on subsequent enables
+            _AbilityActive = false;
+            _counter = Random.Range(_MinTiming, _MaxTiming);
+        }
+    }
 
     private void ResetAirplane()
     {
@@ -56,11 +72,22 @@ public class C_FriendBossPhase2 : MonoBehaviour
     }
 
     private bool _AbilityActive = false;
+    private float startingCounter = 0f;
 
     void Update()
     {
-        if (_AbilityActive) return;
+        if (_isInStartWait)
+        {
+            startingCounter += Time.deltaTime;
+            if (startingCounter >= StartWaitTime)
+            {
+                _isInStartWait = false;
+                _counter = Random.Range(_MinTiming, _MaxTiming);
+            }
+            return;
+        }
 
+        if (_AbilityActive) return;
         _counter -= Time.deltaTime;
         if (_counter <= 0f)
         {

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39622b1d798039744958f052049453fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C_Boid
-  _MaxSpeed: 10
+  _MaxSpeed: 6
   _SteeringTime: 0.54
   _SeekWeight: 1
   _ObsAvoidWeight: 0.381

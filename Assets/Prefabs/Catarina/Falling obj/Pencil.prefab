@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::C_FallingObj
   _rb: {fileID: 4681065777030318300}
   _waitTimer: 0
-  _fallingSpeed: 4
+  _fallingSpeed: 5
   _groundLayer:
     serializedVersion: 2
     m_Bits: 1032
