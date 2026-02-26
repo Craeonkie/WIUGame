@@ -507,7 +507,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _scaleSpeed: 1
-  _solveSpeed: 1
+  _solveSpeed: 0.5
 --- !u!54 &2611207641738512809
 Rigidbody:
   m_ObjectHideFlags: 0

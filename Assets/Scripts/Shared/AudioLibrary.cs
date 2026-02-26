@@ -187,6 +187,58 @@ public class AudioLibrary : MonoBehaviour
         Debug.LogWarning("Audio not found in library: " + name);
     }
 
+    public void PlaySoundAtPointCustomRandom2(string name, Vector3 position)
+    {
+        int random = Random.Range(1, 3);
+
+        PlaySoundAtPointCustom(name + random, position);
+    }
+
+    public void PlaySoundAtPointCustomRandom3(string name, Vector3 position)
+    {
+        int random = Random.Range(1, 4);
+
+        PlaySoundAtPointCustom(name + random, position);
+    }
+    public void PlaySoundAtPointCustomRandom4(string name, Vector3 position)
+    {
+        int random = Random.Range(1, 5);
+
+        PlaySoundAtPointCustom(name + random, position);
+    }
+    public void PlaySoundAtPointCustomRandom5(string name, Vector3 position)
+    {
+        int random = Random.Range(1, 6);
+
+        PlaySoundAtPointCustom(name + random, position);
+    }
+
+    public void PlaySoundAtPointCustomRandom2(string name, Transform position)
+    {
+        int random = Random.Range(1, 3);
+
+        PlaySoundAtPointCustom(name + random, position);
+    }
+
+    public void PlaySoundAtPointCustomRandom3(string name, Transform position)
+    {
+        int random = Random.Range(1, 4);
+
+        PlaySoundAtPointCustom(name + random, position);
+    }
+    public void PlaySoundAtPointCustomRandom4(string name, Transform position)
+    {
+        int random = Random.Range(1, 5);
+
+        PlaySoundAtPointCustom(name + random, position);
+    }
+    public void PlaySoundAtPointCustomRandom5(string name, Transform position)
+    {
+        int random = Random.Range(1, 6);
+
+        PlaySoundAtPointCustom(name + random, position);
+    }
+
     public void PlayOneShot(string name)
     {
         if (_audioManager == null) return;
@@ -200,6 +252,34 @@ public class AudioLibrary : MonoBehaviour
             }
         }
         Debug.LogWarning("Audio not found in library: " + name);
+    }
+
+    public void PlayOneShotRandom2(string name)
+    {
+        int random = Random.Range(1, 3);
+
+        PlayOneShot(name + random);
+    }
+
+    public void PlayOneShotRandom3(string name)
+    {
+        int random = Random.Range(1, 4);
+
+        PlayOneShot(name + random);
+    }
+
+    public void PlayOneShotRandom4(string name)
+    {
+        int random = Random.Range(1, 5);
+
+        PlayOneShot(name + random);
+    }
+
+    public void PlayOneShotRandom5(string name)
+    {
+        int random = Random.Range(1, 5);
+
+        PlayOneShot(name + random);
     }
 
     public void StopSound(string name)

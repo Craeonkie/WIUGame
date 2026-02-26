@@ -343,6 +343,8 @@ public class Dog : Entity
     // Update is called once per frame
     new void Update()
     {
+        if (Time.timeScale == 0) return;
+
         base.Update();
 
         if (!_canMove)
@@ -1314,8 +1316,11 @@ public class Dog : Entity
         _attackPlayer = false;
         for (int i = 0; i < attackTimes.Length; i++)
         {
-            attackTimes[i] = 0;
+            attackTimes[i] = 2;
         }
+
+        attackTimes[3] = 0;
+        
         currentRotate = 0;
         currentSpeed = 0;
         animator.Play("Moving", 0, 0);
@@ -1390,6 +1395,7 @@ public class Dog : Entity
         if (!isInvincible && !isDodging && _currentHP > 0)
         {
             _currentHP -= damageTaken;
+            OnHealthChanged?.Invoke(Mathf.Clamp(_currentHP, 0, _maxHP), _maxHP);
             _invincibilityMaxCooldown = invincibilityLength;
             _invincibilityCooldown = invincibilityLength;
             if (hitAudio.Length > 0 && audioSource != null)
