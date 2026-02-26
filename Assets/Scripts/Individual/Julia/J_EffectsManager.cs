@@ -1,5 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class Effect
 {
@@ -10,6 +14,7 @@ public class Effect
 public class J_EffectsManager : MonoBehaviour
 {
     public static J_EffectsManager Instance;
+    public Volume GlobalVolume;
 
     [Header("Fire Effect")]
     [SerializeField] private Material _fireMat;
@@ -25,6 +30,18 @@ public class J_EffectsManager : MonoBehaviour
     [SerializeField] private float _dustDecreaseSpeed;
     private Coroutine _dustCoroutine;
 
+    [Header("Vignette Effect")]
+    private VignetteVolume _vignetteVolume;
+    [SerializeField] private bool _setValueOnAwake;
+    [SerializeField] private float _vignetteValue;
+    //[SerializeField] private Material _vignetteMaterial;
+    [SerializeField] private float _transitionSpeed;
+    private Coroutine _vignetteCoroutine;
+    public UnityEvent OnVignetteTransitionInwardStart;
+    public UnityEvent OnVignetteTransitionInwardFinish;
+    public UnityEvent OnVignetteTransitionOutwardStart;
+    public UnityEvent OnVignetteTransitionOutwardFinish;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -35,6 +52,18 @@ public class J_EffectsManager : MonoBehaviour
         Instance = this;
     }
 
+    void Start()
+    {
+        if (GlobalVolume.profile.TryGet<VignetteVolume>(out var vignetteSetting))
+        {
+            _vignetteVolume = vignetteSetting;
+        }
+
+        if (_setValueOnAwake)
+        {
+            _vignetteVolume.radius.value = Mathf.Clamp(_vignetteValue, -2f, 2f);
+        }
+    }
     public void StartDustEffect()
     {
         if (_dustCoroutine != null)
@@ -152,11 +181,50 @@ public class J_EffectsManager : MonoBehaviour
         _burnCoroutine = null;
     }
 
+    private IEnumerator IncreaseVignetteEffect()
+    {
+        OnVignetteTransitionInwardStart?.Invoke();
+
+        while (_vignetteVolume.radius.value > _vignetteVolume.radius.min)
+        {
+            _vignetteVolume.radius.value -= _transitionSpeed * Time.deltaTime;
+            yield return null;
+        }
+
+        _vignetteVolume.radius.value = _vignetteVolume.radius.min;
+
+        OnVignetteTransitionInwardFinish?.Invoke();
+        _vignetteCoroutine = null;
+    }
+
+    private IEnumerator DecreaseVignetteEffect()
+    {
+
+        OnVignetteTransitionOutwardStart?.Invoke();
+
+        while (_vignetteVolume.radius.value < _vignetteVolume.radius.max)
+        {
+            _vignetteVolume.radius.value += _transitionSpeed * Time.deltaTime;
+            yield return null;
+        }
+
+        _vignetteVolume.radius.value = _vignetteVolume.radius.max;
+
+        OnVignetteTransitionOutwardFinish?.Invoke();
+        _vignetteCoroutine = null;
+    }
+
+
     private void Reset()
     {
-        _dustMat.SetFloat("_DustStrength", 0f);
-        _fireMat.SetFloat("_VignettePower", _fireStartValue);
-        _smokeMat.SetFloat("_DustStrength", 0f);
+        if (_dustMat != null)
+            _dustMat.SetFloat("_DustStrength", 0f);
+        
+        if (_fireMat != null)
+            _fireMat.SetFloat("_VignettePower", _fireStartValue);
+        
+        if (_smokeMat != null)
+            _smokeMat.SetFloat("_DustStrength", 0f);
     }
 
     private void OnDestroy()
