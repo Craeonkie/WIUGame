@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 358908cdab1092b4ebc09cd006046ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::J_EffectsManager
+  GlobalVolume: {fileID: 1218286504}
   _fireMat: {fileID: 0}
   _smokeMat: {fileID: 0}
   _burnEffectSpeed: 1
@@ -156,16 +157,69 @@ MonoBehaviour:
   _dustMat: {fileID: 0}
   _dustIncreaseSpeed: 0
   _dustDecreaseSpeed: 0
-  _vignetteMaterial: {fileID: 0}
-  _transitionDuration: {fileID: 0}
-  _vignetteDisabledValue: 0
-  _vignetteEnabledValue: 0
-  OnVignetteTransitionStart:
+  _setValueOnAwake: 1
+  _vignetteValue: -2
+  _transitionSpeed: 3
+  OnVignetteTransitionInwardStart:
     m_PersistentCalls:
       m_Calls: []
-  OnVignetteTransitionFinish:
+  OnVignetteTransitionInwardFinish:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1755713041694234815}
+        m_TargetAssemblyTypeName: DialogueMenu, Assembly-CSharp
+        m_MethodName: set_currentDialogue
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 83fc889fb8bf45d4398a3c70adc63a77, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Dialogue, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1755713041694234815}
+        m_TargetAssemblyTypeName: DialogueMenu, Assembly-CSharp
+        m_MethodName: StartTyping
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnVignetteTransitionOutwardStart:
     m_PersistentCalls:
       m_Calls: []
+  OnVignetteTransitionOutwardFinish:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1755713041694234815}
+        m_TargetAssemblyTypeName: DialogueMenu, Assembly-CSharp
+        m_MethodName: set_currentDialogue
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 371ec0edca0f2a9438150612c8773e9e, type: 2}
+          m_ObjectArgumentAssemblyTypeName: Dialogue, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1755713041694234815}
+        m_TargetAssemblyTypeName: DialogueMenu, Assembly-CSharp
+        m_MethodName: StartTyping
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &829338427
 Transform:
   m_ObjectHideFlags: 0
@@ -318,6 +372,55 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &1218286503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1218286505}
+  - component: {fileID: 1218286504}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1218286504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218286503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 14a0bb8a2c2b2344a8f08d17d1b08dd9, type: 2}
+--- !u!4 &1218286505
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218286503}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.496181, y: 60.02946, z: 91.060905}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1579933067
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,21 +588,9 @@ MonoBehaviour:
   sceneLoadEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1755713041694234815}
-        m_TargetAssemblyTypeName: DialogueMenu, Assembly-CSharp
-        m_MethodName: set_currentDialogue
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 371ec0edca0f2a9438150612c8773e9e, type: 2}
-          m_ObjectArgumentAssemblyTypeName: Dialogue, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1755713041694234815}
-        m_TargetAssemblyTypeName: DialogueMenu, Assembly-CSharp
-        m_MethodName: StartTyping
+      - m_Target: {fileID: 829338426}
+        m_TargetAssemblyTypeName: J_EffectsManager, Assembly-CSharp
+        m_MethodName: StartVignetteOutwardEffect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11739,3 +11830,4 @@ SceneRoots:
   - {fileID: 1579933068}
   - {fileID: 2086482539}
   - {fileID: 829338427}
+  - {fileID: 1218286505}
