@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
 
 public class C_TrajectorySimulation : MonoBehaviour
 {

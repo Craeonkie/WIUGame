@@ -69,10 +69,10 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
          Time.timeScale = 1f;
 
         Debug.Log("New Game was called!"); // comment when done
-
+            
         // Reset the game
         J_DataPersistenceManager.instance.ResetGame();
-        SceneLoader.Instance.LoadScene(J_GameManager.START_SCENE);
+        SceneLoader.Instance.LoadScene(J_GameManager.REST_SCENE);
 
         // TODO: might want to go to a different start scene to play beginning cutscenes?
     }
