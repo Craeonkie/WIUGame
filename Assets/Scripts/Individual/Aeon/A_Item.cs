@@ -150,6 +150,7 @@ public abstract class Item : Interactable
         _animationHandler.StopReferencingOldItem();
         SetAnimationHandler(null);
         SetEntity(null);
+        transform.gameObject.SetActive(true);
 
         // Enable physics
         if (TryGetComponent<Rigidbody>(out Rigidbody rb))

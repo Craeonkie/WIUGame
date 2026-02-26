@@ -82,6 +82,7 @@ public class PlayerController : Entity
     [SerializeField] protected AudioClip blockAudio;
     [SerializeField] protected AudioClip jumpAudio;
     [SerializeField] protected AudioClip rollAudio;
+    [SerializeField] protected AudioClip landingAudio;
 
     [Header("Expose to inspector for debugging")]
     private Vector2 _inputMove;
@@ -581,6 +582,10 @@ public class PlayerController : Entity
         if (!_wasGroundedPreviously && isGrounded)
         {
             _currentLandTimer = landDuration;
+            if (landingAudio != null)
+            {
+                AudioLibrary.Instance.PlaySoundAtPointCustom(landingAudio.name, transform.position);
+            }
         }
         else if (_isRolling || !isGrounded)
         {
