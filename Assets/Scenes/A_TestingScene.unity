@@ -426,6 +426,11 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!82 &653346129 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1460979920249857210, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+  m_PrefabInstance: {fileID: 5236938103101625670}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,7 +1459,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4330034044983416731, guid: 5a21bd598b5e07746a1925b2a02e7cf8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.07
+      value: 4.042
       objectReference: {fileID: 0}
     - target: {fileID: 4330034044983416731, guid: 5a21bd598b5e07746a1925b2a02e7cf8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1462,7 +1467,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4330034044983416731, guid: 5a21bd598b5e07746a1925b2a02e7cf8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1.417
       objectReference: {fileID: 0}
     - target: {fileID: 4330034044983416731, guid: 5a21bd598b5e07746a1925b2a02e7cf8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1587,6 +1592,10 @@ PrefabInstance:
       propertyPath: _isTopDown
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 653346129}
     - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: followCamera
       value: 
@@ -1990,6 +1999,10 @@ PrefabInstance:
       propertyPath: _hasDamageFlicker
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1654902780915542830, guid: 85bbf8231a006af429cd9e0d14d0c2ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4078881714257389296, guid: 85bbf8231a006af429cd9e0d14d0c2ac, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.71
@@ -2033,6 +2046,18 @@ PrefabInstance:
     - target: {fileID: 4426054526200836676, guid: 85bbf8231a006af429cd9e0d14d0c2ac, type: 3}
       propertyPath: m_Name
       value: Testing Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6573502127006651863, guid: 85bbf8231a006af429cd9e0d14d0c2ac, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1c8a621a805c5804cbeeca7916bdae05, type: 2}
+    - target: {fileID: 6623802745982374335, guid: 85bbf8231a006af429cd9e0d14d0c2ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8705332766607246242, guid: 85bbf8231a006af429cd9e0d14d0c2ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

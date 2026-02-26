@@ -134,11 +134,6 @@ public class RestingPlayerController : Entity
         }
     }
 
-    public void MovePlayerTo(Vector3 spawnPos)
-    {
-        transform.position = spawnPos;
-    }
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

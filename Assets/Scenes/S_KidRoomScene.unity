@@ -4419,9 +4419,9 @@ MonoBehaviour:
         z: 0.66167265
       Rotation:
         value:
-          x: 0.16322123
-          y: 0.81996924
-          z: 0.060407236
+          x: 0.16322124
+          y: 0.8199692
+          z: 0.060407232
           w: -0.5453075
     - Position:
         x: -2.45
@@ -7439,11 +7439,13 @@ MonoBehaviour:
   onDieEvent:
     m_PersistentCalls:
       m_Calls: []
+  getHit:
+    m_PersistentCalls:
+      m_Calls: []
   _playerInput: {fileID: 1530283422704123325}
   _jumpPower: 0
   _maxSpeed: 32
   _currentSpeed: 0
-  _rotationSpeed: 10
   myRigidbody: {fileID: 2774589471462148675}
   cameraTransform: {fileID: 26409252}
   interactablesLayer:

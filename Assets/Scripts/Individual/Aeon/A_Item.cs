@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public abstract class Item : Interactable
 {
@@ -34,8 +35,9 @@ public abstract class Item : Interactable
     public Vector3 offset;
 
     [Header("Audio")]
-    public AudioSource audioSource;
-    public AudioClip weaponBreakingSound;
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip breakingSound;
+    [SerializeField] AudioClip onHitSound;
 
     [Header("Exposed for debugging")]
     [SerializeField] protected AnimationHandler _animationHandler;
@@ -64,6 +66,11 @@ public abstract class Item : Interactable
         if (hasDurability)
         {
             currentDurability = maxDurability;
+        }
+
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
         }
     }
 
@@ -213,9 +220,9 @@ public abstract class Item : Interactable
     // Set item to false
     public virtual void Break()
     {
-        if (audioSource != null && weaponBreakingSound != null)
+        if (audioSource != null && breakingSound != null)
         {
-            audioSource.PlayOneShot(weaponBreakingSound);
+            audioSource.PlayOneShot(breakingSound);
         }
 
         if (isUsedByObjectPool && J_SpawnManager.Instance != null)

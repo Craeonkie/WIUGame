@@ -10,12 +10,13 @@ public class A_RestSceneManager : MonoBehaviour
     [SerializeField] private DoorToAnotherScene _kitchenDoor;
     [SerializeField] private DoorToAnotherScene _parentsRoomDoor;
     [SerializeField] private RestingPlayerController _player;
-    [SerializeField] private Vector3 _spawnPoint;
-    [SerializeField] private Vector3 _kidsDoorSpawn;
-    [SerializeField] private Vector3 _kitchenSpawn;
-    [SerializeField] private Vector3 _parentsDoorSpawn;
+    [SerializeField] private Transform _spawnPoint;
+    [SerializeField] private Transform _kidsDoorSpawn;
+    [SerializeField] private Transform _kitchenSpawn;
+    [SerializeField] private Transform _parentsDoorSpawn;
 
     [Header("Do these things when the corresponding scene is completed")]
+    public UnityEvent noScenesCompleted;
     public UnityEvent kidsRoomSceneCompleted;
     public UnityEvent kitchenSceneCompleted;
     public UnityEvent parentsRoomSceneCompleted;
@@ -33,28 +34,32 @@ public class A_RestSceneManager : MonoBehaviour
         _kidRoomDoor.ToggleSceneEnterable(true, false);
         _kitchenDoor.ToggleSceneEnterable(false, false);
         _parentsRoomDoor.ToggleSceneEnterable(false, false);
-        _player.MovePlayerTo(_spawnPoint);
+        _player.transform.position = _spawnPoint.position;
+        _player.transform.rotation = _spawnPoint.rotation;
 
         // Check if kids room is completed
         if (J_GameManager.Instance.IsStageCompleted(_kidRoomDoor.ReturnNextSceneName()))
         {
             _kidRoomDoor.ToggleSceneEnterable(false, true);
             kidsRoomSceneCompleted?.Invoke();
-            _player.MovePlayerTo(_kidsDoorSpawn);
+            _player.transform.position = _kidsDoorSpawn.position;
+            _player.transform.rotation = _kidsDoorSpawn.rotation;
 
             // Check if kitchen is completed
             if (J_GameManager.Instance.IsStageCompleted(_kitchenDoor.ReturnNextSceneName()))
             {
                 _kitchenDoor.ToggleSceneEnterable(false, true);
                 kitchenSceneCompleted?.Invoke();
-                _player.MovePlayerTo(_kitchenSpawn);
+                _player.transform.position = _kitchenSpawn.position;
+                _player.transform.rotation = _kitchenSpawn.rotation;
 
                 // Check if parents room is completed (Shouldn't run)
                 if (J_GameManager.Instance.IsStageCompleted(_parentsRoomDoor.ReturnNextSceneName()))
                 {
                     _parentsRoomDoor.ToggleSceneEnterable(true, false);
                     parentsRoomSceneCompleted?.Invoke();
-                    _player.MovePlayerTo(_parentsDoorSpawn);
+                    _player.transform.position = _parentsDoorSpawn.position;
+                    _player.transform.rotation = _parentsDoorSpawn.rotation;
                 }
                 else
                 {
@@ -65,6 +70,10 @@ public class A_RestSceneManager : MonoBehaviour
             {
                 _kitchenDoor.ToggleSceneEnterable(true, false);
             }
+        }
+        else
+        {
+            noScenesCompleted?.Invoke();
         }
     }
 }
