@@ -19,12 +19,12 @@ MonoBehaviour:
     playOpenAnimation: 1
     playCloseAnimation: 1
     dialogueLines:
-    - dialogue: Half-half next time?
+    - name: 
+      dialogue: Half-half next time?
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      name: 
       dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
@@ -41,14 +41,18 @@ MonoBehaviour:
       dialogueNameAlignment: 0
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - dialogue: Half-half.
+    - name: 
+      dialogue: Half-half.
       icon: {fileID: 0}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      name: 
       dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
@@ -65,5 +69,9 @@ MonoBehaviour:
       dialogueNameAlignment: 0
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 11400000, guid: e3f86b50f8dcad448bdc02e390bc8fc8, type: 2}

@@ -91,24 +91,6 @@ public class J_EffectsManager : MonoBehaviour
         _burnCoroutine = StartCoroutine(DecreaseBurnEffect());
     }
 
-    public void StartVignetteInwardEffect()
-    {
-        if (_vignetteCoroutine != null)
-        {
-            StopCoroutine(_vignetteCoroutine);
-        }
-        _vignetteCoroutine = StartCoroutine(IncreaseVignetteEffect());
-    }
-
-    public void StartVignetteOutwardEffect()
-    {
-        if (_vignetteCoroutine != null)
-        {
-            StopCoroutine(_vignetteCoroutine);
-        }
-        _vignetteCoroutine = StartCoroutine(DecreaseVignetteEffect());
-    }
-
     private IEnumerator IncreaseDustStrength()
     {
         float currentDustStrength = _dustMat.GetFloat("_DustStrength");
