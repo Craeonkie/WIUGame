@@ -60,6 +60,8 @@ public class C_Cup : MonoBehaviour
 
         if ((_interactableMask & (1 << objLayer)) != 0)
         {
+            AudioLibrary.Instance.PlaySoundAtPointCustom("PlasticCup", transform.position);
+
             if (collision.gameObject != null)
             {
                 Destroy(collision.gameObject);

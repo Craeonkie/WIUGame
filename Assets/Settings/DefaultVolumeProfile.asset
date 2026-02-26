@@ -337,6 +337,25 @@ MonoBehaviour:
   outlineColour:
     m_OverrideState: 1
     m_Value: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &-1596195852767275292
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c580c58d513b7ed4aa024e671b83f55c, type: 3}
+  m_Name: ShockwaveDistortionVolume
+  m_EditorClassIdentifier: Assembly-CSharp::ShockwaveDistortionVolume
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  samples:
+    m_OverrideState: 1
+    m_Value: 2
 --- !u!114 &-1410297666881709256
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -508,8 +527,33 @@ MonoBehaviour:
   - {fileID: -1410297666881709256}
   - {fileID: -1940777614928600979}
   - {fileID: 5931646649163690949}
-  - {fileID: -7244223036854223767}
-  - {fileID: 5104843583489724801}
+  - {fileID: 352323563977469753}
+  - {fileID: -1596195852767275292}
+--- !u!114 &352323563977469753
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af3ff63233ceaa44898501d05ccd147, type: 3}
+  m_Name: VignetteVolume
+  m_EditorClassIdentifier: Assembly-CSharp::VignetteVolume
+  active: 1
+  radius:
+    m_OverrideState: 1
+    m_Value: 2
+  feather:
+    m_OverrideState: 1
+    m_Value: 0
+  tintColour:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  invert:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &853819529557874667
 MonoBehaviour:
   m_ObjectHideFlags: 3

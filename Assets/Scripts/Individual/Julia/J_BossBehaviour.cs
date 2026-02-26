@@ -225,6 +225,9 @@ public class J_BossBehaviour : Entity
                     // Trigger a shockwave
                     shouldActivateShockwave = true;
                     _hasActivatedShockwave[i] = true;
+
+                    // Play audio at game object point
+                    AudioLibrary.Instance.PlaySoundAtPointCustomRandom4("SlamBed", hitColliders[i].transform.position);
                 }
             }
 
@@ -345,13 +348,17 @@ public class J_BossBehaviour : Entity
             {
                 _currentTimesHit++;
 
+                // Play audio
+
                 if (_currentTimesHit < _hitsBeforeExhausted)
                 {
+                    AudioLibrary.Instance.PlaySoundAtPointCustom("MonsterHurt", transform.position);
                     // Enter hit state
                     EnterState(STATE.HIT);
                 }
                 else
                 {
+                    AudioLibrary.Instance.PlaySoundAtPointCustom("MonsterRoar", transform.position);
                     // Enter exhausted state
                     EnterState(STATE.EXHAUSTED);
                 }
@@ -361,6 +368,7 @@ public class J_BossBehaviour : Entity
         {
             // Take damage
             Debug.Log("Monster took damage: " + damageTaken);
+            AudioLibrary.Instance.PlaySoundAtPointCustom("MonsterHurt", transform.position);
 
             _currentHP -= damageTaken;
             float healthPercent = _currentHP / _maxHP;
@@ -787,6 +795,8 @@ public class J_BossBehaviour : Entity
     {
         while (true)
         {
+            AudioLibrary.Instance.PlaySoundAtPoint("RipPillow", _fakePillow.transform.position);
+
             var cottonBall = J_SpawnManager.Instance.SpawnAtPosition("CottonBall", _fakePillow.transform.position);
             cottonBall.GetComponent<Rigidbody>().AddForce((transform.forward * Random.Range(1f, _maximumForwardForce)) + new Vector3(Random.Range(-_horizontalForce, _horizontalForce), 0f, 0f), ForceMode.Impulse);
 
@@ -839,6 +849,9 @@ public class J_BossBehaviour : Entity
     {
         // Disable the "fake" pillow
         _fakePillow.SetActive(false);
+
+        // Play throw audio
+        AudioLibrary.Instance.PlaySoundLerp("ThrowPillow");
 
         // Spawn a new pillow and throw it to its destination
         var newPillow = J_SpawnManager.Instance.SpawnAtPosition("Pillow", _fakePillow.transform.position);

@@ -252,12 +252,19 @@ public class J_BugBehaviour : Entity
                 break;
             case STATE.ATTACK:
 
+                // Play audio
+                AudioLibrary.Instance.PlaySoundAtPointCustomRandom5("BugEat", transform.position);
+
                 // Change state
                 ExitState();
                 EnterState(STATE.IDLE);
 
                 break;
             case STATE.DEAD:
+
+                // Play audio
+                AudioLibrary.Instance.PlaySoundAtPointCustomRandom5("CrushBug", transform.position);
+
                 break;
         }
     }
