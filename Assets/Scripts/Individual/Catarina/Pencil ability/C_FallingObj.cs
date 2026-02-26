@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class C_FallingObj : MonoBehaviour
@@ -27,17 +26,9 @@ public class C_FallingObj : MonoBehaviour
     public C_FallingObj PrefabKey { get; private set; }
 
     [SerializeField] private float Damage = 10f;
-    [SerializeField] private GameObject _WindParticleEffect;
-    [SerializeField] private GameObject _dustParticle;
-    [SerializeField] private float _dustDuration =1.5f;
-    private Coroutine _DustCoroutine;
 
     public void Init(C_PencilAbility spawner, C_FallingObj prefabKey) 
     {
-        _WindParticleEffect.SetActive(true);
-
-        _WindParticleEffect.GetComponent<ParticleSystem>()?.Play();
-        _dustParticle.SetActive(false);
         PrefabKey = prefabKey;
         _spawner = spawner;
         _isBeingReleased = false;
@@ -121,54 +112,18 @@ public class C_FallingObj : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!_rb.isKinematic)
-        {
-            var _ply = collision.gameObject.GetComponent<PlayerController>();
-            if (_ply != null)
-            {
-                _ply.TakeDamage(Damage, 0f);
-            }
-            if (((1 << collision.gameObject.layer) & _groundLayer) != 0)
-            {
-                _startCountdown = true;
-                if (_DustCoroutine != null)
-                {
-                   StopCoroutine(_DustCoroutine);
-                }
-               _DustCoroutine =StartCoroutine(dustEnumerator());
-            }
-        }
         _rb.isKinematic = true;
-        _WindParticleEffect.SetActive(false);
+        if (((1 << collision.gameObject.layer) & _groundLayer) != 0)
+            _startCountdown = true;
 
+        var _ply = collision.gameObject.GetComponent<PlayerController>();
+        if (_ply != null)
+        {
+            _ply.TakeDamage(Damage,0f);
+        }
+        
     }
 
-    private IEnumerator dustEnumerator()
-    {
-        _dustParticle.SetActive(true);
-
-        ParticleSystem[] dustSys = _dustParticle.GetComponentsInChildren<ParticleSystem>(true);
-
-        foreach (ParticleSystem ps in dustSys)
-        {
-            if (ps == null) continue;
-
-            var emission = ps.emission;
-            emission.enabled = true;
-
-            if (!ps.isPlaying) ps.Play(true);
-        }
-
-        yield return new WaitForSeconds(_dustDuration);
-
-        foreach (ParticleSystem ps in dustSys)
-        {
-            if (ps == null) continue;
-
-            var emission = ps.emission;
-            emission.enabled = false;
-        }
-    }
     // safety net if unity disables this obj directly
     private void OnDisable()
     {

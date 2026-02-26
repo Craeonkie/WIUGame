@@ -72,12 +72,6 @@ public class Dog : Entity
     [SerializeField] private float _dashHitDamage;
     [SerializeField] private float _clawHitDamage;
     [SerializeField] private float _doubleClawHitDamage;
-    [SerializeField] private float _dissolveTime;
-    [SerializeField] private float _dissolveDisableThreshold;
-    [SerializeField] private float _dissolveDamage;
-    [SerializeField] private float _dissolveInvincibleDuration;
-    [SerializeField] private float _dissolvePuddleInterval;
-    private float _dissolvePuddleTimer;
 
     [Header("Misc")]
     [SerializeField] private ParticleSystem wind;
@@ -114,10 +108,6 @@ public class Dog : Entity
     [SerializeField] private Color _warningColor;
     private Coroutine _warningCoroutine;
     [SerializeField] private ObjectWith3DAudio _windAudio;
-    [SerializeField] private AnimationCurve _dissolve1Curve;
-    [SerializeField] private AnimationCurve _dissolve2Curve;
-    [SerializeField] private GameObject _dangerousPuddlePrefab;
-    [SerializeField] private Vector3 _puddleSpawnOffset;
 
     [Header("Debugging")]
     [SerializeField] private DogStates currentState = DogStates.EnterIdle;
@@ -130,16 +120,10 @@ public class Dog : Entity
     [SerializeField] private float idleSpeed;
     [SerializeField] private float currentSpeedMultiplier;
 
-    public static System.Action onDisablePuddles;
-
-    public void DisablePuddles()
-    {
-        onDisablePuddles?.Invoke();
-    }
 
     public void StartDistortion(float loopDuration)
     {
-        StartCoroutine(DistortionEffectUpdate(1, loopDuration));
+        StartCoroutine(DistortionEffectUpdate(0.5f, loopDuration));
     }
 
     public IEnumerator DistortionEffectUpdate(float startEndDuration, float loopDuration)
@@ -374,7 +358,7 @@ public class Dog : Entity
         {
             case DogStates.EnterIdle:
                 currentState = DogStates.Idle;
-                dogController.excludeLayers = LayerMask.GetMask("Interactable");
+                dogController.excludeLayers = 0;
                 break;
             case DogStates.Idle:
                 Collider[] colliders = Physics.OverlapSphere(transform.position, detectionRange);
@@ -435,7 +419,7 @@ public class Dog : Entity
                 break;
             case DogStates.EnterChase:
                 currentState = DogStates.Chase;
-                dogController.excludeLayers = LayerMask.GetMask("Interactable");
+                dogController.excludeLayers = 0;
                 break;
             case DogStates.Chase:
                 if (target != null)
@@ -746,7 +730,7 @@ public class Dog : Entity
                 attackReady = false;
                 currentState = DogStates.Bite;
                 Debug.Log("Entering Bite State");
-                dogController.excludeLayers = LayerMask.GetMask("Interactable");
+                dogController.excludeLayers = 0;
                 break;
             case DogStates.Bite:
                 currentRotate = Mathf.MoveTowards(currentRotate, 0, Time.deltaTime * rotateSpeed);
@@ -797,7 +781,7 @@ public class Dog : Entity
                 attackFinished = false;
                 attackReady = false;
                 currentState = DogStates.Claw;
-                dogController.excludeLayers = LayerMask.GetMask("Interactable");
+                dogController.excludeLayers = 0;
 
                 Debug.Log("Entering Claw State");
                 break;
@@ -850,7 +834,7 @@ public class Dog : Entity
                 attackReady = false;
                 currentState = DogStates.Dash;
                 currentSpeed = 0;
-                dogController.excludeLayers = LayerMask.GetMask("Interactable");
+                dogController.excludeLayers = 0;
 
                 Debug.Log("Entering Dash State");
                 break;
@@ -874,7 +858,7 @@ public class Dog : Entity
                         currentSpeedMultiplier = dashSpeedMultiplier;
                         wind.Play();
                         SetAttackPlayer(1);
-                        dogController.excludeLayers = LayerMask.GetMask("Player", "Interactable");
+                        dogController.excludeLayers = LayerMask.GetMask("Player");
 
                         if (_afterImageCoroutine != null)
                             StopCoroutine(_afterImageCoroutine);
@@ -935,7 +919,7 @@ public class Dog : Entity
                             animator.SetTrigger("Wince");
                             dashing = false;
                             wind.Stop();
-                            dogController.excludeLayers = LayerMask.GetMask("Interactable");
+                            dogController.excludeLayers = 0;
 
                             if (_afterImageCoroutine != null)
                                 StopCoroutine(_afterImageCoroutine);
@@ -1002,8 +986,7 @@ public class Dog : Entity
                 currentState = DogStates.PingPongShit;
                 bounces = Random.Range((int)bounceAmount.x, (int)bounceAmount.y + 1);
                 bounced = 0;
-                dogController.excludeLayers = LayerMask.GetMask("Interactable");
-                _dissolvePuddleTimer = 0;
+                dogController.excludeLayers = 0;
 
                 Debug.Log("Entering Ping Pong State with " + bounces + " bounces");
                 break;
@@ -1024,7 +1007,7 @@ public class Dog : Entity
                         currentSpeedMultiplier = dashSpeedMultiplier;
                         wind.Play();
                         SetAttackPlayer(1);
-                        dogController.excludeLayers = LayerMask.GetMask("Player", "Interactable");
+                        dogController.excludeLayers = LayerMask.GetMask("Player");
 
                         if (_afterImageCoroutine != null)
                             StopCoroutine(_afterImageCoroutine);
@@ -1040,15 +1023,6 @@ public class Dog : Entity
                 {
                     if (dashing)
                     {
-                        _dissolvePuddleTimer += Time.deltaTime;
-                        if (_dissolvePuddleTimer >= _dissolvePuddleInterval)
-                        {
-                            _dissolvePuddleTimer = 0;
-                            Quaternion horizontalRotation = transform.rotation * Quaternion.Euler(90, 0, 0);
-                            GameObject puddle = Instantiate(_dangerousPuddlePrefab, transform.position + _puddleSpawnOffset, horizontalRotation);
-                            puddle.GetComponent<DangerousPuddle>().Initalise(_dissolve1Curve, _dissolve2Curve, _dissolveTime, _dissolveDisableThreshold, _dissolveDamage, _dissolveInvincibleDuration);
-                        }
-
                         if (bounced >= bounces)
                         {
                             dashDirection = target.transform.position - transform.position;
@@ -1151,7 +1125,7 @@ public class Dog : Entity
                                         if (bounced >= bounces)
                                         {
                                             _attackPlayer = false;
-                                            dogController.excludeLayers = LayerMask.GetMask("Interactable");
+                                            dogController.excludeLayers = 0;
                                         }
                                     }
                                 }
@@ -1206,7 +1180,7 @@ public class Dog : Entity
                 attackFinished = false;
                 attackReady = false;
                 currentState = DogStates.Claw;
-                dogController.excludeLayers = LayerMask.GetMask("Interactable");
+                dogController.excludeLayers = 0;
 
                 Debug.Log("Entering DoubleClaw State");
                 break;

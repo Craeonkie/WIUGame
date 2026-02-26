@@ -70,7 +70,7 @@ MonoBehaviour:
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
       overrideBaseNameColor: 1
-      baseNameColor: {r: 1, g: 0, b: 0.5019608, a: 1}
+      baseNameColor: {r: 0.91764706, g: 0.34509805, b: 0.7921569, a: 1}
       overrideBaseTextColor: 1
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
@@ -98,7 +98,7 @@ MonoBehaviour:
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
       overrideBaseNameColor: 1
-      baseNameColor: {r: 1, g: 0, b: 0.5019608, a: 1}
+      baseNameColor: {r: 0.91764706, g: 0.34509805, b: 0.7921569, a: 1}
       overrideBaseTextColor: 1
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
@@ -126,7 +126,7 @@ MonoBehaviour:
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
       overrideBaseNameColor: 1
-      baseNameColor: {r: 1, g: 0, b: 0.5019608, a: 1}
+      baseNameColor: {r: 0.91764706, g: 0.34509805, b: 0.7921569, a: 1}
       overrideBaseTextColor: 1
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}

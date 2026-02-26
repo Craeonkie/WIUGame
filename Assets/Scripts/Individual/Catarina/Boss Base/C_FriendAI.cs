@@ -360,12 +360,7 @@ public class C_FriendAI : MonoBehaviour
         Transform tar = null;
         foreach (var obj in objs)
         {
-            // Skip if have parent
-            if (obj.transform.parent != null)
-                continue;
-
             var dist = Vector3.Distance(transform.position, obj.transform.position);
-
             if (dist < shortestDist)
             {
                 shortestDist = dist;

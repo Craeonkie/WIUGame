@@ -48,7 +48,7 @@ MonoBehaviour:
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
     - name: Player
-      dialogue: <#FF0080>HENSHIN!</color>
+      dialogue: <#EA58CA>HENSHIN!</color>
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
@@ -128,7 +128,7 @@ MonoBehaviour:
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
       overrideBaseNameColor: 1
-      baseNameColor: {r: 1, g: 0, b: 0.5019608, a: 1}
+      baseNameColor: {r: 0.91764706, g: 0.34509805, b: 0.7921569, a: 1}
       overrideBaseTextColor: 1
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
@@ -156,7 +156,7 @@ MonoBehaviour:
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
       overrideBaseNameColor: 1
-      baseNameColor: {r: 1, g: 0, b: 0.5019608, a: 1}
+      baseNameColor: {r: 0.91764706, g: 0.34509805, b: 0.7921569, a: 1}
       overrideBaseTextColor: 1
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}

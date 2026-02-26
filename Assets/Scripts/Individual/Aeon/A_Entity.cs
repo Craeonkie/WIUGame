@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class Entity : MonoBehaviour
 {
-    [Header("Entity stats")]
     [SerializeField] protected float _maxHP;
     [SerializeField] protected float _currentHP;
     [SerializeField] protected float _invincibilityCooldown;
@@ -12,22 +11,16 @@ public class Entity : MonoBehaviour
     //[SerializeField] protected SkinnedMeshRenderer[] renderers;
     //[SerializeField] protected Material damageMaterial;
     [SerializeField] protected Vector3 spawnPoint;
-
-    [Header("Expose to inspector")]
     [SerializeField] protected bool isInvincible = false;
     [SerializeField] protected bool isDodging = false;
     [SerializeField] protected bool _animationHasReset = false;
     [SerializeField] protected bool _hasDamageFlicker = false;
     [SerializeField] protected bool _isBlocking = false;
-
-    [Header("Entity Audio")]
     [SerializeField] protected AudioClip[] hitAudio;
     [SerializeField] protected AudioClip deathAudio;
     [SerializeField] protected AudioSource audioSource;
-
-    [Header("Unity Events")]
+    private MaterialPropertyBlock _propertyBlock;
     [SerializeField] protected UnityEvent onDieEvent;
-    [SerializeField] protected UnityEvent getHit;
 
     public static System.Action<float, float> OnHealthChanged;
     public static System.Action OnDie;
@@ -119,7 +112,6 @@ public class Entity : MonoBehaviour
             _invincibilityCooldown = invincibilityLength;
             if (hitAudio.Length > 0 && audioSource != null)
             {
-                getHit.Invoke();
                 audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
             }
             if (_currentHP <= 0)

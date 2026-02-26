@@ -65,12 +65,12 @@ Material:
     m_Floats:
     - _Gradiant_Power: 0
     - _Gradient_Thingy: 4.59
-    - _LineDensity: 200
+    - _LineDensity: 1000
     - _QueueControl: 1
     - _QueueOffset: 0
     - _TextureMoveSpeed: 0
     - _TextureMoving: 0
-    - _Use_Screen_Space: 1
+    - _Use_Screen_Space: 0
     - _shadowAttenuationDistance: 15.38
     m_Colors:
     - _Base_Color: {r: 1, g: 1, b: 1, a: 0}
