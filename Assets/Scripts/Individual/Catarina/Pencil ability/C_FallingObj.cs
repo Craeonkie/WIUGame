@@ -136,6 +136,7 @@ public class C_FallingObj : MonoBehaviour
                    StopCoroutine(_DustCoroutine);
                 }
                _DustCoroutine =StartCoroutine(dustEnumerator());
+                AudioLibrary.Instance.PlaySoundAtPointCustom("PencilLand", transform.position);
             }
         }
         _rb.isKinematic = true;

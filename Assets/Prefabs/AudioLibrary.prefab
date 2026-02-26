@@ -862,6 +862,1458 @@ MonoBehaviour:
         m_Calls: []
     source: {fileID: 0}
     audioLerpTime: 1
+  - name: SlamBed1
+    clip: {fileID: 8300000, guid: 860ea2b3aff83c1448fed6d8a958b8e2, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: SlamBed2
+    clip: {fileID: 8300000, guid: 820e983479584d34d810ee542274c2df, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: SlamBed3
+    clip: {fileID: 8300000, guid: 893258bd106f74648b4e2d268e6e7407, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: SlamBed4
+    clip: {fileID: 8300000, guid: da1c7dd2c01e8474880cd1ea7a5dfb72, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: ThrowPillow
+    clip: {fileID: 8300000, guid: ee24ae3719e2f454293075f8d4c16d61, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: 
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: RipPillow
+    clip: {fileID: 8300000, guid: a79ac4e811fe2e2489aa990df0292110, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: CrushBug1
+    clip: {fileID: 8300000, guid: 5e7c29682c5763146bd3b250d0b269db, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: CrushBug2
+    clip: {fileID: 8300000, guid: 5d59fca0131284243b6e2788cc5b83ad, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: CrushBug3
+    clip: {fileID: 8300000, guid: d68e6e6e26926c24f83f10b8708c309f, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: CrushBug4
+    clip: {fileID: 8300000, guid: 125a4d56d3af5a7428415d0de4f020f4, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: CrushBug5
+    clip: {fileID: 8300000, guid: b2c6ce0123b792c459435065aa7bc9af, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: BugEat1
+    clip: {fileID: 8300000, guid: 6fcc5514025f9a34b8ae4e907ffdf993, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: BugEat2
+    clip: {fileID: 8300000, guid: e812e355f175d0546bd53667ed12b736, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: BugEat3
+    clip: {fileID: 8300000, guid: 7d6f4826aef32cb47a5c76c7827ecc71, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: BugEat4
+    clip: {fileID: 8300000, guid: 28b94e2e04bb81d4face6f497f9ab6ef, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: BugEat5
+    clip: {fileID: 8300000, guid: 5fe396705d2110f44ba306727125b530, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: MonsterRoar
+    clip: {fileID: 8300000, guid: 97c680644f058fe41ad90ae9295b3822, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: MonsterHurt
+    clip: {fileID: 8300000, guid: d6e5ec6debf459f41a20acaea0fb2df2, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: Click
+    clip: {fileID: 8300000, guid: c49fd9b4d3a40e44582ae6613c0bb09e, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: PoofMonster
+    clip: {fileID: 8300000, guid: eda9f8b5896457446a57c2f9562ca3dc, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: Airplane
+    clip: {fileID: 8300000, guid: 7cf95090b911c5e429d7073f64bdfc2e, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: PencilLand
+    clip: {fileID: 8300000, guid: 6e5e8a2204c5fd940affd707a5b9f634, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: PlasticCup
+    clip: {fileID: 8300000, guid: e2562f35a44dd484f9387993a57e85e6, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: LaunchCatapult
+    clip: {fileID: 8300000, guid: edd6d9983194fe54895fe770f936134f, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: boss1bgm
+    clip: {fileID: 8300000, guid: 5b773371e1c43bd4dbcc8d1db6050e27, type: 3}
+    loop: 1
+    isBGM: 1
+    spatialBlend: 0
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: boss2bgm
+    clip: {fileID: 8300000, guid: 3d2c2a9ea6ddbf64791215da717180a3, type: 3}
+    loop: 1
+    isBGM: 1
+    spatialBlend: 0
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: boss3bgm
+    clip: {fileID: 8300000, guid: cc3cc64f6d0cff34894b40686b76809b, type: 3}
+    loop: 1
+    isBGM: 1
+    spatialBlend: 0
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: endCutscene
+    clip: {fileID: 8300000, guid: 0d2193c459f6e7243ac9b1e3e1f9c890, type: 3}
+    loop: 1
+    isBGM: 1
+    spatialBlend: 0
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: kidsRoomScene
+    clip: {fileID: 8300000, guid: 4ce2f623e0b0b7847a17f7d6ee6a7a21, type: 3}
+    loop: 1
+    isBGM: 1
+    spatialBlend: 0
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: startingMenu
+    clip: {fileID: 8300000, guid: 339d41a5096b55b4fb47aaef675ca006, type: 3}
+    loop: 1
+    isBGM: 1
+    spatialBlend: 0
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
   _objectWith3DAudioPrefab: {fileID: 3957085431154048013, guid: c230cb87dc87b3d48973682a104ec238, type: 3}
   _masterVolume: 0
   _sfxVolume: 0

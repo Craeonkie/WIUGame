@@ -164,6 +164,8 @@ public class C_Catapult : MonoBehaviour
             if (_inputActionAsset.FindActionMap("Catapult")["Interact"].WasPressedThisFrame()
 )
             {
+                AudioLibrary.Instance.PlaySoundAtPointCustom("LaunchCatapult", transform.position);
+
                 if (obj != null)
                 {
                     obj.Init(GetShootVelocity(), false);
