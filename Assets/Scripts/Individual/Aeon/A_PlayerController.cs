@@ -166,7 +166,7 @@ public class PlayerController : Entity
         bool canMove = animationHandler.CanMove();
         bool isGrounded = groundChecker.IsGrounded();
         _inputMove = _moveAction.ReadValue<Vector2>();
-        bool isMoving = _inputMove != Vector2.zero && canMove && !_isStunned && !_playerInputPaused;
+        bool isMoving = _inputMove != Vector2.zero && canMove && !_isStunned && _canPlayerInput;
 
         // Only accept input and rotation if player isn't stunned
         if (!_isStunned)
@@ -292,7 +292,7 @@ public class PlayerController : Entity
 
         //// Handle other inputs
         // Cast a sphere around the player (or use a raycast forward if preferred)
-        if (!_isMovingObject)
+        if (!_isMovingObject && !_isAiming && _canPlayerInput)
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
 
@@ -681,6 +681,12 @@ public class PlayerController : Entity
     public void ToggleTopDownCamera(bool isTopDown)
     {
         _isTopDown = isTopDown;
+    }
+
+    // Toggle player ability to move and input
+    public bool IsTopDownCameraInUse()
+    {
+        return _isTopDown;
     }
 
     // Sihan function

@@ -869,16 +869,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f458526b1580c46a35e6f924ed3b28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
-  spawnInfos:
-  - spawnPrefab: {fileID: 892668596884859602, guid: a8f7991b1c85edb4fa92b7be80a223e3, type: 3}
-    minToSpawn: 10
-    maxToSpawn: 10
-    spawnAreaCenter: {x: 0, y: 6.46, z: 0}
-    spawnArea: {x: 4, y: 4, z: 4}
-    respawnPeriodically: 1
-    spawnInterval: 1
-    currentSpawnTimeLeft: 0
-    resetAllSpawnedItemsWhenRespawning: 1
 --- !u!1001 &1789848105
 PrefabInstance:
   m_ObjectHideFlags: 0
