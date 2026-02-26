@@ -12,6 +12,7 @@ public class SpawnItem
     public float spawnDelay;
     public bool hasSpawnLimit;
     public bool spawnOnAwake;
+    public bool loopSpawning;
     public int spawnLimit;
     [System.NonSerialized] public ObjectPool<GameObject> spawnPool;
     [System.NonSerialized] public List<GameObject> activeObjects = new List<GameObject>();
@@ -19,7 +20,7 @@ public class SpawnItem
 
 public class J_SpawnManager : MonoBehaviour
 {
-    public static J_SpawnManager Instance;  
+    public static J_SpawnManager Instance;
     [SerializeField] private Collider _spawnerBoundingBox;
     [SerializeField] private SpawnItem[] _spawnItems;
     private IEnumerator _spawnCoroutine;
@@ -73,6 +74,18 @@ public class J_SpawnManager : MonoBehaviour
             );
 
             _spawnItems[i] = item;
+
+            if (_spawnItems[i].spawnOnAwake)
+            {
+                if (_spawnItems[i].loopSpawning)
+                {
+                    SpawnContinuously(_spawnItems[i].itemName, _spawnItems[i].spawnDelay);
+                }
+                else
+                {
+                    SpawnAfterDelay(_spawnItems[i], _spawnItems[i].spawnDelay);
+                }
+            }
         }
     }
 
@@ -92,7 +105,7 @@ public class J_SpawnManager : MonoBehaviour
 
     public GameObject SpawnAtPosition(string itemName, Vector3 position)
     {
-        
+
         SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
 
         if (spawnItem.spawnPrefab == null)

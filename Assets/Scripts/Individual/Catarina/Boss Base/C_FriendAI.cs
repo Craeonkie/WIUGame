@@ -11,7 +11,7 @@ public class C_FriendAI : MonoBehaviour
     [Header("Layers")]
     [SerializeField] private LayerMask _GroundLayer;
     [SerializeField] private string _PlayerTagName;
-    [SerializeField] private LayerMask _PickUpLayer;
+    [SerializeField] private string _WeaponTag;
 
     [Header("Patrol")]
     [SerializeField] private float _PatrolRad = 10f;
@@ -60,6 +60,12 @@ public class C_FriendAI : MonoBehaviour
     private bool _playerInZone = false;
     public bool _isDefending { get; set; }
     float _DefendCounter = 0f;
+
+    [Header("Flee")]
+    [SerializeField] private float _FleeDistance = 10f;
+    [SerializeField] private float _NoWeaponCheckInterval = 2f;
+    private float _noWeaponCheckTimer = 0f;
+    private bool _NoWeaponInScene = false;
 
     private void OnEnable() { 
     
@@ -123,19 +129,16 @@ public class C_FriendAI : MonoBehaviour
         this.enabled = true;
     }
 
-    // need to pick up obj
-    //use it n atk
-    //use aeon code
-    //defend
-    // for this just deetect if its getting hit if yes then start defending 
 
-    //make sure if there no weapon n player is within range find a weapon immediately by 
-    //doing the switching of state logic
     private void FSM()
     {
         if (_isDefending)
         {
             PerformDefend();
+        }
+        else if (!_HaveWeapon && _NoWeaponInScene && (_IsPlayerVisable || _IsPlayerInRange))
+        {
+            PerformFlee();
         }
         else if ((_wasfightingPlayer && !_HaveWeapon) || (((!_IsPlayerVisable && !_IsPlayerInRange) || _FindingWeapon) && !_wasfightingPlayer))
         {
@@ -180,6 +183,11 @@ public class C_FriendAI : MonoBehaviour
 
     }
 
+    private bool WeaponExistsInScene()
+    {
+        var objs = C_HelperFunc.FindSpecificObjectsWithNoParentTag(_WeaponTag);
+        return objs != null && objs.Count > 0;
+    }
 
     //the attacking logic
     private void PerformAtk()
@@ -277,38 +285,30 @@ public class C_FriendAI : MonoBehaviour
     //the picking up of weapon logic
     private void PerformPickUp()
     {
-        Collider[] hit = Physics.OverlapSphere(transform.position, _PickUpRange, _PickUpLayer);
+        // Find all weapons by tag in pickup range
+        Collider[] hit = Physics.OverlapSphere(transform.position, _PickUpRange);
 
-        if (hit.Length <= 0) return;
-        _Agent.SetDestination(transform.position);
         GameObject pickUp = null;
+        float shortestDist = float.MaxValue;
 
-        if (hit.Length > 1) {
-            //find the closest one
-            var shortestDist = float.MaxValue;
-            
-            for (int i = 0; i < hit.Length; i++)
+        for (int i = 0; i < hit.Length; i++)
+        {
+            if (!hit[i].CompareTag(_WeaponTag)) continue;
+
+            float dist = Vector3.Distance(transform.position, hit[i].transform.position);
+            if (dist < shortestDist)
             {
-                var dist = Vector3.Distance(transform.position, hit[i].gameObject.transform.position);
-
-                if (dist < shortestDist)
-                {
-                    shortestDist = dist;
-                    pickUp = hit[i].gameObject;
-                }
+                shortestDist = dist;
+                pickUp = hit[i].gameObject;
             }
-            if (shortestDist == float.MaxValue) return;
         }
-        else
-        {
-            pickUp = hit[0].gameObject;
-        }
-        if (onPickUPAction != null)
-        {
-            onPickUPAction.Invoke(pickUp);
-        }
+
+        if (pickUp == null) return;
+
+        _Agent.SetDestination(transform.position);
+        if (onPickUPAction != null) onPickUPAction.Invoke(pickUp);
         _HaveWeapon = true;
-        _FindingWeapon =false;
+        _FindingWeapon = false;
     }
 
     //the defending state
@@ -348,9 +348,14 @@ public class C_FriendAI : MonoBehaviour
     //the finding of closest weapon
     private void FindWeapon()
     {
-        var objs = C_HelperFunc.FindSpecificObjectsWithNoParent(_PickUpLayer);
-        if (objs == null || objs.Count == 0) return;
-        //find the nearest one 
+        var objs = C_HelperFunc.FindSpecificObjectsWithNoParentTag(_WeaponTag);
+        if (objs == null || objs.Count == 0)
+        {
+            _NoWeaponInScene = true; 
+            _FindingWeapon = false;
+            return;
+        }
+        _NoWeaponInScene = false;       
         var shortestDist = float.MaxValue;
         Transform tar = null;
         foreach (var obj in objs)
@@ -409,16 +414,31 @@ public class C_FriendAI : MonoBehaviour
     //detecting of weapon
     private bool DetectedWeapon()
     {
-        if (Time.time < _findWeaponCooldown) return Physics.CheckSphere(transform.position, _PickUpRange, _PickUpLayer);
+        // Check pickup range using tag
+        bool inPickupRange = false;
+        Collider[] pickupCols = Physics.OverlapSphere(transform.position, _PickUpRange);
+        foreach (var col in pickupCols)
+        {
+            if (col.CompareTag(_WeaponTag)) { inPickupRange = true; break; }
+        }
+
+        if (Time.time < _findWeaponCooldown) return inPickupRange;
         _findWeaponCooldown = Time.time + 0.5f;
 
-        _WeaponIsWithinDist = Physics.CheckSphere(transform.position, _VisionRange, _PickUpLayer);
+        // Check vision range using tag
+        Collider[] visionCols = Physics.OverlapSphere(transform.position, _VisionRange);
+        _WeaponIsWithinDist = false;
+        foreach (var col in visionCols)
+        {
+            if (col.CompareTag(_WeaponTag)) { _WeaponIsWithinDist = true; break; }
+        }
+
         if (!_HaveWeapon && _WeaponIsWithinDist)
         {
             FindWeapon();
         }
 
-        return Physics.CheckSphere(transform.position, _PickUpRange, _PickUpLayer);
+        return inPickupRange;
     }
 
     //debuggingggggg
@@ -448,5 +468,35 @@ public class C_FriendAI : MonoBehaviour
         _Animator.SetTrigger(_HurtTriggerName);
         _Animator.CrossFade(_HurtAnimName, 0.15f);
 
+    }
+
+    private void PerformFlee()
+    {
+        if (_PlayerTransform == null) return;
+
+        if (!_Animator.GetBool(_RunAnimBoolName))
+            _Animator.SetBool(_RunAnimBoolName, true);
+
+        // Run directly away from player
+        Vector3 fleeDir = (transform.position - _PlayerTransform.position).normalized;
+        Vector3 fleeTarget = transform.position + fleeDir * _FleeDistance;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(fleeTarget, out hit, _FleeDistance, NavMesh.AllAreas))
+        {
+            _Agent.SetDestination(hit.position);
+        }
+
+        // Periodically recheck if a weapon has spawned
+        _noWeaponCheckTimer -= Time.deltaTime;
+        if (_noWeaponCheckTimer <= 0)
+        {
+            _noWeaponCheckTimer = _NoWeaponCheckInterval;
+            _NoWeaponInScene = !WeaponExistsInScene();
+            if (!_NoWeaponInScene)
+            {
+                _wasfightingPlayer = true; // resume weapon-finding logic
+            }
+        }
     }
 }

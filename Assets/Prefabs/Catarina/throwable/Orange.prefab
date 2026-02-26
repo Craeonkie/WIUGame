@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 8cc20077105f77f408d0bb09cad04eb3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 75
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8cc20077105f77f408d0bb09cad04eb3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 75
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8cc20077105f77f408d0bb09cad04eb3, type: 3}
       propertyPath: m_LocalScale.z
-      value: 75
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8cc20077105f77f408d0bb09cad04eb3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -188,17 +188,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9398d12a8632342ab1e3c5492716b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThrowableItem
-  itemName: 
+  itemName: Orange
   image: {fileID: 0}
   description: 
-  primary: []
+  primary:
+  - damage: 0
+    durabilityUsed: 0
+    energyUsed: 0
+    hasRootMotion: 1
+    pressAndHold: 0
+    isBlock: 0
+    rotation: {x: 0, y: 0, z: 0}
+    rotationSpeed: 0
+    animationClip: {fileID: -203655887218126122, guid: 1ff090c11757d3544b9fa499f87f22b2, type: 3}
+    audioClip: {fileID: 0}
   secondary: []
   special: []
   hasDurability: 0
   maxDurability: 0
   currentDurability: 0
+  consumesEnergy: 0
+  offset: {x: 0, y: 0.1, z: 0.2}
   audioSource: {fileID: 0}
   weaponBreakingSound: {fileID: 0}
+  _animationHandler: {fileID: 0}
   _entityUsingItem: {fileID: 0}
   _isActing: 0
   _resetAnimationChain: 0
@@ -206,13 +219,16 @@ MonoBehaviour:
   _currentAnimationChain: 0
   _destroyUponDrop: 0
   _maxTimeBeforeDestroyed: 0
+  _expiresAfterDropped: 0
+  _maxTimeBeforeExpiring: 0
   throwPowerForward: 10
-  throwPowerUp: 10
-  throwOffsetForward: 1
+  throwPowerUp: 5
+  throwOffsetForward: {x: 0, y: 0, z: 1}
   breakOnHit: 0
-  lifeTime: 10
+  lifeTime: 100
+  invincibilityTimeApplied: 0
   hitEntities: []
   isAiming: 0
   isThrowing: 0
   isInFlight: 0
-  _projection: {fileID: 0}
+  _OneTimeUse: 0

@@ -1,5 +1,8 @@
+using System.Collections;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static C_WeaponSpawner;
 
 public class C_Catapult : MonoBehaviour
 {
@@ -8,7 +11,9 @@ public class C_Catapult : MonoBehaviour
     [SerializeField] private float _Force = 20;
     [SerializeField] private float _UpwardForce = 20;
     [SerializeField] private PlayerInput _playerInput;
-
+    [SerializeField] private C_TrajectorySimulation _traj;
+    [SerializeField] private Transform _SpawnObjT;
+    [SerializeField] private string _ballLayerName;
 
     [Header("Distance Movement")]
     [SerializeField] private GameObject _Catapult;
@@ -33,10 +38,13 @@ public class C_Catapult : MonoBehaviour
     public static event System.Action CatapultEnabled;
     public static event System.Action CatapultDisable;
 
+
+    private bool canShoot = false;
+    private C_Ball obj;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _inputActionAsset = _playerInput.actions;
         if (spawnTrajectory != null)
         {
             spawnTrajectory?.Invoke(GetShootVelocity());
@@ -47,11 +55,31 @@ public class C_Catapult : MonoBehaviour
         {
             _CurrentAngle -= 360f;
         }
+
+    }
+    private void Awake()
+    {
+        _inputActionAsset = _playerInput.actions;
+
+        C_CatapultManager.UseCatapult += AwakeThis;
+        C_CatapultManager.CatapultSetObj += SpawnObj;
     }
 
+    private void OnDestroy()
+    {
+        C_CatapultManager.UseCatapult -= AwakeThis;
+        C_CatapultManager.CatapultSetObj -= SpawnObj;
+
+    }
+
+    private void AwakeThis()
+    {
+        this.enabled = true;
+    }
     // Update is called once per frame
     void Update()
     {
+
         bool aimingChanged = HandleControls();
 
         if (aimingChanged)
@@ -63,12 +91,12 @@ public class C_Catapult : MonoBehaviour
             }
         }
 
-        if (_inputActionAsset["Interact"].WasPressedThisFrame())
-        {
-            ExitCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.PLAYER_CAMERA);
-            this.enabled = false;
-            _playerInput.enabled = false;
-        }
+        //if (_inputActionAsset["Interact"].WasPressedThisFrame())
+        //{
+        //    ExitCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.PLAYER_CAMERA);
+        //    this.enabled = false;
+        //    _playerInput.enabled = false;
+        //}
     }
     Vector3 GetShootVelocity()
     {
@@ -81,7 +109,7 @@ public class C_Catapult : MonoBehaviour
         //a d = moving left and right
         bool changed = false;
 
-        Vector2 input = _inputActionAsset["Move"].ReadValue<Vector2>();
+        Vector2 input = _inputActionAsset.FindActionMap("Catapult")["Move"].ReadValue<Vector2>();
 
         if (input.y < 0)
         {
@@ -117,6 +145,8 @@ public class C_Catapult : MonoBehaviour
             {
                 transform.position += Vector3.left * _MovingSpeed * Time.deltaTime;
                 changed = true;
+                if (obj != null)
+                    obj.gameObject.transform.position += Vector3.left * _MovingSpeed * Time.deltaTime;
             }
         }
         else if (input.x > 0) // moving right
@@ -125,17 +155,40 @@ public class C_Catapult : MonoBehaviour
             {
                 transform.position += Vector3.right * _MovingSpeed * Time.deltaTime;
                 changed = true;
+                if (obj != null)
+                    obj.gameObject.transform.position += Vector3.right * _MovingSpeed * Time.deltaTime;
+
             }
         }
-        if (_inputActionAsset["Jump"].WasPressedThisFrame())
+        if (canShoot)
         {
-            var spawned = Instantiate(_BallPrefab, _ballSpawn.position, _ballSpawn.rotation);
-            spawned.Init(GetShootVelocity(), false);
-            Destroy(spawned, 1.5f);
+            if (_inputActionAsset.FindActionMap("Catapult")["Interact"].WasPressedThisFrame()
+)
+            {
+                if (obj != null)
+                {
+                    obj.Init(GetShootVelocity(), false);
+                    Destroy(obj, 1.5f);
+                }
+                else
+                {
+                    var spawned = Instantiate(_BallPrefab, _ballSpawn.position, _ballSpawn.rotation);
+                    spawned.Init(GetShootVelocity(), false);
+                    Destroy(spawned, 1.5f);
+                }
+                StartCoroutine(Exit());
+            }
         }
         return changed;
     }
 
+   private IEnumerator Exit()
+    {
+        yield return new WaitForSeconds(1.75f);
+        ExitCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.PLAYER_CAMERA);
+        this.enabled = false;
+        _traj.enabled = false;
+    }
 
     private void ChangeCanMove(bool _canMove, bool leftSide)
     {
@@ -147,6 +200,7 @@ public class C_Catapult : MonoBehaviour
 
     private void OnEnable()
     {
+
         C_CatapultChecker.ChangeMoveAction += ChangeCanMove;
         awakeThis();
     }
@@ -155,12 +209,28 @@ public class C_Catapult : MonoBehaviour
     {
         C_CatapultChecker.ChangeMoveAction -= ChangeCanMove;
         CatapultDisable?.Invoke();
+        _traj.enabled = false;
+        canShoot = false;
+        _playerInput.actions.FindActionMap("Catapult").Disable();
+        _playerInput.actions.FindActionMap("Player").Enable();
     }
 
     public void awakeThis()
     {
         _playerInput.enabled = true;
+        _playerInput.actions.FindActionMap("Player").Disable();
+        _playerInput.actions.FindActionMap("Catapult").Enable();
         EnterCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.CATAPULT_CAMERA);
         CatapultEnabled?.Invoke();
+        _traj.enabled = true;
+        canShoot = true;
+    }
+
+    public void SpawnObj(GameObject _obj)
+    {
+        var _ball = _obj.GetComponent<C_Ball>();
+        obj = _ball;
+        _obj.transform.position = _SpawnObjT.position;
+        _obj.layer = LayerMask.NameToLayer(_ballLayerName);
     }
 }

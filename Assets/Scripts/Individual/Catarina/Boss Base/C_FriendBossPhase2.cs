@@ -23,6 +23,7 @@ public class C_FriendBossPhase2 : MonoBehaviour
 
 
     public static event System.Action StartFallingObjAbility;
+    public static event System.Action StopAbility;
     public static event System.Action<C_BossCameraManager.c_CameraMode> ChangeCameraAnagle;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,13 +32,19 @@ public class C_FriendBossPhase2 : MonoBehaviour
         //C_FriendBoss.TransitionPhase1Action += awakeSelf;
         C_Airplane.finishAbility += ResetAirplane;
         C_PencilAbility.finishAbility += ResetPencil;
-
+        C_Catapult.CatapultDisable += AwakeThis;
     }
     private void OnDestroy()
     {
         //C_FriendBoss.TransitionPhase1Action -= awakeSelf;
         C_Airplane.finishAbility -= ResetAirplane;
         C_PencilAbility.finishAbility -= ResetPencil;
+        C_Catapult.CatapultDisable -= AwakeThis;
+
+    }
+    private void AwakeThis()
+    {
+        this.enabled = true;
     }
 
     private bool firstTime = false, _isInStartWait = false;
@@ -57,8 +64,17 @@ public class C_FriendBossPhase2 : MonoBehaviour
             _AbilityActive = false;
             _counter = Random.Range(_MinTiming, _MaxTiming);
         }
+        C_Catapult.CatapultEnabled += StopAllAbility;
     }
-
+    private void OnDisable()
+    {
+        C_Catapult.CatapultEnabled -= StopAllAbility;
+    }
+    private void StopAllAbility()
+    {
+        StopAbility?.Invoke();
+        this.enabled = false;
+    }
     private void ResetAirplane()
     {
         _AbilityActive = false;

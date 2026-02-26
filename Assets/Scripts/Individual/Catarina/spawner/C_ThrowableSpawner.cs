@@ -9,7 +9,9 @@ public class C_ThrowableSpawner : MonoBehaviour
     [SerializeField] private int totalAmtOfThrowableAtOneTime;
     [SerializeField] private float spawnCD = 10f;
     [SerializeField] private Collider _SpawnArea;
-
+    [SerializeField] private LayerMask _AvoidLayer;
+    [SerializeField] private int _MaxNumOfAttempts=10;
+    [SerializeField] private float _DistBetweenObj = 2f;
     private int totalCount = 0;
     private bool canSpawn;
     private Bounds _Bound;
@@ -79,25 +81,39 @@ public class C_ThrowableSpawner : MonoBehaviour
 
     private void SpawnThrowable()
     {
-        // choose a random prefab
         GameObject chosenPrefab = _ThrowablePrefabs[Random.Range(0, _ThrowablePrefabs.Length)];
 
-        GameObject spawned = GetFromPool(chosenPrefab);
+        int attempts = 0;
+        bool positionFound = false;
 
-        // Random position within spawn area
-        Vector3 spawnPos = new Vector3(
-            Random.Range(_Bound.min.x, _Bound.max.x),
-            Random.Range(_Bound.min.y, _Bound.max.y),
-            Random.Range(_Bound.min.z, _Bound.max.z)
-        );
+        while (!positionFound && attempts < _MaxNumOfAttempts)
+        {
+            attempts++;
 
-        spawned.transform.position = spawnPos;
-        totalCount++;
+            Vector3 randomPos = new Vector3(
+                Random.Range(_Bound.min.x, _Bound.max.x),
+                _Bound.center.y,
+                Random.Range(_Bound.min.z, _Bound.max.z)
+            );
 
-        C_Throwable throwable = spawned.GetComponent<C_Throwable>();
-        if (throwable != null)
-            throwable.Init(chosenPrefab, this);
-        canSpawn = false;
+            // Skip if position overlaps avoided layers (walls, obstacles, etc.)
+            Collider[] blocked = Physics.OverlapSphere(randomPos, _DistBetweenObj, _AvoidLayer);
+            if (blocked.Length > 0) continue;
+
+            GameObject spawned = GetFromPool(chosenPrefab);
+            spawned.transform.position = randomPos;
+            spawned.transform.rotation = Quaternion.identity;
+
+            totalCount++;
+            C_Throwable throwable = spawned.GetComponent<C_Throwable>();
+            if (throwable != null)
+                throwable.Init(chosenPrefab, this);
+
+            positionFound = true;
+        }
+
+        if (!positionFound)
+            Debug.LogWarning("SpawnThrowable: Could not find valid position after max attempts.");
     }
 
     private void OnEnable()  { 

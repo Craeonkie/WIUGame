@@ -25,6 +25,8 @@ public class C_FallingObj : MonoBehaviour
     private bool _isBeingReleased = false;
     public C_FallingObj PrefabKey { get; private set; }
 
+    [SerializeField] private float Damage = 10f;
+
     public void Init(C_PencilAbility spawner, C_FallingObj prefabKey) 
     {
         PrefabKey = prefabKey;
@@ -110,8 +112,16 @@ public class C_FallingObj : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        _rb.isKinematic = true;
         if (((1 << collision.gameObject.layer) & _groundLayer) != 0)
             _startCountdown = true;
+
+        var _ply = collision.gameObject.GetComponent<PlayerController>();
+        if (_ply != null)
+        {
+            _ply.TakeDamage(Damage,0f);
+        }
+        
     }
 
     // safety net if unity disables this obj directly
@@ -129,4 +139,5 @@ public class C_FallingObj : MonoBehaviour
         _warningDecalInstance = null;
         _decalRenderer = null;
     }
+
 }
