@@ -19,17 +19,17 @@ public class DialogueInteractable : Interactable
         triggerDialogue.Invoke();
     }
 
-    //public void ExitDialogue()
-    //{
-    //    facingPlayer = false;
-    //}
+    public void InDialogue(bool inDialogue)
+    {
+        facingPlayer = inDialogue;
+    }
 
     private void Update()
     {
-        //// Rotate NPC towards player
-        //if (facingPlayer)
-        //{
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position), Time.deltaTime * rotationSpeed);
-        //}
+        // Rotate NPC towards player
+        if (facingPlayer)
+        {
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position), Time.deltaTime * rotationSpeed);
+        }
     }
 }
