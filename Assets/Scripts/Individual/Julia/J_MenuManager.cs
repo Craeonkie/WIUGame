@@ -39,6 +39,7 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
     {
         // TODO: Load player prefs
         // TODO: Underline the text accordingly based on the quality
+        UpdateAudioSliders();
     }
 
     private void OnEnable()
