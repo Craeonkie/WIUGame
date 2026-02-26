@@ -159,7 +159,7 @@ MonoBehaviour:
   _rb: {fileID: 3986509749745998818}
   _boundaryCollider: {fileID: 4751061580061523709}
   _bounceCollider: {fileID: 6734062947059771068}
-  _bounceForce: 5
+  _bounceForce: 10
 --- !u!54 &3986509749745998818
 Rigidbody:
   m_ObjectHideFlags: 0

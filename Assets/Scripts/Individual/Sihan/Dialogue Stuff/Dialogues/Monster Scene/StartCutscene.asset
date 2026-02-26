@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce3039239c40a4d4992840227a06e592, type: 3}
-  m_Name: EndingDialogue
+  m_Name: StartCutscene
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue
   _dialogueID: 0
   stateDialogues:
@@ -19,104 +19,20 @@ MonoBehaviour:
     playOpenAnimation: 1
     playCloseAnimation: 1
     dialogueLines:
-    - name: Friend
-      dialogue: NICE!
-      icon: {fileID: 0}
-      iconColor: {r: 0, g: 0, b: 0, a: 1}
-      icon2: {fileID: 0}
-      iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 1
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 0
-      playAnimation: 0
-      overrideTypingSpeed: 0
-      typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
-      overrideDialogueNameAlignment: 0
-      dialogueNameAlignment: 0
-      overrideDialogueTextAlignment: 0
-      dialogueTextAlignment: 0
-      overrideBaseNameColor: 0
-      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
-      overrideBaseTextColor: 0
-      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
-    - name: Friend
-      dialogue: That was actually really good!
-      icon: {fileID: 0}
-      iconColor: {r: 0, g: 0, b: 0, a: 1}
-      icon2: {fileID: 0}
-      iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 1
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 0
-      playAnimation: 0
-      overrideTypingSpeed: 0
-      typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
-      overrideDialogueNameAlignment: 0
-      dialogueNameAlignment: 0
-      overrideDialogueTextAlignment: 0
-      dialogueTextAlignment: 0
-      overrideBaseNameColor: 0
-      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
-      overrideBaseTextColor: 0
-      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
-    - name: Taro
-      dialogue: Woof!
-      icon: {fileID: 0}
-      iconColor: {r: 0, g: 0, b: 0, a: 1}
-      icon2: {fileID: 0}
-      iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 1
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 0
-      playAnimation: 0
-      overrideTypingSpeed: 0
-      typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
-      overrideDialogueNameAlignment: 0
-      dialogueNameAlignment: 0
-      overrideDialogueTextAlignment: 0
-      dialogueTextAlignment: 0
-      overrideBaseNameColor: 0
-      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
-      overrideBaseTextColor: 0
-      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
     - name: Mom
-      dialogue: Did you boys have fun
+      dialogue: Help me, hero!
       icon: {fileID: 0}
       iconColor: {r: 0, g: 0, b: 0, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
+      dialogueUIIndex: 2
+      isSkippable: 0
       ableToEnterNextLine: 1
       isAutoNextLine: 1
       isInstant: 0
       erasePreviousText: 1
       useLeftRightArrowShits: 0
-      playAnimation: 0
+      playAnimation: 1
       overrideTypingSpeed: 0
       typingSpeed: 0
       overrideAutoNextLineTime: 0
@@ -131,20 +47,76 @@ MonoBehaviour:
       baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Dad
-      dialogue: "So\u2026 am I officially the strongest final boss?"
+    - name: Kotaro (You)
+      dialogue: Release her now!
       icon: {fileID: 0}
       iconColor: {r: 0, g: 0, b: 0, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
+      dialogueUIIndex: 2
+      isSkippable: 0
       ableToEnterNextLine: 1
       isAutoNextLine: 1
       isInstant: 0
       erasePreviousText: 1
       useLeftRightArrowShits: 0
-      playAnimation: 0
+      playAnimation: 1
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 2
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+    - name: Evil Dad
+      dialogue: RAWRRR!!!
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 1
+      useLeftRightArrowShits: 0
+      playAnimation: 1
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 3
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+    - name: Evil Dad
+      dialogue: "Ohhh\u2026 look who finally arrived."
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 1
+      useLeftRightArrowShits: 0
+      playAnimation: 1
       overrideTypingSpeed: 0
       typingSpeed: 0
       overrideAutoNextLineTime: 0
@@ -159,20 +131,48 @@ MonoBehaviour:
       baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
-      dialogue: Hmph. I defeated you though
+    - name: Evil Dad
+      dialogue: "The \u201Chero.\u201D"
       icon: {fileID: 0}
       iconColor: {r: 0, g: 0, b: 0, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
+      dialogueUIIndex: 2
+      isSkippable: 0
       ableToEnterNextLine: 1
       isAutoNextLine: 1
       isInstant: 0
       erasePreviousText: 1
       useLeftRightArrowShits: 0
-      playAnimation: 0
+      playAnimation: 1
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 2
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+    - name: Kotaro (You)
+      dialogue: I said, release her now! If not, I'll beat you up into a pulp!
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 1
+      useLeftRightArrowShits: 0
+      playAnimation: 1
       overrideTypingSpeed: 0
       typingSpeed: 0
       overrideAutoNextLineTime: 0
@@ -187,20 +187,48 @@ MonoBehaviour:
       baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
-      dialogue: That was just pure luck!
+    - name: Evil Dad
+      dialogue: You dare threaten me?
       icon: {fileID: 0}
       iconColor: {r: 0, g: 0, b: 0, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
+      dialogueUIIndex: 2
+      isSkippable: 0
       ableToEnterNextLine: 1
       isAutoNextLine: 1
       isInstant: 0
       erasePreviousText: 1
       useLeftRightArrowShits: 0
-      playAnimation: 0
+      playAnimation: 1
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 2
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+    - name: Evil Dad
+      dialogue: You won't even last a second against me!
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 1
+      useLeftRightArrowShits: 0
+      playAnimation: 1
       overrideTypingSpeed: 0
       typingSpeed: 0
       overrideAutoNextLineTime: 0
@@ -215,171 +243,3 @@ MonoBehaviour:
       baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: 
-      dialogue: (Everyone laughs lightly)
-      icon: {fileID: 0}
-      iconColor: {r: 0, g: 0, b: 0, a: 1}
-      icon2: {fileID: 0}
-      iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 1
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 0
-      playAnimation: 0
-      overrideTypingSpeed: 0
-      typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
-      overrideDialogueNameAlignment: 0
-      dialogueNameAlignment: 0
-      overrideDialogueTextAlignment: 0
-      dialogueTextAlignment: 0
-      overrideBaseNameColor: 0
-      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
-      overrideBaseTextColor: 0
-      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
-    - name: Friend
-      dialogue: "So what\u2019s the title?"
-      icon: {fileID: 0}
-      iconColor: {r: 0, g: 0, b: 0, a: 1}
-      icon2: {fileID: 0}
-      iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 1
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 0
-      playAnimation: 0
-      overrideTypingSpeed: 0
-      typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
-      overrideDialogueNameAlignment: 0
-      dialogueNameAlignment: 0
-      overrideDialogueTextAlignment: 0
-      dialogueTextAlignment: 0
-      overrideBaseNameColor: 0
-      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
-      overrideBaseTextColor: 0
-      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
-    - name: Kotaro
-      dialogue: "It's \u201CLights, Camera, Fight!\u201D"
-      icon: {fileID: 0}
-      iconColor: {r: 0, g: 0, b: 0, a: 1}
-      icon2: {fileID: 0}
-      iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 1
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 0
-      playAnimation: 0
-      overrideTypingSpeed: 0
-      typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
-      overrideDialogueNameAlignment: 0
-      dialogueNameAlignment: 0
-      overrideDialogueTextAlignment: 0
-      dialogueTextAlignment: 0
-      overrideBaseNameColor: 0
-      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
-      overrideBaseTextColor: 0
-      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
-    - name: Friend
-      dialogue: Not bad.
-      icon: {fileID: 0}
-      iconColor: {r: 0, g: 0, b: 0, a: 1}
-      icon2: {fileID: 0}
-      iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 1
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 0
-      playAnimation: 0
-      overrideTypingSpeed: 0
-      typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
-      overrideDialogueNameAlignment: 0
-      dialogueNameAlignment: 0
-      overrideDialogueTextAlignment: 0
-      dialogueTextAlignment: 0
-      overrideBaseNameColor: 0
-      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
-      overrideBaseTextColor: 0
-      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
-    - name: 
-      dialogue: (Kid walks toward camera.)
-      icon: {fileID: 0}
-      iconColor: {r: 0, g: 0, b: 0, a: 1}
-      icon2: {fileID: 0}
-      iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 1
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 0
-      playAnimation: 0
-      overrideTypingSpeed: 0
-      typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
-      overrideDialogueNameAlignment: 0
-      dialogueNameAlignment: 0
-      overrideDialogueTextAlignment: 0
-      dialogueTextAlignment: 0
-      overrideBaseNameColor: 0
-      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
-      overrideBaseTextColor: 0
-      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 0}
-    - name: Kotaro
-      dialogue: "And that\u2019s a wrap!"
-      icon: {fileID: 0}
-      iconColor: {r: 0, g: 0, b: 0, a: 1}
-      icon2: {fileID: 0}
-      iconColor2: {r: 0, g: 0, b: 0, a: 1}
-      dialogueUIIndex: 0
-      isSkippable: 1
-      ableToEnterNextLine: 1
-      isAutoNextLine: 1
-      isInstant: 0
-      erasePreviousText: 1
-      useLeftRightArrowShits: 0
-      playAnimation: 0
-      overrideTypingSpeed: 0
-      typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
-      overrideDialogueNameAlignment: 0
-      dialogueNameAlignment: 0
-      overrideDialogueTextAlignment: 0
-      dialogueTextAlignment: 0
-      overrideBaseNameColor: 0
-      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
-      overrideBaseTextColor: 0
-      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
-      onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 11400000, guid: 8bdb992e0037c9d40b671498d714515e, type: 2}

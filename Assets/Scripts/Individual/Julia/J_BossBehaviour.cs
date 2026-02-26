@@ -227,7 +227,7 @@ public class J_BossBehaviour : Entity
                     _hasActivatedShockwave[i] = true;
 
                     // Play audio at game object point
-                    AudioLibrary.Instance.PlaySoundAtPointCustomRandom4("SlamBed", hitColliders[i].transform.position);
+                    AudioLibrary.Instance.PlaySoundAtPointCustomRandom4("SlamBed", hitColliders[j].transform.position);
                 }
             }
 
@@ -401,8 +401,9 @@ public class J_BossBehaviour : Entity
 
     public override void Die()
     {
-        OnDie?.Invoke();
-        J_GameManager.Instance.SetCurrentScene(J_GameManager.MONSTER_SCENE);
+        onDieEvent?.Invoke();
+        if (J_GameManager.Instance != null)
+            J_GameManager.Instance.SetCurrentScene(J_GameManager.MONSTER_SCENE);
     }
 
     public void EndFight()
@@ -694,12 +695,16 @@ public class J_BossBehaviour : Entity
                 _currentTimesHit = 0;
 
                 _animator.SetBool(ANIMATOR_EXHAUSTED_BOOL, true);
+                _animator.SetBool(ANIMATOR_IDLE_BOOL, false);
+                _animator.SetBool(ANIMATOR_PREPARING_BOOL, false);
 
                 // Enable colliders
                 for (int i = 0; i < 2; ++i)
                 {
                     _fistColliders[i].enabled = true;
                     _fistColliders[i].isTrigger = false;
+
+                    Debug.Log("enabled colliders");
                 }
 
                 isInvincible = false;
@@ -1015,6 +1020,8 @@ public class J_BossBehaviour : Entity
         {
             _fistColliders[i].enabled = false;
             _hasActivatedShockwave[i] = false;
+
+            Debug.Log("disabled colliders in all colliders");
         }
 
         ResetShockwaveValues();

@@ -10,33 +10,33 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce3039239c40a4d4992840227a06e592, type: 3}
-  m_Name: KidsRoomDoor
+  m_Name: Phase2Dialogue
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue
-  _dialogueID: 1
+  _dialogueID: 0
   stateDialogues:
-  - dialogueID: 1
+  - dialogueID: 0
     increaseMainDialogueIDWhenComplete: 0
     playOpenAnimation: 1
     playCloseAnimation: 1
     dialogueLines:
-    - name: 
-      dialogue: Wait for me, I need to grab my mask first!
-      icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
-      iconColor: {r: 1, g: 1, b: 1, a: 1}
+    - name: Evil Dad
+      dialogue: You insolent brat!
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 0}
       icon2: {fileID: 0}
-      iconColor2: {r: 1, g: 1, b: 1, a: 1}
+      iconColor2: {r: 0, g: 0, b: 0, a: 0}
       dialogueUIIndex: 2
-      isSkippable: 1
+      isSkippable: 0
       ableToEnterNextLine: 1
-      isAutoNextLine: 0
-      isInstant: 0
+      isAutoNextLine: 1
+      isInstant: 1
       erasePreviousText: 0
       useLeftRightArrowShits: 0
-      playAnimation: 1
+      playAnimation: 0
       overrideTypingSpeed: 0
       typingSpeed: 0
-      overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 2
       overrideDialogueNameAlignment: 0
       dialogueNameAlignment: 0
       overrideDialogueTextAlignment: 0
@@ -46,4 +46,4 @@ MonoBehaviour:
       overrideBaseTextColor: 0
       baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
-      onExitDialogue: {fileID: 11400000, guid: 5f177a96696ad664d819a770d4ba4556, type: 2}
+      onExitDialogue: {fileID: 0}

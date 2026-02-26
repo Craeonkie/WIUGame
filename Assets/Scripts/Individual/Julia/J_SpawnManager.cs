@@ -14,6 +14,7 @@ public class SpawnItem
     public bool spawnOnAwake;
     public bool loopSpawning;
     public int spawnLimit;
+    public bool spawnOnDestroy;
     [System.NonSerialized] public ObjectPool<GameObject> spawnPool;
     [System.NonSerialized] public List<GameObject> activeObjects = new List<GameObject>();
 }
@@ -64,7 +65,8 @@ public class J_SpawnManager : MonoBehaviour
                 prefab.gameObject.SetActive(false); //call when done and return to the pool
                 item.spawnedAmount--;
 
-                Spawn(item.itemName, item.spawnDelay);
+                if (item.spawnOnDestroy)
+                    Spawn(item.itemName, item.spawnDelay);
 
             }, prefab =>
             {

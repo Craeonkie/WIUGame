@@ -19,13 +19,13 @@ MonoBehaviour:
     playOpenAnimation: 1
     playCloseAnimation: 1
     dialogueLines:
-    - dialogue: I can sense the evil emanating from this room...
+    - name: 
+      dialogue: I can sense the evil emanating from this room...
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      name: 
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 0
@@ -41,15 +41,19 @@ MonoBehaviour:
       dialogueNameAlignment: 0
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - dialogue: ...I'm not strong enough to fight it right now...
+    - name: 
+      dialogue: ...I'm not strong enough to fight it right now...
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      name: 
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 0
@@ -65,6 +69,10 @@ MonoBehaviour:
       dialogueNameAlignment: 0
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 11400000, guid: 85b1b13419eed7a428b32f8f859c4f26, type: 2}
   - dialogueID: 1
@@ -72,13 +80,13 @@ MonoBehaviour:
     playOpenAnimation: 1
     playCloseAnimation: 1
     dialogueLines:
-    - dialogue: I'll save you mom!
+    - name: 
+      dialogue: I'll save you mom!
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      name: 
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 0
@@ -94,5 +102,9 @@ MonoBehaviour:
       dialogueNameAlignment: 0
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 11400000, guid: 9d3c8c869ade8f541817bc8dd9ebf241, type: 2}
