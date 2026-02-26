@@ -46,6 +46,11 @@ public class AnimationHandler : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
+
         // Receive inputs if the current item isn't null
         if (_currentItem != null)
         {
@@ -89,6 +94,11 @@ public class AnimationHandler : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
+
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         if (!_currentAnimation.pressAndHold && stateInfo.normalizedTime >= 1.0f && !_animator.IsInTransition(0) && _isActing)

@@ -80,6 +80,8 @@ public class PlayerController : Entity
 
     [Header("Player Audio")]
     [SerializeField] protected AudioClip blockAudio;
+    [SerializeField] protected AudioClip jumpAudio;
+    [SerializeField] protected AudioClip rollAudio;
 
     [Header("Expose to inspector for debugging")]
     private Vector2 _inputMove;
@@ -230,6 +232,10 @@ public class PlayerController : Entity
                 {
                     _jumpCurrentCooldown = _jumpCooldown;
                     _animator.SetTrigger("IsJumping");
+                    if (jumpAudio != null)
+                    {
+                        AudioLibrary.Instance.PlaySoundAtPointCustom(jumpAudio.name, transform.position);
+                    }
                     _isJumping = true;
                     _isRolling = false;
                     myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
@@ -240,6 +246,10 @@ public class PlayerController : Entity
                     if (UseEnergy(rollEnergyRequired, false))
                     {
                         _animator.SetTrigger("IsRolling");
+                        if (rollAudio != null)
+                        {
+                            AudioLibrary.Instance.PlaySoundAtPointCustom(rollAudio.name, transform.position);
+                        }
                         _currentRollTimer = rollDuration;
                         _isRolling = true;
                         isDodging = true;
@@ -347,7 +357,7 @@ public class PlayerController : Entity
             {
                 inventory.HighlightObject(closestInteractable.gameObject);
                 // Position interact icon over the item to interact with
-                if (closestInteractable.gameObject != _currentlyHighlightedObject)
+                if (closestInteractable.gameObject != _currentlyHighlightedObject && _interactIcon != null)
                 {
                     _currentlyHighlightedObject = closestInteractable.gameObject;
                     _interactIcon.SetActive(true);
@@ -382,19 +392,19 @@ public class PlayerController : Entity
                     //}
                 }
             }
-            else
+            else if (_interactIcon != null)
             {
                 _interactIcon.SetActive(false);
                 _currentlyHighlightedObject = null;
             }
 
-            if (_currentlyHighlightedObject != null)
+            if (_currentlyHighlightedObject != null && _interactIcon != null)
             {
-                _interactIcon.transform.position = _currentlyHighlightedObject.transform.position + Vector3.up * 2;
-                _interactIcon.transform.rotation = Quaternion.LookRotation(-cameraTarget.transform.forward, transform.up);
+                _interactIcon.transform.position = _currentlyHighlightedObject.transform.position - followCamera.transform.forward;
+                _interactIcon.transform.rotation = Quaternion.LookRotation(-followCamera.transform.forward, transform.up);
             }
         }
-        else
+        else if (_interactIcon != null)
         {
             _interactIcon.SetActive(false);
             _currentlyHighlightedObject = null;
@@ -669,11 +679,14 @@ public class PlayerController : Entity
 
                 if (hitAudio.Length > 0 && audioSource != null)
                 {
-                    audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+                    AudioLibrary.Instance.PlaySoundAtPointCustom(hitAudio[Random.Range(0, hitAudio.Length - 1)].name, transform.position);
                 }
                 if (_currentHP <= 0)
                 {
-                    audioSource.PlayOneShot(deathAudio);
+                    if (deathAudio != null)
+                    {
+                        AudioLibrary.Instance.PlaySoundAtPointCustom(deathAudio.name, transform.position);
+                    }
                     Die();
                 }
                 else

@@ -20,6 +20,11 @@ public abstract class Weapon : Item
     protected new void Update()
     {
         base.Update();
+
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
     }
 
     public void BeginAttack(float attackDamage)
@@ -64,6 +69,10 @@ public abstract class Weapon : Item
             if (other.gameObject.TryGetComponent<Entity>(out Entity thisEntity))
             {
                 thisEntity.TakeDamage(currentAttackDamage, invincibilityLength);
+                if (onHitSound != null)
+                {
+                    AudioLibrary.Instance.PlaySoundAtPointCustom(onHitSound.name, transform.position);
+                }
                 if (canLoseDurabilityThisAttack)
                 {
                     canLoseDurabilityThisAttack = false;
@@ -77,6 +86,10 @@ public abstract class Weapon : Item
                 if (thisEntity != null)
                 {
                     thisEntity.TakeDamage(currentAttackDamage, invincibilityLength);
+                    if (onHitSound != null)
+                    {
+                        AudioLibrary.Instance.PlaySoundAtPointCustom(onHitSound.name, transform.position);
+                    }
                     if (canLoseDurabilityThisAttack)
                     {
                         canLoseDurabilityThisAttack = false;

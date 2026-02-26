@@ -124,7 +124,7 @@ public class RestingPlayerController : Entity
             if (closestInteractable != null && closestInteractable.gameObject.tag == "Interactable")
             {
                 // Position interact icon over the item to interact with
-                if (closestInteractable.gameObject != _currentlyHighlightedObject)
+                if (closestInteractable.gameObject != _currentlyHighlightedObject && _interactIcon != null)
                 {
                     _currentlyHighlightedObject = closestInteractable.gameObject;
                     _interactIcon.SetActive(true);
@@ -134,17 +134,22 @@ public class RestingPlayerController : Entity
                     closestInteractable.InteractWith();
                 }
             }
-            else
+            else if (_interactIcon != null)
             {
                 _interactIcon.SetActive(false);
                 _currentlyHighlightedObject = null;
             }
 
-            if (_currentlyHighlightedObject != null)
+            if (_currentlyHighlightedObject != null && _interactIcon != null)
             {
                 _interactIcon.transform.position = _currentlyHighlightedObject.transform.position + Vector3.up * 2;
                 _interactIcon.transform.rotation = Quaternion.LookRotation(-transform.forward, transform.up); 
             }
+        }
+        else if (_interactIcon != null)
+        {
+            _interactIcon.SetActive(false);
+            _currentlyHighlightedObject = null;
         }
     }
 
