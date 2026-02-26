@@ -1,0 +1,226 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce3039239c40a4d4992840227a06e592, type: 3}
+  m_Name: EndingCutscene
+  m_EditorClassIdentifier: Assembly-CSharp::Dialogue
+  _dialogueID: 1
+  stateDialogues:
+  - dialogueID: 0
+    increaseMainDialogueIDWhenComplete: 1
+    playOpenAnimation: 1
+    playCloseAnimation: 1
+    dialogueLines:
+    - name: Evil Dad
+      dialogue: Blasted kid..!
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 0
+      useLeftRightArrowShits: 0
+      playAnimation: 0
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 2
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+    - name: Evil Dad
+      dialogue: I'll get back at you for this!
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 0
+      useLeftRightArrowShits: 0
+      playAnimation: 0
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 5
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+    - name: Kotaro (You)
+      dialogue: Yes! Hero Kotaro has saved the day again!
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 1
+      useLeftRightArrowShits: 0
+      playAnimation: 0
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 0
+      autoNextLineTime: 0
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+  - dialogueID: 1
+    increaseMainDialogueIDWhenComplete: 0
+    playOpenAnimation: 1
+    playCloseAnimation: 1
+    dialogueLines:
+    - name: Kotaro (You)
+      dialogue: Young miss, are you feeling okay? That must've been such a scary
+        experience for you.
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 1
+      useLeftRightArrowShits: 0
+      playAnimation: 0
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 4
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+    - name: Mom
+      dialogue: I'm feeling alright dear, thank you so much for saving me, Hero Kotaro.
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 1
+      useLeftRightArrowShits: 0
+      playAnimation: 0
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 0
+      autoNextLineTime: 0
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+    - name: Mom
+      dialogue: I'm feeling alright dear, thank you so much for saving me, Hero Kotaro.
+        Your bravery is truly admirable for such a young hero like yourself to help
+        save this poor lady.
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 1
+      isAutoNextLine: 1
+      isInstant: 0
+      erasePreviousText: 1
+      useLeftRightArrowShits: 0
+      playAnimation: 0
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 4
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}
+    - name: Kotaro (You)
+      dialogue: It's no problem! Hero Kotaro will always save the day no matter what
+        in the name of justice!
+      icon: {fileID: 0}
+      iconColor: {r: 0, g: 0, b: 0, a: 1}
+      icon2: {fileID: 0}
+      iconColor2: {r: 0, g: 0, b: 0, a: 1}
+      dialogueUIIndex: 2
+      isSkippable: 0
+      ableToEnterNextLine: 0
+      isAutoNextLine: 0
+      isInstant: 0
+      erasePreviousText: 1
+      useLeftRightArrowShits: 0
+      playAnimation: 0
+      overrideTypingSpeed: 0
+      typingSpeed: 0
+      overrideAutoNextLineTime: 1
+      autoNextLineTime: 4
+      overrideDialogueNameAlignment: 0
+      dialogueNameAlignment: 0
+      overrideDialogueTextAlignment: 0
+      dialogueTextAlignment: 0
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
+      onEnterDialogue: {fileID: 0}
+      onExitDialogue: {fileID: 0}

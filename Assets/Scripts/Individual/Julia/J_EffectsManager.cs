@@ -29,10 +29,10 @@ public class J_EffectsManager : MonoBehaviour
     private Coroutine _dustCoroutine;
 
     [Header("Vignette Effect")]
-    private VignetteVolume _vignetteVolume;
     [SerializeField] private bool _setValueOnAwake;
     [SerializeField] private float _vignetteValue;
     [SerializeField] private float _transitionSpeed;
+    private VignetteVolume _vignetteVolume;
     private Coroutine _vignetteCoroutine;
     public UnityEvent OnVignetteTransitionInwardStart;
     public UnityEvent OnVignetteTransitionInwardFinish;
