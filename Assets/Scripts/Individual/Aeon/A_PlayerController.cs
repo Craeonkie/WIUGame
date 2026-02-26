@@ -94,6 +94,10 @@ public class PlayerController : Entity
     [SerializeField] private GameObject _itemBeingMoved;
     [SerializeField] private bool _isTopDown;
 
+    [Header("Object Highlighting")]
+    [SerializeField] private GameObject _currentlyHighlightedObject;
+    [SerializeField] private GameObject _interactIcon;
+
     public static System.Action<float, float> OnPlayerHealthChanged;
     public static System.Action<float, float> OnEnergyChanged;
 
@@ -309,7 +313,7 @@ public class PlayerController : Entity
         }
 
         //// Handle other inputs
-        // Cast a sphere around the player (or use a raycast forward if preferred)
+        // Handle interaction
         if (!_isMovingObject && !_isAiming && _canPlayerInput && !animationHandler.IsActing())
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
@@ -342,6 +346,12 @@ public class PlayerController : Entity
             if (closestInteractable != null)
             {
                 inventory.HighlightObject(closestInteractable.gameObject);
+                // Position interact icon over the item to interact with
+                if (closestInteractable.gameObject != _currentlyHighlightedObject)
+                {
+                    _currentlyHighlightedObject = closestInteractable.gameObject;
+                    _interactIcon.SetActive(true);
+                }
                 if (_interactAction.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
                     string tag = closestInteractable.tag;
@@ -372,14 +382,23 @@ public class PlayerController : Entity
                     //}
                 }
             }
+            else
+            {
+                _interactIcon.SetActive(false);
+                _currentlyHighlightedObject = null;
+            }
+
+            if (_currentlyHighlightedObject != null)
+            {
+                _interactIcon.transform.position = _currentlyHighlightedObject.transform.position + Vector3.up * 2;
+                _interactIcon.transform.rotation = Quaternion.LookRotation(-cameraTarget.transform.forward, transform.up);
+            }
         }
-        //else
-        //{
-        //    //if (_jumpAction.WasPressedThisDynamicUpdate() || _interactAction.WasPressedThisDynamicUpdate())
-        //    //{
-        //    //    StopMovingItem();
-        //    //}
-        //}
+        else
+        {
+            _interactIcon.SetActive(false);
+            _currentlyHighlightedObject = null;
+        }
 
         // Only accept input when the player is able act (Inventory related input)
         if (_canPlayerInput && !_isStunned && isGrounded && _handsAreFree)
