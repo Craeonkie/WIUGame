@@ -16,6 +16,8 @@ public class C_FriendBossStageManager : MonoBehaviour
     [SerializeField] private GameObject _player;
 
     [SerializeField] J_CutsceneManager _CutsceneManager;
+
+
     private void EnteringPhase2()
     {
         var navmesh = FindFirstObjectByType<NavMeshSurface>();

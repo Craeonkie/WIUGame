@@ -447,13 +447,15 @@ MonoBehaviour:
   consumesEnergy: 1
   offset: {x: 0, y: 0, z: 0}
   audioSource: {fileID: 5934618741953710455}
-  weaponBreakingSound: {fileID: 0}
+  breakingSound: {fileID: 8300000, guid: 56c837f060015ac499f1fb2a6d0977ca, type: 3}
+  onHitSound: {fileID: 0}
   _animationHandler: {fileID: 0}
   _entityUsingItem: {fileID: 0}
   _isActing: 0
   _resetAnimationChain: 0
   _chainingAnimation: 0
   _currentAnimationChain: 0
+  isUsedByObjectPool: 0
   _destroyUponDrop: 0
   _maxTimeBeforeDestroyed: 0
   _expiresAfterDropped: 0

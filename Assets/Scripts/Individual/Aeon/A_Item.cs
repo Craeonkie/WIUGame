@@ -35,9 +35,9 @@ public abstract class Item : Interactable
     public Vector3 offset;
 
     [Header("Audio")]
-    [SerializeField] AudioSource audioSource;
-    [SerializeField] AudioClip breakingSound;
-    [SerializeField] AudioClip onHitSound;
+    [SerializeField] protected AudioSource audioSource;
+    [SerializeField] protected AudioClip breakingSound;
+    [SerializeField] protected AudioClip onHitSound;
 
     [Header("Exposed for debugging")]
     [SerializeField] protected AnimationHandler _animationHandler;
@@ -77,6 +77,11 @@ public abstract class Item : Interactable
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
+
         if (_hasBeenDropped)
         {
             _timeBeforeDestroyed -= Time.deltaTime;
@@ -145,6 +150,7 @@ public abstract class Item : Interactable
         _animationHandler.StopReferencingOldItem();
         SetAnimationHandler(null);
         SetEntity(null);
+        transform.gameObject.SetActive(true);
 
         // Enable physics
         if (TryGetComponent<Rigidbody>(out Rigidbody rb))
@@ -220,9 +226,12 @@ public abstract class Item : Interactable
     // Set item to false
     public virtual void Break()
     {
-        if (audioSource != null && breakingSound != null)
+        if (breakingSound != null)
         {
-            audioSource.PlayOneShot(breakingSound);
+            if (breakingSound != null)
+            {
+                AudioLibrary.Instance.PlaySoundAtPointCustom(breakingSound.name, transform.position);
+            }
         }
 
         if (isUsedByObjectPool && J_SpawnManager.Instance != null)

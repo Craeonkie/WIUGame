@@ -46,6 +46,11 @@ public class AnimationHandler : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
+
         // Receive inputs if the current item isn't null
         if (_currentItem != null)
         {
@@ -85,10 +90,33 @@ public class AnimationHandler : MonoBehaviour
             _currentItem = null;
             GoBackToIdle();
         }
+
+        if (_currentItem)
+        {
+            for (int i = 0; i < _currentAnimation.audioClips.Length; i++)
+            {
+                if (!_currentAnimation.audioClips[i].hasPlayed)
+                {
+                    if (_currentAnimation.audioClips[i].normalizedTimeDelay >= _animator.GetCurrentAnimatorStateInfo(0).normalizedTime && !_animator.IsInTransition(0))
+                    {
+                        if (_currentAnimation.audioClips[i].audioClip != null)
+                        {
+                            AudioLibrary.Instance.PlaySoundAtPointCustom(_currentAnimation.audioClips[i].audioClip.name, transform.position);
+                        }
+                        _currentAnimation.audioClips[i].hasPlayed = false;
+                    }
+                }
+            }
+        }
     }
 
     private void LateUpdate()
     {
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
+
         AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
         if (!_currentAnimation.pressAndHold && stateInfo.normalizedTime >= 1.0f && !_animator.IsInTransition(0) && _isActing)
@@ -118,9 +146,9 @@ public class AnimationHandler : MonoBehaviour
 
         _animator.CrossFadeInFixedTime(animationClipName, _crossFadeDuration, 0);
 
-        if (currentAnimation.audioClip != null)
+        for (int i = 0; i < currentAnimation.audioClips.Length; i++)
         {
-            _audioSource.PlayOneShot(currentAnimation.audioClip);
+            currentAnimation.audioClips[i].hasPlayed = false;
         }
     }
 
@@ -224,5 +252,13 @@ public struct Animation
     public AnimationClip animationClip;
 
     [Header("Accompanying Audio(If any)")]
+    public DelayedAudio[] audioClips;
+}
+
+[System.Serializable]
+public struct DelayedAudio
+{
     public AudioClip audioClip;
+    public float normalizedTimeDelay;
+    public bool hasPlayed;
 }
