@@ -1,0 +1,868 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1399487372718459613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3124823247886181352}
+  - component: {fileID: 5825101586249781858}
+  m_Layer: 0
+  m_Name: AudioLibrary
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3124823247886181352
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399487372718459613}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 73.11008, y: 14.26466, z: 35.70307}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5825101586249781858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1399487372718459613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a55af41cb4b78134899a08be03fef442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioLibrary
+  _audioManager: {fileID: 11400000, guid: 00e5f34164aed6e448f0d2c6d8020838, type: 2}
+  _audios:
+  - name: DogPanting
+    clip: {fileID: 8300000, guid: a93c40c3d8d6ccc458d804cd4c8183d2, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: DogBark1
+    clip: {fileID: 8300000, guid: 686e914aa9cb59f48a8fb8ae272171b4, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: DogBark2
+    clip: {fileID: 8300000, guid: 08c2d6d6a0462244a97445102844173c, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: DogBark3
+    clip: {fileID: 8300000, guid: 5dcfb5655baac72479abb5ffa9170d2e, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: DogBark4
+    clip: {fileID: 8300000, guid: 539a79c833e78e941afedefa516d4a28, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: DogBark5
+    clip: {fileID: 8300000, guid: ff6f71bdd13fd3442bc56b4cecbad79d, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.6
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: DogGrowl
+    clip: {fileID: 8300000, guid: fccec4cfc6fb9544492036db160c4205, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.6
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: DogGrowlLong
+    clip: {fileID: 8300000, guid: a2ee4e63a9c34ea429727ed71eccac77, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: DogHowl
+    clip: {fileID: 8300000, guid: fbda876aa54b6ee489c55c86bcf06784, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 10
+    maxDistance: 50
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: Dizzy
+    clip: {fileID: 8300000, guid: 22d1b7b7a57b223479f470102d1ff81e, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: Bonk
+    clip: {fileID: 8300000, guid: 0fd20b955b4ee0a43aa3b165cb1d281e, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 0.5
+  - name: Rumbling1
+    clip: {fileID: 8300000, guid: 25175d569fa74ea42a7d665369cd1fa2, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 0
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: Rumbling2
+    clip: {fileID: 8300000, guid: 6f96baabdd91e10409df6e123b556623, type: 3}
+    loop: 1
+    isBGM: 0
+    spatialBlend: 0
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.2
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: Explode1
+    clip: {fileID: 8300000, guid: e5208501f9dbf5a4d8be2248b5c701b4, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.8
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: Explode2
+    clip: {fileID: 8300000, guid: 68dfbfce2f4064341bddb399845f98d8, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.8
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: Explode3
+    clip: {fileID: 8300000, guid: 98620c33144ea9245bb8002521397ba1, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.8
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  - name: DogCry
+    clip: {fileID: 8300000, guid: 35efd2b3753a37d449e4706ff15f50e6, type: 3}
+    loop: 0
+    isBGM: 0
+    spatialBlend: 1
+    minDistance: 1
+    maxDistance: 30
+    rolloffMode: 2
+    customRolloffCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 136
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.46821228
+        value: 0.875603
+        inSlope: -0.80525756
+        outSlope: -0.80525756
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.4223547
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0.13186821
+        outSlope: 0.13186821
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    priority: 0
+    baseVolume: 0.05
+    AudioFinishedEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    source: {fileID: 0}
+    audioLerpTime: 1
+  _objectWith3DAudioPrefab: {fileID: 3957085431154048013, guid: c230cb87dc87b3d48973682a104ec238, type: 3}
+  _masterVolume: 0
+  _sfxVolume: 0
+  _bgmVolume: 0

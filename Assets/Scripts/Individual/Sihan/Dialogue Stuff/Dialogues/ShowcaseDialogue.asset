@@ -19,7 +19,8 @@ MonoBehaviour:
     playOpenAnimation: 1
     playCloseAnimation: 1
     dialogueLines:
-    - dialogue: 'Left Top Alignment Text
+    - name: Single Portrait
+      dialogue: 'Left Top Alignment Text
 
 
 '
@@ -27,7 +28,6 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      name: Single Portrait
       dialogueUIIndex: 0
       isSkippable: 1
       ableToEnterNextLine: 1
@@ -44,16 +44,20 @@ MonoBehaviour:
       dialogueNameAlignment: 0
       overrideDialogueTextAlignment: 1
       dialogueTextAlignment: 257
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - dialogue: 'Middle Alignment Text
+    - name: Double Portrait
+      dialogue: 'Middle Alignment Text
 
 '
       icon: {fileID: 21300000, guid: 37b19497c33e81c41a5e41ab572b2163, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 21300000, guid: 37b19497c33e81c41a5e41ab572b2163, type: 3}
       iconColor2: {r: 1, g: 1, b: 1, a: 0.5019608}
-      name: Double Portrait
       dialogueUIIndex: 0
       isSkippable: 1
       ableToEnterNextLine: 1
@@ -70,18 +74,22 @@ MonoBehaviour:
       dialogueNameAlignment: 0
       overrideDialogueTextAlignment: 1
       dialogueTextAlignment: 513
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0.2095871, b: 1, a: 1}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 1, g: 0, b: 0, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - dialogue: Centered Text
+    - name: Double Portrait + Centered Name
+      dialogue: Centered Text
       icon: {fileID: 0}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      name: Double Portrait + Centered Name
-      dialogueUIIndex: 2
+      dialogueUIIndex: 1
       isSkippable: 1
       ableToEnterNextLine: 1
-      isAutoNextLine: 0
+      isAutoNextLine: 1
       isInstant: 0
       erasePreviousText: 1
       useLeftRightArrowShits: 1
@@ -89,10 +97,14 @@ MonoBehaviour:
       overrideTypingSpeed: 1
       typingSpeed: 0.05
       overrideAutoNextLineTime: 0
-      autoNextLineTime: 0
+      autoNextLineTime: 1
       overrideDialogueNameAlignment: 0
       dialogueNameAlignment: 514
       overrideDialogueTextAlignment: 0
       dialogueTextAlignment: 514
+      overrideBaseNameColor: 0
+      baseNameColor: {r: 0, g: 0, b: 0, a: 0}
+      overrideBaseTextColor: 0
+      baseTextColor: {r: 0, g: 0, b: 0, a: 0}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}

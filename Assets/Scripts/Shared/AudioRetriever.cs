@@ -38,9 +38,7 @@ public class AudioRetriever : MonoBehaviour
     {
         if (AudioLibrary.Instance != null)
         {
-            int random = Random.Range(1, 3);
-
-            AudioLibrary.Instance.PlayOneShot(name + random);
+            AudioLibrary.Instance.PlayOneShotRandom2(name);
         }
     }
 
@@ -48,9 +46,7 @@ public class AudioRetriever : MonoBehaviour
     {
         if (AudioLibrary.Instance != null)
         {
-            int random = Random.Range(1, 4);
-
-            AudioLibrary.Instance.PlayOneShot(name + random);
+            AudioLibrary.Instance.PlayOneShotRandom3(name);
         }
     }
 
@@ -58,9 +54,7 @@ public class AudioRetriever : MonoBehaviour
     {
         if (AudioLibrary.Instance != null)
         {
-            int random = Random.Range(1, 5);
-
-            AudioLibrary.Instance.PlayOneShot(name + random);
+            AudioLibrary.Instance.PlayOneShotRandom4(name);
         }
     }
 
@@ -68,9 +62,7 @@ public class AudioRetriever : MonoBehaviour
     {
         if (AudioLibrary.Instance != null)
         {
-            int random = Random.Range(1, 6);
-
-            AudioLibrary.Instance.PlayOneShot(name + random);
+            AudioLibrary.Instance.PlayOneShotRandom5(name);
         }
     }
 
@@ -92,11 +84,77 @@ public class AudioRetriever : MonoBehaviour
         }
     }
 
+    public void Play3DAtTransformNoReturnObjectRandom2(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundAtPointCustomRandom2(name, transform.position);
+        }
+    }
+
+    public void Play3DAtTransformNoReturnObjectRandom3(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundAtPointCustomRandom3(name, transform.position);
+        }
+    }
+
+    public void Play3DAtTransformNoReturnObjectRandom4(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundAtPointCustomRandom4(name, transform.position);
+        }
+    }
+
+    public void Play3DAtTransformNoReturnObjectRandom5(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundAtPointCustomRandom5(name, transform.position);
+        }
+    }
+
+
+
     public void Play3DAtTransformAndMakeItAChild(string name)
     {
         if (AudioLibrary.Instance != null)
         {
             AudioLibrary.Instance.PlaySoundAtPointCustom(name, transform);
+        }
+    }
+
+    public void Play3DAtTransformAndMakeItAChildRandom2(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundAtPointCustomRandom2(name, transform);
+        }
+    }
+
+    public void Play3DAtTransformAndMakeItAChildRandom3(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundAtPointCustomRandom3(name, transform);
+        }
+    }
+
+    public void Play3DAtTransformAndMakeItAChildRandom4(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundAtPointCustomRandom4(name, transform);
+        }
+    }
+
+    public void Play3DAtTransformAndMakeItAChildRandom5(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundAtPointCustomRandom5(name, transform);
         }
     }
 

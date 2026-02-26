@@ -148,6 +148,8 @@ public class DialogueMenu : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0) return;
+
         if (dialogueSettings != null/* && !garbageManager.isMenuOpen*/)
         {
             Click();
