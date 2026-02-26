@@ -2071,6 +2071,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 358908cdab1092b4ebc09cd006046ce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  GlobalVolume: {fileID: 0}
   _fireMat: {fileID: 2100000, guid: 0c526125f0cc8764eb0238c925868a30, type: 2}
   _smokeMat: {fileID: 2100000, guid: 9656cf119318b304e9a5a289d88ad97f, type: 2}
   _burnEffectSpeed: 20
@@ -2079,6 +2080,21 @@ MonoBehaviour:
   _dustMat: {fileID: 2100000, guid: 4090c650707163141b11e4b869b92ed6, type: 2}
   _dustIncreaseSpeed: 1
   _dustDecreaseSpeed: 0.5
+  _setValueOnAwake: 0
+  _vignetteValue: 0
+  _transitionSpeed: 0
+  OnVignetteTransitionInwardStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnVignetteTransitionInwardFinish:
+    m_PersistentCalls:
+      m_Calls: []
+  OnVignetteTransitionOutwardStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnVignetteTransitionOutwardFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &264080776
 Transform:
   m_ObjectHideFlags: 0
@@ -11044,10 +11060,10 @@ MonoBehaviour:
         z: 1.6345229
       Rotation:
         value:
-          x: -0.60741836
-          y: 0.52918893
+          x: -0.6074184
+          y: 0.5291889
           z: 0.5150225
-          w: 0.29283762
+          w: 0.29283756
     - Position:
         x: 1.6199989
         y: 8.29
@@ -11080,9 +11096,9 @@ MonoBehaviour:
         z: 2.0546927
       Rotation:
         value:
-          x: 0.16086161
-          y: -0.010032542
-          z: 0.27246636
+          x: 0.16086164
+          y: -0.010032543
+          z: 0.27246642
           w: 0.94856995
     - Position:
         x: 4.7599983
@@ -82470,6 +82486,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 559.6166
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -378.80695
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 559.6166
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -75.76139
+      objectReference: {fileID: 0}
     - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
       propertyPath: OnPause.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -82478,6 +82526,26 @@ PrefabInstance:
       propertyPath: OnResume.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 498226911}
+    - target: {fileID: 5441949040284718926, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 559.6166
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -227.28418
+      objectReference: {fileID: 0}
     - target: {fileID: 5885609183422575271, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
       propertyPath: m_Name
       value: Canvas - Screen Space
