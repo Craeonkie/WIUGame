@@ -694,6 +694,8 @@ public class J_BossBehaviour : Entity
                 _currentTimesHit = 0;
 
                 _animator.SetBool(ANIMATOR_EXHAUSTED_BOOL, true);
+                _animator.SetBool(ANIMATOR_IDLE_BOOL, false);
+                _animator.SetBool(ANIMATOR_PREPARING_BOOL, false);
 
                 // Enable colliders
                 for (int i = 0; i < 2; ++i)
@@ -1011,6 +1013,11 @@ public class J_BossBehaviour : Entity
 
     public void DisableAllColliders()
     {
+        if (_currentState != STATE.EXHAUSTED)
+        {
+            DisableAllColliders();
+        }
+
         for (int i = 0; i < _fistColliders.Length; ++i)
         {
             _fistColliders[i].enabled = false;

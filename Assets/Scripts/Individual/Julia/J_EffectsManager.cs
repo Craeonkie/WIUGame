@@ -2,8 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.UI;
 
 public class Effect
 {
@@ -34,7 +32,6 @@ public class J_EffectsManager : MonoBehaviour
     private VignetteVolume _vignetteVolume;
     [SerializeField] private bool _setValueOnAwake;
     [SerializeField] private float _vignetteValue;
-    //[SerializeField] private Material _vignetteMaterial;
     [SerializeField] private float _transitionSpeed;
     private Coroutine _vignetteCoroutine;
     public UnityEvent OnVignetteTransitionInwardStart;
@@ -89,6 +86,24 @@ public class J_EffectsManager : MonoBehaviour
             StopCoroutine(_burnCoroutine);
         }
         _burnCoroutine = StartCoroutine(DecreaseBurnEffect());
+    }
+
+    public void StartVignetteInwardEffect()
+    {
+        if (_vignetteCoroutine != null)
+        {
+            StopCoroutine(_vignetteCoroutine);
+        }
+        _vignetteCoroutine = StartCoroutine(IncreaseVignetteEffect());
+    }
+
+    public void StartVignetteOutwardEffect()
+    {
+        if (_vignetteCoroutine != null)
+        {
+            StopCoroutine(_vignetteCoroutine);
+        }
+        _vignetteCoroutine = StartCoroutine(DecreaseVignetteEffect());
     }
 
     private IEnumerator IncreaseDustStrength()
@@ -219,10 +234,10 @@ public class J_EffectsManager : MonoBehaviour
     {
         if (_dustMat != null)
             _dustMat.SetFloat("_DustStrength", 0f);
-        
+
         if (_fireMat != null)
             _fireMat.SetFloat("_VignettePower", _fireStartValue);
-        
+
         if (_smokeMat != null)
             _smokeMat.SetFloat("_DustStrength", 0f);
     }

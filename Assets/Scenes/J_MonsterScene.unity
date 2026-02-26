@@ -2088,7 +2088,19 @@ MonoBehaviour:
       m_Calls: []
   OnVignetteTransitionInwardFinish:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1001342786}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: J_MonsterScene
+          m_BoolArgument: 0
+        m_CallState: 2
   OnVignetteTransitionOutwardStart:
     m_PersistentCalls:
       m_Calls: []
@@ -8493,6 +8505,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 59290262}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1001342785
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1001342787}
+  - component: {fileID: 1001342786}
+  m_Layer: 0
+  m_Name: SceneLoader
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1001342786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001342785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db07c66831157d64d89f9fcd804a8ab5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneLoader
+  garbageManager: {fileID: 0}
+  sceneLoadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!4 &1001342787
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1001342785}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1004303757
 GameObject:
   m_ObjectHideFlags: 0
@@ -9359,7 +9419,6 @@ PrefabInstance:
     - target: {fileID: 8192719196485771312, guid: 62ff894c811b395419d9a2beb1f9f1b8, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.98337126
-      value: 0.98337126
       objectReference: {fileID: 0}
     - target: {fileID: 8192719196485771312, guid: 62ff894c811b395419d9a2beb1f9f1b8, type: 3}
       propertyPath: m_LocalRotation.x
@@ -9368,11 +9427,9 @@ PrefabInstance:
     - target: {fileID: 8192719196485771312, guid: 62ff894c811b395419d9a2beb1f9f1b8, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0.00035040398
-      value: 0.00035040398
       objectReference: {fileID: 0}
     - target: {fileID: 8192719196485771312, guid: 62ff894c811b395419d9a2beb1f9f1b8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.00006471167
       value: 0.00006471167
       objectReference: {fileID: 0}
     - target: {fileID: 8192719196485771312, guid: 62ff894c811b395419d9a2beb1f9f1b8, type: 3}
@@ -11090,10 +11147,10 @@ MonoBehaviour:
         z: 1.6345229
       Rotation:
         value:
-          x: -0.6074184
-          y: 0.5291889
+          x: -0.60741836
+          y: 0.52918893
           z: 0.5150225
-          w: 0.29283756
+          w: 0.29283762
     - Position:
         x: 1.6199989
         y: 8.29
@@ -11126,9 +11183,9 @@ MonoBehaviour:
         z: 2.0546927
       Rotation:
         value:
-          x: 0.16086164
-          y: -0.010032543
-          z: 0.27246642
+          x: 0.16086161
+          y: -0.010032542
+          z: 0.27246636
           w: 0.94856995
     - Position:
         x: 4.7599983
@@ -16821,7 +16878,6 @@ MonoBehaviour:
   m_TileSize: 256
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.33333334
-  m_VoxelSize: 0.33333334
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: ca859bb235e382f418e92fec093cf2f7, type: 2}
   m_BuildHeightMesh: 0
@@ -18671,6 +18727,34 @@ PrefabInstance:
     - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: interactablesLayer.m_Bits
       value: 16448
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: onDieEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: onDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: onDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 264080775}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: onDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: onDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartVignetteInwardEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: onDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: J_EffectsManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: onDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2062031690733264619, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: m_LocalPosition.x
@@ -89393,9 +89477,6 @@ MonoBehaviour:
   getHit:
     m_PersistentCalls:
       m_Calls: []
-  getHit:
-    m_PersistentCalls:
-      m_Calls: []
   _animator: {fileID: 7664654259268725859}
   _fistColliders:
   - {fileID: 6502877691789460826}
@@ -102556,6 +102637,7 @@ SceneRoots:
   - {fileID: 768006027}
   - {fileID: 1291594311}
   - {fileID: 694157682}
+  - {fileID: 1001342787}
   - {fileID: 1079913791}
   - {fileID: 1155195277}
   - {fileID: 866992877}

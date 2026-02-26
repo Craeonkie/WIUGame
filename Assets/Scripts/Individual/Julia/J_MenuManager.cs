@@ -9,23 +9,17 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
     [Header("Components")]
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private GameObject _pauseMenu;
-    //[SerializeField] private TextMeshProUGUI[] _qualityText;
     [SerializeField] private Slider _masterSlider;
     [SerializeField] private Slider _bgmSlider;
     [SerializeField] private Slider _sfxSlider;
-    //[SerializeField] private Slider _cameraSensSlider;
 
     public static System.Action OnEnterGame;
     public static System.Action OnNewGame;
     public static System.Action OnOpenSettings;
-    //public static System.Action<string, FontStyles> OnUpdateQuality;
+
     public UnityEvent OnPause;
     public UnityEvent OnResume;
     public UnityEvent OnExit;
-
-
-    // TEMPORARY CAMERA SENSITIVITY VALUE HERE
-    private float _cameraSens = 1f;
 
     public enum QUALITYMODE {
         LOW = 0,
