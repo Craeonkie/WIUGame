@@ -83,7 +83,6 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
         // Toggle pause menu
         if (_pauseAction.WasPressedThisDynamicUpdate())
         {
-            Debug.Log("kms");
             OnPause?.Invoke();
         }
     }
@@ -122,7 +121,7 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
         if (!_completedStages.ContainsKey(scene))
             return false;
 
-        Debug.Log("scene: " + scene + " is " + _completedStages[scene]);
+        //Debug.Log("scene: " + scene + " is " + _completedStages[scene]);
         return _completedStages[scene];
     }
 

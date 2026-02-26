@@ -83,7 +83,7 @@ public class J_InteractiveHoverButton : MonoBehaviour, IPointerEnterHandler, IPo
             _text.GetComponent<TextMeshProUGUI>().color = _originalColour;
         }
 
-        J_MenuManager.OnUpdateQuality += UpdateOriginalTextFont;
+        //J_MenuManager.OnUpdateQuality += UpdateOriginalTextFont;
     }
 
     private void OnDisable()
@@ -99,7 +99,7 @@ public class J_InteractiveHoverButton : MonoBehaviour, IPointerEnterHandler, IPo
             _text.GetComponent<TextMeshProUGUI>().fontStyle = _originalFontStyle;
         }
 
-        J_MenuManager.OnUpdateQuality -= UpdateOriginalTextFont;
+        //J_MenuManager.OnUpdateQuality -= UpdateOriginalTextFont;
     }
 
     private void Update()

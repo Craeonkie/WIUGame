@@ -1,7 +1,7 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class J_MenuManager : MonoBehaviour, J_IDataPersistence
@@ -9,16 +9,16 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
     [Header("Components")]
     [SerializeField] private AudioManager _audioManager;
     [SerializeField] private GameObject _pauseMenu;
-    [SerializeField] private TextMeshProUGUI[] _qualityText;
+    //[SerializeField] private TextMeshProUGUI[] _qualityText;
     [SerializeField] private Slider _masterSlider;
     [SerializeField] private Slider _bgmSlider;
     [SerializeField] private Slider _sfxSlider;
-    [SerializeField] private Slider _cameraSensSlider;
+    //[SerializeField] private Slider _cameraSensSlider;
 
     public static System.Action OnEnterGame;
     public static System.Action OnNewGame;
     public static System.Action OnOpenSettings;
-    public static System.Action<string, FontStyles> OnUpdateQuality;
+    //public static System.Action<string, FontStyles> OnUpdateQuality;
     public UnityEvent OnPause;
     public UnityEvent OnResume;
     public UnityEvent OnExit;
@@ -61,7 +61,7 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
         Debug.Log("Enter Game was called!"); // comment when done
         
         // Load the game
-        J_DataPersistenceManager.instance.LoadGame();
+        //J_DataPersistenceManager.instance.LoadGame();
         SceneLoader.Instance.LoadScene(J_GameManager.REST_SCENE);
     }
 
@@ -87,30 +87,32 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
         OnOpenSettings?.Invoke();
     }
 
-    public void UpdateQualitySettings(TextMeshProUGUI text)
-    {
-        // this is a REALLY lazy way of doing this but i dont know if update quality will be used elsewhere so
-        // also this is probably really really inefficient
-        //OnUpdateQuality?.Invoke();
+    //public void UpdateQualitySettings(TextMeshProUGUI text)
+    //{
+    //    // this is a REALLY lazy way of doing this but i dont know if update quality will be used elsewhere so
+    //    // also this is probably really really inefficient
+    //    //OnUpdateQuality?.Invoke();
 
-        for (int i = 0; i < _qualityText.Length; i++)
-        {
-            if (_qualityText[i].text == text.text)
-            {
-                _qualityText[i].fontStyle = FontStyles.Underline | FontStyles.Bold;
-                _qualityMode = (QUALITYMODE)i;
-            }
-            else
-            {
-                _qualityText[i].fontStyle = FontStyles.Bold;
-            }
+    //    for (int i = 0; i < _qualityText.Length; i++)
+    //    {
+    //        if (_qualityText[i].text == text.text)
+    //        {
+    //            _qualityText[i].fontStyle = FontStyles.Underline | FontStyles.Bold;
+    //            _qualityMode = (QUALITYMODE)i;
+    //        }
+    //        else
+    //        {
+    //            _qualityText[i].fontStyle = FontStyles.Bold;
+    //        }
 
-            OnUpdateQuality?.Invoke(_qualityText[i].text, _qualityText[i].fontStyle);
-        }
-    }
+    //        OnUpdateQuality?.Invoke(_qualityText[i].text, _qualityText[i].fontStyle);
+    //    }
+    //}
 
     public void UpdateAudioSettings()
     {
+        Debug.Log("scene manager: " + SceneManager.GetActiveScene() + " updated");
+
         _audioManager.masterVolume = _masterSlider.value;
         _audioManager.bgmVolume = _bgmSlider.value;
         _audioManager.sfxVolume = _sfxSlider.value;
@@ -125,12 +127,12 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
         _sfxSlider.SetValueWithoutNotify(_audioManager.sfxVolume);
     }
 
-    public void UpdateCameraSensitivitySlider(float cameraSens) => _cameraSensSlider.SetValueWithoutNotify(cameraSens);
+    //public void UpdateCameraSensitivitySlider(float cameraSens) => _cameraSensSlider.SetValueWithoutNotify(cameraSens);
 
-    public void UpdateCameraSensitivity()
-    {
-        _cameraSens = _cameraSensSlider.value;
-    }
+    //public void UpdateCameraSensitivity()
+    //{
+    //    _cameraSens = _cameraSensSlider.value;
+    //}
 
     public void PauseGame()
     {
@@ -170,17 +172,19 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
 
     public void LoadData(J_GameData data)
     {
+        Debug.Log("Quit Game was called!"); // comment when done
+
         _audioManager.masterVolume = data.masterVolume;
         _audioManager.bgmVolume = data.bgmVolume;
         _audioManager.sfxVolume = data.sfxVolume;
 
         UpdateAudioSliders();
 
-        _cameraSens = data.cameraSensitivity;
-        UpdateCameraSensitivitySlider(data.cameraSensitivity);
+        //_cameraSens = data.cameraSensitivity;
+        //UpdateCameraSensitivitySlider(data.cameraSensitivity);
 
-        _qualityMode = (QUALITYMODE)data.qualityMode;
-        UpdateQualitySettings(_qualityText[(int)_qualityMode]);
+        //_qualityMode = (QUALITYMODE)data.qualityMode;
+        //UpdateQualitySettings(_qualityText[(int)_qualityMode]);
     }
 
     public void SaveData(ref J_GameData data)
@@ -189,7 +193,7 @@ public class J_MenuManager : MonoBehaviour, J_IDataPersistence
         data.bgmVolume = _audioManager.bgmVolume;
         data.sfxVolume = _audioManager.sfxVolume;
 
-        data.cameraSensitivity = _cameraSens;
-        data.qualityMode = (J_GameData.QUALITYMODE)_qualityMode;
+        //data.cameraSensitivity = _cameraSens;
+        //data.qualityMode = (J_GameData.QUALITYMODE)_qualityMode;
     }
 }

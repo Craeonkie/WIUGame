@@ -148,7 +148,7 @@ public class J_BugBehaviour : Entity
             case STATE.IDLE:
 
                 _currentStateTimer = _idleDuration;
-                Debug.Log("idle set duration to: " + _currentStateTimer);
+                //Debug.Log("idle set duration to: " + _currentStateTimer);
 
                 break;
             case STATE.CHASE:
@@ -162,7 +162,7 @@ public class J_BugBehaviour : Entity
                 break;
             case STATE.ATTACK:
 
-                Debug.Log("Bug attacked!");
+                //Debug.Log("Bug attacked!");
 
                 // Stop chasing, call take damage on collider
                 _navMeshAgent.isStopped = true;
@@ -176,7 +176,7 @@ public class J_BugBehaviour : Entity
                     {
                         Entity player = GameObject.FindWithTag("PlayerTag").GetComponent<Entity>();
                         player.TakeDamage(_damage, 0.0f);
-                        Debug.Log(player.name + " took damage!");
+                        //Debug.Log(player.name + " took damage!");
                         break;
                     }
                 }
@@ -235,7 +235,7 @@ public class J_BugBehaviour : Entity
 
                 if (_navMeshAgent.isOnOffMeshLink && _onNavMeshLink == false)
                 {
-                    Debug.Log("starting nav mesh link movement");
+                    //Debug.Log("starting nav mesh link movement");
                     StartNavMeshLinkMovement();
                 }
 
@@ -314,7 +314,7 @@ public class J_BugBehaviour : Entity
 
         if (playerCapsule == null)
         {
-            Debug.Log("Player doesn't have a capsule collider");
+            //Debug.Log("Player doesn't have a capsule collider");
             return;
         }
 

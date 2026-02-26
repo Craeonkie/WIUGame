@@ -16,6 +16,8 @@ public class J_BossBehaviour : Entity
         public float phaseTimer;
         [Range(0f, 1f)] public float healthThreshold;
         public float durationBeforeSlamDown;
+        public float bugSpawningDelay;
+        public int bugSpawningLimit;
         public UnityEvent OnPhaseTransition;
     }
 
@@ -87,7 +89,6 @@ public class J_BossBehaviour : Entity
     [SerializeField] private float _shockwaveDamage;
     [SerializeField] private float _maxShockwaveDistance; // Applied to shockwave, maximum distance before shockwave dies down
     [SerializeField] private float _shockwaveIntensity; // Applied to shockwave, how intense the shockwave is
-    [SerializeField] private float _shockwaveBandWidth;
     [SerializeField] private float _shockwaveTravelSpeed; // Applied to shockwave, how fast the shockwave travels
     [SerializeField] private float _shockwaveImpulseForce;
 
@@ -340,7 +341,7 @@ public class J_BossBehaviour : Entity
             Debug.Log("is invincible");
 
             // Increase number of attacks ONLY for phase 2 AND not hit already
-            if (_currentPhaseIndex == 1 && _currentState != STATE.HIT)
+            if (_currentPhaseIndex >= 1 && _currentState != STATE.HIT)
             {
                 _currentTimesHit++;
 
@@ -434,14 +435,10 @@ public class J_BossBehaviour : Entity
         Debug.Log($"Boss entering phase: {phase.name}");
         _phaseText.text = phase.name.ToString();
 
-        if (phase.hasDuration)
-            _currentPhaseTimer = phase.phaseTimer;
-        else
-            _currentPhaseTimer = 0f;
+        if (phase.hasDuration) _currentPhaseTimer = phase.phaseTimer;
+        else _currentPhaseTimer = 0f;
 
         phase.OnPhaseTransition?.Invoke();
-
-        //InvokePhaseEnterEvent(phaseIndex);
     }
 
     public void InvokePhaseEnterEvent(int index)
@@ -451,25 +448,18 @@ public class J_BossBehaviour : Entity
         // Phase 2
         if (index == 1)
         {
-            J_SpawnManager.Instance.UpdateItemLimit("Bug", 8);
-            J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", 8);
-            J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
+            J_SpawnManager.Instance.UpdateItemLimit("Bug", _phases[index].bugSpawningLimit);
+            J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", _phases[index].bugSpawningLimit);
+            J_SpawnManager.Instance.SpawnContinuously("Bug", _phases[index].bugSpawningDelay);
         }
         else if (index == 2)
         {
-            J_SpawnManager.Instance.UpdateItemLimit("Bug", 15);
-            J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", 15);
-            J_SpawnManager.Instance.SpawnContinuously("Bug", 10f);
+            J_SpawnManager.Instance.UpdateItemLimit("Bug", _phases[index].bugSpawningLimit);
+            J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", _phases[index].bugSpawningLimit);
+            J_SpawnManager.Instance.SpawnContinuously("Bug", _phases[index].bugSpawningDelay);
             J_CarryItem.Enable();
         }
     }
-
-    private void Restart()
-    {
-        // TODO: Restart stage
-    }
-
-
 
 
     private void CheckStateTransition()
@@ -499,7 +489,7 @@ public class J_BossBehaviour : Entity
                         if (_currentPillow != null)
                             _currentStealPillowTimer += Time.deltaTime;
 
-                        // Go straight to ripping pillows
+                        // Rip pillows
                         if (_currentStealPillowTimer >= _durationBeforeStealPillow)
                         {
                             OnStealPillow?.Invoke();
@@ -510,15 +500,23 @@ public class J_BossBehaviour : Entity
                         }
                         else
                         {
-                            // Random chance of doing slam attack, throwing pillow or ripping pillow
                             List<STATE> options = new List<STATE>();
 
-                            if (_currentNumberOfPillowsInScene < _maxNumberOfPillowsInScene) options.Add(STATE.THROWINGPILLOWS);
-                            if (_currentRipPillowTimer >= _durationBeforeRipPillow) options.Add(STATE.RIPPINGPILLOWS);
+                            // Add throwing pillows multiple times to increase probability
+                            if (_currentNumberOfPillowsInScene < _maxNumberOfPillowsInScene)
+                            {
+                                options.Add(STATE.THROWINGPILLOWS);
+                                options.Add(STATE.THROWINGPILLOWS);
+                            }
+
+                            if (_currentRipPillowTimer >= _durationBeforeRipPillow)
+                            {
+                                options.Add(STATE.RIPPINGPILLOWS);
+                            }
+
                             options.Add(STATE.PREPARING);
 
                             int chosenOption = Random.Range(0, options.Count);
-
                             EnterState(options[chosenOption]);
                         }
                     }
@@ -543,6 +541,8 @@ public class J_BossBehaviour : Entity
                 // Check the number of times hit
                 if (_currentTimesHit >= _hitsBeforeExhausted)
                     EnterState(STATE.EXHAUSTED);
+                else
+                    EnterState(STATE.IDLE);
 
                 break;
             case STATE.CONFUSED:
@@ -580,7 +580,7 @@ public class J_BossBehaviour : Entity
 
     private void EnterState(STATE nextState)
     {
-        Debug.Log("Entering state");
+        Debug.Log("Entering state: " + nextState);
 
         switch (nextState)
         {
@@ -588,9 +588,13 @@ public class J_BossBehaviour : Entity
 
                 // Set the duration
                 _currentStateTimer = _attackCooldown;
-                _animator.SetBool(ANIMATOR_IDLE_BOOL, true);
+                for (int i = 0; i < _animator.layerCount; i++)
+                {
+                    _animator.SetBool(ANIMATOR_IDLE_BOOL, true);
+                }
                 _animator.SetBool(ANIMATOR_EXHAUSTED_BOOL, false);
                 _animator.SetBool(ANIMATOR_CONFUSED_BOOL, false);
+                _animator.SetBool(ANIMATOR_PREPARING_BOOL, false);
 
                 // Disable colliders
                 for (int i = 0; i < _fistColliders.Length; ++i)
@@ -600,6 +604,8 @@ public class J_BossBehaviour : Entity
                 }
 
                 isInvincible = true;
+
+                _canChangeState = true;
 
                 break;
             case STATE.PREPARING:
@@ -968,6 +974,14 @@ public class J_BossBehaviour : Entity
     {
         _canChangeState = true;
         DisableAllColliders();
+
+        if (_currentState == STATE.IDLE)
+        {
+            _animator.SetBool(ANIMATOR_IDLE_BOOL, true);
+            _animator.SetBool(ANIMATOR_PREPARING_BOOL, false);
+            _animator.SetBool(ANIMATOR_EXHAUSTED_BOOL, false);
+            _animator.SetBool(ANIMATOR_CONFUSED_BOOL, false);
+        }
     }
 
     public void EnableCollider(int index)
@@ -986,6 +1000,30 @@ public class J_BossBehaviour : Entity
         for (int i = 0; i < _fistColliders.Length; ++i)
         {
             _fistColliders[i].enabled = false;
+            _hasActivatedShockwave[i] = false;
+        }
+
+        ResetShockwaveValues();
+    }
+
+    private void ResetShockwaveValues()
+    {
+        for (int i = 0; i < _shockwavePlanes.Length; i++)
+        {
+            if (_shockwavePlanes[i] != null)
+            {
+                MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+                Renderer planeR = _shockwavePlanes[i].GetComponent<Renderer>();
+
+                if (planeR != null)
+                {
+                    mpb.SetVector("_RadiusCenter", Vector3.zero);
+                    mpb.SetFloat("_Intensity", 0f);
+                    mpb.SetFloat("_Offset", 0f);
+                    planeR.SetPropertyBlock(mpb);
+                }
+            }
+
             _hasActivatedShockwave[i] = false;
         }
     }
