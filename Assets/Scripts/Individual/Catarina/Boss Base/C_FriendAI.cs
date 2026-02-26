@@ -25,7 +25,7 @@ public class C_FriendAI : MonoBehaviour
     [SerializeField] private float _AtkCD = 1f;
     [SerializeField] private float _ATkRange = 10f;
     [SerializeField] private string _AtkAnimTriggerName;
-
+    private GameObject _weapon;
     public static event System.Action onAtkAction;
 
     private bool _IsOntAtkCD;
@@ -73,6 +73,7 @@ public class C_FriendAI : MonoBehaviour
 
         C_FriendBoss.TransitionPhase1Action += Disable;
     }
+
     private void OnDisable()
     {
 
@@ -306,7 +307,12 @@ public class C_FriendAI : MonoBehaviour
         if (pickUp == null) return;
 
         _Agent.SetDestination(transform.position);
-        if (onPickUPAction != null) onPickUPAction.Invoke(pickUp);
+
+        _weapon = pickUp;
+        if (onPickUPAction != null)
+        {
+            onPickUPAction.Invoke(pickUp);
+        }
         _HaveWeapon = true;
         _FindingWeapon = false;
     }

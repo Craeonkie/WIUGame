@@ -93,12 +93,15 @@ public class C_PencilAbility : C_BossAbility
         _activeObjects.Clear();
     }
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();    
         GameSetUp();
     }
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
+
         GameTearDown();
         _CurrentRoundCount = 0;
     }

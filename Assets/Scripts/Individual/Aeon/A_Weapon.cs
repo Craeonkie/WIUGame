@@ -29,6 +29,7 @@ public abstract class Weapon : Item
 
     public void BeginAttack(float attackDamage)
     {
+        Debug.Log("came into aeon begin atk");
         isAttacking = true;
         canLoseDurabilityThisAttack = true;
         currentAttackDamage = attackDamage;
