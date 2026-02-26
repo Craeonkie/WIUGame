@@ -137,6 +137,9 @@ public class C_Airplane : C_BossAbility
         }
         if (FindTarget != null)
         {
+            // Play audio
+            AudioLibrary.Instance.PlaySoundAtPointCustom("Airplane", currentAirplane.transform.position);
+
             FindTarget?.Invoke(_player.transform);
         }
         _followThroughTriggered = false;
