@@ -123,7 +123,7 @@ public class ThrowableItem : Item
         }
 
         // Position and add force to the item
-        if (!(PlayerController)_entityUsingItem)
+        if (!(PlayerController)_entityUsingItem || ((PlayerController)_entityUsingItem).IsTopDownCameraInUse())
         {
             transform.position += _entityUsingItem.transform.right * throwOffsetForward.x + _entityUsingItem.transform.up * throwOffsetForward.y +_entityUsingItem.transform.forward * throwOffsetForward.z;
             rb.linearVelocity = Vector3.zero;

@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Net;
 using UnityEngine;
 
 public class C_FriendBoss : Entity
@@ -8,6 +10,12 @@ public class C_FriendBoss : Entity
     [SerializeField] private GameObject _RedCupParent;
     [SerializeField] private Transform _PlayerRef;
     Inventory _AIInventory;
+
+    [Header("Hit effect")]
+    [SerializeField] private GameObject[] _hitShock;
+    [SerializeField] private GameObject _dizzy;
+    private Coroutine _HitCoroutine;
+
 
     [Header("Phase 1")]
     [SerializeField] private float _RotateSpeed = 5f;
@@ -49,12 +57,17 @@ public class C_FriendBoss : Entity
         if (!isInvincible && !isDodging)
         {
             gettingAtkAction?.Invoke();
+            if (_HitCoroutine != null)
+            {
+                StopCoroutine(_HitCoroutine);
+            }
+            _HitCoroutine = StartCoroutine(HitEffect());
             _currentHP -= damageTaken;
             _invincibilityCooldown += invincibilityLength;
 
             if (_currentHP <= 0)
             {
-                Die();
+                CheckPhase();
             }
             else
             {
@@ -66,6 +79,50 @@ public class C_FriendBoss : Entity
         }
     }
 
+    private IEnumerator HitEffect()
+    {
+        foreach (GameObject hs in _hitShock)
+        {
+            hs.SetActive(true);
+
+            ParticleSystem[] shockSystems = hs.GetComponentsInChildren<ParticleSystem>(true);
+
+            foreach (ParticleSystem ps in shockSystems)
+            {
+                if (ps == null) continue;
+
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                ps.Play(true);
+            }
+        }
+        _dizzy.SetActive(true);
+
+        ParticleSystem[] dizzySystems = _dizzy.GetComponentsInChildren<ParticleSystem>(true);
+
+        foreach (ParticleSystem ps in dizzySystems)
+        {
+            if (ps == null) continue;
+
+            var emission = ps.emission;
+            emission.enabled = true;
+
+            if (!ps.isPlaying) ps.Play(true);
+        }
+
+        yield return new WaitForSeconds(2.5f);
+
+        foreach (GameObject hs in _hitShock)
+        {
+            hs.SetActive(false);
+        }
+        foreach (ParticleSystem ps in dizzySystems)
+        {
+            if (ps == null) continue;
+
+            var emission = ps.emission;
+            emission.enabled = false;
+        }
+    }
 
     public void CheckPhase()
     {
@@ -96,7 +153,7 @@ public class C_FriendBoss : Entity
             CheckPhase();
             if (Input.GetKeyDown(KeyCode.F))
             {
-                TakeDamage(5, 0.0f);
+                TakeDamage(99, 0.0f);
             }
         }
         else
