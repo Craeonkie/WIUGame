@@ -124,6 +124,10 @@ public class J_CarryItem : MonoBehaviour
             pillow.transform.localRotation = Quaternion.identity;
 
             OnCarry?.Invoke(_currentPillow);
+
+            // Get reference to the player (hard ref gg)
+            PlayerController player = FindFirstObjectByType<PlayerController>();
+            player.TogglePlayerAbilityToPickUpitems(false);
         }
         else
         {
@@ -143,6 +147,10 @@ public class J_CarryItem : MonoBehaviour
         _currentPillow.GetDropped();
         _currentPillow = null;
         OnCarry?.Invoke(_currentPillow);
+
+        // Get reference to the player (hard ref gg)
+        PlayerController player = FindFirstObjectByType<PlayerController>();
+        player.TogglePlayerAbilityToPickUpitems(true);
     }
 
     private void StackPillow(J_Pillow pillowBelow)
@@ -151,6 +159,10 @@ public class J_CarryItem : MonoBehaviour
         _currentPillow.GetStacked();
         _currentPillow = null;
         OnCarry?.Invoke(_currentPillow);
+
+        // Get reference to the player (hard ref gg)
+        PlayerController player = FindFirstObjectByType<PlayerController>();
+        player.TogglePlayerAbilityToPickUpitems(true);
     }
 
     private void ForceDropPillow()
@@ -165,6 +177,10 @@ public class J_CarryItem : MonoBehaviour
         _currentPillow.GetDropped();
         J_SpawnManager.Instance.Release("Pillow", _currentPillow.gameObject);
         _currentPillow = null;
+
+        // Get reference to the player (hard ref gg)
+        PlayerController player = FindFirstObjectByType<PlayerController>();
+        player.TogglePlayerAbilityToPickUpitems(true);
     }
 
     private void OnDrawGizmos()

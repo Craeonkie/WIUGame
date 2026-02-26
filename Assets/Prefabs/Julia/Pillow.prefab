@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 8385511448403822457}
   - component: {fileID: 3986509749745998818}
   - component: {fileID: 4751061580061523709}
+  - component: {fileID: 6734062947059771068}
   m_Layer: 14
   m_Name: Pillow
   m_TagString: Interactable
@@ -156,7 +157,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::J_Pillow
   _stackedPillowPosition: {fileID: 4859651799252718295}
   _rb: {fileID: 3986509749745998818}
-  _collider: {fileID: 4751061580061523709}
+  _boundaryCollider: {fileID: 4751061580061523709}
+  _bounceCollider: {fileID: 6734062947059771068}
+  _bounceForce: 5
 --- !u!54 &3986509749745998818
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -205,3 +208,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.010514183, y: 0.011756809, z: 0.011902378}
   m_Center: {x: -0.0000000023283064, y: 0.005878143, z: 0.000017181736}
+--- !u!65 &6734062947059771068
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7295421025471254004}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0075, y: 0.005, z: 0.0075}
+  m_Center: {x: -0.0000000023283064, y: 0.0125, z: 0.000017181736}

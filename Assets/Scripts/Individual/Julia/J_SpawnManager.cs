@@ -50,6 +50,12 @@ public class J_SpawnManager : MonoBehaviour
 
             }, prefab =>
             {
+                if (prefab == null)
+                {
+                    Debug.LogWarning($"Trying to activate destroyed object in pool: {item.itemName}");
+                    return;
+                }
+
                 prefab.gameObject.SetActive(true); //call when need an obj and there one available in the pool
                 item.spawnedAmount++;
 

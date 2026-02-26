@@ -70,7 +70,7 @@ public class J_DataPersistenceManager : MonoBehaviour
             dataPersistenceObj.LoadData(_gameData);
         }
 
-        Debug.Log("Loaded Quality Mode: " + _gameData.qualityMode.ToString());
+        //Debug.Log("Loaded Quality Mode: " + _gameData.qualityMode.ToString());
     }
 
     public void SaveGame()
@@ -81,7 +81,7 @@ public class J_DataPersistenceManager : MonoBehaviour
             dataPersistenceObj.SaveData(ref _gameData);
         }
 
-        Debug.Log("Saved Quality Mode: " + _gameData.qualityMode.ToString());
+        //Debug.Log("Saved Quality Mode: " + _gameData.qualityMode.ToString());
 
         // Save the data to a file using the data handler
         _dataHandler.Save(_gameData);

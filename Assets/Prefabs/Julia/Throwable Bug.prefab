@@ -217,6 +217,7 @@ MonoBehaviour:
   _resetAnimationChain: 0
   _chainingAnimation: 0
   _currentAnimationChain: 0
+  isUsedByObjectPool: 1
   _destroyUponDrop: 0
   _maxTimeBeforeDestroyed: 0
   _expiresAfterDropped: 0
@@ -231,8 +232,7 @@ MonoBehaviour:
   isAiming: 0
   isThrowing: 0
   isInFlight: 0
-  isUsedByObjectPool: 1
-  _projection: {fileID: 0}
+  _OneTimeUse: 0
 --- !u!114 &1373428771716635080
 MonoBehaviour:
   m_ObjectHideFlags: 0
