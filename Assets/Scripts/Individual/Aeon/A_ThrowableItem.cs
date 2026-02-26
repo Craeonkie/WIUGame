@@ -7,7 +7,6 @@ public class ThrowableItem : Item
     [SerializeField] protected float throwPowerUp = 10.0f;
     [SerializeField] protected Vector3 throwOffsetForward = new Vector3(0.0f, 0.0f, 1.0f);
     [SerializeField] protected bool breakOnHit = false;
-    [SerializeField] protected bool canBePickedUpAgain = false;
     [SerializeField] protected float lifeTime = 10.0f;
     [SerializeField] protected float invincibilityTimeApplied = 0.0f;
     protected float lifeTimeLeft;
@@ -17,6 +16,9 @@ public class ThrowableItem : Item
     [SerializeField] protected bool isThrowing = false;
     [SerializeField] protected bool isInFlight = false;
     AnimatorStateInfo animatorStateInfo;
+
+    [Header("Simulate Trajectory")]
+    [SerializeField] private C_TrajectorySimulation _projection;
 
     // Update is called once per frame
     protected new void Update()
@@ -147,10 +149,7 @@ public class ThrowableItem : Item
         SetEntity(null);
 
         // Change tag accordingly
-        if (!canBePickedUpAgain)
-        {
-            tag = "Untagged";
-        }
+        tag = "Untagged";
     }
 
     protected virtual void OnCollisionEnter(Collision other)
