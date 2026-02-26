@@ -662,11 +662,6 @@ Transform:
   - {fileID: 2717597845163739083}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &126582991 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3346624470140235188, guid: 2fcb2c0c32481ff4eb34ac6072781bab, type: 3}
-  m_PrefabInstance: {fileID: 8809818754788903326}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &147250579
 GameObject:
   m_ObjectHideFlags: 0
@@ -1421,11 +1416,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2034620466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &183299833 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3018376459619453381, guid: 1ab6cbfede9fced4699760fc821d6403, type: 3}
-  m_PrefabInstance: {fileID: 1801165080732226530}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &213221575
 GameObject:
   m_ObjectHideFlags: 0
@@ -6574,7 +6564,7 @@ MonoBehaviour:
   kidsRoomSceneCompleted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1454642178}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -7147,7 +7137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb8c4604cabd2e349b908e1a51a3dd7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorToAnotherScene
-  nextSceneName: C_FriendScene
+  nextSceneName: C_FriendBossScene
   doorGameobject: {fileID: 0}
   _dialogueMenu: {fileID: 1887760281}
   _dialogue: {fileID: 11400000, guid: eead1bac77235424e9a5660549695117, type: 2}
@@ -9081,7 +9071,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 49790e6f05b30aa41b7dd718808c6671, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -11253,11 +11243,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &1454642178 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3346624470140235188, guid: 2fcb2c0c32481ff4eb34ac6072781bab, type: 3}
-  m_PrefabInstance: {fileID: 8809818754788903326}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1454728780
 GameObject:
   m_ObjectHideFlags: 0
@@ -46380,6 +46365,8 @@ MonoBehaviour:
   mouseMovements:
   - {fileID: 805628464}
   - {fileID: 7920285745066301901}
+  _currentlyHighlightedObject: {fileID: 0}
+  _interactIcon: {fileID: 0}
 --- !u!114 &8607788635305573556
 MonoBehaviour:
   m_ObjectHideFlags: 0

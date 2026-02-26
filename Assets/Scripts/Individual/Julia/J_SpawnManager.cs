@@ -139,6 +139,12 @@ public class J_SpawnManager : MonoBehaviour
     {
         SpawnItem spawnItem = GetSpawnItemBasedOnName(itemName);
 
+        if (spawnItem == null) 
+        { 
+            Debug.LogWarning($"SpawnOnce called with invalid itemName={itemName}");
+            return;
+        }
+
         if (spawnItem.spawnPrefab == null)
             return;
 

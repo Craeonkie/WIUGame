@@ -40,6 +40,7 @@ public class A_RestSceneManager : MonoBehaviour
         // Check if kids room is completed
         if (J_GameManager.Instance.IsStageCompleted(_kidRoomDoor.ReturnNextSceneName()))
         {
+            Debug.Log("Kid's room completed");
             _kidRoomDoor.ToggleSceneEnterable(false, true);
             kidsRoomSceneCompleted?.Invoke();
             _player.transform.position = _kidsDoorSpawn.position;
@@ -48,6 +49,7 @@ public class A_RestSceneManager : MonoBehaviour
             // Check if kitchen is completed
             if (J_GameManager.Instance.IsStageCompleted(_kitchenDoor.ReturnNextSceneName()))
             {
+                Debug.Log("Kitchen completed");
                 _kitchenDoor.ToggleSceneEnterable(false, true);
                 kitchenSceneCompleted?.Invoke();
                 _player.transform.position = _kitchenSpawn.position;
@@ -56,14 +58,15 @@ public class A_RestSceneManager : MonoBehaviour
                 // Check if parents room is completed (Shouldn't run)
                 if (J_GameManager.Instance.IsStageCompleted(_parentsRoomDoor.ReturnNextSceneName()))
                 {
-                    _parentsRoomDoor.ToggleSceneEnterable(true, false);
+                    Debug.Log("Parents room completed");
+                    _parentsRoomDoor.ToggleSceneEnterable(false, false);
                     parentsRoomSceneCompleted?.Invoke();
                     _player.transform.position = _parentsDoorSpawn.position;
                     _player.transform.rotation = _parentsDoorSpawn.rotation;
                 }
                 else
                 {
-                    _parentsRoomDoor.ToggleSceneEnterable(false, true);
+                    _parentsRoomDoor.ToggleSceneEnterable(true, false);
                 }
             }
             else

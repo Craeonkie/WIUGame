@@ -11140,7 +11140,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 0
     animationClip: {fileID: -203655887218126122, guid: 1ff090c11757d3544b9fa499f87f22b2, type: 3}
-    audioClip: {fileID: 0}
+    audioClips: []
   secondary: []
   special: []
   hasDurability: 0
@@ -21611,6 +21611,94 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 559.6166
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -378.80695
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 559.6166
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -75.76139
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: OnPause.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: OnResume.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: OnPause.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1822288558}
+    - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: OnResume.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1822288558}
+    - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: OnPause.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetTimeScale
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: OnResume.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetTimeScale
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: OnPause.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SceneLoader, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: OnResume.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SceneLoader, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: OnResume.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_FloatArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5441949040284718926, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 559.6166
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -227.28418
+      objectReference: {fileID: 0}
     - target: {fileID: 5885609183422575271, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
       propertyPath: m_Name
       value: Canvas - Screen Space
@@ -22620,7 +22708,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 0
     animationClip: {fileID: -203655887218126122, guid: 1ff090c11757d3544b9fa499f87f22b2, type: 3}
-    audioClip: {fileID: 0}
+    audioClips: []
   secondary: []
   special: []
   hasDurability: 0
@@ -28507,7 +28595,7 @@ MonoBehaviour:
     hasSpawnLimit: 1
     spawnOnAwake: 1
     loopSpawning: 1
-    spawnLimit: 1
+    spawnLimit: 2
   - itemName: Toy Hammer Weapon
     spawnPrefab: {fileID: 4228696927689706119, guid: 9cf80ae0ebe6138449a432369fc08482, type: 3}
     spawnedAmount: 0
@@ -28515,7 +28603,7 @@ MonoBehaviour:
     hasSpawnLimit: 1
     spawnOnAwake: 1
     loopSpawning: 1
-    spawnLimit: 1
+    spawnLimit: 2
   - itemName: Shield
     spawnPrefab: {fileID: 6768178402911962384, guid: 2cddca2ef0b8b794196ca272c7c6edf0, type: 3}
     spawnedAmount: 0
@@ -28523,7 +28611,7 @@ MonoBehaviour:
     hasSpawnLimit: 1
     spawnOnAwake: 1
     loopSpawning: 1
-    spawnLimit: 1
+    spawnLimit: 2
 --- !u!4 &619094651
 Transform:
   m_ObjectHideFlags: 0
@@ -54260,7 +54348,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: edcbb683d12ff584f978f33577507675, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -57665,7 +57753,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 0
     animationClip: {fileID: -203655887218126122, guid: 1ff090c11757d3544b9fa499f87f22b2, type: 3}
-    audioClip: {fileID: 0}
+    audioClips: []
   secondary: []
   special: []
   hasDurability: 0
@@ -58451,7 +58539,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 0
     animationClip: {fileID: -203655887218126122, guid: 1ff090c11757d3544b9fa499f87f22b2, type: 3}
-    audioClip: {fileID: 0}
+    audioClips: []
   secondary: []
   special: []
   hasDurability: 0
