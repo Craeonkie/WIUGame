@@ -129,6 +129,8 @@ public class C_FriendBoss : Entity
         if (CurrentPhase == 0)
         {
             var currentPer = _currentHP / _maxHP * 100;
+            OnHealthChanged?.Invoke(_currentHP, _maxHP);
+
             if (currentPer < Phase1HealthTrigger)
             {
                 CurrentPhase = 1;

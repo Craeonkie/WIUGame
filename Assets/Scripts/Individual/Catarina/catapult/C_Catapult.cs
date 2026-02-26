@@ -18,7 +18,6 @@ public class C_Catapult : MonoBehaviour
     [Header("Distance Movement")]
     [SerializeField] private GameObject _Catapult;
     [SerializeField] private float _MovingSpeed;
-    private bool _CanMove= true;
     private bool _leftSide;
 
     [Header("Angle Movement")]

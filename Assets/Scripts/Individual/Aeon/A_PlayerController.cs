@@ -731,6 +731,7 @@ public class PlayerController : Entity
     {
         _animator.SetTrigger("Die");
         _animator.SetLayerWeight(3, 1);
+        onDieEvent?.Invoke();
         Stun(1000);
     }
 

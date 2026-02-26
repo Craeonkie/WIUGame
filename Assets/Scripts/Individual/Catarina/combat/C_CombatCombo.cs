@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class C_CombatCombo : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class C_CombatCombo : MonoBehaviour
     int _ComboCounter;
     float _LastAtkTime;
 
+    public GameObject _weapon;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,8 +34,12 @@ public class C_CombatCombo : MonoBehaviour
         C_FriendAI.onAtkAction += Attack;
 
         C_FriendBoss.TransitionPhase1Action += Disable;
+        C_FriendAI.onPickUPAction += changeWeapon;
     }
-
+    public void changeWeapon(GameObject _w)
+    {
+        _weapon = _w;
+    }
     private void OnDisable()
     {
         C_FriendAI.onAtkAction -= Attack;
@@ -68,8 +76,47 @@ public class C_CombatCombo : MonoBehaviour
         _ComboCounter = 0;
         _LastComboEnd = Time.time;
         _EndComboQueue = false;
+        FinishAtk();
+
+    }
+    private void FinishAtk()
+    {
+        Debug.Log("Finish atk:" + _weapon);
+        if (_weapon != null)
+        {
+            if (_weapon.transform.parent == null)
+            {
+                _weapon = null;
+                return;
+            }
+            var w = _weapon.GetComponent<Weapon>();
+            if (w != null)
+            {
+                w.EndAttack();
+            }
+        }
     }
 
+    private void StartAtk()
+    {
+        Debug.Log(_weapon);
+        if (_weapon != null)
+        {
+            Debug.Log("pls have a weapon");
+
+            if (_weapon.transform.parent != null)
+            {
+                Debug.Log("has a parent");
+                var w = _weapon.GetComponent<StandardWeapon>();
+                if (w != null)
+                {
+                    Debug.Log("pls come in here");
+
+                    w.BeginAttack(5);
+                }
+            }
+        }
+    }
     public void Attack()
     {
 
@@ -77,7 +124,7 @@ public class C_CombatCombo : MonoBehaviour
         {
             CancelInvoke(nameof(EndCombo));
             _EndComboQueue = false;
-
+            StartAtk();
             Debug.Log("Combo Counter:" + _ComboCounter + " size:" + _Combo.Count);
             _Anim.CrossFade(_Combo[_ComboCounter].clip.name, 0.25f, 0, 0);
 
