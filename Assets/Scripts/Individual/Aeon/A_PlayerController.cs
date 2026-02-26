@@ -80,6 +80,9 @@ public class PlayerController : Entity
 
     [Header("Player Audio")]
     [SerializeField] protected AudioClip blockAudio;
+    [SerializeField] protected AudioClip jumpAudio;
+    [SerializeField] protected AudioClip rollAudio;
+    [SerializeField] protected AudioClip landingAudio;
 
     [Header("Expose to inspector for debugging")]
     private Vector2 _inputMove;
@@ -93,6 +96,10 @@ public class PlayerController : Entity
     [SerializeField] private bool _wasGroundedPreviously = false;
     [SerializeField] private GameObject _itemBeingMoved;
     [SerializeField] private bool _isTopDown;
+
+    [Header("Object Highlighting")]
+    [SerializeField] private GameObject _currentlyHighlightedObject;
+    [SerializeField] private GameObject _interactIcon;
 
     public static System.Action<float, float> OnPlayerHealthChanged;
     public static System.Action<float, float> OnEnergyChanged;
@@ -226,6 +233,10 @@ public class PlayerController : Entity
                 {
                     _jumpCurrentCooldown = _jumpCooldown;
                     _animator.SetTrigger("IsJumping");
+                    if (jumpAudio != null)
+                    {
+                        AudioLibrary.Instance.PlaySoundAtPointCustom(jumpAudio.name, transform.position);
+                    }
                     _isJumping = true;
                     _isRolling = false;
                     myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
@@ -236,6 +247,10 @@ public class PlayerController : Entity
                     if (UseEnergy(rollEnergyRequired, false))
                     {
                         _animator.SetTrigger("IsRolling");
+                        if (rollAudio != null)
+                        {
+                            AudioLibrary.Instance.PlaySoundAtPointCustom(rollAudio.name, transform.position);
+                        }
                         _currentRollTimer = rollDuration;
                         _isRolling = true;
                         isDodging = true;
@@ -309,7 +324,7 @@ public class PlayerController : Entity
         }
 
         //// Handle other inputs
-        // Cast a sphere around the player (or use a raycast forward if preferred)
+        // Handle interaction
         if (!_isMovingObject && !_isAiming && _canPlayerInput && !animationHandler.IsActing())
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
@@ -342,6 +357,12 @@ public class PlayerController : Entity
             if (closestInteractable != null)
             {
                 inventory.HighlightObject(closestInteractable.gameObject);
+                // Position interact icon over the item to interact with
+                if (closestInteractable.gameObject != _currentlyHighlightedObject && _interactIcon != null)
+                {
+                    _currentlyHighlightedObject = closestInteractable.gameObject;
+                    _interactIcon.SetActive(true);
+                }
                 if (_interactAction.WasPressedThisDynamicUpdate() && !_isStunned)
                 {
                     string tag = closestInteractable.tag;
@@ -372,14 +393,23 @@ public class PlayerController : Entity
                     //}
                 }
             }
+            else if (_interactIcon != null)
+            {
+                _interactIcon.SetActive(false);
+                _currentlyHighlightedObject = null;
+            }
+
+            if (_currentlyHighlightedObject != null && _interactIcon != null)
+            {
+                _interactIcon.transform.position = _currentlyHighlightedObject.transform.position - followCamera.transform.forward;
+                _interactIcon.transform.rotation = Quaternion.LookRotation(-followCamera.transform.forward, transform.up);
+            }
         }
-        //else
-        //{
-        //    //if (_jumpAction.WasPressedThisDynamicUpdate() || _interactAction.WasPressedThisDynamicUpdate())
-        //    //{
-        //    //    StopMovingItem();
-        //    //}
-        //}
+        else if (_interactIcon != null)
+        {
+            _interactIcon.SetActive(false);
+            _currentlyHighlightedObject = null;
+        }
 
         // Only accept input when the player is able act (Inventory related input)
         if (_canPlayerInput && !_isStunned && isGrounded && _handsAreFree)
@@ -552,6 +582,10 @@ public class PlayerController : Entity
         if (!_wasGroundedPreviously && isGrounded)
         {
             _currentLandTimer = landDuration;
+            if (landingAudio != null)
+            {
+                AudioLibrary.Instance.PlaySoundAtPointCustom(landingAudio.name, transform.position);
+            }
         }
         else if (_isRolling || !isGrounded)
         {
@@ -650,11 +684,14 @@ public class PlayerController : Entity
 
                 if (hitAudio.Length > 0 && audioSource != null)
                 {
-                    audioSource.PlayOneShot(hitAudio[Random.Range(0, hitAudio.Length - 1)]);
+                    AudioLibrary.Instance.PlaySoundAtPointCustom(hitAudio[Random.Range(0, hitAudio.Length - 1)].name, transform.position);
                 }
                 if (_currentHP <= 0)
                 {
-                    audioSource.PlayOneShot(deathAudio);
+                    if (deathAudio != null)
+                    {
+                        AudioLibrary.Instance.PlaySoundAtPointCustom(deathAudio.name, transform.position);
+                    }
                     Die();
                 }
                 else

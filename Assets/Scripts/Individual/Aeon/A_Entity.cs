@@ -54,6 +54,11 @@ public class Entity : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
+        if (Time.timeScale == 0)
+        {
+            return;
+        }
+
         // Handle invincibility fade from red
         if (_invincibilityCooldown > 0)
         {

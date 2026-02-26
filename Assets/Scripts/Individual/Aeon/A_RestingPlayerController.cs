@@ -28,6 +28,10 @@ public class RestingPlayerController : Entity
     [SerializeField] private GroundChecker groundChecker;
     [SerializeField] private MouseMovement[] mouseMovements;
 
+    [Header("Object Highlighting")]
+    [SerializeField] private GameObject _currentlyHighlightedObject;
+    [SerializeField] private GameObject _interactIcon;
+
     private Vector2 _inputMove;
     private bool _inDialogue;
 
@@ -117,11 +121,35 @@ public class RestingPlayerController : Entity
             }
 
             // Trigger Interaction
-            if (closestInteractable != null && _interactAction.WasPressedThisFrame() && closestInteractable.gameObject.tag == "Interactable")
+            if (closestInteractable != null && closestInteractable.gameObject.tag == "Interactable")
             {
-                print("Trying to interact");
-                closestInteractable.InteractWith();
+                // Position interact icon over the item to interact with
+                if (closestInteractable.gameObject != _currentlyHighlightedObject && _interactIcon != null)
+                {
+                    _currentlyHighlightedObject = closestInteractable.gameObject;
+                    _interactIcon.SetActive(true);
+                }
+                if (_interactAction.WasPressedThisFrame())
+                {
+                    closestInteractable.InteractWith();
+                }
             }
+            else if (_interactIcon != null)
+            {
+                _interactIcon.SetActive(false);
+                _currentlyHighlightedObject = null;
+            }
+
+            if (_currentlyHighlightedObject != null && _interactIcon != null)
+            {
+                _interactIcon.transform.position = _currentlyHighlightedObject.transform.position + Vector3.up * 2;
+                _interactIcon.transform.rotation = Quaternion.LookRotation(-transform.forward, transform.up); 
+            }
+        }
+        else if (_interactIcon != null)
+        {
+            _interactIcon.SetActive(false);
+            _currentlyHighlightedObject = null;
         }
     }
 
