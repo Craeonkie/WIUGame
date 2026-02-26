@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Effect
 {
@@ -24,6 +25,15 @@ public class J_EffectsManager : MonoBehaviour
     [SerializeField] private float _dustIncreaseSpeed;
     [SerializeField] private float _dustDecreaseSpeed;
     private Coroutine _dustCoroutine;
+
+    [Header("Vignette Effect")]
+    [SerializeField] private Material _vignetteMaterial;
+    [SerializeField] private Material _transitionDuration;
+    [SerializeField] private float _minRadius;
+    [SerializeField] private float _maxRadius;
+    private Coroutine _vignetteCoroutine;
+    public UnityEvent OnVignetteTransitionStart; 
+    public UnityEvent OnVignetteTransitionFinish; 
 
     private void Awake()
     {
@@ -60,6 +70,24 @@ public class J_EffectsManager : MonoBehaviour
             StopCoroutine(_burnCoroutine);
         }
         _burnCoroutine = StartCoroutine(DecreaseBurnEffect());
+    }
+
+    public void StartVignetteInwardEffect()
+    {
+        if (_vignetteCoroutine != null)
+        {
+            StopCoroutine(_vignetteCoroutine);
+        }
+        _vignetteCoroutine = StartCoroutine(IncreaseVignetteEffect());
+    }
+
+    public void StartVignetteOutwardEffect()
+    {
+        if (_vignetteCoroutine != null)
+        {
+            StopCoroutine(_vignetteCoroutine);
+        }
+        _vignetteCoroutine = StartCoroutine(DecreaseVignetteEffect());
     }
 
     private IEnumerator IncreaseDustStrength()
@@ -151,6 +179,27 @@ public class J_EffectsManager : MonoBehaviour
         _smokeMat.SetFloat("_DustStrength", 0f);
         _burnCoroutine = null;
     }
+
+    private IEnumerator IncreaseVignetteEffect()
+    {
+        OnVignetteTransitionStart?.Invoke();
+
+
+        yield return null;
+        OnVignetteTransitionFinish?.Invoke();
+        _vignetteCoroutine = null;
+    }
+
+    private IEnumerator DecreaseVignetteEffect()
+    {
+
+        OnVignetteTransitionStart?.Invoke();
+
+        yield return null;
+        OnVignetteTransitionFinish?.Invoke();
+        _vignetteCoroutine = null;
+    }
+
 
     private void Reset()
     {

@@ -95,6 +95,11 @@ MonoBehaviour:
     swapSprite: {fileID: 0}
     throwableSprite: {fileID: 0}
   - weapon: {fileID: 4470176731705278446, guid: 0887d4984386e154eaffc8687f802e46, type: 3}
+    fullDurabilitySprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
+    halfDurabilitySprite: {fileID: 0}
+    brokenDurabilitySprite: {fileID: 0}
+    swapSprite: {fileID: 0}
+    throwableSprite: {fileID: 0}
   - weapon: {fileID: -3881078507139335778, guid: 3f9c2a7a369881447be9d348aa38fbde, type: 3}
     fullDurabilitySprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
     halfDurabilitySprite: {fileID: 0}

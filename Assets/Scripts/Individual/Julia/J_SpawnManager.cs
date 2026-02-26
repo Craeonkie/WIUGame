@@ -14,6 +14,7 @@ public class SpawnItem
     public bool spawnOnAwake;
     public bool loopSpawning;
     public int spawnLimit;
+    public bool shouldSpawnAfterDestroy;
     [System.NonSerialized] public ObjectPool<GameObject> spawnPool;
     [System.NonSerialized] public List<GameObject> activeObjects = new List<GameObject>();
 }
@@ -25,6 +26,8 @@ public class J_SpawnManager : MonoBehaviour
     [SerializeField] private SpawnItem[] _spawnItems;
     private IEnumerator _spawnCoroutine;
     private IEnumerator _spawnOnceCoroutine;
+
+    private bool _isQuitting = false;
 
     private void Awake()
     {
@@ -61,10 +64,19 @@ public class J_SpawnManager : MonoBehaviour
 
             }, prefab =>
             {
+                if (prefab == null)
+                {
+                    Debug.LogWarning($"Trying to deactivate destroyed object in pool: {item.itemName}");
+                    return;
+                }
+
                 prefab.gameObject.SetActive(false); //call when done and return to the pool
                 item.spawnedAmount--;
 
-                Spawn(item.itemName, item.spawnDelay);
+                if (item.shouldSpawnAfterDestroy && Application.isPlaying && !_isQuitting && prefab.scene.isLoaded)
+                {
+                    Spawn(item.itemName, item.spawnDelay);
+                }
 
             }, prefab =>
             {
@@ -279,5 +291,18 @@ public class J_SpawnManager : MonoBehaviour
 
         // Add the offset to the center of the bounds to get the final world position
         return bounds.center + randomOffset;
+    }
+
+    private void OnApplicationQuit()
+    {
+        _isQuitting = true;
+    }
+
+    private void OnDestroy()
+    {
+        _isQuitting = true;
+
+        // Clean up all pools
+        StopAllCoroutines();
     }
 }
