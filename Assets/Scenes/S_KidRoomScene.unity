@@ -4419,9 +4419,9 @@ MonoBehaviour:
         z: 0.66167265
       Rotation:
         value:
-          x: 0.16322123
+          x: 0.16322125
           y: 0.81996924
-          z: 0.060407236
+          z: 0.060407255
           w: -0.5453075
     - Position:
         x: -2.45
@@ -5716,17 +5716,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1726483693472005338}
-        m_TargetAssemblyTypeName: UnityEngine.Playables.PlayableDirector, UnityEngine
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 8607788635305573555}
+        m_TargetAssemblyTypeName: RestingPlayerController, Assembly-CSharp
+        m_MethodName: ToggleInDialogue
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!65 &2086105263174480397
 BoxCollider:
@@ -5870,7 +5870,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!1 &2800519141578811213
 GameObject:
