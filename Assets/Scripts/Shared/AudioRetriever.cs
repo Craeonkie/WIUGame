@@ -9,6 +9,14 @@ public class AudioRetriever : MonoBehaviour
             AudioLibrary.Instance.PlaySound(name);
         }
     }
+    
+    public void PlaySoundLerp(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.PlaySoundLerp(name);
+        }
+    }
 
     public void PauseSound(string name)
     {
@@ -23,6 +31,46 @@ public class AudioRetriever : MonoBehaviour
         if (AudioLibrary.Instance != null)
         {
             AudioLibrary.Instance.PlayOneShot(name);
+        }
+    }
+
+    public void PlayOneShotRandom2(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            int random = Random.Range(1, 3);
+
+            AudioLibrary.Instance.PlayOneShot(name + random);
+        }
+    }
+
+    public void PlayOneShotRandom3(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            int random = Random.Range(1, 4);
+
+            AudioLibrary.Instance.PlayOneShot(name + random);
+        }
+    }
+
+    public void PlayOneShotRandom4(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            int random = Random.Range(1, 5);
+
+            AudioLibrary.Instance.PlayOneShot(name + random);
+        }
+    }
+
+    public void PlayOneShotRandom5(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            int random = Random.Range(1, 6);
+
+            AudioLibrary.Instance.PlayOneShot(name + random);
         }
     }
 
@@ -48,13 +96,7 @@ public class AudioRetriever : MonoBehaviour
     {
         if (AudioLibrary.Instance != null)
         {
-            GameObject audioObject = AudioLibrary.Instance.PlaySoundAtPointCustom(name, transform.position);
-
-            if (audioObject != null)
-            {
-                audioObject.transform.parent = transform;
-                audioObject.transform.localPosition = Vector3.zero;
-            }
+            AudioLibrary.Instance.PlaySoundAtPointCustom(name, transform);
         }
     }
 
@@ -63,6 +105,14 @@ public class AudioRetriever : MonoBehaviour
         if (AudioLibrary.Instance != null)
         {
             AudioLibrary.Instance.StopSound(name);
+        }
+    }
+
+    public void StopSoundLerp(string name)
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.StopSoundLerp(name);
         }
     }
 

@@ -22,8 +22,14 @@ public class Audio
     public UnityEvent AudioFinishedEvent;
 
     public AudioSource source;
-    //private MonoBehaviour coroutineRunner;
+    private float finalVolume;
+    private float savedGroupVolume;
+    private float savedMasterVolume;
+    public float audioLerpTime = 0.5f;
+    private MonoBehaviour coroutineRunner;
     //private Coroutine trackingCoroutine;
+    private Coroutine audioEventCoroutine;
+
     public void Init(GameObject AudioObject)
     {
         // Create an AudioSource on the AudioManager GameObject
@@ -45,25 +51,77 @@ public class Audio
         }
 
         source.volume = baseVolume;
+        finalVolume = baseVolume;
 
         source.Play();
         source.Pause();
         source.time = 0f;
 
+        if (AudioObject.GetComponent<AudioMonobehaviour>() == null)
+        {
+            AudioObject.AddComponent<AudioMonobehaviour>();
+        }
+
         //need to use monobehaviour to run a corotine
-        //coroutineRunner = parent.GetComponent<MonoBehaviour>();
+        coroutineRunner = AudioObject.GetComponent<AudioMonobehaviour>();
     }
 
     public void Play()
     {
         if (source != null)
         {
+            source.volume = baseVolume * savedMasterVolume * savedGroupVolume;
+
             source.Play();
 
             //StopTracking();
             //trackingCoroutine = coroutineRunner.StartCoroutine(TrackAudioCompletion());
         }
 
+    }
+
+    public void PlayLerp()
+    {
+        if (source != null)
+        {
+            if (audioEventCoroutine != null)
+                coroutineRunner.StopCoroutine(audioEventCoroutine);
+
+            finalVolume = 0f;
+            source.volume = 0f;
+
+            audioEventCoroutine = coroutineRunner.StartCoroutine(PlayLerpVolume(audioLerpTime));
+
+            source.Play();
+        }
+    }
+
+    public void PlayLerpCustom(float lerpTime)
+    {
+        if (source != null)
+        {
+            if (audioEventCoroutine != null)
+                coroutineRunner.StopCoroutine(audioEventCoroutine);
+
+            audioEventCoroutine = coroutineRunner.StartCoroutine(PlayLerpVolume(lerpTime));
+
+            source.Play();
+        }
+    }
+
+    private IEnumerator PlayLerpVolume(float lerpTime)
+    {
+        float elapsedTime = 0f;
+        float startVolume = finalVolume;
+
+        while (elapsedTime < lerpTime)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            finalVolume = Mathf.Lerp(startVolume, baseVolume, elapsedTime / lerpTime);
+            source.volume = finalVolume * savedMasterVolume * savedGroupVolume;
+
+            yield return null;
+        }
     }
 
     public void PlayClipAtPoint(Vector3 position)
@@ -111,6 +169,43 @@ public class Audio
             source.Stop();
     }
 
+    public void StopLerp()
+    {
+        if (source != null)
+        {
+            if (audioEventCoroutine != null)
+                coroutineRunner.StopCoroutine(audioEventCoroutine);
+
+            audioEventCoroutine = coroutineRunner.StartCoroutine(StopLerpVolume(audioLerpTime));
+        }
+    }
+
+    public void StopLerpCustom(float lerpTime)
+    {
+        if (source != null)
+        {
+            if (audioEventCoroutine != null)
+                coroutineRunner.StopCoroutine(audioEventCoroutine);
+
+            audioEventCoroutine = coroutineRunner.StartCoroutine(StopLerpVolume(lerpTime));
+        }
+    }
+
+    public IEnumerator StopLerpVolume(float lerpTime)
+    {
+        float elapsedTime = 0f;
+        float startVolume = finalVolume;
+        while (elapsedTime < lerpTime)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            finalVolume = Mathf.Lerp(startVolume, 0f, elapsedTime / lerpTime);
+            source.volume = finalVolume * savedMasterVolume * savedGroupVolume;
+            yield return null;
+        }
+
+        source.Stop();
+    }
+
     public void Resume()
     {
         if (source != null)
@@ -125,8 +220,11 @@ public class Audio
         if (source == null) return;
 
         float groupVolume = isBGM ? bgm : sfx;
-        source.volume = baseVolume * master * groupVolume;
+        source.volume = finalVolume * master * groupVolume;
         source.pitch = pitch;
+
+        savedGroupVolume = groupVolume;
+        savedMasterVolume = master;
     }
 
     public bool IsPlaying()

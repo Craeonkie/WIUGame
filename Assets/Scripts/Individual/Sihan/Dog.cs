@@ -107,6 +107,7 @@ public class Dog : Entity
     [ColorUsage(true, true)]
     [SerializeField] private Color _warningColor;
     private Coroutine _warningCoroutine;
+    [SerializeField] private ObjectWith3DAudio _windAudio;
 
     [Header("Debugging")]
     [SerializeField] private DogStates currentState = DogStates.EnterIdle;
@@ -865,6 +866,8 @@ public class Dog : Entity
                         _afterImageCoroutine = StartCoroutine(SpawnAfterImages());
 
                         PlayWarning(0.5f);
+
+                        _windAudio.PlayLerp();
                     }
                 }
                 else
@@ -878,8 +881,6 @@ public class Dog : Entity
                         {
                             dizzyParticle.Stop();
                         }
-
-                        StopWarning(0.5f);
 
                         return;
                     }
@@ -929,6 +930,14 @@ public class Dog : Entity
                             }
 
                             StopWarning(0.5f);
+
+                            if (AudioLibrary.Instance != null)
+                            {
+                                AudioLibrary.Instance.PlaySoundAtPointCustom("Bonk", transform.position);
+                                AudioLibrary.Instance.PlaySoundAtPointCustom("Dizzy", transform);
+                            }
+
+                            _windAudio.StopLerp();
                         }
 
                         if (_attackPlayer && !_attackedPlayer)
@@ -1006,6 +1015,8 @@ public class Dog : Entity
                         _afterImageCoroutine = StartCoroutine(SpawnAfterImages());
 
                         PlayWarning(0.5f);
+
+                        _windAudio.PlayLerp();
                     }
                 }
                 else
@@ -1158,6 +1169,8 @@ public class Dog : Entity
 
                 StopWarning(0.5f);
 
+                _windAudio.StopLerp();
+
                 Debug.Log("Exiting Ping Pong");
                 break;
             case DogStates.EnterDoubleClaw:
@@ -1260,6 +1273,8 @@ public class Dog : Entity
         }
 
         StopWarning(0.5f);
+
+        _windAudio.StopLerp();
     }
 
     public void ResetDog()

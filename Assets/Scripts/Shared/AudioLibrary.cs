@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Timeline;
+using UnityEngine.UIElements;
 
 public class AudioLibrary : MonoBehaviour
 {
@@ -101,6 +102,35 @@ public class AudioLibrary : MonoBehaviour
         Debug.LogWarning("Audio not found in library: " + name);
     }
 
+    public void PlaySoundLerp(string name)
+    {
+        if (_audioManager == null) return;
+
+        foreach (var audio in _audios)
+        {
+            if (audio.name == name)
+            {
+                audio.PlayLerp();
+                return;
+            }
+        }
+        Debug.LogWarning("Audio not found in library: " + name);
+    }
+
+    public void PlaySoundLerp(string name, float lerpTime)
+    {
+        if (_audioManager == null) return;
+        foreach (var audio in _audios)
+        {
+            if (audio.name == name)
+            {
+                audio.PlayLerpCustom(lerpTime);
+                return;
+            }
+        }
+        Debug.LogWarning("Audio not found in library: " + name);
+    }
+
     public void PlaySoundAtPoint(string name, Vector3 position)
     {
         if (_audioManager == null) return;
@@ -138,6 +168,25 @@ public class AudioLibrary : MonoBehaviour
         return null;
     }
 
+    public void PlaySoundAtPointCustom(string name, Transform transform)
+    {
+        if (_audioManager == null) return;
+        foreach (var audio in _audios)
+        {
+            if (audio.name == name)
+            {
+                var obj = Instantiate(_objectWith3DAudioPrefab, transform.position, Quaternion.identity, transform);
+                var audioComponent = obj.GetComponent<ObjectWith3DAudio>();
+                audioComponent.audio3D = audio;
+                audioComponent._playOnStart = true;
+                Destroy(obj, audio.clip.length);
+
+                return;
+            }
+        }
+        Debug.LogWarning("Audio not found in library: " + name);
+    }
+
     public void PlayOneShot(string name)
     {
         if (_audioManager == null) return;
@@ -165,6 +214,35 @@ public class AudioLibrary : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void StopSoundLerp(string name)
+    {
+        if (_audioManager == null) return;
+
+        foreach (var audio in _audios)
+        {
+            if (audio.name == name)
+            {
+                audio.StopLerp();
+                return;
+            }
+        }
+        Debug.LogWarning("Audio not found in library: " + name);
+    }
+
+    public void StopSoundLerp(string name, float lerpTime)
+    {
+        if (_audioManager == null) return;
+        foreach (var audio in _audios)
+        {
+            if (audio.name == name)
+            {
+                audio.StopLerpCustom(lerpTime);
+                return;
+            }
+        }
+        Debug.LogWarning("Audio not found in library: " + name);
     }
 
     public void PauseSound(string name)

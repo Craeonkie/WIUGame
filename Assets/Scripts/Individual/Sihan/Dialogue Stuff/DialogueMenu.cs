@@ -679,6 +679,16 @@ public class DialogueMenu : MonoBehaviour
         {
             _dialogueText.alignment = currentLine.dialogueTextAlignment;
         }
+
+        if (currentLine.overrideBaseNameColor)
+        {
+            _dialogueName.color = currentLine.baseNameColor;
+        }
+
+        if (currentLine.overrideBaseTextColor)
+        {
+            _dialogueText.color = currentLine.baseTextColor;
+        }
     }
 
     public IEnumerator GrowUI()

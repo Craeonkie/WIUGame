@@ -5,6 +5,8 @@ using TMPro;
 public class DialogueLines
 {
     [Header("Dialogue Line Info")]
+    // Name of the character speaking
+    public string name;
     // The dialogue line itself
     [TextArea] public string dialogue;
 
@@ -15,8 +17,7 @@ public class DialogueLines
     public Sprite icon2;
     public Color iconColor2 = Color.white;
 
-    // Name of the character speaking
-    public string name;
+
 
     [Header("Dialogue Line Settings")]
     // Check whether the dialogue line is from the which
@@ -42,6 +43,12 @@ public class DialogueLines
 
     public bool overrideDialogueTextAlignment = false;
     public TextAlignmentOptions dialogueTextAlignment;
+
+    public bool overrideBaseNameColor = false;
+    public Color baseNameColor;
+
+    public bool overrideBaseTextColor = false;
+    public Color baseTextColor;
 
     [Header("Dialogue Events")]
     // Dialogue Events that get triggered when entering or exiting this dialogue line
