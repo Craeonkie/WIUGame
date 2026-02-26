@@ -1580,7 +1580,7 @@ MonoBehaviour:
     source: {fileID: 0}
     audioLerpTime: 1
   - name: Roll Sound
-    clip: {fileID: 8300000, guid: a049b215616b6a44494e1beaa9d1b5e5, type: 3}
+    clip: {fileID: 8300000, guid: 8da09ee9c3e272b4cb5d7f2e638add06, type: 3}
     loop: 0
     isBGM: 0
     spatialBlend: 1
@@ -1628,10 +1628,10 @@ MonoBehaviour:
     source: {fileID: 0}
     audioLerpTime: 1
   - name: Land Sound
-    clip: {fileID: 8300000, guid: a049b215616b6a44494e1beaa9d1b5e5, type: 3}
+    clip: {fileID: 8300000, guid: 13de2901d434eb445836c3fde79af3d6, type: 3}
     loop: 0
     isBGM: 0
-    spatialBlend: 1
+    spatialBlend: 0
     minDistance: 1
     maxDistance: 30
     rolloffMode: 2
@@ -3381,7 +3381,7 @@ PrefabInstance:
     - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: rollAudio
       value: 
-      objectReference: {fileID: 8300000, guid: a049b215616b6a44494e1beaa9d1b5e5, type: 3}
+      objectReference: {fileID: 8300000, guid: 8da09ee9c3e272b4cb5d7f2e638add06, type: 3}
     - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: _isTopDown
       value: 0
@@ -3398,6 +3398,10 @@ PrefabInstance:
       propertyPath: followCamera
       value: 
       objectReference: {fileID: 222077092}
+    - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
+      propertyPath: landingAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: 13de2901d434eb445836c3fde79af3d6, type: 3}
     - target: {fileID: 1757877037177564731, guid: 82719a6a8e4c7334984cf9dc94279a58, type: 3}
       propertyPath: _interactIcon
       value: 
