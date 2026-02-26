@@ -59,14 +59,6 @@ public class J_BossBehaviour : Entity
     [SerializeField] private GameObject[] _shockwavePlanes;
     [SerializeField] private GameObject _fakePillow;
 
-    [Header("Additional Boss Data")]
-    [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private float _shockwaveDamage;
-    [SerializeField] private float _maxShockwaveDistance; // Applied to shockwave, maximum distance before shockwave dies down
-    [SerializeField] private float _shockwaveIntensity; // Applied to shockwave, how intense the shockwave is
-    [SerializeField] private float _shockwaveBandWidth;
-    [SerializeField] private float _shockwaveTravelSpeed; // Applied to shockwave, how fast the shockwave travels
-
     [Header("Boss Phases")]
     [SerializeField] Phase[] _phases;
     private int _currentPhaseIndex;
@@ -76,6 +68,7 @@ public class J_BossBehaviour : Entity
     [Header("Boss States")]
     private STATE _currentState;
     private HAND _attackingHand;
+    private bool[] _hasActivatedShockwave = { false, false, false };
     [SerializeField] int _hitsBeforeExhausted; // Only for 2nd and 3rd phase
     private int _currentTimesHit;
     private int _leftHandFrequency;
@@ -88,6 +81,15 @@ public class J_BossBehaviour : Entity
     [SerializeField] private float _exhaustedDuration;
     private float _readyingDuration;
     private float _currentStateTimer;
+
+    [Header("Shockwave Settings")]
+    [SerializeField] private LayerMask _shockwaveLayers;
+    [SerializeField] private float _shockwaveDamage;
+    [SerializeField] private float _maxShockwaveDistance; // Applied to shockwave, maximum distance before shockwave dies down
+    [SerializeField] private float _shockwaveIntensity; // Applied to shockwave, how intense the shockwave is
+    [SerializeField] private float _shockwaveBandWidth;
+    [SerializeField] private float _shockwaveTravelSpeed; // Applied to shockwave, how fast the shockwave travels
+    [SerializeField] private float _shockwaveImpulseForce;
 
     [Header("Pillow Ripping Settings")]
     [SerializeField] private float _intervalBetweenRips;
@@ -179,13 +181,11 @@ public class J_BossBehaviour : Entity
                 Idle();
                 break;
             case STATE.PREPARING:
-                Prepare();
                 break;
             case STATE.ATTACKING:
                 Attack();
                 break;
             case STATE.EXHAUSTED:
-                Exhausted();
                 break;
             case STATE.HIT:
                 break;
@@ -205,34 +205,47 @@ public class J_BossBehaviour : Entity
             if (!_fistColliders[i].enabled)
                 continue;
 
+            bool shouldActivateShockwave = false;
+
             Vector3 worldCenter = _fistColliders[i].transform.TransformPoint(_fistColliders[i].center);
             float scaleFactor = Mathf.Max(_fistColliders[i].transform.lossyScale.x, _fistColliders[i].transform.lossyScale.y, _fistColliders[i].transform.lossyScale.z);
             float actualWorldRadius = _fistColliders[i].radius * scaleFactor;
 
-            // Find player
-            Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _playerLayer);
+            // Find player AND shockwave planes
+            Collider[] hitColliders = Physics.OverlapSphere(worldCenter, actualWorldRadius, _shockwaveLayers);
             for (int j = 0; j < hitColliders.Length; ++j)
             {
                 if (hitColliders[j].gameObject.CompareTag("PlayerTag"))
                 {
                     hitColliders[j].GetComponent<Entity>().TakeDamage(float.MaxValue, 0.0f);
-                    break;
+                }
+                else if (hitColliders[j].gameObject == _shockwavePlanes[i] && !_hasActivatedShockwave[i])
+                {
+                    // Trigger a shockwave
+                    shouldActivateShockwave = true;
+                    _hasActivatedShockwave[i] = true;
                 }
             }
-           
 
-            MaterialPropertyBlock handMpb = new MaterialPropertyBlock();
-            Renderer planeR = _shockwavePlanes[i].GetComponent<Renderer>();
-            Vector3 localCenter = planeR.transform.InverseTransformPoint(worldCenter);
-            localCenter.y = 0f;
 
-            handMpb.SetVector("_RadiusCenter", localCenter);
-            planeR.SetPropertyBlock(handMpb);
+            if (shouldActivateShockwave)
+            {
+                MaterialPropertyBlock handMpb = new MaterialPropertyBlock();
+                Renderer planeR = _shockwavePlanes[i].GetComponent<Renderer>();
+                Vector3 localCenter = planeR.transform.InverseTransformPoint(worldCenter);
+                localCenter.y = 0f;
+
+                handMpb.SetVector("_RadiusCenter", localCenter);
+                planeR.SetPropertyBlock(handMpb);
+
+                StartCoroutine(StartShockwave(worldCenter, planeR, handMpb));
+            }
+
 
             // Disable this collider
-            _fistColliders[i].enabled = false;
+            //_fistColliders[i].enabled = false;
 
-            StartCoroutine(StartShockwave(worldCenter, planeR, handMpb));
+            
 
             // TODO: Play audio here
             //if (SlashSound)
@@ -276,7 +289,7 @@ public class J_BossBehaviour : Entity
             if (!collidedWith)
             {
                 // There is only one player
-                Collider[] hits = Physics.OverlapSphere(startPos, outerRadius, _playerLayer);
+                Collider[] hits = Physics.OverlapSphere(startPos, outerRadius, _shockwaveLayers);
 
                 for (int i = 0; i < hits.Length; ++i)
                 {
@@ -293,6 +306,12 @@ public class J_BossBehaviour : Entity
                         hits[i].GetComponent<Entity>().TakeDamage(_shockwaveDamage, 0.0f);
                         Debug.Log("Player was hit by the shockwave!");
                         collidedWith = true;
+
+                        // Get component
+                        Rigidbody rb = hits[i].GetComponent<Rigidbody>();
+                        Vector3 dir = (transform.up + (rb.position - transform.position)).normalized;
+                        rb.AddForce(dir * _shockwaveImpulseForce, ForceMode.Impulse);
+
                         break;
                     }
                 }
@@ -312,6 +331,8 @@ public class J_BossBehaviour : Entity
     }
 
 
+
+
     public override void TakeDamage(float damageTaken, float invincibility = 0f)
     {
         if (isInvincible)
@@ -320,10 +341,20 @@ public class J_BossBehaviour : Entity
 
             // Increase number of attacks ONLY for phase 2 AND not hit already
             if (_currentPhaseIndex == 1 && _currentState != STATE.HIT)
+            {
                 _currentTimesHit++;
 
-            // Enter hit state
-            EnterState(STATE.HIT);
+                if (_currentTimesHit < _hitsBeforeExhausted)
+                {
+                    // Enter hit state
+                    EnterState(STATE.HIT);
+                }
+                else
+                {
+                    // Enter exhausted state
+                    EnterState(STATE.EXHAUSTED);
+                }
+            }
         }
         else
         {
@@ -388,6 +419,7 @@ public class J_BossBehaviour : Entity
             _leftHandFrequency = 0;
             _rightHandFrequency = 0;
 
+            DisableAllColliders();
             _animator.SetTrigger("Reset");
 
             EnterState(STATE.IDLE);
@@ -556,9 +588,9 @@ public class J_BossBehaviour : Entity
 
                 // Set the duration
                 _currentStateTimer = _attackCooldown;
+                _animator.SetBool(ANIMATOR_IDLE_BOOL, true);
                 _animator.SetBool(ANIMATOR_EXHAUSTED_BOOL, false);
                 _animator.SetBool(ANIMATOR_CONFUSED_BOOL, false);
-                _animator.SetBool(ANIMATOR_IDLE_BOOL, true);
 
                 // Disable colliders
                 for (int i = 0; i < _fistColliders.Length; ++i)
@@ -722,18 +754,12 @@ public class J_BossBehaviour : Entity
         _currentStealPillowTimer += Time.deltaTime;
     }
 
-    private void Prepare() { }
-
     private void Attack()
     {
         // Check for player
         CheckAttackColliders();
     }
 
-    private void Exhausted()
-    {
-
-    }
 
 
 
@@ -837,8 +863,6 @@ public class J_BossBehaviour : Entity
         pillow.GetComponent<J_Pillow>().ReachDestination();
     }
 
-
-    
     private void CheckPillowToBeStolen(J_Pillow pillow)
     {
         // Set the pillow
@@ -946,7 +970,7 @@ public class J_BossBehaviour : Entity
         DisableAllColliders();
     }
 
-    public void EnableColldier(int index)
+    public void EnableCollider(int index)
     {
         if (index < 0 || index >= _fistColliders.Length)
         {
@@ -957,11 +981,12 @@ public class J_BossBehaviour : Entity
         _fistColliders[index].enabled = true;
     }
 
-    private void DisableAllColliders()
+    public void DisableAllColliders()
     {
         for (int i = 0; i < _fistColliders.Length; ++i)
         {
             _fistColliders[i].enabled = false;
+            _hasActivatedShockwave[i] = false;
         }
     }
     private bool IsInCurrentAnimationState(string stateName)
@@ -1015,8 +1040,6 @@ public class J_BossBehaviour : Entity
 
     private void OnDrawGizmos()
     {
-        return;
-
         for (int i = 0; i < 2; ++i)
         {
             if (_fistColliders[i].enabled)

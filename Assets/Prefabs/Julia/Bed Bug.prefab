@@ -169,7 +169,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.01, y: 1.21, z: -0.7}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6531804505375074887}
@@ -257,23 +257,33 @@ MonoBehaviour:
   _currentHP: 25
   _invincibilityCooldown: 0
   _invincibilityMaxCooldown: 0
-  _model: {fileID: 0}
-  renderers: []
-  damageMaterial: {fileID: 0}
   spawnPoint: {x: 0, y: 0, z: 0}
   isInvincible: 0
   isDodging: 0
   _animationHasReset: 0
   _hasDamageFlicker: 0
+  _isBlocking: 0
+  hitAudio: []
+  deathAudio: {fileID: 0}
+  audioSource: {fileID: 0}
+  onDieEvent:
+    m_PersistentCalls:
+      m_Calls: []
   _navMeshAgent: {fileID: 1331132780147551415}
   _jumpableBoxCollider: {fileID: 3439191580247167185}
   _player: {fileID: 0}
   _idleDuration: 3
-  _damage: 5
+  _attackOffset: {x: 0, y: 0.24, z: 0.99}
+  _attackSize: {x: 1, y: 0.5, z: 1}
+  _minimumStompVelocity: 2
+  _layerToCheck:
+    serializedVersion: 2
+    m_Bits: 128
+  _damage: 15
   _jumpDuration: 0.8
   _lifetime: 180
   _durationBeforeDestroy: 3
-  _minimumAttackDistance: 1
+  _minimumAttackDistance: 2.75
   _stateText: {fileID: 1503769425680901325}
   _lifetimeText: {fileID: 6612888740912248447}
 --- !u!65 &3439191580247167185

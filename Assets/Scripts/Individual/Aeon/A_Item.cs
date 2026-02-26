@@ -50,6 +50,7 @@ public abstract class Item : Interactable
     [SerializeField] protected int _currentAnimationChain;
 
     [Header("Destroy on drop parameters")]
+    [SerializeField] protected bool isUsedByObjectPool = false;
     [SerializeField] protected bool _destroyUponDrop;
     [SerializeField] protected float _maxTimeBeforeDestroyed;
     [SerializeField] protected bool _expiresAfterDropped;
@@ -74,7 +75,10 @@ public abstract class Item : Interactable
             _timeBeforeDestroyed -= Time.deltaTime;
             if (_timeBeforeDestroyed <= 0)
             {
-                gameObject.SetActive(false);
+                if (isUsedByObjectPool && J_SpawnManager.Instance != null)
+                    J_SpawnManager.Instance.Release(itemName, gameObject);
+                else
+                    gameObject.SetActive(false);
             }
         }
     }
@@ -161,7 +165,10 @@ public abstract class Item : Interactable
 
         if (currentDurability <= 0 && hasDurability)
         {
-            gameObject.SetActive(false);
+            if (isUsedByObjectPool && J_SpawnManager.Instance != null)
+                J_SpawnManager.Instance.Release(itemName, gameObject);
+            else
+                gameObject.SetActive(false);
         }
     }
 
@@ -210,7 +217,11 @@ public abstract class Item : Interactable
         {
             audioSource.PlayOneShot(weaponBreakingSound);
         }
-        gameObject.SetActive(false);
+
+        if (isUsedByObjectPool && J_SpawnManager.Instance != null)
+            J_SpawnManager.Instance.Release(itemName, gameObject);
+        else
+            gameObject.SetActive(false);
     }
 
     // Ensure player calls this, then calls drop and break on the item

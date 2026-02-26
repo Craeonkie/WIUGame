@@ -31,7 +31,13 @@ public class J_BugBehaviour : Entity
     [Header("State Times")]
     [SerializeField] private float _idleDuration;
 
+    [Header("Attack Settings")]
+    [SerializeField] private Vector3 _attackOffset;
+    [SerializeField] private Vector3 _attackSize;
+    [SerializeField] private float _minimumStompVelocity;
+
     [Header("Settings")]
+    [SerializeField] private LayerMask _layerToCheck;
     [SerializeField] private float _damage;
     [SerializeField] private float _jumpDuration = 0.8f;
     public System.Action OnLand, OnStartJump;
@@ -71,6 +77,7 @@ public class J_BugBehaviour : Entity
         var rb = GetComponent<Rigidbody>();
         if (rb)
         {
+            rb.isKinematic = false;
             rb.useGravity = true;
             rb.linearVelocity = Vector3.zero;
         }
@@ -119,6 +126,11 @@ public class J_BugBehaviour : Entity
         UpdateState();
     }
 
+    public override void TakeDamage(float damage, float invincibilityLength)
+    {
+        return;
+    }
+
     public void SetDestination(Vector3 destination)
     {
         if (_onNavMeshLink)
@@ -126,15 +138,6 @@ public class J_BugBehaviour : Entity
 
         _navMeshAgent.destination = destination;
     }
-
-    //public override void TakeDamage(float damageTaken)
-    //{
-    //    if (isInvincible)
-    //        return;
-
-    //    _currentHP -= damageTaken;
-    //    float healthPercent = _currentHP / _maxHP;
-    //}
 
     private void EnterState(STATE nextState)
     {
@@ -164,29 +167,41 @@ public class J_BugBehaviour : Entity
                 // Stop chasing, call take damage on collider
                 _navMeshAgent.isStopped = true;
 
-                // Attack the player
-                Entity player = GameObject.FindWithTag("PlayerTag").GetComponent<Entity>();
-                player.TakeDamage(_damage, 0.0f);
-                Debug.Log(player.name + " took damage!");
+                // Check if the player is within box collider
+                Collider[] hits = Physics.OverlapBox(transform.position + transform.TransformDirection(_attackOffset), _attackSize, Quaternion.identity, _layerToCheck);
+
+                for (int i = 0; i < hits.Length; ++i)
+                {
+                    if (hits[i].gameObject.CompareTag("PlayerTag"))
+                    {
+                        Entity player = GameObject.FindWithTag("PlayerTag").GetComponent<Entity>();
+                        player.TakeDamage(_damage, 0.0f);
+                        Debug.Log(player.name + " took damage!");
+                        break;
+                    }
+                }
+                
 
                 // TODO: PLAY PINCING AUDIO
 
                 break;
             case STATE.DEAD:
+                // TODO: PLAY CRUNCHING SOUND
+
                 // Switch off RB and colliders
                 Rigidbody rb = GetComponent<Rigidbody>();
+
                 if (rb != null)
                 {
                     rb.useGravity = false;
                     rb.linearVelocity = Vector3.zero;
+                    rb.isKinematic = true;
                 }
 
                 _navMeshAgent.enabled = false;
 
-                CapsuleCollider cc = GetComponent<CapsuleCollider>();
-                cc.enabled = false;
-
                 // Start coroutine before being destroyed
+                StartCoroutine(DelayBeforeDisableCollider());
                 StartCoroutine(DelayBeforeDestroy());
 
                 break;
@@ -262,6 +277,13 @@ public class J_BugBehaviour : Entity
         }
     }
     
+    private IEnumerator DelayBeforeDisableCollider()
+    {
+        yield return new WaitForSeconds(0.5f);
+        CapsuleCollider cc = GetComponent<CapsuleCollider>();
+        cc.enabled = false;
+    }
+
     private IEnumerator DelayBeforeDestroy()
     {
         float timer = 0f;
@@ -306,9 +328,17 @@ public class J_BugBehaviour : Entity
         // Check position
         if (bottomOfCapsule >= topOfBug)
         {
-            EnterState(STATE.DEAD);
+            // Check downward velocity
+            Rigidbody playerRb = other.GetComponent<Rigidbody>();
+            if (playerRb != null)
+            {
+                float downwardVelocity = -playerRb.linearVelocity.y; // negative y = moving down
 
-             // TODO: PLAY CRUNCHING AUDIO
+                if (downwardVelocity >= _minimumStompVelocity) // player is actually falling
+                {
+                    EnterState(STATE.DEAD);
+                }
+            }
         }
     }
 
@@ -377,22 +407,42 @@ public class J_BugBehaviour : Entity
     }
 
 
-    //private void OnDrawGizmos()
-    //{
-    //    float magnitude = (_jumpableBoxCollider.transform.position - _player.transform.position).magnitude;
-    //    float newMagnitude = (new Vector2(_jumpableBoxCollider.transform.position.x, _jumpableBoxCollider.transform.position.z) - new Vector2(_player.transform.position.x, _player.transform.position.z)).magnitude;
+    private void OnDrawGizmos()
+    {
+        if (_player != null)
+        {
+            float magnitude = (_jumpableBoxCollider.transform.position - _player.transform.position).magnitude;
+            float newMagnitude = (new Vector2(_jumpableBoxCollider.transform.position.x, _jumpableBoxCollider.transform.position.z) - new Vector2(_player.transform.position.x, _player.transform.position.z)).magnitude;
 
-    //    Vector3 worldCenter = _jumpableBoxCollider.transform.TransformPoint(_jumpableBoxCollider.center);
+            Vector3 worldCenter = _jumpableBoxCollider.transform.TransformPoint(_jumpableBoxCollider.center);
 
-    //    if (Mathf.Abs(worldCenter.x - _player.transform.position.x) <= (_jumpableBoxCollider.size.x / 2) && Mathf.Abs(worldCenter.z - _player.transform.position.z) <= (_jumpableBoxCollider.size.z / 2))
-    //    {
-    //        Gizmos.color = Color.aliceBlue;
-    //    }
-    //    else
-    //    {
-    //        Gizmos.color = Color.red;
-    //    }
+            if (Mathf.Abs(worldCenter.x - _player.transform.position.x) <= (_jumpableBoxCollider.size.x / 2) && Mathf.Abs(worldCenter.z - _player.transform.position.z) <= (_jumpableBoxCollider.size.z / 2))
+            {
+                Gizmos.color = Color.aliceBlue;
+            }
+            else
+            {
+                Gizmos.color = Color.red;
+            }
 
-    //    Gizmos.DrawLine(_jumpableBoxCollider.transform.position, _player.transform.position);
-    //}
+            Gizmos.DrawLine(_jumpableBoxCollider.transform.position, _player.transform.position);
+
+
+            // Attack distance
+            if ((transform.position - _player.transform.position).magnitude <= _minimumAttackDistance)
+            {
+                Gizmos.color = Color.green;
+            }
+            else
+            {
+                Gizmos.color = Color.black;
+            }
+
+            Gizmos.DrawLine(_player.transform.position, transform.position);
+        }
+
+        // Draw collideable box
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position + transform.TransformDirection(_attackOffset), _attackSize);
+    }
 }

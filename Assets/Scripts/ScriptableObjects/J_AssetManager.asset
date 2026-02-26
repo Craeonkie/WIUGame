@@ -88,3 +88,9 @@ MonoBehaviour:
     brokenDurabilitySprite: {fileID: 0}
     swapSprite: {fileID: 0}
     throwableSprite: {fileID: 0}
+  - weapon: {fileID: 4321766806043990365, guid: da6f1254c1409d84895d0bcb6cfb89bb, type: 3}
+    fullDurabilitySprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
+    halfDurabilitySprite: {fileID: 0}
+    brokenDurabilitySprite: {fileID: 0}
+    swapSprite: {fileID: 0}
+    throwableSprite: {fileID: 0}
