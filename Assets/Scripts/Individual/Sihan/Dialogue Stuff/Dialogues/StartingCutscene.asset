@@ -19,13 +19,13 @@ MonoBehaviour:
     playOpenAnimation: 1
     playCloseAnimation: 1
     dialogueLines:
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: WOWWWW! Did you see that?!
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -53,7 +53,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -82,7 +82,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -104,13 +104,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: I wanna be like Den O when I grow up!
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -138,7 +138,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -160,13 +160,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: 'Why not? '
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -188,13 +188,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: HENSHIN! *Strikes dramatic pose*
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -216,13 +216,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: "Wait! Wouldn\u2019t it be cool if WE were heroes?!"
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -244,13 +244,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: Why don't we film our own Kamen Rider Episode?!
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -278,7 +278,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -306,7 +306,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -328,13 +328,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: "Hmmmm\u2026. *Start looking around the living room*"
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -356,13 +356,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: MOM! We can save her!!
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -390,7 +390,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -418,7 +418,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -446,7 +446,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -468,13 +468,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 0.90588236, b: 0.75686276, a: 1}
       onEnterDialogue: {fileID: 11400000, guid: a468c8d89f7bdcd4b8eb2828ef8d2dcf, type: 2}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: YESSS!
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -502,7 +502,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -524,13 +524,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: "Mom! We are gonna record a movie! And we\u2019re gonna save YOU!"
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -558,7 +558,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -580,14 +580,14 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: "Yeah! We\u2019re gonna recreate the fight we just watched in Kamen
         Rider! "
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -609,13 +609,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: "Doggie\u2019s gonna be the enemy!"
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -643,7 +643,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -671,7 +671,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -699,7 +699,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -727,7 +727,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -756,7 +756,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -778,7 +778,7 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: AHHHH! MOM HELP!! Hahaha
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
@@ -812,7 +812,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -834,13 +834,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: YES! *Runs to grab camera*
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -862,13 +862,13 @@ MonoBehaviour:
       baseTextColor: {r: 1, g: 1, b: 1, a: 1}
       onEnterDialogue: {fileID: 0}
       onExitDialogue: {fileID: 0}
-    - name: Kotaro
+    - name: Kotaro (You)
       dialogue: LIGHTS!
       icon: {fileID: 21300000, guid: 3524fbca3af729c4bb8af081d4ec1916, type: 3}
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -896,7 +896,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
@@ -924,7 +924,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 21300000, guid: abceff9c31cc7d645b46b540b13f1828, type: 3}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 1
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1

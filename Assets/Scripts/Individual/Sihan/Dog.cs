@@ -1392,6 +1392,8 @@ public class Dog : Entity
     {
         if (phase2Cutscene.state == PlayState.Playing || deadCutscene.state == PlayState.Playing) return;
 
+        AudioLibrary.Instance.PlaySoundAtPointCustomRandom4("DogBark", transform.position);
+
         if (!isInvincible && !isDodging && _currentHP > 0)
         {
             _currentHP -= damageTaken;

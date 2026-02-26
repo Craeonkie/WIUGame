@@ -75,13 +75,13 @@ MonoBehaviour:
     dialogueBoxWidth: 1600
     dialogueBoxHeight: 300
     dialoguePortraitXOffset: -560
-    dialoguePortraitYOffset: 90
-    dialoguePortraitWidth: 400
-    dialoguePortraitHeight: 400
+    dialoguePortraitYOffset: 1980
+    dialoguePortraitWidth: 5
+    dialoguePortraitHeight: 5
     dialoguePortrait2XOffset: 560
-    dialoguePortrait2YOffset: 90
-    dialoguePortrait2Width: 400
-    dialoguePortrait2Height: 400
+    dialoguePortrait2YOffset: 1980
+    dialoguePortrait2Width: 5
+    dialoguePortrait2Height: 5
     dialogueNameXOffset: 0
     dialogueNameYOffset: 105
     dialogueNameWidth: 1200
