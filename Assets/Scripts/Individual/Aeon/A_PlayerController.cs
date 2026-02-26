@@ -1,5 +1,4 @@
 using Unity.Cinemachine;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -26,6 +25,8 @@ public class PlayerController : Entity
     [SerializeField] private float rollDuration;
     [SerializeField] private float landDuration;
     [SerializeField] private float playerRotationSpeed;
+    [SerializeField] private float _jumpCooldown = 0.1f;
+    [SerializeField] private float _jumpCurrentCooldown;
 
     [Header("Camera Movement")]
     [SerializeField] private GameObject followCamera;
@@ -77,6 +78,9 @@ public class PlayerController : Entity
     [Header("Events to invoke")]
     public static System.Action OnInteract;
 
+    [Header("Player Audio")]
+    [SerializeField] protected AudioClip blockAudio;
+
     [Header("Expose to inspector for debugging")]
     private Vector2 _inputMove;
     [SerializeField] private bool _isJumping = false;
@@ -120,9 +124,11 @@ public class PlayerController : Entity
         Cursor.lockState = CursorLockMode.Locked;
 
         _rollDirection = Vector3.forward;
-        ;
+
         _remainingEnergy = _maxEnergy;
         _canUseSpecial = true;
+
+        TakeDamage(0, 0);
     }
 
     protected override void Update()
@@ -157,6 +163,16 @@ public class PlayerController : Entity
             OnEnergyChanged?.Invoke(_remainingEnergy, _maxEnergy);
         }
 
+        // Handle jump cooldown
+        if (_jumpCurrentCooldown > 0)
+        {
+            _jumpCurrentCooldown -= Time.deltaTime;
+            if (_jumpCurrentCooldown <= 0)
+            {
+                _isJumping = false;
+            }
+        }
+
         // Handle player landed duration
         if (_currentLandTimer > 0)
         {
@@ -166,9 +182,9 @@ public class PlayerController : Entity
         bool canMove = animationHandler.CanMove();
         bool isGrounded = groundChecker.IsGrounded();
         _inputMove = _moveAction.ReadValue<Vector2>();
-        bool isMoving = _inputMove != Vector2.zero && canMove && !_isStunned && !_playerInputPaused;
+        bool isMoving = _inputMove != Vector2.zero && canMove && !_isStunned && _canPlayerInput;
 
-        // Only accept input and rotation if player isn't stunned
+        // Only accept input and rotation if player isn't stunned (Movement input)
         if (!_isStunned)
         {
             // Handle rotation
@@ -208,6 +224,8 @@ public class PlayerController : Entity
                 // Jumping
                 if (_jumpAction.WasPressedThisDynamicUpdate() && canMove && _canPlayerInput && !_isAiming && !_isMovingObject)
                 {
+                    _jumpCurrentCooldown = _jumpCooldown;
+                    _animator.SetTrigger("IsJumping");
                     _isJumping = true;
                     _isRolling = false;
                     myRigidbody.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
@@ -292,7 +310,7 @@ public class PlayerController : Entity
 
         //// Handle other inputs
         // Cast a sphere around the player (or use a raycast forward if preferred)
-        if (!_isMovingObject)
+        if (!_isMovingObject && !_isAiming && _canPlayerInput && !animationHandler.IsActing())
         {
             Collider[] hits = Physics.OverlapSphere(transform.position, _pickupRange, interactablesLayer);
 
@@ -363,7 +381,7 @@ public class PlayerController : Entity
         //    //}
         //}
 
-        // Only accept input when the player is able act
+        // Only accept input when the player is able act (Inventory related input)
         if (_canPlayerInput && !_isStunned && isGrounded && _handsAreFree)
         {
             // Primary
@@ -495,6 +513,7 @@ public class PlayerController : Entity
             }
         }
 
+        // Set cinemachine blending back to normal
         if (_setBlendingSpeedBackToNormal && Camera.main.TryGetComponent<CinemachineBrain>(out CinemachineBrain cinemachineBrain))
         {
             if (cinemachineBrain.ActiveBlend != null)
@@ -507,11 +526,6 @@ public class PlayerController : Entity
         // Send parameters to animator
         _animator.SetBool("IsMoving", isMoving);
         _animator.SetBool("IsGrounded", isGrounded);
-        if (_isJumping)
-        {
-            _animator.SetTrigger("IsJumping");
-            _isJumping = false;
-        }
         // Only trigger if not already holding the item and the item isn't null
         if (inventory.ReturnSecondaryItem() != null && inventory.ReturnSecondaryItem() == inventory.ReturnCurrentItem())
         {
@@ -623,10 +637,12 @@ public class PlayerController : Entity
             if (inventory.ReturnCurrentItem() != null && inventory.ReturnCurrentItem().TryGetComponent<Weapon>(out Weapon currentWeapon) && currentWeapon.IsBlocking())
             {
                 currentWeapon.BlockDamage();
+                audioSource.PlayOneShot(blockAudio);
             }
             else
             {
                 _currentHP -= damageTaken;
+                getHit.Invoke();
                 _animator.SetTrigger("GetHit");
                 _invincibilityMaxCooldown = invincibilityLength;
                 _invincibilityCooldown = invincibilityLength;
@@ -681,6 +697,12 @@ public class PlayerController : Entity
     public void ToggleTopDownCamera(bool isTopDown)
     {
         _isTopDown = isTopDown;
+    }
+
+    // Toggle player ability to move and input
+    public bool IsTopDownCameraInUse()
+    {
+        return _isTopDown;
     }
 
     // Sihan function

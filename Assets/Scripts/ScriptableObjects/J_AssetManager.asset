@@ -95,6 +95,31 @@ MonoBehaviour:
     swapSprite: {fileID: 0}
     throwableSprite: {fileID: 0}
   - weapon: {fileID: 4470176731705278446, guid: 0887d4984386e154eaffc8687f802e46, type: 3}
+  - weapon: {fileID: -3881078507139335778, guid: 3f9c2a7a369881447be9d348aa38fbde, type: 3}
+    fullDurabilitySprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
+    halfDurabilitySprite: {fileID: 0}
+    brokenDurabilitySprite: {fileID: 0}
+    swapSprite: {fileID: 0}
+    throwableSprite: {fileID: 0}
+  - weapon: {fileID: -1726025306914836341, guid: 17faffe94382b7b4abe2578963314def, type: 3}
+    fullDurabilitySprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
+    halfDurabilitySprite: {fileID: 0}
+    brokenDurabilitySprite: {fileID: 0}
+    swapSprite: {fileID: 0}
+    throwableSprite: {fileID: 0}
+  - weapon: {fileID: -5688214743183627311, guid: dd1c1fbe8514f604186df2ae4d39da69, type: 3}
+    fullDurabilitySprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
+    halfDurabilitySprite: {fileID: 0}
+    brokenDurabilitySprite: {fileID: 0}
+    swapSprite: {fileID: 0}
+    throwableSprite: {fileID: 0}
+  - weapon: {fileID: 1877462445333841006, guid: 82a0acadc94e66645b04730f15de2d10, type: 3}
+    fullDurabilitySprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
+    halfDurabilitySprite: {fileID: 0}
+    brokenDurabilitySprite: {fileID: 0}
+    swapSprite: {fileID: 0}
+    throwableSprite: {fileID: 0}
+  - weapon: {fileID: -4786306042880541115, guid: 75b7d0d6b3aa28e49b6c6c77a9e40466, type: 3}
     fullDurabilitySprite: {fileID: 1741112459, guid: a5b30d90e9a8b2a4185aa4ddbb873259, type: 3}
     halfDurabilitySprite: {fileID: 0}
     brokenDurabilitySprite: {fileID: 0}

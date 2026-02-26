@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.Rendering.Universal;
 
 public class C_Airplane : C_BossAbility
 {
@@ -11,6 +12,7 @@ public class C_Airplane : C_BossAbility
 
     public static event System.Action finishAbility;
 
+    [SerializeField] private ScriptableRendererFeature speedlines;
 
     [Header("Ref")]
     [SerializeField] private Transform[] _SpawnTransform;
@@ -31,6 +33,8 @@ public class C_Airplane : C_BossAbility
     private ObjectPool<C_Boid> _AirplanePool;
     private void Awake()
     {
+        if (speedlines != null) speedlines.SetActive(false);
+
         C_FriendBossPhase2.StartAirplaneAbility += StartAbility;
 
         _player = FindFirstObjectByType<PlayerController>();
@@ -70,6 +74,8 @@ public class C_Airplane : C_BossAbility
     private void OnDestroy()
     {
         C_FriendBossPhase2.StartAirplaneAbility -= StartAbility;
+        if (speedlines != null) speedlines.SetActive(false);
+
     }
 
     protected override void OnEnable()
@@ -171,11 +177,15 @@ public class C_Airplane : C_BossAbility
 
     private IEnumerator FollowAirplaneCamera()
     {
+        if (speedlines != null) speedlines.SetActive(true);
+
         yield return new WaitForSeconds(_followAirplaneCameraTime);
         ChangeCamera?.Invoke(C_BossCameraManager.c_CameraMode.TOP_CAMERA);
         if (Camera.main.TryGetComponent<CinemachineBrain>(out CinemachineBrain brain))
         {
             brain.DefaultBlend.Time = switchCamOriSpeed;
         }
+        if (speedlines != null) speedlines.SetActive(false);
+
     }
 }
