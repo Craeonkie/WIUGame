@@ -167,7 +167,7 @@ public class J_UIManager : MonoBehaviour
 
     private void UpdateBossIcon(string sceneName)
     {
-        if (sceneName == J_GameManager.DOG_SCENE)
+        if (sceneName == J_GameManager.DOG_ARENA_SCENE)
         {
             _bossIcon.GetComponent<Image>().sprite = _dogBossIcon;
         }

@@ -7137,7 +7137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb8c4604cabd2e349b908e1a51a3dd7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorToAnotherScene
-  nextSceneName: C_FriendScene
+  nextSceneName: C_FriendBossScene
   doorGameobject: {fileID: 0}
   _dialogueMenu: {fileID: 1887760281}
   _dialogue: {fileID: 11400000, guid: eead1bac77235424e9a5660549695117, type: 2}
@@ -9071,7 +9071,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 49790e6f05b30aa41b7dd718808c6671, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0

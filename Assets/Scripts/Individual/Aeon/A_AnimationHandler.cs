@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -91,7 +92,7 @@ public class AnimationHandler : MonoBehaviour
             GoBackToIdle();
         }
 
-        if (_currentItem)
+        if (_currentItem && _currentAnimation.audioClips != null)
         {
             for (int i = 0; i < _currentAnimation.audioClips.Length; i++)
             {

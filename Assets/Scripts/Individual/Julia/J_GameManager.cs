@@ -25,7 +25,8 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     public const string MENU_SCENE = "J_MenuScene";
     public const string START_SCENE = "StartScene";
     public const string REST_SCENE = "A_RestScene";
-    public const string DOG_SCENE = "S_DogScene";
+    public const string DOG_SCENE = "S_KidRoomScene";
+    public const string DOG_ARENA_SCENE = "S_DogScene";
     public const string KID_SCENE = "C_FriendBossScene";
     public const string MONSTER_SCENE = "J_MonsterScene";
     public const string END_SCENE = "EndScene";
@@ -121,7 +122,7 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
         if (!_completedStages.ContainsKey(scene))
             return false;
 
-        //Debug.Log("scene: " + scene + " is " + _completedStages[scene]);
+        Debug.Log("scene: " + scene + " is " + _completedStages[scene]);
         return _completedStages[scene];
     }
 

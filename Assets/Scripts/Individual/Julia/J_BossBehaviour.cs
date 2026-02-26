@@ -413,6 +413,7 @@ public class J_BossBehaviour : Entity
 
     private void EnterPhase(int phaseIndex)
     {
+        Debug.Log("Entering phase: " + phaseIndex);
         if (phaseIndex >= _phases.Length)
             return;
 

@@ -3660,84 +3660,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1158154786}
   m_CullTransparentMesh: 1
---- !u!1 &1173271871
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1173271874}
-  - component: {fileID: 1173271873}
-  - component: {fileID: 1173271872}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1173271872
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173271871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
-  m_Actions: {fileID: -944628639613478452, guid: e3863ca2fd8fed14bbeea1d59c914a0c, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &1173271873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173271871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f3fe96afa9be4547aebc4883a118f31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::J_GameManager
-  masterVolume: 0
-  bgmVolume: 0
-  sfxVolume: 0
---- !u!4 &1173271874
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1173271871}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1210842451 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5441949040284718926, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
@@ -4001,6 +3923,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 559.6166
+      objectReference: {fileID: 0}
+    - target: {fileID: 2282379314048649078, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -378.80695
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 559.6166
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429122518163790171, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -75.76139
+      objectReference: {fileID: 0}
     - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
       propertyPath: OnPause.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -4156,6 +4110,26 @@ PrefabInstance:
     - target: {fileID: 4404527432096816701, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
       propertyPath: OnResume.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5441949040284718926, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 559.6166
+      objectReference: {fileID: 0}
+    - target: {fileID: 5815122194497769676, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -227.28418
       objectReference: {fileID: 0}
     - target: {fileID: 5885609183422575271, guid: c05f1dfd654766e4f8036b989ed9f967, type: 3}
       propertyPath: m_Name
@@ -4759,9 +4733,9 @@ MonoBehaviour:
         z: 0.66167265
       Rotation:
         value:
-          x: 0.16322125
+          x: 0.16322123
           y: 0.81996924
-          z: 0.060407255
+          z: 0.060407236
           w: -0.5453075
     - Position:
         x: -2.45
@@ -7795,6 +7769,8 @@ MonoBehaviour:
   _interactionConeAngle: 90
   groundChecker: {fileID: 5025432628917708321}
   mouseMovements: []
+  _currentlyHighlightedObject: {fileID: 0}
+  _interactIcon: {fileID: 0}
 --- !u!4 &8666982144832942909
 Transform:
   m_ObjectHideFlags: 0
@@ -7950,4 +7926,3 @@ SceneRoots:
   - {fileID: 937598105}
   - {fileID: 1004070103}
   - {fileID: 1319238320}
-  - {fileID: 1173271874}
