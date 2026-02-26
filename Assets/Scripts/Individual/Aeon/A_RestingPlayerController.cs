@@ -14,6 +14,7 @@ public class RestingPlayerController : Entity
     [SerializeField] private float _jumpPower = 5f;
     [SerializeField] private float _maxSpeed = 5f;
     [SerializeField] private float _currentSpeed = 0f;
+    [SerializeField] private float _rotationSpeed = 10f;
     [SerializeField] private Rigidbody myRigidbody;
 
     [Header("Camera")]
@@ -132,11 +133,6 @@ public class RestingPlayerController : Entity
         {
             mouseMovement.enabled = !inDialogue;
         }
-    }
-
-    public void MovePlayerTo(Vector3 spawnPos)
-    {
-        transform.position = spawnPos;
     }
 
     private void OnDrawGizmosSelected()
