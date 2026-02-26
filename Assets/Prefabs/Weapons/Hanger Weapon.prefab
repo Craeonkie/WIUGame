@@ -199,7 +199,10 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: -50}
     rotationSpeed: 720
     animationClip: {fileID: -203655887218126122, guid: 2a7e0d2a53e5b00488ee940dfdd11261, type: 3}
-    audioClip: {fileID: 0}
+    audioClips:
+    - audioClip: {fileID: 8300000, guid: 7b29756cfd1b56a4797719833b598d17, type: 3}
+      normalizedTimeDelay: 0.3
+      hasPlayed: 0
   - damage: 17
     durabilityUsed: 7
     energyUsed: 0
@@ -209,7 +212,10 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 360
     animationClip: {fileID: 7400000, guid: c9cdccfb9d6cfef4d9992105a94b5d86, type: 3}
-    audioClip: {fileID: 0}
+    audioClips:
+    - audioClip: {fileID: 8300000, guid: 983abef4817d4a341a7f85dc13fe32b9, type: 3}
+      normalizedTimeDelay: 0.3
+      hasPlayed: 0
   secondary: []
   special:
   - damage: 20
@@ -221,7 +227,10 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 720
     animationClip: {fileID: -203655887218126122, guid: 1d3991183700336418182f607f65c2ff, type: 3}
-    audioClip: {fileID: 0}
+    audioClips:
+    - audioClip: {fileID: 8300000, guid: 0b2097f9d87b7684b95ceb9fc97c59ec, type: 3}
+      normalizedTimeDelay: 0.5
+      hasPlayed: 0
   hasDurability: 1
   maxDurability: 50
   currentDurability: 0
@@ -229,7 +238,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   audioSource: {fileID: 5021914242975165310}
   breakingSound: {fileID: 8300000, guid: 56c837f060015ac499f1fb2a6d0977ca, type: 3}
-  onHitSound: {fileID: 0}
+  onHitSound: {fileID: 8300000, guid: 59fc8b07564231b47bf94e1a71e42687, type: 3}
   _animationHandler: {fileID: 0}
   _entityUsingItem: {fileID: 0}
   _isActing: 0

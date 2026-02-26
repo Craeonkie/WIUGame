@@ -219,10 +219,10 @@ public class J_EffectsManager : MonoBehaviour
     {
         if (_dustMat != null)
             _dustMat.SetFloat("_DustStrength", 0f);
-        
+
         if (_fireMat != null)
             _fireMat.SetFloat("_VignettePower", _fireStartValue);
-        
+
         if (_smokeMat != null)
             _smokeMat.SetFloat("_DustStrength", 0f);
     }

@@ -174,6 +174,14 @@ public class AudioRetriever : MonoBehaviour
         }
     }
 
+    public void StopAllBGMLerp()
+    {
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.StopAllBGMLerp();
+        }
+    }
+
     public void ResetSound(string name)
     {
         if (AudioLibrary.Instance != null)

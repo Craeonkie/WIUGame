@@ -98,13 +98,13 @@ public class AnimationHandler : MonoBehaviour
             {
                 if (!_currentAnimation.audioClips[i].hasPlayed)
                 {
-                    if (_currentAnimation.audioClips[i].normalizedTimeDelay >= _animator.GetCurrentAnimatorStateInfo(0).normalizedTime && !_animator.IsInTransition(0))
+                    if (_currentAnimation.audioClips[i].normalizedTimeDelay <= _animator.GetCurrentAnimatorStateInfo(0).normalizedTime && !_animator.IsInTransition(0))
                     {
                         if (_currentAnimation.audioClips[i].audioClip != null)
                         {
                             AudioLibrary.Instance.PlaySoundAtPointCustom(_currentAnimation.audioClips[i].audioClip.name, transform.position);
                         }
-                        _currentAnimation.audioClips[i].hasPlayed = false;
+                        _currentAnimation.audioClips[i].hasPlayed = true;
                     }
                 }
             }

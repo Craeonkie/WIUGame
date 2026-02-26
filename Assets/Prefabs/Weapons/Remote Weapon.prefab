@@ -109,7 +109,10 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 720
     animationClip: {fileID: 7400000, guid: 5382c9f3a528413448fc27554dd73d74, type: 3}
-    audioClip: {fileID: 0}
+    audioClips:
+    - audioClip: {fileID: 8300000, guid: c77214ba73413784783755b09adadd90, type: 3}
+      normalizedTimeDelay: 0.3
+      hasPlayed: 0
   - damage: 20
     durabilityUsed: 9
     energyUsed: 0
@@ -119,7 +122,10 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 720
     animationClip: {fileID: 7400000, guid: 16b4a0031272510489ca40cdfd99c114, type: 3}
-    audioClip: {fileID: 0}
+    audioClips:
+    - audioClip: {fileID: 8300000, guid: b87e550669e3d97439f42e61dd0be216, type: 3}
+      normalizedTimeDelay: 0.3
+      hasPlayed: 0
   - damage: 35
     durabilityUsed: 11
     energyUsed: 0
@@ -129,7 +135,10 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 720
     animationClip: {fileID: -203655887218126122, guid: 907b7ef252fda914c97d880d03d58452, type: 3}
-    audioClip: {fileID: 0}
+    audioClips:
+    - audioClip: {fileID: 8300000, guid: 29eb77a3951e2844bbfaf9cf1ead1abe, type: 3}
+      normalizedTimeDelay: 0.5
+      hasPlayed: 0
   secondary: []
   special:
   - damage: 35
@@ -141,7 +150,10 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     rotationSpeed: 720
     animationClip: {fileID: 7400000, guid: f94c62a8b96f5a7469ce0da8ccac09b3, type: 3}
-    audioClip: {fileID: 0}
+    audioClips:
+    - audioClip: {fileID: 8300000, guid: 6d6d121a3b476844cb12f99f9b5f9d76, type: 3}
+      normalizedTimeDelay: 0.5
+      hasPlayed: 0
   hasDurability: 1
   maxDurability: 90
   currentDurability: 0
@@ -149,7 +161,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   audioSource: {fileID: 2815987467302834462}
   breakingSound: {fileID: 8300000, guid: 56c837f060015ac499f1fb2a6d0977ca, type: 3}
-  onHitSound: {fileID: 0}
+  onHitSound: {fileID: 8300000, guid: 2cdde3c6a62ba8d48a9d87aaffd87b14, type: 3}
   _animationHandler: {fileID: 0}
   _entityUsingItem: {fileID: 0}
   _isActing: 0

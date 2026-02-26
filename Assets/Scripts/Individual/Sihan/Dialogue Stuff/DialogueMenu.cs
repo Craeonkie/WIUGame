@@ -212,6 +212,8 @@ public class DialogueMenu : MonoBehaviour
                         }
                         else
                         {
+                            AudioLibrary.Instance.StopSoundLerp("Talk");
+
                             // Finished typing all the letters, so stop typing
                             _isTyping = false;
 
@@ -399,6 +401,7 @@ public class DialogueMenu : MonoBehaviour
                             _isTyping = false;
                             _dialogueText.text += currentLine.dialogue.Substring(_typingIndex, _maxTypingIndex - _typingIndex);
 
+                            AudioLibrary.Instance.StopSoundLerp("Talk");
 
                             //if (AudioLibrary.Instance != null)
                             //{
@@ -433,8 +436,13 @@ public class DialogueMenu : MonoBehaviour
                                 }
 
                                 _animCoroutine = StartCoroutine(ShrinkUI());
+
+                                AudioLibrary.Instance.StopSoundLerp("Talk");
+
                                 return;
                             }
+
+                            AudioLibrary.Instance.StopSoundLerp("Talk");
 
                             ResetDialogue();
                             return;
@@ -474,10 +482,14 @@ public class DialogueMenu : MonoBehaviour
         _autoNextLineTime = 0;
 
         _dialogueUI.gameObject.SetActive(false);
+
+        AudioLibrary.Instance.StopSoundLerp("Talk");
     }
 
     public void EnterNewDialogue()
     {
+        AudioLibrary.Instance.PlaySoundLerp("Talk");
+
         // Enable UI
         // garbageManager.isUIOpen = true;
         _typingCounter = 0;

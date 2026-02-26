@@ -296,6 +296,19 @@ public class AudioLibrary : MonoBehaviour
         }
     }
 
+    public void StopAllBGMLerp()
+    {
+        if (_audioManager == null) return;
+
+        foreach (var audio in _audios)
+        {
+            if (audio.isBGM)
+            {
+                audio.StopLerp();
+            }
+        }
+    }
+
     public void StopSoundLerp(string name)
     {
         if (_audioManager == null) return;

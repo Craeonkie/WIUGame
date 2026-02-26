@@ -666,6 +666,8 @@ public class PlayerController : Entity
     // Do damage with invincibility cooldown
     public override void TakeDamage(float damageTaken, float invincibilityLength)
     {
+        Debug.Log("Player took damage: " + damageTaken);
+
         if (!isInvincible && !isDodging)
         {
             if (inventory.ReturnCurrentItem() != null && inventory.ReturnCurrentItem().TryGetComponent<Weapon>(out Weapon currentWeapon) && currentWeapon.IsBlocking())
@@ -682,10 +684,8 @@ public class PlayerController : Entity
                 _invincibilityCooldown = invincibilityLength;
                 OnPlayerHealthChanged?.Invoke(_currentHP, _maxHP);
 
-                if (hitAudio.Length > 0 && audioSource != null)
-                {
-                    AudioLibrary.Instance.PlaySoundAtPointCustom(hitAudio[Random.Range(0, hitAudio.Length - 1)].name, transform.position);
-                }
+                AudioLibrary.Instance.PlaySoundAtPointCustomRandom5("Kid_Hurt_", transform.position);
+
                 if (_currentHP <= 0)
                 {
                     if (deathAudio != null)
