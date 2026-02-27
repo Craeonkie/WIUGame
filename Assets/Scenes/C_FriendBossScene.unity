@@ -5733,9 +5733,9 @@ MonoBehaviour:
         z: 2.7512894
       Rotation:
         value:
-          x: -0.223484
-          y: 0.073167875
-          z: 0.47664526
+          x: -0.22348402
+          y: 0.07316789
+          z: 0.4766453
           w: 0.84705997
     - Position:
         x: -12.551451
@@ -5787,8 +5787,8 @@ MonoBehaviour:
         z: 3.4543657
       Rotation:
         value:
-          x: -0.12930492
-          y: 0.54423785
+          x: -0.12930489
+          y: 0.5442378
           z: -0.5017316
           w: 0.65981126
     - Position:
@@ -5824,8 +5824,8 @@ MonoBehaviour:
       Rotation:
         value:
           x: 0.67897147
-          y: 0.5690716
-          z: -0.44608918
+          y: 0.5690715
+          z: -0.44608915
           w: 0.12712099
     - Position:
         x: 3.745037
@@ -17093,6 +17093,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2cfd1c7c4b509343a7555c2516839fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::C_CombineMesh
+--- !u!1 &959602378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 959602380}
+  - component: {fileID: 959602379}
+  m_Layer: 0
+  m_Name: Audio Retriever
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &959602379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959602378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e025f2ac1563d364abaa1abd158dd9a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioRetriever
+--- !u!4 &959602380
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959602378}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -10.46831, y: 49.28914, z: 44.94811}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963073536
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21690,7 +21734,31 @@ MonoBehaviour:
   garbageManager: {fileID: 0}
   sceneLoadEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 959602379}
+        m_TargetAssemblyTypeName: AudioRetriever, Assembly-CSharp
+        m_MethodName: StopAllBGMLerp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 959602379}
+        m_TargetAssemblyTypeName: AudioRetriever, Assembly-CSharp
+        m_MethodName: PlaySoundLerp
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: boss2bgm
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1412331989
 Transform:
   m_ObjectHideFlags: 0
@@ -36229,6 +36297,7 @@ MonoBehaviour:
     spawnOnAwake: 1
     loopSpawning: 1
     spawnLimit: 2
+    spawnOnDestroy: 0
   - itemName: Fork
     spawnPrefab: {fileID: 8711333863715367783, guid: dbca2c8f65e46b0419d266410cc58328, type: 3}
     spawnedAmount: 1
@@ -36237,6 +36306,7 @@ MonoBehaviour:
     spawnOnAwake: 1
     loopSpawning: 1
     spawnLimit: 2
+    spawnOnDestroy: 0
 --- !u!114 &1861974352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38741,3 +38811,4 @@ SceneRoots:
   - {fileID: 1558837733}
   - {fileID: 302312052}
   - {fileID: 1412331989}
+  - {fileID: 959602380}

@@ -865,6 +865,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1033833295654147203, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 427
+      objectReference: {fileID: 0}
+    - target: {fileID: 1033833295654147203, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 167
+      objectReference: {fileID: 0}
     - target: {fileID: 1089139604750637931, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -980,6 +988,22 @@ PrefabInstance:
     - target: {fileID: 4162408410098882324, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
       propertyPath: m_Name
       value: Canvas - Main Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 4962078057864218720, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_text
+      value: Lights Camera Fight
+      objectReference: {fileID: 0}
+    - target: {fileID: 4962078057864218720, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 37159750a28ab6841a1e602dcc6ed6ab, type: 2}
+    - target: {fileID: 4962078057864218720, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3074943494996768205, guid: 37159750a28ab6841a1e602dcc6ed6ab, type: 2}
+    - target: {fileID: 4962078057864218720, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6042499081539816529, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
       propertyPath: m_AnchorMax.y

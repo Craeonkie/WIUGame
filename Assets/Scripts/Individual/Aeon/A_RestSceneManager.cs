@@ -1,8 +1,5 @@
-using UnityEditor;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 public class A_RestSceneManager : MonoBehaviour
 {
