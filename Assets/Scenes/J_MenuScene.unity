@@ -969,6 +969,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1524490264629919165, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1524490264629919165, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1524490264629919165, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 97534296164660526}
+    - target: {fileID: 1524490264629919165, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1524490264629919165, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: QuitGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 1524490264629919165, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: J_MenuManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1524490264629919165, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2618435719066251222, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1074,6 +1102,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+--- !u!114 &97534296164660526 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1346589180307232703, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
+  m_PrefabInstance: {fileID: 97534296164660525}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e739fda026f839459b7b63a83156b90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuManager
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -1,6 +1,5 @@
 using System.Collections;
 using TMPro;
-using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -39,7 +38,7 @@ public class J_BugBehaviour : Entity
     [Header("Settings")]
     [SerializeField] private LayerMask _layerToCheck;
     [SerializeField] private float _damage;
-    [SerializeField] private float _jumpDuration = 0.8f;
+    //[SerializeField] private float _jumpDuration = 0.8f;
     public System.Action OnLand, OnStartJump;
     [SerializeField] private float _lifetime = 0f;
     [SerializeField] private float _durationBeforeDestroy = 0f;
@@ -180,13 +179,14 @@ public class J_BugBehaviour : Entity
                         break;
                     }
                 }
-                
 
-                // TODO: PLAY PINCING AUDIO
+                // Play audio
+                AudioLibrary.Instance.PlaySoundAtPointCustomRandom5("BugEat", transform.position);
 
                 break;
             case STATE.DEAD:
-                // TODO: PLAY CRUNCHING SOUND
+                // Play crunching audio
+                AudioLibrary.Instance.PlaySoundAtPointCustomRandom5("CrushBug", transform.position);
 
                 // Switch off RB and colliders
                 Rigidbody rb = GetComponent<Rigidbody>();
@@ -194,7 +194,8 @@ public class J_BugBehaviour : Entity
                 if (rb != null)
                 {
                     rb.useGravity = false;
-                    rb.linearVelocity = Vector3.zero;
+                    if (!rb.isKinematic)
+                        rb.linearVelocity = Vector3.zero;
                     rb.isKinematic = true;
                 }
 
@@ -233,14 +234,14 @@ public class J_BugBehaviour : Entity
                 // Chase the player
                 _navMeshAgent.SetDestination(_player.transform.position);
 
-                if (_navMeshAgent.isOnOffMeshLink && _onNavMeshLink == false)
-                {
-                    //Debug.Log("starting nav mesh link movement");
-                    StartNavMeshLinkMovement();
-                }
+                //if (_navMeshAgent.isOnOffMeshLink && _onNavMeshLink == false)
+                //{
+                //    //Debug.Log("starting nav mesh link movement");
+                //    StartNavMeshLinkMovement();
+                //}
 
-                if (_onNavMeshLink)
-                    FaceTarget(_navMeshAgent.currentOffMeshLinkData.endPos);
+                //if (_onNavMeshLink)
+                //    FaceTarget(_navMeshAgent.currentOffMeshLinkData.endPos);
 
                 // Attack player when close enough
                 if ((_player.transform.position - transform.position).magnitude <= _minimumAttackDistance)
@@ -252,9 +253,6 @@ public class J_BugBehaviour : Entity
                 break;
             case STATE.ATTACK:
 
-                // Play audio
-                AudioLibrary.Instance.PlaySoundAtPointCustomRandom5("BugEat", transform.position);
-
                 // Change state
                 ExitState();
                 EnterState(STATE.IDLE);
@@ -262,8 +260,7 @@ public class J_BugBehaviour : Entity
                 break;
             case STATE.DEAD:
 
-                // Play audio
-                AudioLibrary.Instance.PlaySoundAtPointCustomRandom5("CrushBug", transform.position);
+               
 
                 break;
         }
@@ -349,69 +346,69 @@ public class J_BugBehaviour : Entity
         }
     }
 
-    private void FaceTarget(Vector3 target)
-    {
-        Vector3 direction = (target - transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
-    }
+    //private void FaceTarget(Vector3 target)
+    //{
+    //    Vector3 direction = (target - transform.position).normalized;
+    //    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0f, direction.z));
+    //    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+    //}
 
-    private void StartNavMeshLinkMovement()
-    {
-        _onNavMeshLink = true;
-        NavMeshLink link = (NavMeshLink)_navMeshAgent.navMeshOwner;
-        J_Spline spline = link.GetComponentInChildren<J_Spline>();
+    //private void StartNavMeshLinkMovement()
+    //{
+    //    _onNavMeshLink = true;
+    //    NavMeshLink link = (NavMeshLink)_navMeshAgent.navMeshOwner;
+    //    J_Spline spline = link.GetComponentInChildren<J_Spline>();
 
-        PerformJump(link, spline);
-    }
+    //    PerformJump(link, spline);
+    //}
 
-    private void PerformJump(NavMeshLink link, J_Spline spline)
-    {
-        bool reverseDirection = CheckIfJumpingFromEndToStart(link);
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-        StartCoroutine(MoveOnOffMeshLink(spline, reverseDirection));
+    //private void PerformJump(NavMeshLink link, J_Spline spline)
+    //{
+    //    bool reverseDirection = CheckIfJumpingFromEndToStart(link);
+    //    Rigidbody rb = GetComponent<Rigidbody>();
+    //    rb.useGravity = false;
+    //    rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+    //    StartCoroutine(MoveOnOffMeshLink(spline, reverseDirection));
 
-        OnStartJump?.Invoke();
-    }
+    //    OnStartJump?.Invoke();
+    //}
 
-    private bool CheckIfJumpingFromEndToStart(NavMeshLink link)
-    {
-        Vector3 startWorldPos = link.gameObject.transform.TransformPoint(link.startPoint);
-        Vector3 endPosWorld = link.gameObject.transform.TransformPoint(link.endPoint);
+    //private bool CheckIfJumpingFromEndToStart(NavMeshLink link)
+    //{
+    //    Vector3 startWorldPos = link.gameObject.transform.TransformPoint(link.startPoint);
+    //    Vector3 endPosWorld = link.gameObject.transform.TransformPoint(link.endPoint);
 
-        float distancePlayerToStart = Vector3.Distance(_navMeshAgent.transform.position, startWorldPos);
-        float distancePlayerToEnd = Vector3.Distance(_navMeshAgent.transform.position, endPosWorld);
+    //    float distancePlayerToStart = Vector3.Distance(_navMeshAgent.transform.position, startWorldPos);
+    //    float distancePlayerToEnd = Vector3.Distance(_navMeshAgent.transform.position, endPosWorld);
 
-        return distancePlayerToStart > distancePlayerToEnd;
-    }
+    //    return distancePlayerToStart > distancePlayerToEnd;
+    //}
 
-    private IEnumerator MoveOnOffMeshLink(J_Spline spline, bool reverseDirection)
-    {
-        float currentTime = 0f;
-        Vector3 agentStartPosition = _navMeshAgent.transform.position;
+    //private IEnumerator MoveOnOffMeshLink(J_Spline spline, bool reverseDirection)
+    //{
+    //    float currentTime = 0f;
+    //    Vector3 agentStartPosition = _navMeshAgent.transform.position;
 
-        while (currentTime < _jumpDuration)
-        {
-            currentTime += Time.deltaTime;
+    //    while (currentTime < _jumpDuration)
+    //    {
+    //        currentTime += Time.deltaTime;
 
-            float amount = Mathf.Clamp01(currentTime / _jumpDuration);
-            amount = reverseDirection ? 1 - amount : amount;
+    //        float amount = Mathf.Clamp01(currentTime / _jumpDuration);
+    //        amount = reverseDirection ? 1 - amount : amount;
 
-            _navMeshAgent.transform.position = reverseDirection ? spline.CalculatePositionCustomEnd(amount, agentStartPosition) : spline.CalculatePositionCustomStart(amount, agentStartPosition);
+    //        _navMeshAgent.transform.position = reverseDirection ? spline.CalculatePositionCustomEnd(amount, agentStartPosition) : spline.CalculatePositionCustomStart(amount, agentStartPosition);
 
-            yield return new WaitForEndOfFrame();
-        }
+    //        yield return new WaitForEndOfFrame();
+    //    }
 
-        _navMeshAgent.CompleteOffMeshLink();
-        OnLand?.Invoke();
-        yield return new WaitForSeconds(0.1f);
-        _onNavMeshLink = false;
+    //    _navMeshAgent.CompleteOffMeshLink();
+    //    OnLand?.Invoke();
+    //    yield return new WaitForSeconds(0.1f);
+    //    _onNavMeshLink = false;
 
-        Rigidbody rb = GetComponent<Rigidbody>();
-        rb.useGravity = true;
-    }
+    //    Rigidbody rb = GetComponent<Rigidbody>();
+    //    rb.useGravity = true;
+    //}
 
 
     private void OnDrawGizmos()

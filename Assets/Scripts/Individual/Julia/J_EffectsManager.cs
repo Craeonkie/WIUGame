@@ -32,6 +32,7 @@ public class J_EffectsManager : MonoBehaviour
     [SerializeField] private bool _setValueOnAwake;
     [SerializeField] private float _vignetteValue;
     [SerializeField] private float _transitionSpeed;
+    private bool _triggerEvent;
     private VignetteVolume _vignetteVolume;
     private Coroutine _vignetteCoroutine;
     public UnityEvent OnVignetteTransitionInwardStart;
@@ -105,6 +106,8 @@ public class J_EffectsManager : MonoBehaviour
         }
         _vignetteCoroutine = StartCoroutine(DecreaseVignetteEffect());
     }
+
+    public void ToggleEvent(bool isToggle) => _triggerEvent = isToggle;
 
     private IEnumerator IncreaseDustStrength()
     {
@@ -198,7 +201,8 @@ public class J_EffectsManager : MonoBehaviour
 
     private IEnumerator IncreaseVignetteEffect()
     {
-        OnVignetteTransitionInwardStart?.Invoke();
+        if (_triggerEvent)
+            OnVignetteTransitionInwardStart?.Invoke();
 
         while (_vignetteVolume.radius.value > _vignetteVolume.radius.min)
         {
@@ -208,14 +212,17 @@ public class J_EffectsManager : MonoBehaviour
 
         _vignetteVolume.radius.value = _vignetteVolume.radius.min;
 
-        OnVignetteTransitionInwardFinish?.Invoke();
+        if (_triggerEvent)
+            OnVignetteTransitionInwardFinish?.Invoke();
+
         _vignetteCoroutine = null;
+        _triggerEvent = true;
     }
 
     private IEnumerator DecreaseVignetteEffect()
     {
-
-        OnVignetteTransitionOutwardStart?.Invoke();
+        if (_triggerEvent)
+            OnVignetteTransitionOutwardStart?.Invoke();
 
         while (_vignetteVolume.radius.value < _vignetteVolume.radius.max)
         {
@@ -225,8 +232,11 @@ public class J_EffectsManager : MonoBehaviour
 
         _vignetteVolume.radius.value = _vignetteVolume.radius.max;
 
-        OnVignetteTransitionOutwardFinish?.Invoke();
+        if (_triggerEvent)
+            OnVignetteTransitionOutwardFinish?.Invoke();
+
         _vignetteCoroutine = null;
+        _triggerEvent = true;
     }
 
 

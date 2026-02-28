@@ -69,6 +69,7 @@ public class J_BossBehaviour : Entity
 
     [Header("Boss States")]
     private STATE _currentState;
+    private STATE _previousState;
     private HAND _attackingHand;
     private bool[] _hasActivatedShockwave = { false, false, false };
     [SerializeField] int _hitsBeforeExhausted; // Only for 2nd and 3rd phase
@@ -244,26 +245,6 @@ public class J_BossBehaviour : Entity
 
                 StartCoroutine(StartShockwave(worldCenter, planeR, handMpb));
             }
-
-
-            // Disable this collider
-            //_fistColliders[i].enabled = false;
-
-            
-
-            // TODO: Play audio here
-            //if (SlashSound)
-            //{
-            //    AudioManager.Instance.PlayOneShot("slashHit1", damageable.transform.position);
-            //}
-            //else
-            //{
-            //    AudioManager.Instance.PlayOneShot("punchImpact", damageable.transform.position);
-            //}
-
-            //    // Generate impulse
-            //    _sources[i].GenerateImpulse(Camera.main.transform.forward);
-            //}
         }
     }
 
@@ -287,8 +268,8 @@ public class J_BossBehaviour : Entity
             float outerRadius = (currentDistance * planeWorldScale.x);
             float innerRadius = Mathf.Max(0f, (currentDistance * planeWorldScale.x) - 1f);
 
-            DrawDebugCircle(startPos, outerRadius, Color.red, 36);
-            DrawDebugCircle(startPos, innerRadius, Color.blue, 36);
+            //DrawDebugCircle(startPos, outerRadius, Color.red, 36);
+            //DrawDebugCircle(startPos, innerRadius, Color.blue, 36);
 
             if (!collidedWith)
             {
@@ -308,7 +289,7 @@ public class J_BossBehaviour : Entity
                     if ((startPos - hits[i].gameObject.transform.position).magnitude > innerRadius)
                     {
                         hits[i].GetComponent<Entity>().TakeDamage(_shockwaveDamage, 0.0f);
-                        Debug.Log("Player was hit by the shockwave!");
+                        //Debug.Log("Player was hit by the shockwave!");
                         collidedWith = true;
 
                         // Get component
@@ -590,7 +571,8 @@ public class J_BossBehaviour : Entity
 
     private void EnterState(STATE nextState)
     {
-        Debug.Log("Entering state: " + nextState);
+        //Debug.Log("Entering state: " + nextState);
+        _previousState = _currentState;
 
         switch (nextState)
         {
@@ -861,6 +843,19 @@ public class J_BossBehaviour : Entity
 
         // Spawn a new pillow and throw it to its destination
         var newPillow = J_SpawnManager.Instance.SpawnAtPosition("Pillow", _fakePillow.transform.position);
+
+        if (newPillow == null)
+        {
+            Debug.LogError("ThrowPillow: SpawnAtPosition returned null!");
+            return;
+        }
+
+        if (newPillow.GetComponent<J_Pillow>() == null)
+        {
+            Debug.LogError("ThrowPillow: Spawned pillow is missing J_Pillow component!");
+            return;
+        }
+
         StartCoroutine(TranslateObject(newPillow));
         _currentNumberOfPillowsInScene++;
     }
@@ -1016,6 +1011,12 @@ public class J_BossBehaviour : Entity
 
     public void DisableAllColliders()
     {
+        Debug.Log(_previousState);
+        Debug.Log(_currentState);
+
+        if (_previousState == STATE.ATTACKING && _currentState == STATE.EXHAUSTED)
+            return;
+
         for (int i = 0; i < _fistColliders.Length; ++i)
         {
             _fistColliders[i].enabled = false;

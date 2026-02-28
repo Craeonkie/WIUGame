@@ -44,7 +44,9 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     public float sfxVolume;
 
     private PlayerInput _input;
+    private InputAction _skipAction;
     private InputAction _pauseAction;
+    public static System.Action OnSkip;
     public static System.Action OnPause;
 
     private void Awake()
@@ -63,6 +65,8 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     {
         _input = GetComponent<PlayerInput>();
 
+        // Using this temporarily, because it will be difficult to pause rn
+        _skipAction = _input.actions["Primary"];
         _pauseAction = _input.actions["Pause"];
 
         // Initialise dictionary
@@ -85,6 +89,10 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
         if (_pauseAction.WasPressedThisDynamicUpdate())
         {
             OnPause?.Invoke();
+        }
+        else if (_skipAction.WasPressedThisDynamicUpdate())
+        {
+            OnSkip?.Invoke();
         }
     }
 

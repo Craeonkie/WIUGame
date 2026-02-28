@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -63,6 +64,8 @@ public class DialogueMenu : MonoBehaviour
     private Coroutine _animCoroutine;
 
     public bool isPaused { get; set; }
+    private bool _shouldSkip;
+
 
     public void Awake()
     {
@@ -274,6 +277,8 @@ public class DialogueMenu : MonoBehaviour
 
     private void OnEnable()
     {
+        J_GameManager.OnSkip += Skip;
+
         //var click = InputSystem.actions.FindAction("Primary");
         //if (click != null)
         //{
@@ -289,6 +294,8 @@ public class DialogueMenu : MonoBehaviour
 
     private void OnDisable()
     {
+        J_GameManager.OnSkip -= Skip;
+
         //var click = InputSystem.actions.FindAction("Primary");
         //if (click != null)
         //{
@@ -381,9 +388,11 @@ public class DialogueMenu : MonoBehaviour
         }
     }
 
+    private void Skip() => _shouldSkip = true;
+
     private void Click()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (_shouldSkip)
         {
             // Check if im in a dialogue
             if (_type & !isPaused)
@@ -453,6 +462,8 @@ public class DialogueMenu : MonoBehaviour
                     }
                 }
             }
+
+            _shouldSkip = false;
         }
     }
 
