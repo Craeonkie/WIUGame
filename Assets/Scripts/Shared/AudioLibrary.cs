@@ -43,7 +43,7 @@ public class AudioLibrary : MonoBehaviour
 
         foreach (var audio in _audios)
         {
-            Debug.Log(" audio");
+            //Debug.Log(" audio");
 
             GameObject newAudioObject = new GameObject();
             newAudioObject.transform.SetParent(transform);
