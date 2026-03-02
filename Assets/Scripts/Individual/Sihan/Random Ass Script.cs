@@ -13,9 +13,9 @@ public class RandomAssScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftAlt))
-        {
-            dialoguePressed?.Invoke();
-        }
+        //if (Input.GetKeyDown(KeyCode.LeftAlt))
+        //{
+        //    dialoguePressed?.Invoke();
+        //}
     }
 }

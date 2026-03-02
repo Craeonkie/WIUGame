@@ -73,6 +73,7 @@ public class A_RestSceneManager : MonoBehaviour
         }
         else
         {
+            Debug.Log("No scenes completed");
             noScenesCompleted?.Invoke();
         }
     }
