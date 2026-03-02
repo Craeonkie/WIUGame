@@ -93,7 +93,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     source: {fileID: 0}
-    audioLerpTime: 0.5
+    audioLerpTime: 0.25
   - name: DogPanting
     clip: {fileID: 8300000, guid: a93c40c3d8d6ccc458d804cd4c8183d2, type: 3}
     loop: 1
@@ -184,7 +184,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     priority: 0
-    baseVolume: 0.2
+    baseVolume: 0.4
     AudioFinishedEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -232,7 +232,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     priority: 0
-    baseVolume: 0.2
+    baseVolume: 0.4
     AudioFinishedEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -280,7 +280,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     priority: 0
-    baseVolume: 0.2
+    baseVolume: 0.4
     AudioFinishedEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -328,7 +328,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     priority: 0
-    baseVolume: 0.2
+    baseVolume: 0.4
     AudioFinishedEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -376,7 +376,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     priority: 0
-    baseVolume: 0.6
+    baseVolume: 0.8
     AudioFinishedEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -664,7 +664,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     priority: 0
-    baseVolume: 0.2
+    baseVolume: 0.5
     AudioFinishedEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -712,7 +712,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     priority: 0
-    baseVolume: 0.2
+    baseVolume: 0.5
     AudioFinishedEvent:
       m_PersistentCalls:
         m_Calls: []
@@ -904,7 +904,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     priority: 0
-    baseVolume: 0.05
+    baseVolume: 0.1
     AudioFinishedEvent:
       m_PersistentCalls:
         m_Calls: []

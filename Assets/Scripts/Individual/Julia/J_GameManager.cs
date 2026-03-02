@@ -153,6 +153,11 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
         masterVolume = master;
         bgmVolume = bgm;
         sfxVolume = sfx;
+
+        if (AudioLibrary.Instance != null)
+        {
+            AudioLibrary.Instance.UpdateAudioSettings();
+        }
     }
 
     public void LoadData(J_GameData data)

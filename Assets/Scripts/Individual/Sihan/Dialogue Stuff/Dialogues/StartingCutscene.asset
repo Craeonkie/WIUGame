@@ -784,7 +784,7 @@ MonoBehaviour:
       iconColor: {r: 1, g: 1, b: 1, a: 1}
       icon2: {fileID: 0}
       iconColor2: {r: 1, g: 1, b: 1, a: 1}
-      dialogueUIIndex: 0
+      dialogueUIIndex: 2
       isSkippable: 1
       ableToEnterNextLine: 1
       isAutoNextLine: 1
