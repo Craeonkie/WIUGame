@@ -897,14 +897,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.52201253, g: 0.52201253, b: 0.52201253, a: 1}
+  m_Color: {r: 0.8867924, g: 0.8512682, b: 0.75711995, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 878663237, guid: 2ea243fef6c66e74aa79b9de1b84264f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1718,22 +1718,6 @@ PrefabInstance:
     - target: {fileID: 4843259227472790411, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962078057864218720, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
-      propertyPath: m_text
-      value: Lights Camera Fight
-      objectReference: {fileID: 0}
-    - target: {fileID: 4962078057864218720, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 37159750a28ab6841a1e602dcc6ed6ab, type: 2}
-    - target: {fileID: 4962078057864218720, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: 3074943494996768205, guid: 37159750a28ab6841a1e602dcc6ed6ab, type: 2}
-    - target: {fileID: 4962078057864218720, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5019810985318614077, guid: 6e813c3fc7cd615438f7ac297884e0ad, type: 3}
       propertyPath: m_fontSize

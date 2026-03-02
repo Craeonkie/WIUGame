@@ -1191,7 +1191,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 15}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 64.29, y: -585}
+  m_AnchoredPosition: {x: 262, y: -585}
   m_SizeDelta: {x: 970.9658, y: 1320.6465}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6959167966122406775
@@ -4888,12 +4888,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'game title
-
-'
+  m_text: Lights Camera Fight
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 37159750a28ab6841a1e602dcc6ed6ab, type: 2}
+  m_sharedMaterial: {fileID: 3074943494996768205, guid: 37159750a28ab6841a1e602dcc6ed6ab, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4927,7 +4925,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 2.54
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
