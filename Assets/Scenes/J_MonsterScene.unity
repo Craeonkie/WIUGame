@@ -6135,7 +6135,7 @@ MonoBehaviour:
   _spawnItems:
   - itemName: Bug
     spawnPrefab: {fileID: 1085474963873975251, guid: 1657f0f910b80cc4fbca0643bb68fbec, type: 3}
-    spawnedAmount: 0
+    amountToSpawn: 0
     spawnDelay: 60
     hasSpawnLimit: 1
     spawnOnAwake: 0
@@ -6144,7 +6144,7 @@ MonoBehaviour:
     spawnOnDestroy: 0
   - itemName: ThrowableBug
     spawnPrefab: {fileID: 5271520263240887916, guid: da6f1254c1409d84895d0bcb6cfb89bb, type: 3}
-    spawnedAmount: 0
+    amountToSpawn: 0
     spawnDelay: 0
     hasSpawnLimit: 1
     spawnOnAwake: 0
@@ -6153,7 +6153,7 @@ MonoBehaviour:
     spawnOnDestroy: 0
   - itemName: CottonBall
     spawnPrefab: {fileID: 2703190509052905392, guid: 4e38e54dae9431a47b78956e57056d7e, type: 3}
-    spawnedAmount: 0
+    amountToSpawn: 0
     spawnDelay: 0
     hasSpawnLimit: 1
     spawnOnAwake: 0
@@ -6162,7 +6162,7 @@ MonoBehaviour:
     spawnOnDestroy: 0
   - itemName: Pillow
     spawnPrefab: {fileID: 7295421025471254004, guid: 1fea26a05e0c61a44899f03e8fddeb80, type: 3}
-    spawnedAmount: 0
+    amountToSpawn: 0
     spawnDelay: 0
     hasSpawnLimit: 1
     spawnOnAwake: 0
@@ -6171,7 +6171,7 @@ MonoBehaviour:
     spawnOnDestroy: 0
   - itemName: Hanger
     spawnPrefab: {fileID: 6988981879666586029, guid: 46bf8d02c96e4574fbf12876d2ef10bc, type: 3}
-    spawnedAmount: 0
+    amountToSpawn: 0
     spawnDelay: 5
     hasSpawnLimit: 1
     spawnOnAwake: 1
@@ -6180,7 +6180,7 @@ MonoBehaviour:
     spawnOnDestroy: 1
   - itemName: Small Bolster
     spawnPrefab: {fileID: 2086874436743908894, guid: 4f203a964f81a1a42a59bb0ba6962c49, type: 3}
-    spawnedAmount: 0
+    amountToSpawn: 0
     spawnDelay: 5
     hasSpawnLimit: 1
     spawnOnAwake: 1
@@ -6189,7 +6189,7 @@ MonoBehaviour:
     spawnOnDestroy: 1
   - itemName: TV Remote
     spawnPrefab: {fileID: 183981869333873731, guid: dd56d836f146f0e4cbcf42c3bffa4490, type: 3}
-    spawnedAmount: 0
+    amountToSpawn: 0
     spawnDelay: 5
     hasSpawnLimit: 1
     spawnOnAwake: 1
@@ -11282,10 +11282,10 @@ MonoBehaviour:
         z: 1.6345229
       Rotation:
         value:
-          x: -0.6074184
-          y: 0.5291889
+          x: -0.60741836
+          y: 0.52918893
           z: 0.5150225
-          w: 0.29283756
+          w: 0.29283762
     - Position:
         x: 1.6199989
         y: 8.29
@@ -11318,9 +11318,9 @@ MonoBehaviour:
         z: 2.0546927
       Rotation:
         value:
-          x: 0.16086164
-          y: -0.010032543
-          z: 0.27246642
+          x: 0.16086161
+          y: -0.010032542
+          z: 0.27246636
           w: 0.94856995
     - Position:
         x: 4.7599983

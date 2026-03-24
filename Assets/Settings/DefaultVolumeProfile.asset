@@ -318,6 +318,25 @@ MonoBehaviour:
   cropToFit:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &-2153172081652316032
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e61a4fc23c8ab041b26ba1484b17430, type: 3}
+  m_Name: J_OutlineVolume
+  m_EditorClassIdentifier: Assembly-CSharp::J_OutlineVolume
+  active: 1
+  outlineThickness:
+    m_OverrideState: 1
+    m_Value: 1
+  outlineColour:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
 --- !u!114 &-1940777614928600979
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -337,6 +356,25 @@ MonoBehaviour:
   outlineColour:
     m_OverrideState: 1
     m_Value: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &-1667399603901140065
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c580c58d513b7ed4aa024e671b83f55c, type: 3}
+  m_Name: ShockwaveDistortionVolume
+  m_EditorClassIdentifier: Assembly-CSharp::ShockwaveDistortionVolume
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  samples:
+    m_OverrideState: 1
+    m_Value: 2
 --- !u!114 &-1596195852767275292
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -525,10 +563,10 @@ MonoBehaviour:
   - {fileID: -6288072647309666549}
   - {fileID: 7518938298396184218}
   - {fileID: -1410297666881709256}
-  - {fileID: -1940777614928600979}
-  - {fileID: 5931646649163690949}
-  - {fileID: 352323563977469753}
-  - {fileID: -1596195852767275292}
+  - {fileID: 6000027884824257395}
+  - {fileID: -1667399603901140065}
+  - {fileID: 6899290485666533278}
+  - {fileID: -2153172081652316032}
 --- !u!114 &352323563977469753
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1008,6 +1046,53 @@ MonoBehaviour:
   bokehRadius:
     m_OverrideState: 1
     m_Value: 4
+--- !u!114 &6000027884824257395
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bf859313dc4b054a97ff06516bc059d, type: 3}
+  m_Name: J_DepthOfFieldVolume
+  m_EditorClassIdentifier: Assembly-CSharp::J_DepthOfFieldVolume
+  active: 1
+  focusDistance:
+    m_OverrideState: 1
+    m_Value: 10
+  focusRange:
+    m_OverrideState: 1
+    m_Value: 3
+  bokehRadius:
+    m_OverrideState: 1
+    m_Value: 4
+--- !u!114 &6899290485666533278
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af3ff63233ceaa44898501d05ccd147, type: 3}
+  m_Name: VignetteVolume
+  m_EditorClassIdentifier: Assembly-CSharp::VignetteVolume
+  active: 1
+  radius:
+    m_OverrideState: 1
+    m_Value: 2
+  feather:
+    m_OverrideState: 1
+    m_Value: 0
+  tintColour:
+    m_OverrideState: 1
+    m_Value: {r: 0, g: 0, b: 0, a: 1}
+  invert:
+    m_OverrideState: 1
+    m_Value: 0
 --- !u!114 &6940869943325143175
 MonoBehaviour:
   m_ObjectHideFlags: 3

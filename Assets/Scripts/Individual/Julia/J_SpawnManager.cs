@@ -8,7 +8,7 @@ public class SpawnItem
 {
     public string itemName;
     public GameObject spawnPrefab;
-    public int spawnedAmount;
+    public int amountToSpawn;
     public float spawnDelay;
     public bool hasSpawnLimit;
     public bool spawnOnAwake;
@@ -18,6 +18,8 @@ public class SpawnItem
     [System.NonSerialized] public ObjectPool<GameObject> spawnPool;
     [System.NonSerialized] public List<GameObject> activeObjects = new List<GameObject>();
 }
+
+
 
 public class J_SpawnManager : MonoBehaviour
 {
@@ -58,12 +60,12 @@ public class J_SpawnManager : MonoBehaviour
                 }
 
                 prefab.gameObject.SetActive(true); //call when need an obj and there one available in the pool
-                item.spawnedAmount++;
+                item.amountToSpawn++;
 
             }, prefab =>
             {
                 prefab.gameObject.SetActive(false); //call when done and return to the pool
-                item.spawnedAmount--;
+                item.amountToSpawn--;
 
                 if (item.spawnOnDestroy)
                     Spawn(item.itemName, item.spawnDelay);
@@ -104,7 +106,7 @@ public class J_SpawnManager : MonoBehaviour
         if (spawnItem.spawnPrefab == null)
             return;
 
-        if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+        if (spawnItem.hasSpawnLimit && spawnItem.amountToSpawn >= spawnItem.spawnLimit)
             return;
 
         _spawnOnceCoroutine = SpawnAfterDelay(spawnItem, delay);
@@ -122,7 +124,7 @@ public class J_SpawnManager : MonoBehaviour
             return null;
         }
 
-        if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+        if (spawnItem.hasSpawnLimit && spawnItem.amountToSpawn >= spawnItem.spawnLimit)
         {
             Debug.Log("Spawn item limit was hit!");
             return null;
@@ -150,7 +152,7 @@ public class J_SpawnManager : MonoBehaviour
         if (spawnItem.spawnPrefab == null)
             return;
 
-        if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+        if (spawnItem.hasSpawnLimit && spawnItem.amountToSpawn >= spawnItem.spawnLimit)
             return;
 
         var newItem = spawnItem.spawnPool.Get();
@@ -181,7 +183,7 @@ public class J_SpawnManager : MonoBehaviour
         if (spawnItem.spawnPrefab == null)
             return null;
 
-        if (spawnItem.hasSpawnLimit && spawnItem.spawnedAmount >= spawnItem.spawnLimit)
+        if (spawnItem.hasSpawnLimit && spawnItem.amountToSpawn >= spawnItem.spawnLimit)
             return null;
 
         var newItem = spawnItem.spawnPool.Get();
@@ -241,7 +243,7 @@ public class J_SpawnManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        if (item.spawnedAmount <= item.spawnLimit && item.hasSpawnLimit)
+        if (item.amountToSpawn <= item.spawnLimit && item.hasSpawnLimit)
         {
             SpawnOnce(item.itemName);
         }
@@ -249,7 +251,7 @@ public class J_SpawnManager : MonoBehaviour
 
     public IEnumerator SpawnCoroutine(SpawnItem item, float delay)
     {
-        while (item.spawnedAmount <= item.spawnLimit && item.hasSpawnLimit)
+        while (item.amountToSpawn <= item.spawnLimit && item.hasSpawnLimit)
         {
             SpawnOnce(item.itemName);
             yield return new WaitForSeconds(delay);

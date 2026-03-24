@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fd5fa8cbd32cd449cfe04560822a1e, type: 3}
   m_Name: DepthOfFieldRendererFeature
   m_EditorClassIdentifier: Assembly-CSharp::DepthOfFieldRendererFeature
-  m_Active: 1
+  m_Active: 0
   _settings:
     renderPassEvent: 600
     shader: {fileID: 4800000, guid: d4988fce65269264abf31759fecabe93, type: 3}
