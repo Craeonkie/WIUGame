@@ -120,7 +120,7 @@ public class J_SpawnManager2 : MonoBehaviour
 
                 prefab.gameObject.SetActive(true); // call when need an obj and there one available in the pool
                 item.activeObjects.Add(prefab);
-                item.OnItemSpawned?.Invoke();
+                
 
                 if (!item.hasStartedSpawning)
                 {
@@ -246,7 +246,7 @@ public class J_SpawnManager2 : MonoBehaviour
     /// <summary>
     /// Starts continuous spawning if applicable
     /// </summary>
-    public GameObject SpawnItem(string itemName)
+    public GameObject SpawnItem(string itemName, bool invokeEvent = true)
     {
         J_SpawnItem item = GetSpawnItemBasedOnName(itemName);
 
@@ -280,7 +280,7 @@ public class J_SpawnManager2 : MonoBehaviour
     /// <summary>
     /// Starts continuous spawning at a position if applicable
     /// </summary>
-    public GameObject SpawnItem(string itemName, Vector3 position)
+    public GameObject SpawnItem(string itemName, Vector3 position, bool invokeEvent = true)
     {
         J_SpawnItem item = GetSpawnItemBasedOnName(itemName);
 
@@ -314,7 +314,7 @@ public class J_SpawnManager2 : MonoBehaviour
     /// <summary>
     /// Spawns an instance
     /// </summary>
-    public GameObject SpawnItemOnce(string itemName)
+    public GameObject SpawnItemOnce(string itemName, bool invokeEvent = true)
     {
         J_SpawnItem item = GetSpawnItemBasedOnName(itemName);
 
@@ -351,7 +351,7 @@ public class J_SpawnManager2 : MonoBehaviour
     /// <summary>
     /// Spawns an instance at a position
     /// </summary>
-    public GameObject SpawnItemOnce(string itemName, Vector3 position)
+    public GameObject SpawnItemOnce(string itemName, Vector3 position, bool invokeEvent = true)
     {
         J_SpawnItem item = GetSpawnItemBasedOnName(itemName);
 
@@ -383,7 +383,7 @@ public class J_SpawnManager2 : MonoBehaviour
     }
 
 
-    public void ReleaseItem(string itemName, GameObject obj)
+    public void ReleaseItem(string itemName, GameObject obj, bool invokeEvent = true)
     {
         J_SpawnItem item = GetSpawnItemBasedOnName(itemName);
         if (item == null)
@@ -393,17 +393,23 @@ public class J_SpawnManager2 : MonoBehaviour
         }
 
         item.spawnPool.Release(obj);
+        if (invokeEvent)
+            item.OnItemReleased?.Invoke();
     }
 
-    public void ReleaseItemPool(string itemName)
+    public void ReleaseItemPool(string itemName, bool invokeEvent = true)
     {
         J_SpawnItem item = GetSpawnItemBasedOnName(itemName);
         if (item == null)
             return;
 
         for (int i = item.activeObjects.Count - 1; i >= 0; i--)
+        {
             item.spawnPool.Release(item.activeObjects[i]);
 
+            if (invokeEvent)
+                item.OnItemReleased?.Invoke();
+        }
 
         if (item.spawnCoroutines.Count > 1)
         {
@@ -417,10 +423,10 @@ public class J_SpawnManager2 : MonoBehaviour
         item.activeObjects.Clear();
     }
 
-    public void ReleaseAllItems()
+    public void ReleaseAllItems(bool invokeEvent = true)
     {
         for (int i = 0; i < _itemsToSpawn.Length; i++)
-            ReleaseItemPool(_itemsToSpawn[i].itemData.itemName);
+            ReleaseItemPool(_itemsToSpawn[i].itemData.itemName, invokeEvent);
     }
 
     public void StopSpawning(string itemName)
@@ -455,19 +461,25 @@ public class J_SpawnManager2 : MonoBehaviour
 
 
 
-    private void InstantiateObject(J_SpawnItem item)
+    private void InstantiateObject(J_SpawnItem item, bool invokeEvent = true)
     {
         var newItem = item.spawnPool.Get();
         // Spawn a new instance randomly
         Vector3 randomPosition = GetRandomPointInBounds(item.spawnArea.bounds);
         newItem.transform.position = randomPosition;
+
+        if (invokeEvent)
+            item.OnItemSpawned?.Invoke();
     }
 
-    private void InstantiateObject(J_SpawnItem item, Vector3 position)
+    private void InstantiateObject(J_SpawnItem item, Vector3 position, bool invokeEvent = true)
     {
         var newItem = item.spawnPool.Get();
         // Spawn a new instance at a specific position
         newItem.transform.position = position;
+
+        if (invokeEvent)
+            item.OnItemSpawned?.Invoke();
     }
 
     
@@ -475,24 +487,24 @@ public class J_SpawnManager2 : MonoBehaviour
 
 
 
-    private IEnumerator SpawnCoroutine(J_SpawnItem item, float delay, IEnumerator currentCoroutine, bool repeat = false)
+    private IEnumerator SpawnCoroutine(J_SpawnItem item, float delay, IEnumerator currentCoroutine, bool repeat = false, bool invokeEvent = false)
     {
         do
         {
             yield return new WaitForSeconds(delay);
-            InstantiateObject(item);
+            InstantiateObject(item, invokeEvent);
 
         } while (item.spawnPool.CountActive < item.spawnLimit && item.itemData.settings.spawnType == SpawnSettings.SpawnType.CONTINUOUS && repeat);
 
         item.spawnCoroutines.Remove(currentCoroutine);
     }
 
-    private IEnumerator SpawnPositionCoroutine(J_SpawnItem item, float delay, Vector3 position, IEnumerator currentCoroutine, bool repeat = false)
+    private IEnumerator SpawnPositionCoroutine(J_SpawnItem item, float delay, Vector3 position, IEnumerator currentCoroutine, bool repeat = false, bool invokeEvent = false)
     {
         do
         {
             yield return new WaitForSeconds(delay);
-            InstantiateObject(item, position);
+            InstantiateObject(item, position, invokeEvent);
 
         } while (item.spawnPool.CountActive < item.spawnLimit && item.itemData.settings.spawnType == SpawnSettings.SpawnType.CONTINUOUS && repeat);
 
