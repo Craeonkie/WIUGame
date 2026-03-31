@@ -267,7 +267,7 @@ MonoBehaviour:
   _resetAnimationChain: 0
   _chainingAnimation: 0
   _currentAnimationChain: 0
-  isUsedByObjectPool: 0
+  isUsedByObjectPool: 1
   _destroyUponDrop: 0
   _maxTimeBeforeDestroyed: 0
   _expiresAfterDropped: 0

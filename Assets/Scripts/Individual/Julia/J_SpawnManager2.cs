@@ -15,6 +15,7 @@ public class J_SpawnManager2 : MonoBehaviour
     public class J_SpawnItem
     {
         [Header("Components")]
+        public string elementName;
         public J_SpawnItemData itemData;
         public Collider spawnArea;
 
@@ -77,6 +78,7 @@ public class J_SpawnManager2 : MonoBehaviour
     [SerializeField] private J_SpawnItem[] _itemsToSpawn;
     //[SerializeField] private SpawnGroup[] _spawnGroups;
     private IEnumerator _spawnCoroutine;
+    private bool _isPaused;
 
 
     private void Awake()
@@ -270,6 +272,8 @@ public class J_SpawnManager2 : MonoBehaviour
             delay = item.itemData.settings.spawnDelay;
         }
 
+        Debug.Log("item starting to spawn");
+
         _spawnCoroutine = SpawnCoroutine(item, delay, _spawnCoroutine, true);
         item.spawnCoroutines.Add(_spawnCoroutine);
         StartCoroutine(_spawnCoroutine);
@@ -383,6 +387,55 @@ public class J_SpawnManager2 : MonoBehaviour
     }
 
 
+    public GameObject SpawnItemInstantly(string itemName, int numberOfTimes, bool invokeEvent = true)
+    {
+        J_SpawnItem item = GetSpawnItemBasedOnName(itemName);
+
+        if (item == null)
+            return null;
+
+        if (item.itemData.spawnPrefab == null || !item.enabled)
+            return null;
+
+        if (item.hasSpawnLimit && item.activeObjects.Count >= item.spawnLimit)
+            return null;
+
+        for (int i = 0; i < numberOfTimes; ++i)
+        {
+            if (item.activeObjects.Count >= item.spawnLimit)
+                break;
+
+            InstantiateObject(item, invokeEvent);
+        }
+
+        return item.itemData.spawnPrefab;
+    }
+
+    public GameObject SpawnItemInstantly(string itemName, int numberOfTimes, Vector3 position, bool invokeEvent = true)
+    {
+        J_SpawnItem item = GetSpawnItemBasedOnName(itemName);
+
+        if (item == null)
+            return null;
+
+        if (item.itemData.spawnPrefab == null || !item.enabled)
+            return null;
+
+        if (item.hasSpawnLimit && item.activeObjects.Count >= item.spawnLimit)
+            return null;
+
+        for (int i = 0; i < numberOfTimes; ++i)
+        {
+            if (item.activeObjects.Count >= item.spawnLimit)
+                break;
+
+            InstantiateObject(item, position, invokeEvent);
+        }
+
+        return item.itemData.spawnPrefab;
+    }
+
+
     public void ReleaseItem(string itemName, GameObject obj, bool invokeEvent = true)
     {
         J_SpawnItem item = GetSpawnItemBasedOnName(itemName);
@@ -428,6 +481,14 @@ public class J_SpawnManager2 : MonoBehaviour
         for (int i = 0; i < _itemsToSpawn.Length; i++)
             ReleaseItemPool(_itemsToSpawn[i].itemData.itemName, invokeEvent);
     }
+
+
+    public void PauseAllSpawning(bool shouldPause)
+    {
+        _isPaused = shouldPause;
+    }
+
+
 
     public void StopSpawning(string itemName)
     {
@@ -492,6 +553,12 @@ public class J_SpawnManager2 : MonoBehaviour
         do
         {
             yield return new WaitForSeconds(delay);
+         
+            while (_isPaused)
+            {
+                yield return null;
+            }
+
             InstantiateObject(item, invokeEvent);
 
         } while (item.spawnPool.CountActive < item.spawnLimit && item.itemData.settings.spawnType == SpawnSettings.SpawnType.CONTINUOUS && repeat);
@@ -504,6 +571,12 @@ public class J_SpawnManager2 : MonoBehaviour
         do
         {
             yield return new WaitForSeconds(delay);
+
+            while (_isPaused)
+            {
+                yield return null;
+            }
+
             InstantiateObject(item, position, invokeEvent);
 
         } while (item.spawnPool.CountActive < item.spawnLimit && item.itemData.settings.spawnType == SpawnSettings.SpawnType.CONTINUOUS && repeat);
@@ -550,22 +623,22 @@ public class J_SpawnManager2 : MonoBehaviour
         return null;
     }
 
-    private bool IsInSpawnGroup(string name, ref string groupName)
-    {
-        //for (int i = 0; i < _spawnGroups.Length; ++i)
-        //{
-        //    for (int j = 0; j < _spawnGroups[i].itemsToSpawn.Length; ++j)
-        //    {
-        //        if (_spawnGroups[i].itemsToSpawn[j].itemToSpawn.itemData.itemName == name)
-        //        {
-        //            groupName = _spawnGroups[i].SpawnGroupName;
-        //            return true;
-        //        }
-        //    }
-        //}
+    //private bool IsInSpawnGroup(string name, ref string groupName)
+    //{
+    //    //for (int i = 0; i < _spawnGroups.Length; ++i)
+    //    //{
+    //    //    for (int j = 0; j < _spawnGroups[i].itemsToSpawn.Length; ++j)
+    //    //    {
+    //    //        if (_spawnGroups[i].itemsToSpawn[j].itemToSpawn.itemData.itemName == name)
+    //    //        {
+    //    //            groupName = _spawnGroups[i].SpawnGroupName;
+    //    //            return true;
+    //    //        }
+    //    //    }
+    //    //}
 
-        return false;
-    }
+    //    return false;
+    //}
 
     Vector3 GetRandomPointInBounds(Bounds bounds)
     {

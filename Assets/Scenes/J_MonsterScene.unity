@@ -6111,7 +6111,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 727337762}
-  - component: {fileID: 727337761}
+  - component: {fileID: 727337763}
   m_Layer: 0
   m_Name: SpawnManager
   m_TagString: Untagged
@@ -6119,83 +6119,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &727337761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 727337760}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 047b0cee22aa82d4d96dbf4e202b5b42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::J_SpawnManager
-  _spawnerBoundingBox: {fileID: 397878440}
-  _spawnItems:
-  - itemName: Bug
-    spawnPrefab: {fileID: 1085474963873975251, guid: 1657f0f910b80cc4fbca0643bb68fbec, type: 3}
-    amountToSpawn: 0
-    spawnDelay: 60
-    hasSpawnLimit: 1
-    spawnOnAwake: 0
-    loopSpawning: 1
-    spawnLimit: 0
-    spawnOnDestroy: 0
-  - itemName: ThrowableBug
-    spawnPrefab: {fileID: 5271520263240887916, guid: da6f1254c1409d84895d0bcb6cfb89bb, type: 3}
-    amountToSpawn: 0
-    spawnDelay: 0
-    hasSpawnLimit: 1
-    spawnOnAwake: 0
-    loopSpawning: 0
-    spawnLimit: 0
-    spawnOnDestroy: 0
-  - itemName: CottonBall
-    spawnPrefab: {fileID: 2703190509052905392, guid: 4e38e54dae9431a47b78956e57056d7e, type: 3}
-    amountToSpawn: 0
-    spawnDelay: 0
-    hasSpawnLimit: 1
-    spawnOnAwake: 0
-    loopSpawning: 0
-    spawnLimit: 10
-    spawnOnDestroy: 0
-  - itemName: Pillow
-    spawnPrefab: {fileID: 7295421025471254004, guid: 1fea26a05e0c61a44899f03e8fddeb80, type: 3}
-    amountToSpawn: 0
-    spawnDelay: 0
-    hasSpawnLimit: 1
-    spawnOnAwake: 0
-    loopSpawning: 0
-    spawnLimit: 10
-    spawnOnDestroy: 0
-  - itemName: Hanger
-    spawnPrefab: {fileID: 6988981879666586029, guid: 46bf8d02c96e4574fbf12876d2ef10bc, type: 3}
-    amountToSpawn: 0
-    spawnDelay: 5
-    hasSpawnLimit: 1
-    spawnOnAwake: 1
-    loopSpawning: 1
-    spawnLimit: 2
-    spawnOnDestroy: 1
-  - itemName: Small Bolster
-    spawnPrefab: {fileID: 2086874436743908894, guid: 4f203a964f81a1a42a59bb0ba6962c49, type: 3}
-    amountToSpawn: 0
-    spawnDelay: 5
-    hasSpawnLimit: 1
-    spawnOnAwake: 1
-    loopSpawning: 1
-    spawnLimit: 1
-    spawnOnDestroy: 1
-  - itemName: TV Remote
-    spawnPrefab: {fileID: 183981869333873731, guid: dd56d836f146f0e4cbcf42c3bffa4490, type: 3}
-    amountToSpawn: 0
-    spawnDelay: 5
-    hasSpawnLimit: 1
-    spawnOnAwake: 1
-    loopSpawning: 1
-    spawnLimit: 2
-    spawnOnDestroy: 1
 --- !u!4 &727337762
 Transform:
   m_ObjectHideFlags: 0
@@ -6211,6 +6134,166 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &727337763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727337760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cd2eb58399698c459e4737874d4c9d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::J_SpawnManager2
+  _itemsToSpawn:
+  - elementName: Bug
+    itemData: {fileID: 11400000, guid: 76fc6b6843f697c4db5e7d9f6d134fda, type: 2}
+    spawnArea: {fileID: 397878440}
+    hasSpawnLimit: 1
+    spawnLimit: 0
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: Throwable Bug
+    itemData: {fileID: 11400000, guid: 4d5e4f863353e044693e6847dd24dfa2, type: 2}
+    spawnArea: {fileID: 0}
+    hasSpawnLimit: 1
+    spawnLimit: 0
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: Cotton Ball
+    itemData: {fileID: 11400000, guid: 451769592f3808b4999d4606de52a57f, type: 2}
+    spawnArea: {fileID: 0}
+    hasSpawnLimit: 1
+    spawnLimit: 10
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: Pillow
+    itemData: {fileID: 11400000, guid: c8831843149783749b98daba7d9c1ba2, type: 2}
+    spawnArea: {fileID: 0}
+    hasSpawnLimit: 1
+    spawnLimit: 10
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: Hanger
+    itemData: {fileID: 11400000, guid: 79e3a36413ca9584f95ad8e6bc41b1a1, type: 2}
+    spawnArea: {fileID: 397878440}
+    hasSpawnLimit: 1
+    spawnLimit: 2
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: Small Bolster
+    itemData: {fileID: 11400000, guid: afe1e2ded79d4c9488093a57c47b44a4, type: 2}
+    spawnArea: {fileID: 397878440}
+    hasSpawnLimit: 1
+    spawnLimit: 1
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: TV Remote
+    itemData: {fileID: 11400000, guid: 2f71076cc7b7a8048999a8ebbb69733a, type: 2}
+    spawnArea: {fileID: 397878440}
+    hasSpawnLimit: 1
+    spawnLimit: 2
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!1 &737271881
 GameObject:
   m_ObjectHideFlags: 0
@@ -11282,10 +11365,10 @@ MonoBehaviour:
         z: 1.6345229
       Rotation:
         value:
-          x: -0.60741836
-          y: 0.52918893
+          x: -0.6074184
+          y: 0.5291889
           z: 0.5150225
-          w: 0.29283762
+          w: 0.29283756
     - Position:
         x: 1.6199989
         y: 8.29
@@ -11318,9 +11401,9 @@ MonoBehaviour:
         z: 2.0546927
       Rotation:
         value:
-          x: 0.16086161
-          y: -0.010032542
-          z: 0.27246636
+          x: 0.16086164
+          y: -0.010032543
+          z: 0.27246642
           w: 0.94856995
     - Position:
         x: 4.7599983
@@ -14033,6 +14116,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 727337763}
+          m_TargetAssemblyTypeName: J_SpawnManager2, Assembly-CSharp
+          m_MethodName: PauseAllSpawning
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnCutScenePause:
       m_PersistentCalls:
         m_Calls: []
@@ -14200,6 +14295,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 727337763}
+          m_TargetAssemblyTypeName: J_SpawnManager2, Assembly-CSharp
+          m_MethodName: PauseAllSpawning
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnCutScenePause:
       m_PersistentCalls:
         m_Calls: []
@@ -14271,6 +14378,42 @@ MonoBehaviour:
         - m_Target: {fileID: 498226868}
           m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 727337763}
+          m_TargetAssemblyTypeName: J_SpawnManager2, Assembly-CSharp
+          m_MethodName: PauseAllSpawning
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 727337763}
+          m_TargetAssemblyTypeName: J_SpawnManager2, Assembly-CSharp
+          m_MethodName: StopAllSpawning
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 727337763}
+          m_TargetAssemblyTypeName: J_SpawnManager2, Assembly-CSharp
+          m_MethodName: ReleaseAllItems
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -14815,6 +14958,115 @@ Transform:
   m_Children:
   - {fileID: 865969307}
   m_Father: {fileID: 1446959856}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1634550457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1634550459}
+  - component: {fileID: 1634550458}
+  m_Layer: 0
+  m_Name: SpawnManagerTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1634550458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634550457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 047b0cee22aa82d4d96dbf4e202b5b42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::J_SpawnManager
+  _spawnerBoundingBox: {fileID: 397878440}
+  _spawnItems:
+  - itemName: Bug
+    spawnPrefab: {fileID: 1085474963873975251, guid: 1657f0f910b80cc4fbca0643bb68fbec, type: 3}
+    amountToSpawn: 0
+    spawnDelay: 60
+    hasSpawnLimit: 1
+    spawnOnAwake: 0
+    loopSpawning: 1
+    spawnLimit: 0
+    spawnOnDestroy: 0
+  - itemName: ThrowableBug
+    spawnPrefab: {fileID: 5271520263240887916, guid: da6f1254c1409d84895d0bcb6cfb89bb, type: 3}
+    amountToSpawn: 0
+    spawnDelay: 0
+    hasSpawnLimit: 1
+    spawnOnAwake: 0
+    loopSpawning: 0
+    spawnLimit: 0
+    spawnOnDestroy: 0
+  - itemName: CottonBall
+    spawnPrefab: {fileID: 2703190509052905392, guid: 4e38e54dae9431a47b78956e57056d7e, type: 3}
+    amountToSpawn: 0
+    spawnDelay: 0
+    hasSpawnLimit: 1
+    spawnOnAwake: 0
+    loopSpawning: 0
+    spawnLimit: 10
+    spawnOnDestroy: 0
+  - itemName: Pillow
+    spawnPrefab: {fileID: 7295421025471254004, guid: 1fea26a05e0c61a44899f03e8fddeb80, type: 3}
+    amountToSpawn: 0
+    spawnDelay: 0
+    hasSpawnLimit: 1
+    spawnOnAwake: 0
+    loopSpawning: 0
+    spawnLimit: 10
+    spawnOnDestroy: 0
+  - itemName: Hanger
+    spawnPrefab: {fileID: 6988981879666586029, guid: 46bf8d02c96e4574fbf12876d2ef10bc, type: 3}
+    amountToSpawn: 0
+    spawnDelay: 5
+    hasSpawnLimit: 1
+    spawnOnAwake: 1
+    loopSpawning: 1
+    spawnLimit: 2
+    spawnOnDestroy: 1
+  - itemName: Small Bolster
+    spawnPrefab: {fileID: 2086874436743908894, guid: 4f203a964f81a1a42a59bb0ba6962c49, type: 3}
+    amountToSpawn: 0
+    spawnDelay: 5
+    hasSpawnLimit: 1
+    spawnOnAwake: 1
+    loopSpawning: 1
+    spawnLimit: 1
+    spawnOnDestroy: 1
+  - itemName: TV Remote
+    spawnPrefab: {fileID: 183981869333873731, guid: dd56d836f146f0e4cbcf42c3bffa4490, type: 3}
+    amountToSpawn: 0
+    spawnDelay: 5
+    hasSpawnLimit: 1
+    spawnOnAwake: 1
+    loopSpawning: 1
+    spawnLimit: 2
+    spawnOnDestroy: 1
+--- !u!4 &1634550459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634550457}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1638461235
 GameObject:
@@ -90059,6 +90311,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 727337763}
+          m_TargetAssemblyTypeName: J_SpawnManager2, Assembly-CSharp
+          m_MethodName: PauseAllSpawning
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
         - m_Target: {fileID: 1272164958}
           m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_MethodName: SetActive
@@ -90117,22 +90381,10 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
-        - m_Target: {fileID: 727337761}
-          m_TargetAssemblyTypeName: J_SpawnManager, Assembly-CSharp
-          m_MethodName: StopAllSpawning
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-        - m_Target: {fileID: 727337761}
-          m_TargetAssemblyTypeName: J_SpawnManager, Assembly-CSharp
-          m_MethodName: ReleaseAll
-          m_Mode: 1
+        - m_Target: {fileID: 727337763}
+          m_TargetAssemblyTypeName: J_SpawnManager2, Assembly-CSharp
+          m_MethodName: PauseAllSpawning
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -107681,6 +107933,7 @@ SceneRoots:
   - {fileID: 1820914852}
   - {fileID: 397878441}
   - {fileID: 727337762}
+  - {fileID: 1634550459}
   - {fileID: 264080776}
   - {fileID: 1576367664}
   - {fileID: 469936472}

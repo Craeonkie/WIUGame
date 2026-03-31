@@ -28604,7 +28604,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 619094651}
-  - component: {fileID: 619094650}
+  - component: {fileID: 619094652}
   - component: {fileID: 619094649}
   m_Layer: 0
   m_Name: SpawnManager
@@ -28634,56 +28634,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 40, y: 1, z: 40}
   m_Center: {x: 0, y: 0.53, z: 0}
---- !u!114 &619094650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 619094648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 047b0cee22aa82d4d96dbf4e202b5b42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::J_SpawnManager
-  _spawnerBoundingBox: {fileID: 619094649}
-  _spawnItems:
-  - itemName: Rubix Cube
-    spawnPrefab: {fileID: 7845355539634459621, guid: 0887d4984386e154eaffc8687f802e46, type: 3}
-    spawnedAmount: 0
-    spawnDelay: 5
-    hasSpawnLimit: 1
-    spawnOnAwake: 1
-    loopSpawning: 1
-    spawnLimit: 4
-    spawnOnDestroy: 0
-  - itemName: Pencil Weapon
-    spawnPrefab: {fileID: 9039949854212072301, guid: ca1c9bf87a9a18f40952a9d411cd99bd, type: 3}
-    spawnedAmount: 0
-    spawnDelay: 5
-    hasSpawnLimit: 1
-    spawnOnAwake: 1
-    loopSpawning: 1
-    spawnLimit: 2
-    spawnOnDestroy: 0
-  - itemName: Toy Hammer Weapon
-    spawnPrefab: {fileID: 4228696927689706119, guid: 9cf80ae0ebe6138449a432369fc08482, type: 3}
-    spawnedAmount: 0
-    spawnDelay: 5
-    hasSpawnLimit: 1
-    spawnOnAwake: 1
-    loopSpawning: 1
-    spawnLimit: 2
-    spawnOnDestroy: 0
-  - itemName: Shield
-    spawnPrefab: {fileID: 6768178402911962384, guid: 2cddca2ef0b8b794196ca272c7c6edf0, type: 3}
-    spawnedAmount: 0
-    spawnDelay: 5
-    hasSpawnLimit: 1
-    spawnOnAwake: 1
-    loopSpawning: 1
-    spawnLimit: 2
-    spawnOnDestroy: 0
 --- !u!4 &619094651
 Transform:
   m_ObjectHideFlags: 0
@@ -28699,6 +28649,103 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &619094652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619094648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cd2eb58399698c459e4737874d4c9d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::J_SpawnManager2
+  _itemsToSpawn:
+  - elementName: Rubix Cube
+    itemData: {fileID: 11400000, guid: 945d33baf7409684a92638e68ec6b983, type: 2}
+    spawnArea: {fileID: 619094649}
+    hasSpawnLimit: 1
+    spawnLimit: 4
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: Pencil Weapon
+    itemData: {fileID: 11400000, guid: a7f72a45134209d498f1e5eb1506dc23, type: 2}
+    spawnArea: {fileID: 619094649}
+    hasSpawnLimit: 1
+    spawnLimit: 2
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: Toy Hammer Weapon
+    itemData: {fileID: 11400000, guid: 38c41fc575f27bd4c8c7cd5d1ee35537, type: 2}
+    spawnArea: {fileID: 619094649}
+    hasSpawnLimit: 1
+    spawnLimit: 2
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: Eraser Shield
+    itemData: {fileID: 11400000, guid: 724fa2d7b452b224a913b53a641e9e9a, type: 2}
+    spawnArea: {fileID: 619094649}
+    hasSpawnLimit: 1
+    spawnLimit: 2
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!4 &628276477 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 928578799663657996, guid: 157e8bc05a0dedc4580c3abc6947c972, type: 3}

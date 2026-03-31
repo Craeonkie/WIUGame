@@ -22,13 +22,14 @@ public class J_Blind : MonoBehaviour
             other.GetComponent<Entity>().TakeDamage(_damage, 0.0f);
             other.GetComponent<PlayerController>().Stun(_stunDuration);
 
-            J_EffectsManager.Instance.StartDustEffect();
+            J_EffectsManager2.Instance.StartDustEffect();
         }
     }
 
     private IEnumerator DisableAfterDuration()
     {
         yield return new WaitForSeconds(_durationBeforeInactive);
-        J_SpawnManager.Instance.Release("CottonBall", gameObject);
+        //J_SpawnManager.Instance.Release("CottonBall", gameObject);
+        J_SpawnManager2.Instance.ReleaseItem("CottonBall", gameObject);
     }
 }

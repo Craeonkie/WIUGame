@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f42cc854be863849a41d16ef56d2b13, type: 3}
-  m_Name: BugEnemy
+  m_Name: SmallBolster
   m_EditorClassIdentifier: Assembly-CSharp::J_SpawnItemData
-  itemName: Bug
-  spawnPrefab: {fileID: 1085474963873975251, guid: 1657f0f910b80cc4fbca0643bb68fbec, type: 3}
+  itemName: SmallBolster
+  spawnPrefab: {fileID: 2086874436743908894, guid: 4f203a964f81a1a42a59bb0ba6962c49, type: 3}
   settings:
-    spawnDelay: 30
-    randomDelay: 1
-    spawnDelayRange: {x: 25, y: 35}
-    startSpawningOnAwake: 0
+    spawnDelay: 5
+    randomDelay: 0
+    spawnDelayRange: {x: 0, y: 0}
+    startSpawningOnAwake: 1
     spawnInstantly: 0
     amountToSpawnOnStart: 0
-    spawnType: 1
+    spawnType: 0
     shouldSpawnOnDestroy: 1

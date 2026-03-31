@@ -439,15 +439,24 @@ public class J_BossBehaviour : Entity
         // Phase 2
         if (index == 1)
         {
-            J_SpawnManager.Instance.UpdateItemLimit("Bug", _phases[index].bugSpawningLimit);
-            J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", _phases[index].bugSpawningLimit);
-            J_SpawnManager.Instance.SpawnContinuously("Bug", _phases[index].bugSpawningDelay);
+            //J_SpawnManager.Instance.UpdateItemLimit("Bug", _phases[index].bugSpawningLimit);
+            //J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", _phases[index].bugSpawningLimit);
+            //J_SpawnManager.Instance.SpawnContinuously("Bug", _phases[index].bugSpawningDelay);
+
+            J_SpawnManager2.Instance.UpdateItemLimit("Bug", _phases[index].bugSpawningLimit);
+            J_SpawnManager2.Instance.UpdateItemLimit("ThrowableBug", _phases[index].bugSpawningLimit);
+            J_SpawnManager2.Instance.SpawnItemInstantly("Bug", 1);
+            J_SpawnManager2.Instance.SpawnItem("Bug");
         }
         else if (index == 2)
         {
-            J_SpawnManager.Instance.UpdateItemLimit("Bug", _phases[index].bugSpawningLimit);
-            J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", _phases[index].bugSpawningLimit);
-            J_SpawnManager.Instance.SpawnContinuously("Bug", _phases[index].bugSpawningDelay);
+            //J_SpawnManager.Instance.UpdateItemLimit("Bug", _phases[index].bugSpawningLimit);
+            //J_SpawnManager.Instance.UpdateItemLimit("ThrowableBug", _phases[index].bugSpawningLimit);
+            //J_SpawnManager.Instance.SpawnContinuously("Bug", _phases[index].bugSpawningDelay);
+
+            J_SpawnManager2.Instance.UpdateItemLimit("Bug", _phases[index].bugSpawningLimit);
+            J_SpawnManager2.Instance.UpdateItemLimit("ThrowableBug", _phases[index].bugSpawningLimit);
+            J_SpawnManager2.Instance.SpawnItem("Bug");
             J_CarryItem.Enable();
         }
     }
@@ -785,7 +794,8 @@ public class J_BossBehaviour : Entity
         {
             AudioLibrary.Instance.PlaySoundAtPoint("RipPillow", _fakePillow.transform.position);
 
-            var cottonBall = J_SpawnManager.Instance.SpawnAtPosition("CottonBall", _fakePillow.transform.position);
+            //var cottonBall = J_SpawnManager.Instance.SpawnAtPosition("CottonBall", _fakePillow.transform.position);
+            var cottonBall = J_SpawnManager2.Instance.SpawnItemOnce("CottonBall", _fakePillow.transform.position);
             cottonBall.GetComponent<Rigidbody>().AddForce((transform.forward * Random.Range(1f, _maximumForwardForce)) + new Vector3(Random.Range(-_horizontalForce, _horizontalForce), 0f, 0f), ForceMode.Impulse);
 
             yield return new WaitForSeconds(_intervalBetweenRips);
@@ -842,7 +852,8 @@ public class J_BossBehaviour : Entity
         AudioLibrary.Instance.PlaySoundLerp("ThrowPillow");
 
         // Spawn a new pillow and throw it to its destination
-        var newPillow = J_SpawnManager.Instance.SpawnAtPosition("Pillow", _fakePillow.transform.position);
+        //var newPillow = J_SpawnManager.Instance.SpawnAtPosition("Pillow", _fakePillow.transform.position);
+        var newPillow = J_SpawnManager2.Instance.SpawnItemOnce("Pillow", _fakePillow.transform.position);
 
         if (newPillow == null)
         {

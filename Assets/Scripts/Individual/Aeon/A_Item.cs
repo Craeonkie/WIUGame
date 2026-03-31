@@ -87,8 +87,8 @@ public abstract class Item : Interactable
             _timeBeforeDestroyed -= Time.deltaTime;
             if (_timeBeforeDestroyed <= 0)
             {
-                if (isUsedByObjectPool && J_SpawnManager.Instance != null)
-                    J_SpawnManager.Instance.Release(itemName, gameObject);
+                if (isUsedByObjectPool && J_SpawnManager2.Instance != null)
+                    J_SpawnManager2.Instance.ReleaseItem(itemName, gameObject);
                 else
                     gameObject.SetActive(false);
             }
@@ -178,8 +178,8 @@ public abstract class Item : Interactable
 
         if (currentDurability <= 0 && hasDurability)
         {
-            if (isUsedByObjectPool && J_SpawnManager.Instance != null)
-                J_SpawnManager.Instance.Release(itemName, gameObject);
+            if (isUsedByObjectPool && J_SpawnManager2.Instance != null)
+                J_SpawnManager2.Instance.ReleaseItem(itemName, gameObject);
             else
                 gameObject.SetActive(false);
         }
@@ -234,8 +234,8 @@ public abstract class Item : Interactable
             }
         }
 
-        if (isUsedByObjectPool && J_SpawnManager.Instance != null)
-            J_SpawnManager.Instance.Release(itemName, gameObject);
+        if (isUsedByObjectPool && J_SpawnManager2.Instance != null)
+            J_SpawnManager2.Instance.ReleaseItem(itemName, gameObject);
         else
             gameObject.SetActive(false);
     }

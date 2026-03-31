@@ -175,7 +175,7 @@ public class J_CarryItem : MonoBehaviour
 
         _currentPillow.transform.parent = null;
         _currentPillow.GetDropped();
-        J_SpawnManager.Instance.Release("Pillow", _currentPillow.gameObject);
+        J_SpawnManager2.Instance.ReleaseItem("Pillow", _currentPillow.gameObject);
         _currentPillow = null;
 
         // Get reference to the player (hard ref gg)

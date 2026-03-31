@@ -1,5 +1,4 @@
 using Unity.AI.Navigation;
-using Unity.VectorGraphics;
 using UnityEngine;
 using UnityEngine.AI;
 

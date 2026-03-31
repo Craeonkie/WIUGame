@@ -5745,9 +5745,9 @@ MonoBehaviour:
         z: 2.7512894
       Rotation:
         value:
-          x: -0.223484
-          y: 0.073167875
-          z: 0.47664526
+          x: -0.22348402
+          y: 0.07316789
+          z: 0.4766453
           w: 0.84705997
     - Position:
         x: -12.551451
@@ -5799,8 +5799,8 @@ MonoBehaviour:
         z: 3.4543657
       Rotation:
         value:
-          x: -0.12930492
-          y: 0.54423785
+          x: -0.12930489
+          y: 0.5442378
           z: -0.5017316
           w: 0.65981126
     - Position:
@@ -5836,8 +5836,8 @@ MonoBehaviour:
       Rotation:
         value:
           x: 0.67897147
-          y: 0.5690716
-          z: -0.44608918
+          y: 0.5690715
+          z: -0.44608915
           w: 0.12712099
     - Position:
         x: 3.745037
@@ -36368,8 +36368,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1860888835}
   - component: {fileID: 1860888836}
+  - component: {fileID: 1860888837}
   m_Layer: 0
-  m_Name: '- - - - - WEAPONS - - - - - - '
+  m_Name: '- - - - - WEAPONS - - - - - - (Spawn Manager)'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36397,7 +36398,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1860888833}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 047b0cee22aa82d4d96dbf4e202b5b42, type: 3}
   m_Name: 
@@ -36406,7 +36407,7 @@ MonoBehaviour:
   _spawnItems:
   - itemName: Chopstick
     spawnPrefab: {fileID: 1268731487748053566, guid: 04827d69e6f9c074e8ba2f6773387b6d, type: 3}
-    spawnedAmount: 1
+    amountToSpawn: 0
     spawnDelay: 2
     hasSpawnLimit: 1
     spawnOnAwake: 1
@@ -36415,13 +36416,68 @@ MonoBehaviour:
     spawnOnDestroy: 0
   - itemName: Fork
     spawnPrefab: {fileID: 8711333863715367783, guid: dbca2c8f65e46b0419d266410cc58328, type: 3}
-    spawnedAmount: 1
+    amountToSpawn: 0
     spawnDelay: 2
     hasSpawnLimit: 1
     spawnOnAwake: 1
     loopSpawning: 1
     spawnLimit: 2
     spawnOnDestroy: 0
+--- !u!114 &1860888837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860888833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cd2eb58399698c459e4737874d4c9d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::J_SpawnManager2
+  _itemsToSpawn:
+  - elementName: Chopstick
+    itemData: {fileID: 11400000, guid: 05b92b1eb5bc89b4fad683ef53192b2f, type: 2}
+    spawnArea: {fileID: 1857462981}
+    hasSpawnLimit: 1
+    spawnLimit: 2
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+  - elementName: Fork
+    itemData: {fileID: 11400000, guid: 826cac0870fc1164bb841d3c798fe54a, type: 2}
+    spawnArea: {fileID: 1857462981}
+    hasSpawnLimit: 1
+    spawnLimit: 2
+    enabled: 1
+    OnItemSpawned:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemReleased:
+      m_PersistentCalls:
+        m_Calls: []
+    OnItemDestroyed:
+      m_PersistentCalls:
+        m_Calls: []
+    OnStartSpawning:
+      m_PersistentCalls:
+        m_Calls: []
+    OnEndSpawning:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &1861974352
 MonoBehaviour:
   m_ObjectHideFlags: 0

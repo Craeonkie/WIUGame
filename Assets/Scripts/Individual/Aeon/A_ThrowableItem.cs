@@ -179,8 +179,8 @@ public class ThrowableItem : Item
 
         if (isInFlight && breakOnHit)
         {
-            if (isUsedByObjectPool && J_SpawnManager.Instance != null)
-                J_SpawnManager.Instance.Release(itemName, gameObject);
+            if (isUsedByObjectPool && J_SpawnManager2.Instance != null)
+                J_SpawnManager2.Instance.ReleaseItem(itemName, gameObject);
             else
                 gameObject.SetActive(false);
         }

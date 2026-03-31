@@ -54,7 +54,7 @@ public class J_BugBehaviour : Entity
     private void OnEnable()
     {
         if (_player == null)
-            _player = FindAnyObjectByType<PlayerController>();
+            _player = FindAnyObjectByType<PlayerController>(FindObjectsInactive.Include);
 
         // timers + state
         _currentLifeTimer = _lifetime;
@@ -304,8 +304,11 @@ public class J_BugBehaviour : Entity
         }
 
         // Release
-        J_SpawnManager.Instance.Release("Bug", gameObject);
-        J_SpawnManager.Instance.SpawnAtPosition("ThrowableBug", transform.position);
+        //J_SpawnManager.Instance.Release("Bug", gameObject);
+        //J_SpawnManager.Instance.SpawnAtPosition("ThrowableBug", transform.position);
+
+        J_SpawnManager2.Instance.SpawnItemOnce("ThrowableBug", transform.position);
+        J_SpawnManager2.Instance.ReleaseItem("Bug", gameObject);
     }
 
     // Check for player jump

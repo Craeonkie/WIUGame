@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f42cc854be863849a41d16ef56d2b13, type: 3}
-  m_Name: BugEnemy
+  m_Name: Pillow
   m_EditorClassIdentifier: Assembly-CSharp::J_SpawnItemData
-  itemName: Bug
-  spawnPrefab: {fileID: 1085474963873975251, guid: 1657f0f910b80cc4fbca0643bb68fbec, type: 3}
+  itemName: Pillow
+  spawnPrefab: {fileID: 7295421025471254004, guid: 1fea26a05e0c61a44899f03e8fddeb80, type: 3}
   settings:
-    spawnDelay: 30
-    randomDelay: 1
-    spawnDelayRange: {x: 25, y: 35}
+    spawnDelay: 0
+    randomDelay: 0
+    spawnDelayRange: {x: 0, y: 0}
     startSpawningOnAwake: 0
     spawnInstantly: 0
     amountToSpawnOnStart: 0
-    spawnType: 1
-    shouldSpawnOnDestroy: 1
+    spawnType: 0
+    shouldSpawnOnDestroy: 0

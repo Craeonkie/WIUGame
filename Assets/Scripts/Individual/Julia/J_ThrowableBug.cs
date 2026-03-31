@@ -29,7 +29,8 @@ public class J_ThrowableBug : MonoBehaviour
 
     private void DestroyImmediately()
     {
-        J_SpawnManager.Instance.Release("ThrowableBug", gameObject);
+        //J_SpawnManager.Instance.Release("ThrowableBug", gameObject);
+        J_SpawnManager2.Instance.ReleaseItem("ThrowableBug", gameObject);
     }
 
     private IEnumerator DestroyAfterDuration(float duration)
