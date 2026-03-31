@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 934306453396126478ece15fad60ae06, type: 3}
+  m_Name: FireEffect
+  m_EditorClassIdentifier: Assembly-CSharp::J_ShaderData
+  ShaderName: Fire
+  ShaderMaterial: {fileID: 2100000, guid: 0c526125f0cc8764eb0238c925868a30, type: 2}

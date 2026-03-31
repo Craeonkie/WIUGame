@@ -22,7 +22,7 @@ public class J_Blind : MonoBehaviour
             other.GetComponent<Entity>().TakeDamage(_damage, 0.0f);
             other.GetComponent<PlayerController>().Stun(_stunDuration);
 
-            J_EffectsManager2.Instance.StartDustEffect();
+            J_EffectsManager.Instance.StartDustEffect();
         }
     }
 

@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 934306453396126478ece15fad60ae06, type: 3}
+  m_Name: SmokeEffect
+  m_EditorClassIdentifier: Assembly-CSharp::J_ShaderData
+  ShaderName: Smoke
+  ShaderMaterial: {fileID: 2100000, guid: 9656cf119318b304e9a5a289d88ad97f, type: 2}

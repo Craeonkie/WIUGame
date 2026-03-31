@@ -2052,6 +2052,7 @@ GameObject:
   - component: {fileID: 264080776}
   - component: {fileID: 264080775}
   - component: {fileID: 264080777}
+  - component: {fileID: 264080778}
   m_Layer: 0
   m_Name: EffectsManager
   m_TagString: Untagged
@@ -2167,6 +2168,320 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &264080778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264080774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78bdb13d0d647864aae410933089c010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::J_ShadersManager
+  _shaderItems:
+  - ItemName: Fire
+    ShaderData: {fileID: 11400000, guid: 02d544d2cbced704f80e485c35ef2050, type: 2}
+    ResetValueOnDestroy: 1
+    ShaderProperties:
+    - PropertyName: _VignettePower
+      Type: 2
+      OriginalValue:
+        Colour: {r: 0, g: 0, b: 0, a: 0}
+        Int: 0
+        Float: 50
+        Vector: {x: 0, y: 0, z: 0, w: 0}
+      Transitions:
+      - TransitionName: IncreaseBurn
+        StartValue:
+          Colour: {r: 0, g: 0, b: 0, a: 0}
+          Int: 0
+          Float: 50
+          Vector: {x: 0, y: 0, z: 0, w: 0}
+        EndValue:
+          Colour: {r: 0, g: 0, b: 0, a: 0}
+          Int: 0
+          Float: 3
+          Vector: {x: 0, y: 0, z: 0, w: 0}
+        TransitionDuration: 0.3
+        TransitionCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 0
+        OnTransitionStart:
+          m_PersistentCalls:
+            m_Calls: []
+        OnTransitionFinish:
+          m_PersistentCalls:
+            m_Calls: []
+        IsCompleted: 0
+      - TransitionName: DecreaseBurn
+        StartValue:
+          Colour: {r: 0, g: 0, b: 0, a: 0}
+          Int: 0
+          Float: 3
+          Vector: {x: 0, y: 0, z: 0, w: 0}
+        EndValue:
+          Colour: {r: 0, g: 0, b: 0, a: 0}
+          Int: 0
+          Float: 50
+          Vector: {x: 0, y: 0, z: 0, w: 0}
+        TransitionDuration: 0.3
+        TransitionCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 0
+        OnTransitionStart:
+          m_PersistentCalls:
+            m_Calls: []
+        OnTransitionFinish:
+          m_PersistentCalls:
+            m_Calls: []
+        IsCompleted: 0
+      CurrentTransitionIndex: 0
+  - ItemName: Smoke
+    ShaderData: {fileID: 11400000, guid: 1caeed37a1652114485f6d547d4aaecf, type: 2}
+    ResetValueOnDestroy: 1
+    ShaderProperties:
+    - PropertyName: _DustStrength
+      Type: 2
+      OriginalValue:
+        Colour: {r: 0, g: 0, b: 0, a: 0}
+        Int: 0
+        Float: 0
+        Vector: {x: 0, y: 0, z: 0, w: 0}
+      Transitions:
+      - TransitionName: IncreaseBurn
+        StartValue:
+          Colour: {r: 0, g: 0, b: 0, a: 0}
+          Int: 0
+          Float: 0
+          Vector: {x: 0, y: 0, z: 0, w: 0}
+        EndValue:
+          Colour: {r: 0, g: 0, b: 0, a: 0}
+          Int: 0
+          Float: 1
+          Vector: {x: 0, y: 0, z: 0, w: 0}
+        TransitionDuration: 0.3
+        TransitionCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 0
+        OnTransitionStart:
+          m_PersistentCalls:
+            m_Calls: []
+        OnTransitionFinish:
+          m_PersistentCalls:
+            m_Calls: []
+        IsCompleted: 0
+      - TransitionName: DecreaseBurn
+        StartValue:
+          Colour: {r: 0, g: 0, b: 0, a: 0}
+          Int: 0
+          Float: 1
+          Vector: {x: 0, y: 0, z: 0, w: 0}
+        EndValue:
+          Colour: {r: 0, g: 0, b: 0, a: 0}
+          Int: 0
+          Float: 0
+          Vector: {x: 0, y: 0, z: 0, w: 0}
+        TransitionDuration: 0.3
+        TransitionCurve:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 0
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 1
+            inSlope: 1
+            outSlope: 1
+            tangentMode: 34
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 0
+        OnTransitionStart:
+          m_PersistentCalls:
+            m_Calls: []
+        OnTransitionFinish:
+          m_PersistentCalls:
+            m_Calls: []
+        IsCompleted: 0
+      CurrentTransitionIndex: 0
+  GlobalVolume: {fileID: 694157681}
+  _setValueOnAwake: 1
+  _vignetteRadiusValue: 2
+  _vignetteFeatherValue: 0
+  _vignetteTransitions:
+  - TransitionName: VignetteInward
+    StartValue:
+      Colour: {r: 0, g: 0, b: 0, a: 0}
+      Int: 0
+      Float: 2
+      Vector: {x: 0, y: 0, z: 0, w: 0}
+    EndValue:
+      Colour: {r: 0, g: 0, b: 0, a: 0}
+      Int: 0
+      Float: -2
+      Vector: {x: 0, y: 0, z: 0, w: 0}
+    TransitionDuration: 1
+    TransitionCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    OnTransitionStart:
+      m_PersistentCalls:
+        m_Calls: []
+    OnTransitionFinish:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1001342786}
+          m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+          m_MethodName: LoadScene
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: J_MonsterScene
+            m_BoolArgument: 0
+          m_CallState: 2
+    IsCompleted: 0
+  - TransitionName: VignetteOutward
+    StartValue:
+      Colour: {r: 0, g: 0, b: 0, a: 0}
+      Int: 0
+      Float: -2
+      Vector: {x: 0, y: 0, z: 0, w: 0}
+    EndValue:
+      Colour: {r: 0, g: 0, b: 0, a: 0}
+      Int: 0
+      Float: 2
+      Vector: {x: 0, y: 0, z: 0, w: 0}
+    TransitionDuration: 1
+    TransitionCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 0
+    OnTransitionStart:
+      m_PersistentCalls:
+        m_Calls: []
+    OnTransitionFinish:
+      m_PersistentCalls:
+        m_Calls: []
+    IsCompleted: 0
 --- !u!1 &269437766
 GameObject:
   m_ObjectHideFlags: 0

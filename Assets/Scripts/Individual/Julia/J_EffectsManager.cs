@@ -9,9 +9,9 @@ public class Effect
     public Material material;
 }
 
-public class J_EffectsManager2 : MonoBehaviour
+public class J_EffectsManager : MonoBehaviour
 {
-    public static J_EffectsManager2 Instance;
+    public static J_EffectsManager Instance;
     public Volume GlobalVolume;
 
     [Header("Fire Effect")]
