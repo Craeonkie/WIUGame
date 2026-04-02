@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
 
-public class VignetteRendererFeature : ScriptableRendererFeature
+public class J_VignetteRendererFeature : ScriptableRendererFeature
 {
     [System.Serializable]
     public class Settings

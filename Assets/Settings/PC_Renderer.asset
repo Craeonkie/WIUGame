@@ -53,6 +53,24 @@ MonoBehaviour:
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
+--- !u!114 &-4625845356272836292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f4e9f029a982d40a5c32fe20994c31, type: 3}
+  m_Name: J_BloomRendererFeature
+  m_EditorClassIdentifier: Assembly-CSharp::J_BloomRendererFeature
+  m_Active: 1
+  _settings:
+    passEvent: 600
+    bloomShader: {fileID: 4800000, guid: e1b11102b2c21fd4c9aab700ebe9530a, type: 3}
+    blurShader: {fileID: 4800000, guid: 85524242e96926c4d829f1d40c45f8fa, type: 3}
+    onlyBaseCamera: 1
 --- !u!114 &-2489294306987497030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +151,7 @@ MonoBehaviour:
   - {fileID: 7833122117494664109}
   - {fileID: -43649738529986294}
   - {fileID: -6136615521895696081}
+  - {fileID: -4625845356272836292}
   - {fileID: -4634198344361271870}
   - {fileID: -2489294306987497030}
   - {fileID: 3377355619563753523}
@@ -140,7 +159,7 @@ MonoBehaviour:
   - {fileID: 4648741560498570912}
   - {fileID: 1210615806417245754}
   - {fileID: -5534143186916515982}
-  m_RendererFeatureMap: ad6b866f10d7b46c0aa96148cbec64ff2f39422eb25cd6aac29da4a92805b0bfbaa99b42044074dd335044c00ac7de2e31262994d6b305f1a0c61cb6d1a583403a16f96ca9f8cc10725fb1b717c632b3
+  m_RendererFeatureMap: ad6b866f10d7b46c0aa96148cbec64ff2f39422eb25cd6aa3ca1774128b2cdbfc29da4a92805b0bfbaa99b42044074dd335044c00ac7de2e31262994d6b305f1a0c61cb6d1a583403a16f96ca9f8cc10725fb1b717c632b3
   m_UseNativeRenderPass: 1
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}

@@ -490,6 +490,34 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 1
     m_Value: 0
+--- !u!114 &-1215940415750449126
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22fa803de097ec64d8206c1719d39186, type: 3}
+  m_Name: BloomVolume
+  m_EditorClassIdentifier: Assembly-CSharp::BloomVolume
+  active: 1
+  Threshold:
+    m_OverrideState: 1
+    m_Value: 1
+  Intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  Exposure:
+    m_OverrideState: 1
+    m_Value: 1
+  Tint:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  DownSample:
+    m_OverrideState: 1
+    m_Value: 2
 --- !u!114 &-1170528603972255243
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -567,6 +595,8 @@ MonoBehaviour:
   - {fileID: -1667399603901140065}
   - {fileID: 6899290485666533278}
   - {fileID: -2153172081652316032}
+  - {fileID: 1449125088709608727}
+  - {fileID: -1215940415750449126}
 --- !u!114 &352323563977469753
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -693,6 +723,28 @@ MonoBehaviour:
   highlightsEnd:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &1449125088709608727
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d4fcfd8b8ed3e04f95250876f935466, type: 3}
+  m_Name: GaussianBlurVolume
+  m_EditorClassIdentifier: Assembly-CSharp::GaussianBlurVolume
+  active: 1
+  Intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  Radius:
+    m_OverrideState: 1
+    m_Value: 3
+  DownSample:
+    m_OverrideState: 1
+    m_Value: 2
 --- !u!114 &1666464333004379222
 MonoBehaviour:
   m_ObjectHideFlags: 3

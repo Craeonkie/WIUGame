@@ -1,4 +1,4 @@
-Shader "Hidden/Custom/VignetteShader"
+Shader "Hidden/Custom/J_VignetteShader"
 {
     SubShader
     {

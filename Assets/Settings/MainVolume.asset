@@ -1,5 +1,33 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-655938233603563618
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22fa803de097ec64d8206c1719d39186, type: 3}
+  m_Name: BloomVolume
+  m_EditorClassIdentifier: Assembly-CSharp::BloomVolume
+  active: 1
+  Threshold:
+    m_OverrideState: 1
+    m_Value: 0.25
+  Intensity:
+    m_OverrideState: 1
+    m_Value: 1
+  Exposure:
+    m_OverrideState: 1
+    m_Value: 1
+  Tint:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  DownSample:
+    m_OverrideState: 1
+    m_Value: 2
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16,6 +44,7 @@ MonoBehaviour:
   - {fileID: 2976752689959619822}
   - {fileID: 392652058769210377}
   - {fileID: 8011898723466166408}
+  - {fileID: -655938233603563618}
 --- !u!114 &392652058769210377
 MonoBehaviour:
   m_ObjectHideFlags: 3
