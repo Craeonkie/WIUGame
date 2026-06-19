@@ -10,7 +10,7 @@ public class C_Catapult : MonoBehaviour
     [SerializeField] private C_Ball _BallPrefab;
     [SerializeField] private float _Force = 20;
     [SerializeField] private float _UpwardForce = 20;
-    [SerializeField] private PlayerInput _playerInput;
+    //[SerializeField] private PlayerInput _playerInput;
     [SerializeField] private C_TrajectorySimulation _traj;
     [SerializeField] private Transform _SpawnObjT;
     [SerializeField] private string _ballLayerName;
@@ -26,7 +26,7 @@ public class C_Catapult : MonoBehaviour
     [SerializeField] private Transform _ballSpawn;
     [SerializeField] private Transform _barrelPivot;
     [SerializeField] private float _rotateSpeed = 30;
-    private InputActionAsset _inputActionAsset;
+    [SerializeField] private InputActionAsset _inputActionAsset;
     private float _CurrentAngle;
     public static event System.Action <Vector3>spawnTrajectory;
     private bool _blockedLeft = false;
@@ -58,7 +58,7 @@ public class C_Catapult : MonoBehaviour
     }
     private void Awake()
     {
-        _inputActionAsset = _playerInput.actions;
+        //_inputActionAsset = _playerInput.actions;
 
         C_CatapultManager.UseCatapult += AwakeThis;
         C_CatapultManager.CatapultSetObj += SpawnObj;
@@ -108,7 +108,7 @@ public class C_Catapult : MonoBehaviour
         //a d = moving left and right
         bool changed = false;
 
-        Vector2 input = _inputActionAsset.FindActionMap("Catapult")["Move"].ReadValue<Vector2>();
+        Vector2 input = _inputActionAsset.FindAction("Move").ReadValue<Vector2>();
 
         if (input.y < 0)
         {
@@ -161,7 +161,7 @@ public class C_Catapult : MonoBehaviour
         }
         if (canShoot)
         {
-            if (_inputActionAsset.FindActionMap("Catapult")["Interact"].WasPressedThisFrame()
+            if (_inputActionAsset.FindAction("Interact").WasPressedThisFrame()
 )
             {
                 AudioLibrary.Instance.PlaySoundAtPointCustom("LaunchCatapult", transform.position);
@@ -212,15 +212,15 @@ public class C_Catapult : MonoBehaviour
         CatapultDisable?.Invoke();
         _traj.enabled = false;
         canShoot = false;
-        _playerInput.actions.FindActionMap("Catapult").Disable();
-        _playerInput.actions.FindActionMap("Player").Enable();
+        //_playerInput.actions.FindActionMap("Catapult").Disable();
+        //_playerInput.actions.FindActionMap("Player").Enable();
     }
 
     public void awakeThis()
     {
-        _playerInput.enabled = true;
-        _playerInput.actions.FindActionMap("Player").Disable();
-        _playerInput.actions.FindActionMap("Catapult").Enable();
+        //_playerInput.enabled = true;
+        //_playerInput.actions.FindActionMap("Player").Disable();
+        //_playerInput.actions.FindActionMap("Catapult").Enable();
         EnterCatapultMode?.Invoke(C_BossCameraManager.c_CameraMode.CATAPULT_CAMERA);
         CatapultEnabled?.Invoke();
         _traj.enabled = true;

@@ -137,13 +137,13 @@ public class StandardWeapon : Weapon
         }
 
         // Handle special attack
-        if ((PlayerController)_entityUsingItem && consumesEnergy)
+        if (_entityUsingItem is PlayerController controller && consumesEnergy)
         {
             if (_inputType == InputType.Special)
             {
                 canAttack = false;
             }
-            if (((PlayerController)_entityUsingItem).UseEnergy(_currentAnimation.energyUsed, _inputType == InputType.Special))
+            if (controller.UseEnergy(_currentAnimation.energyUsed, _inputType == InputType.Special))
             {
                 canAttack = true;
             }

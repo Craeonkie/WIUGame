@@ -153,10 +153,10 @@ public class C_FriendBoss : Entity
         if (CurrentPhase <= 0)
         {
             CheckPhase();
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                TakeDamage(99, 0.0f);
-            }
+            //if (Input.GetKeyDown(KeyCode.F))
+            //{
+            //    TakeDamage(99, 0.0f);
+            //}
         }
         else
         {

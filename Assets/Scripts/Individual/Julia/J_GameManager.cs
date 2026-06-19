@@ -43,7 +43,8 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
     public float bgmVolume;
     public float sfxVolume;
 
-    private PlayerInput _input;
+    //private PlayerInput _input;
+    [SerializeField] private InputActionAsset _inputActionAsset;
     private InputAction _skipAction;
     private InputAction _pauseAction;
     public static System.Action OnSkip;
@@ -63,11 +64,14 @@ public class J_GameManager : MonoBehaviour, J_IDataPersistence
 
     private void Start()
     {
-        _input = GetComponent<PlayerInput>();
+        //_input = GetComponent<PlayerInput>();
 
         // Using this temporarily, because it will be difficult to pause rn
-        _skipAction = _input.actions["Primary"];
-        _pauseAction = _input.actions["Pause"];
+        //_skipAction = _input.actions["Primary"];
+        //_pauseAction = _input.actions["Pause"];
+
+        _skipAction = _inputActionAsset.FindAction("Primary");
+        _pauseAction = _inputActionAsset.FindAction("Pause");
 
         // Initialise dictionary
         if (_completedStages.Count == 0)
